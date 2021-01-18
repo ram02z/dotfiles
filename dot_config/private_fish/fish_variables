@@ -4,7 +4,6 @@ SETUVAR __fish_initialized:3100
 SETUVAR _fisher_decors_2F_fish_2D_colored_2D_man_files:/home/omar/\x2econfig/fish/functions/man\x2efish
 SETUVAR _fisher_edc_2F_bass_files:/home/omar/\x2econfig/fish/functions/__bass\x2epy\x1e/home/omar/\x2econfig/fish/functions/bass\x2efish
 SETUVAR _fisher_jorgebucaran_2F_fisher_files:/home/omar/\x2econfig/fish/functions/fisher\x2efish\x1e/home/omar/\x2econfig/fish/completions/fisher\x2efish
-SETUVAR _fisher_oh_2D_my_2D_fish_2F_plugin_2D_bang_2D_bang_files:/home/omar/\x2econfig/fish/functions/__history_previous_command\x2efish\x1e/home/omar/\x2econfig/fish/functions/__history_previous_command_arguments\x2efish\x1e/home/omar/\x2econfig/fish/functions/key_bindings\x2efish
 SETUVAR _fisher_plugins:jorgebucaran/fisher\x1eedc/bass\x1eoh\x2dmy\x2dfish/plugin\x2dbang\x2dbang\x1edecors/fish\x2dcolored\x2dman
 SETUVAR fish_color_autosuggestion:6272A4
 SETUVAR fish_color_cancel:\x2dr
@@ -30,7 +29,6 @@ SETUVAR fish_color_status:red
 SETUVAR fish_color_user:brgreen
 SETUVAR fish_color_valid_path:\x2d\x2dunderline
 SETUVAR fish_greeting:Welcome\x20to\x20fish\x2c\x20the\x20friendly\x20interactive\x20shell\x0aType\x20\x60help\x60\x20for\x20instructions\x20on\x20how\x20to\x20use\x20fish
-SETUVAR fish_key_bindings:fish_default_key_bindings
 SETUVAR fish_pager_color_completion:normal
 SETUVAR fish_pager_color_description:B3A06D\x1eyellow
 SETUVAR fish_pager_color_prefix:white\x1e\x2d\x2dbold\x1e\x2d\x2dunderline
