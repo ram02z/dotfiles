@@ -47,6 +47,7 @@ call plug#end()
 set tabstop=4
 set shiftwidth=4
 set expandtab
+inoremap <S-Tab> <C-d>
 
 " Options for popup menu
 set cot=menuone,noinsert,noselect shm+=c
