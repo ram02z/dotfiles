@@ -10,7 +10,6 @@ set -gx VISUAL "nvim"
 set -gx TERMINAL "x-terminal-emulator"
 
 # User name in rprompt
-
 function fish_right_prompt -d "Write out the right prompt"
     set_color -o green
     echo -n "$USER"
