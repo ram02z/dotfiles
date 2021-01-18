@@ -1,0 +1,88 @@
+[theme]
+name = "slick"
+[theme.overrides]
+info_bg="#282a36"
+idle_fg="#f8f8f2"
+idle_bg="#282a36"
+info_fg="#ff79c6"
+warning_fg="#f1fa8c"
+warning_bg="#282a36"
+good_fg = "#50fa7b"
+good_bg = "#282a36"
+critical_fg = "#ff5555"
+critical_bg="#282a36"
+alternating_tint_fg = "#000000"
+
+[icons]
+name = "awesome"
+[icons.overrides]
+time = " "
+pomodoro = " "
+
+[[block]]
+block = "focused_window"
+max_width = 50
+show_marks = "visible"
+
+[[block]]
+block = "apt"
+interval = 1800
+format_singular="{count} upgrade"
+format = "{count} upgradable"
+format_up_to_date = "0 upgradable"
+critical_updates_regex = "(linux |linux-lts|linux-zen|regolith)"
+
+
+[[block]]
+block = "music"
+buttons = ["prev", "play", "next"]
+marquee = false
+dynamic_width = true
+on_click = "/usr/bin/i3-msg scratchpad show"
+on_collapsed_click = "i3-quickterm mpsyt" 
+interface_name_exclude = ["firefox"]
+
+[[block]]
+block = "cpu"
+interval = 1
+format = "{utilization}%"
+on_click = ''' /usr/bin/i3-msg -q exec "/usr/bin/gnome-system-monitor --class=floating_window" '''
+
+[[block]]
+block = "memory"
+format_mem = "{Mup}%"
+format_swap = "{Mug}GB"
+display_type = "memory"
+icons = true
+clickable = true
+interval = 5
+warning_mem = 80
+critical_mem = 95
+
+[[block]]
+block = "weather"
+format = "{weather} {temp}°"
+autolocate = true
+service = { name = "openweathermap", api_key = "8865f0dc0c6c3b4f0fc601fd063f5be1", city_id = "2643743", units = "metric" }
+
+# [[block]]
+# block = "bluetooth"
+# mac = "14:60:CB:C7:B4:2A"
+
+[[block]]
+block = "custom"
+command = ''' rofication-json '''
+interval = 5
+on_click = "rofication-gui"
+hide_when_empty = true
+json = true
+
+[[block]]
+block = "battery"
+format = "{percentage}%"
+
+[[block]]
+block = "time"
+interval = 60
+format = "%R"
+on_click= ''' /usr/bin/i3-msg -q exec "/usr/bin/gnome-calendar --class=floating_window" '''

@@ -1,0 +1,18 @@
+{
+    "Firefox": "firefox",
+    "Alacritty": "terminal",
+    "thunderbird": "envelope",
+    "jetbrains-goland": "edit",
+    "nvim": "edit",
+    "Neovim": "edit",
+    "org.gnome.Nautilus": "folder-open",
+    "mpsyt": "music",
+    "vlc": "play",
+    "org.gnome.Software": "shopping-bag",
+    "eog": "file-image",
+    "Calendar": "calendar",
+    "Ao": "sticky-note",
+    "signal":"comment",
+    "_no_match": "cogs"
+}
+
