@@ -11,7 +11,7 @@ set -gx TERMINAL "x-terminal-emulator"
 
 # Key bindings for bang bang
 bind ! __history_previous_command
-bind '$' __history_previous_command_arguements
+bind '$' __history_previous_command_arguments
 
 # User name in rprompt
 function fish_right_prompt -d "Write out the right prompt"
