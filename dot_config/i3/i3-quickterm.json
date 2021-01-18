@@ -1,0 +1,11 @@
+{
+    "menu": "rofi -dmenu -p 'quickterm: ' -no-custom -auto-select",
+    "term": "alacritty",
+    "history": "{$HOME}/.cache/i3/i3-quickterm.order",
+    "ratio": 0.66,
+    "pos": "center",
+    "shells": {
+        "shell": "{$SHELL}",
+        "mpsyt": "mpsyt"
+    }
+}
