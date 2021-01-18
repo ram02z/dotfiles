@@ -103,6 +103,9 @@ let g:airline#extensions#tabline#enabled = 1
 " Just airline theme bcz the full theme didn't look good imo
 let g:airline_theme='dracula'
 let g:airline_powerline_fonts = 1
+if $WSL_DISTRO_NAME != ""
+    colorscheme dracula
+endif
 
 " Enable rainbow
 let g:rainbow_active = 1
