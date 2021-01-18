@@ -1,7 +1,7 @@
 set -gx PATH /bin
 append-to-path /usr/bin
 append-to-path ~/bin
-append-to-apth ~/.local/bin
+append-to-path ~/.local/bin
 append-to-path /usr/local/bin
 
 # Go PATH
