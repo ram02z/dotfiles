@@ -83,6 +83,6 @@ format = "{percentage}%"
 
 [[block]]
 block = "time"
-interval = 60
+interval = 1 
 format = "%R"
 on_click= ''' /usr/bin/i3-msg -q exec "/usr/bin/gnome-calendar --class=floating_window" '''
