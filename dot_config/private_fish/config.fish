@@ -34,3 +34,4 @@ if status is-login
 end
 
 starship init fish | source
+emplace init fish | source
