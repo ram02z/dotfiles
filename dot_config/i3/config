@@ -121,7 +121,7 @@ bindsym $mod+$i3-wm.binding.help exec --no-startup-id $i3-wm.program.help
 
 ## Launch // File Search // <><Alt> Space ##
 set_from_resource $i3-wm.binding.file_search i3-wm.binding.file_search Mod1+space
-set_from_resource $i3-wm.program.file_search i3-wm.program.file_search rofi -show find -modi find:~/.config/rofi/modi/finder.sh
+set_from_resource $i3-wm.program.file_search i3-wm.program.file_search rofi -show find -modi find:/usr/share/rofi/modi/finder.sh
 bindsym $mod+$i3-wm.binding.file_search exec $i3-wm.program.file_search
 
 ## Launch // Look Selector // <><Alt> l ##
@@ -710,11 +710,12 @@ for_window [class=".*gnome.*"] floating enable
 for_window [class="(?i)gnome"] floating enable
 for_window [class="(?i)gtk"] floating enable
 for_window [class="psensor"] floating enable
-for_window [class="pavucontrol"] floating enable
+for_window [class="Pavucontrol"] floating enable
 for_window [class="Tlp-UI"] floating enable
 for_window [class="synaptic"] floating enable
 for_window [class="Dconf-editor"] floating enable
 for_window [class="File-roller"] floating enable
+for_window [class="Pulseeffects"] floating enable
 # exec_always --no-startup-id i3-floating.py
 # apart from the following
 # blacklist moved to i3-floating.py
