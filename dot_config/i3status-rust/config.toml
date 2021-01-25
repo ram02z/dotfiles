@@ -32,7 +32,6 @@ format = "{count} upgradable"
 format_up_to_date = "0 upgradable"
 critical_updates_regex = "(linux |linux-lts|linux-zen|regolith)"
 
-
 [[block]]
 block = "music"
 buttons = ["prev", "play", "next"]
@@ -80,6 +79,7 @@ json = true
 [[block]]
 block = "battery"
 format = "{percentage}%"
+on_click= ''' /usr/bin/i3-msg -q exec "/usr/bin/gnome-power-statistics --class=floating_window" '''
 
 [[block]]
 block = "time"
