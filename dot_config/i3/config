@@ -423,10 +423,10 @@ set_from_resource $i3-wm.binding.settings i3-wm.binding.settings c
 set_from_resource $i3-wm.program.settings i3-wm.program.settings gnome-control-center --class=floating_window
 bindsym $mod+$i3-wm.binding.settings exec $i3-wm.program.settings
 
-## Modify // Display Settings // <> d ##
-set_from_resource $i3-wm.binding.display i3-wm.binding.display d
-set_from_resource $i3-wm.program.display i3-wm.program.display gnome-control-center --class=floating_window display
-bindsym $mod+$i3-wm.binding.display exec $i3-wm.program.display
+## Modify // Calendar // <> d ##
+set_from_resource $i3-wm.binding.calendar i3-wm.binding.calendar d
+set_from_resource $i3-wm.program.calendar i3-wm.program.calendar gnome-calendar --class=floating_window
+bindsym $mod+$i3-wm.binding.calendar exec $i3-wm.program.calendar
 
 ## Modify // Wifi Settings // <> w ##
 set_from_resource $i3-wm.binding.wifi i3-wm.binding.wifi w
