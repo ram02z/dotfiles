@@ -80,9 +80,6 @@ function! IsNERDTreeOpen()
     return exists("t:NERDTreeBufName") && (bufwinnr(t:NERDTreeBufName) != -1)
 endfunction
 
-" Highlight currently open buffer in NERDTree
-autocmd BufEnter * call SyncTree()
-
 " Toggle NERDTree hotkey
 nnoremap <C-n> :NERDTreeToggle<CR>
 
