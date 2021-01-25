@@ -1,8 +1,14 @@
-# System
-alias upgrades "sudo apt update && apt list --upgradable"
+# Ubuntu
+set APT apt
+
+alias aup "sudo $APT update && $APT list --upgradable"
+alias aguu "sudo $APT update && sudo $APT upgrade"
+alias allpkgs 'dpkg --get-selections | grep -v deinstall'
+alias agud "sudo $APT update && sudo $APT dist-upgrade"
 
 # Git Aliases from https://bitsofco.de/git-aliases-for-lazy-developers/
 alias gac "git add . && git commit -m"
+alias gca "git commit -am"
 alias gi "git init && gac 'Initial commit'"
 alias gp "git push"
 alias gl "git pull"
@@ -20,7 +26,8 @@ alias gcb "git checkout -b" # + branch name
 alias gcc "gcc -Wall -ansi -pedantic-errors"
 alias vgmc "valgrind --tool=memcheck --leak-check=yes --show-reachable=yes"
 
-alias ccat "batcat"
+# Batcat
+alias bat "batcat"
 
 # Fish
 alias fishconfig "editor ~/.config/fish/config.fish"
