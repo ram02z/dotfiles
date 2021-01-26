@@ -31,6 +31,7 @@ format_singular="{count} upgrade"
 format = "{count} upgradable"
 format_up_to_date = "0 upgradable"
 critical_updates_regex = "(linux |linux-lts|linux-zen|regolith)"
+on_click = "i3-quickterm upgrades" 
 
 [[block]]
 block = "music"
@@ -63,6 +64,7 @@ block = "weather"
 format = "{weather} {temp}°"
 autolocate = true
 service = { name = "openweathermap", api_key = "8865f0dc0c6c3b4f0fc601fd063f5be1", city_id = "2643743", units = "metric" }
+on_click= ''' /usr/bin/i3-msg -q exec "/usr/bin/gnome-weather --class=floating_window" '''
 
 # [[block]]
 # block = "bluetooth"
