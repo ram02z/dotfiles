@@ -7,8 +7,9 @@ alias allpkgs 'dpkg --get-selections | grep -v deinstall'
 alias agud "sudo $APT update && sudo $APT dist-upgrade"
 
 # Git Aliases from https://bitsofco.de/git-aliases-for-lazy-developers/
-alias gac "git add . && git commit -m"
-alias gca "git commit -am"
+alias gacm "git add . && git commit -m"
+alias gcam "git commit -am"
+alias gca "git commit -a"
 alias gi "git init && gac 'Initial commit'"
 alias gp "git push"
 alias gl "git pull"
