@@ -33,5 +33,12 @@ if status is-login
     . ~/.config/fish/env.fish
 end
 
-starship init fish | source
-emplace init fish | source
+# Starship Prompt
+if type -q starship
+    starship init fish | source
+end
+
+# Emplace package sync
+if type -q emplace
+    emplace init fish | source
+end

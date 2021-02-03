@@ -5,12 +5,12 @@ append-to-path ~/.local/bin
 append-to-path /usr/local/bin
 
 # Go PATH
-if test -f go
+if type -q go
     append-to-path /usr/local/go/bin
     append-to-path ~/go/bin
 end
 
 # Rust PATH
-if test -f cargo
+if type -q cargo
     append-to-path ~/.cargo/bin 
 end

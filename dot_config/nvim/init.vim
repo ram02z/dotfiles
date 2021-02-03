@@ -44,7 +44,7 @@ Plug 'romainl/vim-cool'
 call plug#end()
 
 " WSL only settings
-if system('uname -r') =~ "microsoft"
+if tolower(system('uname -r')) =~ "microsoft"
     colorscheme dracula
 endif
 
