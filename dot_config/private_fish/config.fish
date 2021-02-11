@@ -14,7 +14,7 @@ bind ! __history_previous_command
 bind '$' __history_previous_command_arguments
 
 # WSL2 only settings
-if string match -q -- "5.*" (uname -r) 
+if not string match -r "^4" (uname -r) 
     set -gx DISPLAY (awk '/nameserver / {print $2; exit}' /etc/resolv.conf 2>/dev/null):0
     set LIBGL_ALWAYS_INDIRECT 1
 end
