@@ -63,12 +63,13 @@ critical_mem = 95
 block = "weather"
 format = "{weather} {temp}°"
 autolocate = true
-service = { name = "openweathermap", api_key = "8865f0dc0c6c3b4f0fc601fd063f5be1", city_id = "2643743", units = "metric" }
+service = { name = "openweathermap", api_key = "8865f0dc0c6c3b4f0fc601fd063f5be1", place = "London", units = "metric" }
 on_click= ''' /usr/bin/i3-msg -q exec "/usr/bin/gnome-weather --class=floating_window" '''
 
-# [[block]]
-# block = "bluetooth"
-# mac = "14:60:CB:C7:B4:2A"
+[[block]]
+block = "bluetooth"
+mac = "14:60:CB:C7:B4:2A"
+format_unavailable = ""
 
 [[block]]
 block = "custom"
