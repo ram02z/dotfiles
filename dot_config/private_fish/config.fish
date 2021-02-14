@@ -14,7 +14,7 @@ bind ! __history_previous_command
 bind '$' __history_previous_command_arguments
 
 # WSL2 only settings
-if [ -n "$WSL_DISTRO_NAME" ] && string match -rq "^(?:[5-9])" (uname -r) 
+if string match -rq "(?i)(?=.*microsoft)^(?:[5-9])" (uname -r) 
     set -gx DISPLAY (awk '/nameserver / {print $2; exit}' /etc/resolv.conf 2>/dev/null):0
     set LIBGL_ALWAYS_INDIRECT 1
 end
