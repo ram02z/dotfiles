@@ -86,6 +86,17 @@ set_from_resource $ws9_key  i3-wm.workspace.09.key 9
 set_from_resource $ws10_key i3-wm.workspace.10.key 0
 
 ###############################################################################
+# Bluetooth keys
+# from https://flx.ai/2019/bose-qc35ii-linux#actual-pairing
+###############################################################################
+
+bindsym XF86AudioPlay exec "~/.local/bin/xf86audio toggle"
+bindsym XF86AudioPrev exec "~/.local/bin/xf86audio prev"
+bindsym XF86AudioNext exec "~/.local/bin/xf86audio next"
+bindsym XF86AudioForward exec "~/.local/bin/xf86audio forw"
+bindsym XF86AudioRewind exec "~/.local/bin/xf86audio back"
+
+###############################################################################
 # Launcher dialogs
 ###############################################################################
 
