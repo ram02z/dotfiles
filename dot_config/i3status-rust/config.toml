@@ -61,7 +61,7 @@ critical_mem = 95
 
 [[block]]
 block = "weather"
-format = "{weather} {temp}°"
+format = "{temp}°"
 service = { name = "openweathermap", api_key = "8865f0dc0c6c3b4f0fc601fd063f5be1", place = "Harrow", units = "metric" }
 on_click= ''' /usr/bin/i3-msg -q exec "/usr/bin/gnome-weather --class=floating_window" '''
 
