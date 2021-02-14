@@ -8,6 +8,7 @@ set -gx fish_greeting ""
 set -gx VISUAL "nvim"
 set -gx EDITOR "$VISUAL"
 set -gx TERMINAL "x-terminal-emulator"
+set -gx DISPLAY :0
 
 # Key bindings for bang bang
 bind ! __history_previous_command
