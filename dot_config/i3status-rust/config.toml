@@ -62,13 +62,21 @@ critical_mem = 95
 [[block]]
 block = "weather"
 format = "{weather} {temp}°"
-autolocate = true
-service = { name = "openweathermap", api_key = "8865f0dc0c6c3b4f0fc601fd063f5be1", place = "London", units = "metric" }
+service = { name = "openweathermap", api_key = "8865f0dc0c6c3b4f0fc601fd063f5be1", place = "Harrow", units = "metric" }
 on_click= ''' /usr/bin/i3-msg -q exec "/usr/bin/gnome-weather --class=floating_window" '''
 
+# Airpods
 [[block]]
 block = "bluetooth"
+label = " Pods"
 mac = "14:60:CB:C7:B4:2A"
+format_unavailable = ""
+
+# Bose QC35s
+[[block]]
+block = "bluetooth"
+label = " QC35"
+mac = "60:AB:D2:42:04:74"
 format_unavailable = ""
 
 [[block]]
