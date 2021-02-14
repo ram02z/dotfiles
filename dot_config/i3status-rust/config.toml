@@ -78,6 +78,7 @@ block = "bluetooth"
 label = " QC35"
 mac = "60:AB:D2:42:04:74"
 format_unavailable = ""
+on_click = "i3-nagbar -m $(based-connect -b 60:AB:D2:42:04:74) -type warning" 
 
 [[block]]
 block = "custom"
