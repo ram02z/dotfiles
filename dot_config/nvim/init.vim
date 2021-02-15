@@ -11,7 +11,7 @@ Plug 'honza/vim-snippets'
 " Starts nerdtree on toggle
 Plug 'preservim/nerdtree', { 'on': 'NERDTreeToggle' }
 
-" Smart comments
+" Comments stuff out
 Plug 'preservim/nerdcommenter'
 
 " Fuzzy finder
@@ -38,7 +38,7 @@ Plug 'luochen1990/rainbow'
 " Loads of language syntax highlighting
 Plug 'sheerun/vim-polyglot'
 
-" Removes annoying serach highlighting
+" Removes annoying search highlighting
 Plug 'romainl/vim-cool'
 
 call plug#end()
@@ -48,24 +48,46 @@ if tolower(system('uname -r')) =~ "microsoft"
     colorscheme dracula
 endif
 
+" Unix line endings
+e ++ff=unix
+
 " Tabbing the right way
 set tabstop=4
 set shiftwidth=4
 set expandtab
 inoremap <S-Tab> <C-d>
 
+" Remap comment toggle
+if has('win32')
+    nmap <C-_> <Plug>NERDCommenterToggle
+    vmap <C-_> <Plug>NERDCommenterToggle<CR>gv
+    imap <C-_> <esc><Plug>NERDCommenterToggle gi
+else
+    nmap <C-_> <Plug>NERDCommenterToggle
+    vmap <C-_> <Plug>NERDCommenterToggle<CR>gv
+    imap <C-_> <esc><Plug>NERDCommenterToggle gi
+endif
+
+" Add spaces after comment delimiters by default
+let g:NERDSpaceDelims = 1
+
+" Use compact syntax for prettified multi-line comments
+let g:NERDCompactSexyComs = 1
+
+" Allow commenting and inverting empty lines (useful when commenting a region)
+let g:NERDCommentEmptyLines = 1
+
+" Enable trimming of trailing whitespace when uncommenting
+let g:NERDTrimTrailingWhitespace = 1
+
+" Enable NERDCommenterToggle to check all selected lines is commented or not
+let g:NERDToggleCheckAllLines = 1"
+
 " Options for popup menu
 set cot=menuone,noinsert,noselect shm+=c
 
 " removes annoying paren highlighting
 let g:loaded_matchparen=1
-
-" changes leader key to comma
-let mapleader = ","
-
-" Map key to nerdcommnenter toggle
-nmap <C-/> <plug>NERDCommenterToggle
-xmap <C-/> <plug>NERDCommenterToggle
 
 " ctrl p ignore
 let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files -co --exclude-standard']
@@ -87,9 +109,6 @@ nnoremap <C-n> :NERDTreeToggle<CR>
 let NERDTreeQuitOnOpen=1
 " Shows hidden files 
 let g:NERDTreeShowHidden=1
-
-" Adds space after comment
-let g:NERDSpaceDelims = 1
 
 " Automatically display all buffers when one tab is open
 let g:airline#extensions#tabline#enabled = 1
