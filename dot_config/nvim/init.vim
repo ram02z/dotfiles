@@ -49,7 +49,7 @@ if tolower(system('uname -r')) =~ "microsoft"
 endif
 
 " Unix line endings
-e ++ff=unix
+set fileformats=unix
 
 " Tabbing the right way
 set tabstop=4
