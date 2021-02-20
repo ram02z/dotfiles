@@ -33,3 +33,7 @@ alias bat "batcat"
 # Fish
 alias fishconfig "editor ~/.config/fish/config.fish"
 alias src "source ~/.config/fish/config.fish"
+
+# Directory
+alias ... "cd ../.."
+alias .... "cd ../../.."
