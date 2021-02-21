@@ -1,6 +1,8 @@
 # Aliases
 . ~/.config/fish/functions/aliases.fish
 
+# Enviroment variables
+. ~/.config/fish/env.fish
 
 set -gx fish_greeting ""
 
@@ -28,10 +30,6 @@ bind '$' __history_previous_command_arguments
 function fish_right_prompt -d "Write out the right prompt"
     set_color -o green
     echo -n "$USER"
-end
-
-if status is-login
-    . ~/.config/fish/env.fish
 end
 
 # Starship Prompt
