@@ -4,9 +4,6 @@
 # Enviroment variables
 . ~/.config/fish/env.fish
 
-# Start SSH agent
-fish_ssh_agent
-
 set -gx fish_greeting ""
 
 # Global variables

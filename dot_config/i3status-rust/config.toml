@@ -45,7 +45,7 @@ interface_name_exclude = ["firefox"]
 [[block]]
 block = "cpu"
 interval = 1
-format = "{utilization}%"
+format = "{utilization}"
 on_click = ''' /usr/bin/i3-msg -q exec "/usr/bin/gnome-system-monitor --class=floating_window" '''
 
 [[block]]
