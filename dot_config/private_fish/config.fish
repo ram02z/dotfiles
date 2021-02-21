@@ -4,19 +4,6 @@
 # Enviroment variables
 . ~/.config/fish/env.fish
 
-# SSH Agent
-if not pgrep -f ssh-agent > /dev/null
-  notify-send eval (ssh-agent -c)
-  set -Ux SSH_AUTH_SOCK $SSH_AUTH_SOCK
-  set -Ux SSH_AGENT_PID $SSH_AGENT_PID
-  set -Ux SSH_AUTH_SOCK $SSH_AUTH_SOCK
-end
-
-# Logout function
-function on_exit --on-process %self
-    kill $SSH_AGENT_PID 
-end
-
 set -gx fish_greeting ""
 
 # Global variables
