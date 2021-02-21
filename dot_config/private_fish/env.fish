@@ -12,11 +12,6 @@ if string match -rq "(?i)(?=.*microsoft)^(?:[5-9])" (uname -r)
     set -gx LIBGL_ALWAYS_INDIRECT 1
 end
 
-# Wayland only settings
-if test -n "$WAYLAND_DISPLAY"
-    set -gx MOZ_ENABLE_WAYLAND 1
-end
-
 #
 # PATHS
 #
