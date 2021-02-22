@@ -4,6 +4,7 @@ if test -d ~/.ssh
     end
 
     if not __ssh_agent_is_started
+        pkill ssh-agent
         __ssh_agent_start
     end
 end
