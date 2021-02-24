@@ -60,7 +60,7 @@ let g:airline_powerline_fonts = 1
 let g:rainbow_active = 1
 
 " WSL only settings
-if $WSL_ENV != "" 
+if $WSLENV != "" 
     set background=dark
 endif
 
