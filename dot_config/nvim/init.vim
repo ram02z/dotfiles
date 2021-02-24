@@ -44,8 +44,11 @@ Plug 'romainl/vim-cool'
 call plug#end()
 
 " WSL only settings
+colorscheme dracula
 if tolower(system('uname -r')) =~ "microsoft"
-    colorscheme dracula
+    " colorscheme dracula
+else
+    hi Normal guibg=NONE ctermbg=NONE
 endif
 
 " Unix line endings
