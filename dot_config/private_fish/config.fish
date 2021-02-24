@@ -1,15 +1,5 @@
-# Aliases
-. ~/.config/fish/functions/aliases.fish
-
-# Enviroment variables
-. ~/.config/fish/env.fish
-
-# Key bindings for bang bang
-bind ! __history_previous_command
-bind '$' __history_previous_command_arguments
-
 # User name in rprompt
-function fish_right_prompt -d "Write out the right prompt"
+function fish_right_prompt -d "Username in green"
     set_color -o green
     echo -n "$USER"
 end
@@ -24,12 +14,5 @@ function on_exit --on-event fish_exit
     end
 end
 
-# Starship Prompt
-if type -q starship
-    starship init fish | source
-end
-
-# Emplace package sync
-if type -q emplace
-    emplace init fish | source
-end
+# Init starship and emplace
+init_source starship emplace

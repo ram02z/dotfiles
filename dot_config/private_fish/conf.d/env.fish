@@ -4,7 +4,11 @@
 set -gx fish_greeting ""
 set -gx VISUAL "nvim"
 set -gx TERMINAL "x-terminal-emulator"
-set -gx DISPLAY :0
+
+# x11 only settings
+if [ "$XDG_SESSION_TYPE" = "x11" ]
+    set -gx DISPLAY :0    
+end
 
 # WSL2 only settings
 if string match -rq "(?i)(?=.*microsoft)^(?:[5-9])" (uname -r)
