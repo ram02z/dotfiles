@@ -38,15 +38,15 @@ block = "music"
 buttons = ["prev", "play", "next"]
 marquee = false
 dynamic_width = true
-on_click = "/usr/bin/i3-msg scratchpad show"
-on_collapsed_click = "i3-quickterm mpsyt" 
+on_click = "~/.local/bin/i3-quickterm mpsyt"
+on_collapsed_click = "~/.local/bin/i3-quickterm mpsyt" 
 interface_name_exclude = ["firefox"]
 
 [[block]]
 block = "cpu"
 interval = 1
 format = "{utilization}"
-on_click = ''' /usr/bin/i3-msg -q exec "/usr/bin/gnome-system-monitor --class=floating_window" '''
+on_click = "gnome-system-monitor"
 
 [[block]]
 block = "memory"
@@ -64,7 +64,7 @@ block = "weather"
 format = "{temp}°"
 autolocate = true
 service = { name = "openweathermap", api_key = "8865f0dc0c6c3b4f0fc601fd063f5be1", place = "Harrow", units = "metric" }
-on_click= ''' /usr/bin/i3-msg -q exec "/usr/bin/gnome-weather --class=floating_window" '''
+on_click = "gnome-weather"
 
 # Airpods
 [[block]]
@@ -80,7 +80,7 @@ label = " QC35"
 mac = "60:AB:D2:42:04:74"
 format_unavailable = ""
 hide_disconnected = true
-on_click = "i3-nagbar -m $(based-connect -b 60:AB:D2:42:04:74) -type warning" 
+# on_click = "i3-nagbar -m $(based-connect -b 60:AB:D2:42:04:74) -type warning"
 
 [[block]]
 block = "custom"
@@ -93,10 +93,10 @@ json = true
 [[block]]
 block = "battery"
 format = "{percentage}%"
-on_click= ''' /usr/bin/i3-msg -q exec "/usr/bin/gnome-power-statistics --class=floating_window" '''
+on_click = "gnome-power-statistics"
 
 [[block]]
 block = "time"
 interval = 1 
 format = "%R"
-on_click= ''' /usr/bin/i3-msg -q exec "/usr/bin/gnome-calendar --class=floating_window" '''
+on_click = "gnome-calendar"

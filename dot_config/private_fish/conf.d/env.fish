@@ -4,13 +4,15 @@
 set -gx fish_greeting ""
 set -gx VISUAL "nvim"
 set -gx TERMINAL "x-terminal-emulator"
+set -gx DISPLAY :0.0
 
-# x11 only settings
+# x11 only
 if [ "$XDG_SESSION_TYPE" = "x11" ]
-    set -gx DISPLAY :0    
+    unset WAYLAND_DISPLAY
+    unset GDK_BACKEND
 end
 
-# WSL2 only settings
+# WSL2 only
 if string match -rq "(?i)(?=.*microsoft)^(?:[5-9])" (uname -r)
     set -gx DISPLAY (awk '/nameserver / {print $2; exit}' /etc/resolv.conf 2>/dev/null):0
     set -gx LIBGL_ALWAYS_INDIRECT 1
