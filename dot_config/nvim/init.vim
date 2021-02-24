@@ -41,14 +41,27 @@ Plug 'sheerun/vim-polyglot'
 " Removes annoying search highlighting
 Plug 'romainl/vim-cool'
 
+" To profile startup
+Plug 'dstein64/vim-startuptime'
+
 call plug#end()
 
-" WSL only settings
+"
+" Color scheme
+"
 colorscheme dracula
-if tolower(system('uname -r')) =~ "microsoft"
-    " colorscheme dracula
-else
-    hi Normal guibg=NONE ctermbg=NONE
+hi Normal guibg=NONE ctermbg=NONE
+" Automatically display all buffers when one tab is open
+let g:airline#extensions#tabline#enabled = 1
+" Just airline theme bcz the full theme didn't look good imo
+let g:airline_theme='dracula'
+let g:airline_powerline_fonts = 1
+" Enable rainbow
+let g:rainbow_active = 1
+
+" WSL only settings
+if $WSL_ENV != "" 
+    set background=dark
 endif
 
 " Unix line endings
@@ -85,9 +98,6 @@ let g:NERDTrimTrailingWhitespace = 1
 
 " Enable NERDCommenterToggle to check all selected lines is commented or not
 let g:NERDToggleCheckAllLines = 1"
-
-" Options for popup menu
-set cot=menuone,noinsert,noselect shm+=c
 
 " removes annoying paren highlighting
 let g:loaded_matchparen=1
@@ -128,16 +138,16 @@ let g:completion_matching_smart_case = 1
 let g:completion_trigger_on_delete = 1
 let g:UltiSnipsExpandTrigger="<tab>"
 
-:lua << EOF 
+:lua << EOF
     local nvim_lsp = require('lspconfig')
     local on_attach = function(client, bufnr)
         require('completion').on_attach()
     end
-    
-    -- Use a loop to conveniently both setup defined servers 
+
+    -- Use a loop to conveniently both setup defined servers
     -- and map buffer local keybindings when the language server attaches
     local servers = { "pyls" }
     for _, lsp in ipairs(servers) do
       nvim_lsp[lsp].setup { on_attach = on_attach }
     end
-EOF 
+EOF
