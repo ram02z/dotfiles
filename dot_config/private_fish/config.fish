@@ -7,7 +7,7 @@ end
 # Logout function
 function on_exit --on-event fish_exit
    if test -n "$SSH_AGENT_PID"
-       ssh-add -D
+       ssh-add -D 2>/dev/null
        pkill ssh-agent
        unset SSH_AGENT_PID
        unset SSH_AUTH_SOCK
