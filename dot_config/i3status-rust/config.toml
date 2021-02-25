@@ -38,8 +38,8 @@ block = "music"
 buttons = ["prev", "play", "next"]
 marquee = false
 dynamic_width = true
-on_click = "~/.local/bin/i3-quickterm mpsyt"
-on_collapsed_click = "~/.local/bin/i3-quickterm mpsyt" 
+on_click = "i3-quickterm mpsyt"
+on_collapsed_click = "i3-quickterm mpsyt" 
 interface_name_exclude = ["firefox"]
 
 [[block]]
