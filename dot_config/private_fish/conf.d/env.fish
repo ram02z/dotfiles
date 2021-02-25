@@ -10,6 +10,13 @@ set -gx DISPLAY :0.0
 if [ "$XDG_SESSION_TYPE" = "x11" ]
     unset WAYLAND_DISPLAY
     unset GDK_BACKEND
+    set -gx GDK_BACKEND "x11"
+else
+    unset GDK_BACKEND
+    set -gx WAYLAND_DISPLAY "wayland-0"
+    set -gx GDK_BACKEND "wayland"
+    set -gx XDG_CURRENT_DESKTOP "sway"
+
 end
 
 # WSL2 only
