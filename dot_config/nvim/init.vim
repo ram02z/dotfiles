@@ -132,6 +132,8 @@ let g:airline_powerline_fonts = 1
 " Enable rainbow
 let g:rainbow_active = 1
 
+set cot=menuone,noinsert,noselect shm+=c
+
 let g:completion_matching_strategy_list = ['exact', 'substring', 'fuzzy']
 let g:completion_enable_snippet = 'UltiSnips'
 let g:completion_matching_smart_case = 1
