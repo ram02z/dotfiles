@@ -7,6 +7,6 @@
     "shells": {
         "shell": "{$SHELL}",
         "mpsyt": "{$SHELL} -c mpsyt",
-        "upgrades": "{$SHELL} -c 'aup && read -P \"Press any key to exit\"'"
+        "upgrades": "{$SHELL} -c 'aup && read -P \"Press any key to exit\" -n1 -s'"
     }
 }
