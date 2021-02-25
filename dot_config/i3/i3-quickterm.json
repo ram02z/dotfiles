@@ -6,7 +6,7 @@
     "pos": "center",
     "shells": {
         "shell": "{$SHELL}",
-        "mpsyt": "mpsyt",
+        "mpsyt": "{$SHELL} -c mpsyt",
         "upgrades": "{$SHELL} -c 'aup && read -P \"Press any key to exit\"'"
     }
 }
