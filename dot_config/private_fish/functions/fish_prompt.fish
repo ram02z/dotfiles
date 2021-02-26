@@ -4,6 +4,9 @@ function fish_prompt -d "Starship init with a few additions"
        printf '\e]9;9;%s\e\\' (wslpath -m $PWD)
     end
 
+    # Solid vertical bar
+    printf '\e[6 q'
+
     switch "$fish_key_bindings"
         case fish_hybrid_key_bindings fish_vi_key_bindings
             set keymap "$fish_bind_mode"
@@ -19,7 +22,6 @@ function fish_prompt -d "Starship init with a few additions"
     # disable virtualenv prompt, it breaks starship
     set VIRTUAL_ENV_DISABLE_PROMPT 1
 
-    function fish_mode_prompt; end
     set -gx STARSHIP_SHELL "fish"
 
     # Set up the session key that will be used to store logs
