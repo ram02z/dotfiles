@@ -11,18 +11,19 @@ if [ "$XDG_SESSION_TYPE" = "x11" ]
     unset WAYLAND_DISPLAY
     unset GDK_BACKEND
     set -gx GDK_BACKEND "x11"
-else
+# wayland only
+else if [ "$XDG_SESSION_TYPE" = "wayland" ]
     unset GDK_BACKEND
     set -gx WAYLAND_DISPLAY "wayland-0"
     set -gx GDK_BACKEND "wayland"
     set -gx XDG_CURRENT_DESKTOP "sway"
-
-end
-
-# WSL2 only
-if string match -rq "(?i)(?=.*microsoft)^(?:[5-9])" (uname -r)
-    set -gx DISPLAY (awk '/nameserver / {print $2; exit}' /etc/resolv.conf 2>/dev/null):0
-    set -gx LIBGL_ALWAYS_INDIRECT 1
+# wsl only
+else if type -q wslpath
+    # Version 2 only
+    if string match -rq "(?i)(?=.*microsoft)^(?:[5-9])" (uname -r)
+        set -gx DISPLAY (awk '/nameserver / {print $2; exit}' /etc/resolv.conf 2>/dev/null):0
+        set -gx LIBGL_ALWAYS_INDIRECT 1
+    end
 end
 
 #
