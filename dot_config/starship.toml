@@ -1,6 +1,12 @@
 add_newline = false
 scan_timeout = 10
 
+[username]
+disabled = true
+
+[battery]
+disabled = true
+
 [aws]
 symbol = " "
 
@@ -64,6 +70,8 @@ symbol = " "
 
 [rust]
 symbol = " "
+# Too slow atm
+disabled = true
 
 [swift]
 symbol = "ﯣ "
