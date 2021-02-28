@@ -1,13 +1,14 @@
+# https://github.com/gaplo917/Ligatured-Hack
 font:
     normal:
-        family: Hack
+        family: Hack Nerd Font FC Ligatured CCG
 
     bold:
-        family: Hack Nerd Font
+        family: Hack Nerd Font FC Ligatured CCG
         style: Bold
 
     italic:
-        family: Hack
+        family: Hack Nerd Font FC Ligatured CCG
     
     size: 15.0
 

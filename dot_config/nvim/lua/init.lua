@@ -27,15 +27,16 @@ local compe_conf = {
     debug = false,
     min_length = 2,
     preselect = 'enable',
+    allow_prefix_unmatch = false,
 
     source = {
         path = true,
         calc = true,
-        -- vsnip = true,
+        vsnip = true,
         nvim_lsp = true,
         nvim_lua = true,
         -- snippets_nvim = true,
-        ultisnips = true,
+        -- ultisnips = true,
         treesitter = true,
     },
 }

@@ -10,8 +10,8 @@ Plug 'neovim/nvim-lspconfig'
 Plug 'hrsh7th/nvim-compe'
 
 " Code snippets 
-Plug 'SirVer/ultisnips'
-Plug 'honza/vim-snippets'
+Plug 'hrsh7th/vim-vsnip'
+Plug 'hrsh7th/vim-vsnip-integ'
 
 " File manager 
 Plug 'mcchrish/nnn.vim'
@@ -43,6 +43,9 @@ Plug 'norcalli/nvim-colorizer.lua'
 " Rainbow paranthesis
 Plug 'luochen1990/rainbow'
 
+" Indentation lines
+Plug 'lukas-reineke/indent-blankline.nvim', {'branch': 'lua'}
+
 " Loads of language syntax highlighting
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " We recommend updating the parsers on update
 Plug 'romgrk/nvim-treesitter-context'
@@ -52,10 +55,10 @@ Plug 'nvim-treesitter/nvim-treesitter-refactor'
 Plug 'romainl/vim-cool'
 
 " To profile startup
-Plug 'dstein64/vim-startuptime'
+Plug 'dstein64/vim-startuptime', {'on': 'StartupTime'}
 
 " fish syntax (remove if treesitter gets support)
-Plug 'blankname/vim-fish' 
+Plug 'blankname/vim-fish', {'for': 'fish'} 
 
 call plug#end()
 
@@ -166,18 +169,17 @@ nnoremap <Leader>f :bn<CR>
 nnoremap <Leader>g :e#<CR>
 nnoremap <Leader>d :bd<CR>
 
-"
-" Completion/Smart features
-"
 
-let g:UltiSnipsExpandTrigger="<tab>"
-
-" Nvim-compe binds using delimitMate
+" Snippet binds
 inoremap <silent><expr> <C-Space> compe#complete()
 inoremap <silent><expr> <CR>      compe#confirm({ 'keys': "\<Plug>delimitMateCR", 'mode': '' })
 inoremap <silent><expr> <C-e>     compe#close('<C-e>')
-inoremap <silent><expr> <C-f>     compe#scroll({ 'delta': +4 })
-inoremap <silent><expr> <C-d>     compe#scroll({ 'delta': -4 })
+inoremap <silent><expr> <TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+" Blankline plugin settings
+let g:indent_blankline_use_treesitter = v:true
+let g:indent_blankline_show_first_indent_level = v:false
 
 " Source lua init file
 lua require('init')
