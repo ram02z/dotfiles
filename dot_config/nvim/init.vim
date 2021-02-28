@@ -40,15 +40,13 @@ Plug 'Raimondi/delimitMate'
 " Color Highlighting !!!
 Plug 'norcalli/nvim-colorizer.lua'
 
-" Highight other use cases of current word
-Plug 'RRethy/vim-illuminate'
-
 " Rainbow paranthesis
 Plug 'luochen1990/rainbow'
 
 " Loads of language syntax highlighting
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " We recommend updating the parsers on update
 Plug 'romgrk/nvim-treesitter-context'
+Plug 'nvim-treesitter/nvim-treesitter-refactor'
 
 " Removes annoying search highlighting
 Plug 'romainl/vim-cool'
@@ -57,8 +55,8 @@ Plug 'romainl/vim-cool'
 Plug 'dstein64/vim-startuptime'
 
 " fish syntax (remove if treesitter gets support)
-Plug 'blankname/vim-fish'
-    
+Plug 'blankname/vim-fish' 
+
 call plug#end()
 
 let mapleader = "\<Space>"
@@ -79,9 +77,6 @@ inoremap <S-Tab> <C-d>
 set number
 set relativenumber
 
-" Enable mouse interaction (bad habit ik)
-set mouse=a
-
 " Enable hidden buffers (don't need to save when switching files
 set hidden
 
@@ -90,6 +85,11 @@ let g:nnn#layout = { 'window': { 'width': 0.9, 'height': 0.6, 'highlight': 'Debu
 
 " Runs nnn wrapper defined in fish
 " let g:nnn#command = 'n'
+
+let g:nnn#action = {
+      \ '<c-t>': 'tab split',
+      \ '<c-x>': 'split',
+      \ '<c-v>': 'vsplit' }
 
 if executable('rg')
     let g:ackprg = 'rg --vimgrep --smart-case'
@@ -110,15 +110,15 @@ hi Normal guibg=NONE ctermbg=NONE
 let g:airline#extensions#tabline#enabled = 1
 " Just airline theme bcz the full theme didn't look good imo
 let g:airline_theme='dracula'
-" Automatically display all buffers when one tab is open
-let g:airline#extensions#tabline#enabled = 1
 let g:airline_powerline_fonts = 1
+let g:airline#extensions#tabline#enabled = 1
 " Enable rainbow
 let g:rainbow_active = 1
 
 " WSL only settings
 if $WSLENV != ""
     set background=dark
+    set mouse=a
 endif
 
 "
@@ -157,6 +157,14 @@ let g:NERDToggleCheckAllLines = 1"
 
 " removes annoying paren highlighting
 let g:loaded_matchparen=1
+
+" buffer manipulation using leader + key 
+"  \b \f \g \d : go back/forward/last-used
+nnoremap <Leader>l :ls<CR>
+nnoremap <Leader>b :bp<CR>
+nnoremap <Leader>f :bn<CR>
+nnoremap <Leader>g :e#<CR>
+nnoremap <Leader>d :bd<CR>
 
 "
 " Completion/Smart features
