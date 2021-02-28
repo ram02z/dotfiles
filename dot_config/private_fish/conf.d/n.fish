@@ -1,6 +1,6 @@
 # NNN Variables
-set -g NNN_PLUG_UTIL 's:suedit;u:upgrade;x:togglex;f:fzcd;k:pskill'
-set -g NNN_PLUG_STD 'e:_editor /home/omar/.config/nnn/config.zsh &;`:preview-tui'
+set NNN_PLUG_UTIL 's:suedit;u:upgrade;x:togglex;f:fzcd;k:pskill'
+set NNN_PLUG_STD 'a:chezmoi-add;`:preview-tui'
 set -x NNN_PLUG "$NNN_PLUG_UTIL;$NNN_PLUG_STD"
 set -x NNN_COLORS '#b7d49f2e;5555'
 set -x NNN_FCOLORS 'c1e2b72e006033f7c6d6abc4'
