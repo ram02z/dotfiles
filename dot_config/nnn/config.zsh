@@ -1,3 +1,4 @@
+# NOTE: Old config when my main shell was zsh
 # NNN Variables
 NNN_PLUG_UTIL='s:suedit;u:upgrade;x:togglex;f:fzcd;k:pskill'
 NNN_PLUG_STD='e:_editor /home/omar/.config/nnn/config.zsh &;`:preview-tui'
