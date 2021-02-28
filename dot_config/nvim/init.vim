@@ -8,14 +8,15 @@ Plug 'nvim-lua/completion-nvim'
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
 
-" Starts nerdtree on toggle
-Plug 'preservim/nerdtree', { 'on': 'NERDTreeToggle' }
+" File manager 
+" Plug 'preservim/nerdtree', { 'on': 'NERDTreeToggle' }
+Plug 'mcchrish/nnn.vim'
 
 " Comments stuff out
 Plug 'preservim/nerdcommenter'
 
 " Fuzzy finder
-Plug 'ctrlpvim/ctrlp.vim'
+" Plug 'ctrlpvim/ctrlp.vim'
 
 " Start screen for vim
 Plug 'mhinz/vim-startify'
@@ -73,6 +74,24 @@ set shiftwidth=4
 set expandtab
 inoremap <S-Tab> <C-d>
 
+" Relative line number
+set number
+set relativenumber
+
+" Enable mouse interaction (bad habit ik)
+set mouse=a
+
+" TODO: get used to vim windows
+" set hidden
+
+" Change leader key
+set mapleader = "\<Space>"
+
+" Run nnn as a floating window
+let g:nnn#layout = { 'window': { 'width': 0.9, 'height': 0.6, 'highlight': 'Debug' } }
+
+" Runs nnn wrapper defined in fish
+let g:nnn#command = 'n'
 " Remap comment toggle
 if has('win32')
     nmap <C-_> <Plug>NERDCommenterToggle
@@ -106,22 +125,22 @@ let g:loaded_matchparen=1
 let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files -co --exclude-standard']
 
 " Exit Vim if NERDTree is the only window left.
-autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() |
-    \ quit | endif
+" autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() |
+    " \ quit | endif
 
 " sync open file with NERDTree
 " " Check if NERDTree is open or active
-function! IsNERDTreeOpen()        
-    return exists("t:NERDTreeBufName") && (bufwinnr(t:NERDTreeBufName) != -1)
-endfunction
+" function! IsNERDTreeOpen()
+    " return exists("t:NERDTreeBufName") && (bufwinnr(t:NERDTreeBufName) != -1)
+" endfunction
 
 " Toggle NERDTree hotkey
-nnoremap <C-n> :NERDTreeToggle<CR>
+" nnoremap <C-n> :NERDTreeToggle<CR>
 
 " Auto quits nerd tree on file open
-let NERDTreeQuitOnOpen=1
+" let NERDTreeQuitOnOpen=1
 " Shows hidden files 
-let g:NERDTreeShowHidden=1
+" let g:NERDTreeShowHidden=1
 
 " Automatically display all buffers when one tab is open
 let g:airline#extensions#tabline#enabled = 1
