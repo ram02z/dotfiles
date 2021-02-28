@@ -1,0 +1,17 @@
+#!/usr/bin/env sh
+
+# Description: Select files you want to add to chezmoi
+#
+# Dependencies: chezmoi
+#
+#
+
+selection=${NNN_SEL:-${XDG_CONFIG_HOME:-$HOME/.config}/nnn/.selection}
+
+if [ ! -s "$selection" ]; then
+    printf "0 files removed"
+    read -r _
+    exit
+fi
+
+xargs -0 -I {} sh -c 'chezmoi remove "{}"' < "$selection"
