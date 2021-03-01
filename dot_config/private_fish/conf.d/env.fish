@@ -3,7 +3,7 @@
 #
 set -gx fish_greeting ""
 set -gx VISUAL "nvim"
-set -gx TERMINAL "x-terminal-emulator"
+set -gx TERMINAL "alacritty"
 set -gx DISPLAY :0.0
 
 # x11 only
