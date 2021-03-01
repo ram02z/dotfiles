@@ -67,6 +67,9 @@ let mapleader = "\<Space>"
 " Unix line endings
 set fileformats=unix
 
+" Use system clipboard
+set clipboard+=unnamedplus
+
 " True terminal colors
 set termguicolors
 
