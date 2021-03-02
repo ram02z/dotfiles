@@ -1,6 +1,6 @@
 [user]
-	email = omarzeghouanii@gmail.com
-	name = Omar Zeghouani
+	email = {{ .email }}
+	name = {{ .fullName }} 
 [core]
     pager = delta
 [delta]

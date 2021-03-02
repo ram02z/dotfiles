@@ -1,0 +1,16 @@
+{{ $fullName := "Omar Zeghouani" }}
+{{ $personalEmail := "omarzeghouanii@gmail.com" }}
+{{ $isWsl := or (env "WSL_DISTRO_NAME") (env "WSLENV") | not | not }}
+
+[diff]
+    format = "git"
+    pager = "delta"
+
+[merge]
+    command = "nvim"
+    args = "-d"
+
+[data]
+    name = "{{ $fullName }}"
+    email = "{{ $personalEmail }}"
+    is_wsl = {{ $isWsl }}
