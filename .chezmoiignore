@@ -1,0 +1,16 @@
+README.md
+LICENSE
+TODO.md
+
+{{ if .is_wsl }}
+.config/alacritty/
+.config/i3/
+.config/i3-layout-manager/
+.config/i3status-rust/
+.config/mps-youtube/
+.config/picom/
+.config/rofi/
+.config/gtk-3.0
+.config/Xresources
+.config/greenclip.cfg
+{{ -end }}
