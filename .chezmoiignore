@@ -2,7 +2,7 @@ README.md
 LICENSE
 TODO.md
 
-{{ if .is_wsl }}
+{{ if .is_wsl -}}
 .config/alacritty/
 .config/i3/
 .config/i3-layout-manager/
@@ -13,4 +13,4 @@ TODO.md
 .config/gtk-3.0
 .config/Xresources
 .config/greenclip.cfg
-{{ -end }}
+{{- end}}
