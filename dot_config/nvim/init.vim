@@ -67,9 +67,6 @@ let mapleader = "\<Space>"
 " Unix line endings
 set fileformats=unix
 
-" Use system clipboard
-set clipboard+=unnamedplus
-
 " True terminal colors
 set termguicolors
 
@@ -85,6 +82,14 @@ set relativenumber
 
 " Enable hidden buffers (don't need to save when switching files
 set hidden
+
+" Swap two lines
+nnoremap <C-j> :m .+1<CR>==
+nnoremap <C-k> :m .-2<CR>==
+inoremap <C-j> <Esc> :m .+1<CR>==gi
+inoremap <C-k> <Esc> :m .-2<CR>==gi
+vnoremap <C-j> :m '>+1<CR>==gv
+vnoremap <C-k> :m '<-2<CR>==gv
 
 " Run nnn as a floating window
 let g:nnn#layout = { 'window': { 'width': 0.9, 'height': 0.6, 'highlight': 'Debug' } }
@@ -125,6 +130,8 @@ let g:rainbow_active = 1
 if $WSLENV != ""
     set background=dark
     set mouse=a
+else
+    set clipboard+=unnamedplus
 endif
 
 "
