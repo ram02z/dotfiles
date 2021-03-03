@@ -67,6 +67,8 @@ _addPPA() {
 }
 
 {{ if (eq .chezmoi.osRelease.idLike "arch") }}
+# Assumes we are running sway 
+
 # Checks if paru has been installed
 if ! command -v paru >/dev/null 2>&1; then
     sudo pacman -S --needed base-devel
@@ -75,13 +77,18 @@ if ! command -v paru >/dev/null 2>&1; then
     makepkg -si
 fi;
 
-packages=("sway");
+packages=("sway" "fish" "neovim-nightly-bin" "nnn" "starship");
 {{ else if (eq .chezmoi.osRelease.idLike "debian") }}
 {{ if (eq .chezmoi.osRelease.id "ubuntu") }}
+curl -fsSL https://starship.rs/install.sh | bash
 _installMany "software-properties-common" >/dev/null 2>&1
 _addPPA "neovim-ppa/unstable"
 {{ end }}
-packages=("fish" "neovim" "python3-neovim");
+packages=("fish" "neovim" "python3-neovim" "nnn");
 {{ end }}
 _installMany "${packages[@]}";
+
+# Set fish as default shell
+sudo chsh -s "$(command -v fish)" "$USER"
+
 {{ end }}
