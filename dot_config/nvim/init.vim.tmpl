@@ -1,3 +1,4 @@
+{{- if (ne .chezmoi.os "windows") -}}
 set nocompatible
 filetype plugin indent on
 
@@ -9,11 +10,11 @@ Plug 'neovim/nvim-lspconfig'
 " Completion support
 Plug 'hrsh7th/nvim-compe'
 
-" Code snippets 
+" Code snippets
 Plug 'hrsh7th/vim-vsnip'
 Plug 'hrsh7th/vim-vsnip-integ'
 
-" File manager 
+" File manager
 Plug 'mcchrish/nnn.vim'
 
 " Search tool (using ripgrep)
@@ -58,11 +59,9 @@ Plug 'romainl/vim-cool'
 Plug 'dstein64/vim-startuptime', {'on': 'StartupTime'}
 
 " fish syntax (remove if treesitter gets support)
-Plug 'blankname/vim-fish', {'for': 'fish'} 
+Plug 'blankname/vim-fish', {'for': 'fish'}
 
 call plug#end()
-
-let mapleader = "\<Space>"
 
 " Unix line endings
 set fileformats=unix
@@ -83,13 +82,10 @@ set relativenumber
 " Enable hidden buffers (don't need to save when switching files
 set hidden
 
-" Swap two lines
-nnoremap <C-j> :m .+1<CR>==
-nnoremap <C-k> :m .-2<CR>==
-inoremap <C-j> <Esc> :m .+1<CR>==gi
-inoremap <C-k> <Esc> :m .-2<CR>==gi
-vnoremap <C-j> :m '>+1<CR>==gv
-vnoremap <C-k> :m '<-2<CR>==gv
+{{ if not .is_wsl -}}
+" Use system clipboard (not working in wsl)
+set clipboard+=unnamedplus
+{{ end -}}
 
 " Run nnn as a floating window
 let g:nnn#layout = { 'window': { 'width': 0.9, 'height': 0.6, 'highlight': 'Debug' } }
@@ -113,10 +109,15 @@ cnoreabbrev rG Ack
 cnoreabbrev RG Ack
 
 "
-" Color scheme
+" UI 
 "
+{{ if .is_wsl }}
+colorscheme dracula
+set mouse=a
+{{ else }}
 colorscheme dracula
 hi Normal guibg=NONE ctermbg=NONE
+{{ end }}
 " Automatically display all buffers when one tab is open
 let g:airline#extensions#tabline#enabled = 1
 " Just airline theme bcz the full theme didn't look good imo
@@ -126,28 +127,9 @@ let g:airline#extensions#tabline#enabled = 1
 " Enable rainbow
 let g:rainbow_active = 1
 
-" WSL only settings
-if $WSLENV != ""
-    set background=dark
-    set mouse=a
-else
-    set clipboard+=unnamedplus
-endif
-
-"
-" NerdCommenter config
-"
-
-" Remap comment toggle
-if has('win32')
-    nmap <C-_> <Plug>NERDCommenterToggle
-    vmap <C-_> <Plug>NERDCommenterToggle<CR>gv
-    imap <C-_> <esc><Plug>NERDCommenterToggle gi
-else
-    nmap <C-_> <Plug>NERDCommenterToggle
-    vmap <C-_> <Plug>NERDCommenterToggle<CR>gv
-    imap <C-_> <esc><Plug>NERDCommenterToggle gi
-endif
+nmap <C-_> <Plug>NERDCommenterToggle
+vmap <C-_> <Plug>NERDCommenterToggle<CR>gv
+imap <C-_> <esc><Plug>NERDCommenterToggle gi
 
 " Add spaces after comment delimiters by default
 let g:NERDSpaceDelims = 1
@@ -171,7 +153,7 @@ let g:NERDToggleCheckAllLines = 1"
 " removes annoying paren highlighting
 let g:loaded_matchparen=1
 
-" buffer manipulation using leader + key 
+" buffer manipulation using leader + key
 "  \b \f \g \d : go back/forward/last-used
 nnoremap <Leader>l :ls<CR>
 nnoremap <Leader>b :bp<CR>
@@ -193,3 +175,24 @@ let g:indent_blankline_show_first_indent_level = v:false
 
 " Source lua init file
 lua require('init')
+
+{{ else -}}
+nmap <C-/> <Plug>NERDCommenterToggle
+vmap <C-/> <Plug>NERDCommenterToggle<CR>gv
+imap <C-/> <esc><Plug>NERDCommenterToggle gi
+
+{{- end -}}
+
+"
+" Base tweaks (meant for cross platform)
+"
+
+let mapleader = "\<Space>"
+
+" Swap two lines
+nnoremap <C-j> :m .+1<CR>==
+nnoremap <C-k> :m .-2<CR>==
+inoremap <C-j> <Esc> :m .+1<CR>==gi
+inoremap <C-k> <Esc> :m .-2<CR>==gi
+vnoremap <C-j> :m '>+1<CR>==gv
+vnoremap <C-k> :m '<-2<CR>==gv
