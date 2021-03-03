@@ -1,6 +1,7 @@
 README.md
 LICENSE
 TODO.md
+package_setup.sh.tmpl
 
 {{- if .is_wsl }}
 .config/alacritty/**
