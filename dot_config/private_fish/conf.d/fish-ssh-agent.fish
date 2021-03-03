@@ -13,6 +13,6 @@ if test -d ~/.ssh
     end
 
     if ssh-add -l 2>&1 | grep -q 'This agent has no identities'
-        ssh-add ~/.ssh/id_ed25519 2>/dev/null
+        ssh-add ~/.ssh/id_rsa 2>/dev/null
     end
 end
