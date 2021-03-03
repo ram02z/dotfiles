@@ -1,6 +1,6 @@
-{{ $fullName := "Omar Zeghouani" }}
-{{ $personalEmail := "omarzeghouanii@gmail.com" }}
-{{ $isWsl := or (env "WSL_DISTRO_NAME") (env "WSLENV") | not | not }}
+{{- $fullName := "Omar Zeghouani" -}}
+{{- $personalEmail := "omarzeghouanii@gmail.com" -}}
+{{- $isWsl := or (env "WSL_DISTRO_NAME") (env "WSLENV") | not | not -}}
 
 [diff]
     format = "git"
