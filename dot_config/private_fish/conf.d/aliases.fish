@@ -12,6 +12,9 @@ end
 
 # Git Aliases from https://bitsofco.de/git-aliases-for-lazy-developers/
 if type -q git
+    alias gs "git status"
+    alias gd "git diff"
+    alias gaa "git add -A"
     alias gacm "git add . && git commit -m"
     alias gcam "git commit -am"
     alias gca "git commit -a"
