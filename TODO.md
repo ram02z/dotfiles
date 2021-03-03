@@ -1,1 +1,1 @@
-- [ ] Test setup-packages script on arch
+- [x] Test setup-packages script on arch

@@ -51,7 +51,7 @@ _installMany() {
     {{ if (eq .chezmoi.osRelease.idLike "debian") }}
     sudo apt install "${toInstall[@]}";
     {{ else if (eq .chezmoi.osRelease.idLike "arch") }}
-    sudo paru -S "${toInstall[@]}";
+    paru -S "${toInstall[@]}";
     {{ end }}
 }
 
