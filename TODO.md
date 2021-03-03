@@ -1,0 +1,1 @@
+- [ ] Test setup-packages script on arch
