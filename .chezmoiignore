@@ -2,7 +2,7 @@ README.md
 LICENSE
 TODO.md
 
-{{- if .is_wsl }}
+{{ if .is_wsl }}
 .config/alacritty/**
 .config/alacritty/
 .config/i3/**
@@ -25,4 +25,4 @@ TODO.md
 !.local/bin/emplace
 .icons/**
 .icons/
-{{- end }}
+{{ end }}
