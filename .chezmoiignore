@@ -21,7 +21,8 @@ TODO.md
 .config/gtk-3.0/
 .config/Xresources
 .config/greenclip.cfg
-.local/**
-.local/
+.local/bin/**
+!.local/bin/emplace
+.icons/**
 .icons/
 {{- end }}
