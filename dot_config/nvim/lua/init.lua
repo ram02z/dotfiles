@@ -31,7 +31,7 @@ local compe_conf = {
 
     source = {
         path = true,
-        calc = true,
+        -- calc = true,
         vsnip = true,
         nvim_lsp = true,
         nvim_lua = true,

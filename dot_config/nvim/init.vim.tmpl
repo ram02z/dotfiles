@@ -1,6 +1,6 @@
-{{- if (ne .chezmoi.os "windows") -}}
 set nocompatible
 filetype plugin indent on
+{{- if (ne .chezmoi.os "windows") }}
 
 call plug#begin()
 
@@ -29,11 +29,19 @@ Plug 'mhinz/vim-startify'
 " Vim fancy status bar
 Plug 'vim-airline/vim-airline'
 
+" NVIM icons wow
+Plug 'kyazdani42/nvim-web-devicons'
+
+" Vim fancy tab line
+Plug 'romgrk/barbar.nvim'
+
 " Dracula theme
 Plug 'dracula/vim', {'as': 'dracula'}
 
 " Git integration
 Plug 'tpope/vim-fugitive'
+Plug 'airblade/vim-gitgutter'
+Plug 'rhysd/git-messenger.vim'
 
 " Auto pair
 Plug 'Raimondi/delimitMate'
@@ -62,7 +70,24 @@ Plug 'dstein64/vim-startuptime', {'on': 'StartupTime'}
 Plug 'blankname/vim-fish', {'for': 'fish'}
 
 call plug#end()
+{{ end }}
 
+"
+" Cross platform tweaks
+"
+
+" Change leader to space
+let mapleader = "\<Space>"
+
+" Swap two lines
+nnoremap <silent> <C-j> :m .+1<CR>==
+nnoremap <silent> <C-k> :m .-2<CR>==
+inoremap <silent> <C-j> <Esc> :m .+1<CR>==gi
+inoremap <silent> <C-k> <Esc> :m .-2<CR>==gi
+vnoremap <silent> <C-j> :m '>+1<CR>==gv
+vnoremap <silent> <C-k> :m '<-2<CR>==gv
+
+{{ if (ne .chezmoi.os "windows") }}
 " Unix line endings
 set fileformats=unix
 
@@ -73,7 +98,7 @@ set termguicolors
 set tabstop=4
 set shiftwidth=4
 set expandtab
-inoremap <S-Tab> <C-d>
+inoremap <silent> <S-Tab> <C-d>
 
 " Relative line number
 set number
@@ -90,14 +115,13 @@ set clipboard+=unnamedplus
 " Run nnn as a floating window
 let g:nnn#layout = { 'window': { 'width': 0.9, 'height': 0.6, 'highlight': 'Debug' } }
 
-" Runs nnn wrapper defined in fish
-" let g:nnn#command = 'n'
-
+" NNN binds
 let g:nnn#action = {
       \ '<c-t>': 'tab split',
       \ '<c-x>': 'split',
       \ '<c-v>': 'vsplit' }
 
+" Use ripgrep for ack
 if executable('rg')
     let g:ackprg = 'rg --vimgrep --smart-case'
 endif
@@ -118,12 +142,14 @@ set mouse=a
 colorscheme dracula
 hi Normal guibg=NONE ctermbg=NONE
 {{ end }}
-" Automatically display all buffers when one tab is open
-let g:airline#extensions#tabline#enabled = 1
-" Just airline theme bcz the full theme didn't look good imo
+" Airline theming 
 let g:airline_theme='dracula'
 let g:airline_powerline_fonts = 1
-let g:airline#extensions#tabline#enabled = 1
+
+" Tab autohide
+let bufferline = get(g:, 'bufferline', {})
+let bufferline.auto_hide = v:true
+
 " Enable rainbow
 let g:rainbow_active = 1
 
@@ -153,13 +179,33 @@ let g:NERDToggleCheckAllLines = 1"
 " removes annoying paren highlighting
 let g:loaded_matchparen=1
 
+"
 " buffer manipulation using leader + key
-"  \b \f \g \d : go back/forward/last-used
-nnoremap <Leader>l :ls<CR>
-nnoremap <Leader>b :bp<CR>
-nnoremap <Leader>f :bn<CR>
-nnoremap <Leader>g :e#<CR>
-nnoremap <Leader>d :bd<CR>
+"
+
+" Magic buffer picker
+nnoremap <silent> <Leader>m :BufferPick<CR>
+" List buffers
+nnoremap <silent> <Leader>? :ls<CR>
+" Ordering
+nnoremap <silent> <Leader>, :BufferPrevious<CR>
+nnoremap <silent> <Leader>. :BufferNext<CR>
+nnoremap <silent> <Leader>> :BufferMoveNext<CR>
+nnoremap <silent> <Leader>< :BufferMovePrevious<CR>
+" Position
+nnoremap <silent> <Leader>1 :BufferGoto 1<CR>
+nnoremap <silent> <Leader>2 :BufferGoto 2<CR>
+nnoremap <silent> <Leader>3 :BufferGoto 3<CR>
+nnoremap <silent> <Leader>4 :BufferGoto 4<CR>
+nnoremap <silent> <Leader>5 :BufferGoto 5<CR>
+nnoremap <silent> <Leader>6 :BufferGoto 6<CR>
+nnoremap <silent> <Leader>7 :BufferGoto 7<CR>
+nnoremap <silent> <Leader>8 :BufferGoto 8<CR>
+nnoremap <silent> <Leader>9 :BufferGoto 9<CR>
+" Last used buffer
+nnoremap <silent> <Leader>l :e#<CR>
+" Close buffer
+nnoremap <silent> <Leader>c :BufferClose<CR>
 
 
 " Snippet binds
@@ -177,22 +223,8 @@ let g:indent_blankline_show_first_indent_level = v:false
 lua require('init')
 
 {{ else -}}
-nmap <C-/> <Plug>NERDCommenterToggle
-vmap <C-/> <Plug>NERDCommenterToggle<CR>gv
-imap <C-/> <esc><Plug>NERDCommenterToggle gi
+nnoremap <silent> <C-/> <Plug>NERDCommenterToggle
+vnoremap <silent> <C-/> <Plug>NERDCommenterToggle<CR>gv
+inoremap <silent> <C-/> <esc><Plug>NERDCommenterToggle gi
 
 {{- end -}}
-
-"
-" Base tweaks (meant for cross platform)
-"
-
-let mapleader = "\<Space>"
-
-" Swap two lines
-nnoremap <C-j> :m .+1<CR>==
-nnoremap <C-k> :m .-2<CR>==
-inoremap <C-j> <Esc> :m .+1<CR>==gi
-inoremap <C-k> <Esc> :m .-2<CR>==gi
-vnoremap <C-j> :m '>+1<CR>==gv
-vnoremap <C-k> :m '<-2<CR>==gv
