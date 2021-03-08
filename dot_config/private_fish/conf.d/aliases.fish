@@ -1,3 +1,4 @@
+# TODO: make this file a template
 set APT apt
 
 # Ubuntu
