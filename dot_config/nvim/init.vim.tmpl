@@ -103,6 +103,8 @@ inoremap <silent> <S-Tab> <C-d>
 " Relative line number
 set number
 set relativenumber
+" Toggle line numbering (useful when copying mutliple lines)
+nnoremap <silent> <leader>d :set nu! rnu! <CR>
 
 " Enable hidden buffers (don't need to save when switching files
 set hidden
@@ -137,7 +139,7 @@ cnoreabbrev RG Ack
 "
 {{ if .is_wsl }}
 colorscheme dracula
-# Hold shift to disable
+" Hold shift to disable
 set mouse=a
 {{ else }}
 colorscheme dracula
