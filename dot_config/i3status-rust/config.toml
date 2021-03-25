@@ -15,9 +15,6 @@ alternating_tint_fg = "#000000"
 
 [icons]
 name = "awesome"
-[icons.overrides]
-time = " "
-pomodoro = " "
 
 [[block]]
 block = "focused_window"
@@ -50,10 +47,8 @@ on_click = "gnome-system-monitor"
 
 [[block]]
 block = "memory"
-format_mem = "{Mup}%"
-format_swap = "{Mug}GB"
-display_type = "memory"
-icons = true
+format_mem = "{mem_total_used_percents:2}"
+format_swap = "{mem_total_used;M}"
 clickable = true
 interval = 5
 warning_mem = 80
@@ -61,7 +56,7 @@ critical_mem = 95
 
 [[block]]
 block = "weather"
-format = "{temp}°"
+format = "{temp}"
 autolocate = true
 service = { name = "openweathermap", api_key = "8865f0dc0c6c3b4f0fc601fd063f5be1", place = "Harrow", units = "metric" }
 on_click = "gnome-weather"
@@ -92,7 +87,7 @@ json = true
 
 [[block]]
 block = "battery"
-format = "{percentage}%"
+format = "{percentage}"
 on_click = "gnome-power-statistics"
 
 [[block]]
@@ -100,3 +95,4 @@ block = "time"
 interval = 1 
 format = "%R"
 on_click = "gnome-calendar"
+icons_format = " "
