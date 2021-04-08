@@ -35,8 +35,8 @@ on_click = "gnome-system-monitor"
 
 [[block]]
 block = "memory"
-format_mem = "{mem_total_used_percents:2}"
-format_swap = "{mem_total_used;M}"
+format_mem = "{mem_used_percents:2}"
+format_swap = "{mem_used;M}"
 clickable = true
 interval = 5
 warning_mem = 80
