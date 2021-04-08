@@ -1,17 +1,5 @@
 [theme]
-name = "slick"
-[theme.overrides]
-info_bg="#282a36"
-idle_fg="#f8f8f2"
-idle_bg="#282a36"
-info_fg="#bd93f9"
-warning_fg="#f1fa8c"
-warning_bg="#282a36"
-good_fg = "#50fa7b"
-good_bg = "#282a36"
-critical_fg = "#ff5555"
-critical_bg="#282a36"
-alternating_tint_fg = "#000000"
+name = "dracula"
 
 [icons]
 name = "awesome"
@@ -76,6 +64,11 @@ mac = "60:AB:D2:42:04:74"
 format_unavailable = ""
 hide_disconnected = true
 # on_click = "i3-nagbar -m $(based-connect -b 60:AB:D2:42:04:74) -type warning"
+
+[[block]]
+block = "net"
+format = "{signal_strength}" 
+on_click = "gnome-control-center network"
 
 [[block]]
 block = "custom"
