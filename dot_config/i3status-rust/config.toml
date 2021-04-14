@@ -57,6 +57,7 @@ block = "bluetooth"
 label = " Pods"
 mac = "14:60:CB:C7:B4:2A"
 format_unavailable = ""
+hide_disconnected = true
 
 # Bose QC35s
 [[block]]
