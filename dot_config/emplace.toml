@@ -1,6 +1,0 @@
-repo_directory = "/home/omar/.local/share/emplace"
-
-[repo]
-branch = "master"
-file = ".emplace"
-url = "git@github.com:ram02z/packages.git"
