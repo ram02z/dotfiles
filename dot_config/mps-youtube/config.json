@@ -29,7 +29,7 @@
   "AUDIO_FORMAT": "auto",
   "VIDEO_FORMAT": "auto",
   "API_KEY": "AIzaSyD3BumzLeHq4FhL0FVLp0Dpd4tW8srF8_c",
-  "AUTOPLAY": false,
+  "AUTOPLAY": true,
   "SET_TITLE": true,
   "MPRIS": true,
   "SHOW_QRCODE": false,
