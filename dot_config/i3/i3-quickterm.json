@@ -8,7 +8,8 @@
         "shell": "{$SHELL}",
         "mpsyt": "{$SHELL} -c mpsyt",
         "upgrades": "{$SHELL} -c 'aup && read -P \"Press any key to exit\" -n1 -s'",
-        "nmtui": "{$SHELL} -c nmtui"
+        "nmtui": "{$SHELL} -c nmtui",
+        "weather": "{$SHELL} -c 'curl \"wttr.in/?1n\" && read -P \"Press any key to exit\" -n1 -s'"
         
     }
 }
