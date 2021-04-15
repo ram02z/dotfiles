@@ -2,7 +2,7 @@
 name = "dracula"
 
 [icons]
-name = "awesome"
+name = "material-nf"
 
 [[block]]
 block = "focused_window"
@@ -12,10 +12,9 @@ show_marks = "visible"
 [[block]]
 block = "apt"
 interval = 1800
-format_singular="{count} upgrade"
-format = "{count} upgradable"
-format_up_to_date = "0 upgradable"
-critical_updates_regex = "(linux |linux-lts|linux-zen|regolith)"
+format_singular="{count:1} update"
+format = "{count:1} updates"
+critical_updates_regex = "(linux |linux-lts|linux-zen)"
 on_click = "i3-quickterm upgrades" 
 
 [[block]]
