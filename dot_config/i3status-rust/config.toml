@@ -53,7 +53,7 @@ block = "weather"
 format = "{temp}"
 autolocate = true
 service = { name = "openweathermap", api_key = "8865f0dc0c6c3b4f0fc601fd063f5be1", place = "Harrow", units = "metric" }
-on_click = "gnome-weather"
+on_click = "i3-quickterm weather"
 
 # Airpods
 [[block]]
