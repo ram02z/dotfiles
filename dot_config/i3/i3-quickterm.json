@@ -7,6 +7,8 @@
     "shells": {
         "shell": "{$SHELL}",
         "mpsyt": "{$SHELL} -c mpsyt",
-        "upgrades": "{$SHELL} -c 'aup && read -P \"Press any key to exit\" -n1 -s'"
+        "upgrades": "{$SHELL} -c 'aup && read -P \"Press any key to exit\" -n1 -s'",
+        "nmtui": "{$SHELL} -c nmtui"
+        
     }
 }

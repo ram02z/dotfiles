@@ -12,8 +12,8 @@ show_marks = "visible"
 [[block]]
 block = "apt"
 interval = 1800
-format_singular="{count:1} update"
-format = "{count:1} updates"
+format_singular="{count:1}"
+format = "{count:1}"
 critical_updates_regex = "(linux |linux-lts|linux-zen)"
 on_click = "i3-quickterm upgrades" 
 
@@ -44,6 +44,11 @@ warning_mem = 80
 critical_mem = 95
 
 [[block]]
+block = "sound"
+max_vol = 100
+show_volume_when_muted = false
+
+[[block]]
 block = "weather"
 format = "{temp}"
 autolocate = true
@@ -67,10 +72,17 @@ format_unavailable = ""
 hide_disconnected = true
 # on_click = "i3-nagbar -m $(based-connect -b 60:AB:D2:42:04:74) -type warning"
 
+# [[block]]
+# block = "net"
+# format = "{signal_strength}"
+# on_click = "gnome-control-center network"
+
 [[block]]
-block = "net"
-format = "{signal_strength}" 
-on_click = "gnome-control-center network"
+block = "networkmanager"
+on_click = "i3-quickterm nmtui"
+primary_only = true
+device_format = "{icon}{ap}"
+ap_format = "{strength}"
 
 [[block]]
 block = "custom"
