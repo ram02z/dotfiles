@@ -45,7 +45,7 @@ critical_mem = 95
 
 [[block]]
 block = "sound"
-show_volume_when_muted = false
+show_volume_when_muted = true 
 max_vol = 150
 on_click = "pavucontrol"
 
