@@ -2,4 +2,5 @@ configuration {
     theme: "dracula";
     font: "hack 16";
     show-icons: true;
+    matching: "fuzzy";
 }

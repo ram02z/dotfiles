@@ -1,0 +1,62 @@
+#! /usr/bin/env bash
+
+###### Variables ######
+DATEFTM="${DATEFTM:-+%a %d %b %Y}"
+SHORTFMT="${SHORTFMT:-+%d/%m/%Y}"
+FONT="${FONT:-Monospace 10}"
+BAR_POSITION="${BAR_POSITION:-top}"
+WEEK_START="${WEEK_START:-monday}"
+###### Variables ######
+
+
+###### Functions ######
+# get current date and set today header
+get_current_date() {
+  year=$(date '+%Y')
+  month=$(date '+%m')
+  day=$(date '+%d')
+}
+# print the selected month
+print_month() {
+  mnt=$1
+  yr=$2
+  ccal --color=always --$WEEK_START $mnt $yr \
+    | tail -n +3 \
+    | head -n -1
+}
+###### Functions ######
+
+
+###### Main body ######
+get_current_date
+
+# rofi pop up
+current_row=
+IFS=
+month_page=$(print_month $month $year)
+if [[ "${current_row+xxx}" = "xxx" ]]; then
+current_row=$(( $(echo $month_page | grep -n ${day#0} | head -n 1 | cut -d: -f1) - 1 ))
+else
+current_row=$(( $(echo $month_page | wc -l) - 1))
+fi
+
+# check bar position and adjust anchor accordingly
+if [[ $BAR_POSITION = "top" ]]; then
+anchor="northeast"
+else
+anchor="southeast"
+fi
+
+# open rofi and read the selected row
+# (add the following option to rofi command with proper config file, if needed)
+header=$(date "$DATEFTM") 
+selected="$(echo $month_page \
+| rofi \
+    -dmenu \
+    -font $FONT \
+    -m -3 \
+    -lines $(echo $month_page | wc -l) \
+    -theme-str '#window {anchor: '"$anchor"'; location: northeast; width: 14em;}' \
+    -selected-row $current_row \
+    -click-to-exit \
+    -p "$header")"

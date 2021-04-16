@@ -102,5 +102,5 @@ on_click = "gnome-power-statistics"
 block = "time"
 interval = 1 
 format = "%R"
-on_click = "gnome-calendar"
+on_click = "~/.local/bin/rofi-calendar"
 icons_format = " "
