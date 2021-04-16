@@ -80,7 +80,7 @@ hide_disconnected = true
 
 [[block]]
 block = "networkmanager"
-on_click = "i3-quickterm nmtui"
+on_click = "~/.local/bin/networkmanager-dmenu"
 primary_only = true
 device_format = "{icon}{ap}"
 ap_format = "{strength}"
