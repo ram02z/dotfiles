@@ -47,7 +47,7 @@ critical_mem = 95
 block = "sound"
 show_volume_when_muted = false
 max_vol = 150
-on_click = "pulseaudio"
+on_click = "pavucontrol"
 
 [[block]]
 block = "weather"
