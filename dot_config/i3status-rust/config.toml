@@ -96,7 +96,7 @@ json = true
 [[block]]
 block = "battery"
 format = "{percentage}"
-on_click = "gnome-power-statistics"
+on_click = "i3-quickterm battery"
 
 [[block]]
 block = "time"
