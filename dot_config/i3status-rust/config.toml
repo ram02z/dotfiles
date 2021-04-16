@@ -32,7 +32,7 @@ interface_name_exclude = ["firefox"]
 block = "cpu"
 interval = 1
 format = "{utilization}"
-on_click = "gnome-system-monitor"
+on_click = "i3-quickterm btm_simple"
 
 [[block]]
 block = "memory"
