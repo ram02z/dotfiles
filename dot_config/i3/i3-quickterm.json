@@ -8,7 +8,7 @@
         "shell": "{$SHELL}",
         "mpsyt": "{$SHELL} -c mpsyt",
         "btm_simple": "{$SHELL} -c 'btm -b'",
-        "battery": "{$SHELL} -c 'btm --config \"$HOME/.config/bottom/battery.toml\"'",
+        "battery": "{$SHELL} -c 'battop'",
         "upgrades": "{$SHELL} -c 'aup && read -P \"Press any key to exit\" -n1 -s'",
         "weather": "{$SHELL} -c 'curl \"wttr.in/?1n\" && read -P \"Press any key to exit\" -n1 -s'"
         
