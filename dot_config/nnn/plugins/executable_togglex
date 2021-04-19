@@ -9,12 +9,11 @@
 # Shell: POSIX compliant
 # Author: Arun Prakash Jana
 
-selection=${NNN_SEL:-${XDG_CONFIG_HOME:-$HOME/.config}/nnn/.selection}
+if [ -s "$selection" ]; then
+    xargs -0 -I {} sh -c 'if [ -x "{}" ] ; then chmod -x "{}" ; else chmod +x "{}" ; fi' < "$selection"
 
-if [ ! -s "$selection" ]; then
-    printf "0 selected "
-    read -r _
-    exit
+    # Clear selection
+    if [ -p "$NNN_PIPE" ]; then
+        printf "-" > "$NNN_PIPE"
+    fi
 fi
-
-xargs -0 -I {} sh -c 'if [ -x "{}" ] ; then chmod -x "{}" ; else chmod +x "{}" ; fi' < "$selection"
