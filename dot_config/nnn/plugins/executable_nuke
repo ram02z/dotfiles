@@ -82,6 +82,9 @@ ext="${FNAME##*.}"
 if [ -n "$ext" ]; then
     ext="$(printf "%s" "${ext}" | tr '[:upper:]' '[:lower:]')"
 fi
+if which page >/dev/null 2>&1; then
+    PAGER=page
+fi
 
 is_mac() {
     uname | grep -q "Darwin"
@@ -318,8 +321,9 @@ handle_multimedia() {
                 load_dir sxiv "${FPATH}" >/dev/null 2>&1 &
                 exit 0
             elif which viu >/dev/null 2>&1; then
-                viu -n "${FPATH}" | eval "$PAGER"
-                exit 0
+                printf "\033c" && viu -n "${FPATH}" 
+                bash -c 'read -n 1 -s -r -p "Press any key to return"'
+                printf "\033c"
             elif which img2txt >/dev/null 2>&1; then
                 img2txt --gamma=0.6 -- "${FPATH}" | eval "$PAGER"
                 exit 0
