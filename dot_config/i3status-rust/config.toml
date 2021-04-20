@@ -47,7 +47,7 @@ critical_mem = 95
 block = "sound"
 show_volume_when_muted = true 
 max_vol = 150
-on_click = "~/.local/bin/switch-audio-sink"
+on_click = "fish -c '~/.local/bin/switch-audio-sink'"
 
 [[block]]
 block = "weather"
