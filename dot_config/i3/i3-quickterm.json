@@ -1,6 +1,6 @@
 {
     "menu": "rofi -dmenu -p 'quickterm: ' -no-custom -auto-select",
-    "term": "alacritty",
+    "term": "foot",
     "history": "{$HOME}/.cache/i3/i3-quickterm.order",
     "ratio": 0.66,
     "pos": "center",
@@ -9,8 +9,8 @@
         "mpsyt": "{$SHELL} -c mpsyt",
         "btm_simple": "{$SHELL} -c 'btm -b'",
         "battery": "{$SHELL} -c 'battop'",
-        "upgrades": "{$SHELL} -c 'aup && read -P \"Press any key to exit\" -n1 -s'",
-        "weather": "{$SHELL} -c 'curl \"wttr.in/?1n\" && read -P \"Press any key to exit\" -n1 -s'"
+        "upgrades": "{$SHELL} -c 'aup'",
+        "weather": "{$SHELL} -c 'curl \"wttr.in/?1n\"'"
         
     }
 }
