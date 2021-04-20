@@ -15,7 +15,7 @@ interval = 1800
 format_singular="{count:1}"
 format = "{count:1}"
 critical_updates_regex = "(linux |linux-lts|linux-zen)"
-on_click = "i3-quickterm upgrades" 
+on_click = "~/.local/bin/i3-quickterm upgrades" 
 
 [[block]]
 block = "music"
@@ -24,15 +24,15 @@ marquee_interval = 0
 marquee_speed = 0.25
 dynamic_width = true
 separator = " "
-on_click = "i3-quickterm mpsyt"
-on_collapsed_click = "i3-quickterm mpsyt" 
+on_click = "~/.local/bin/i3-quickterm mpsyt"
+on_collapsed_click = "~/.local/bin/i3-quickterm mpsyt" 
 interface_name_exclude = ["firefox"]
 
 [[block]]
 block = "cpu"
 interval = 1
 format = "{utilization}"
-on_click = "i3-quickterm btm_simple"
+on_click = "~/.local/bin/i3-quickterm btm_simple"
 
 [[block]]
 block = "memory"
@@ -54,7 +54,7 @@ block = "weather"
 format = "{temp}"
 autolocate = true
 service = { name = "openweathermap", api_key = "8865f0dc0c6c3b4f0fc601fd063f5be1", place = "Harrow", units = "metric" }
-on_click = "i3-quickterm weather"
+on_click = "~/.local/bin/i3-quickterm weather"
 
 # Airpods
 [[block]]
@@ -96,7 +96,7 @@ json = true
 [[block]]
 block = "battery"
 format = "{percentage}"
-on_click = "i3-quickterm battery"
+on_click = "~/.local/bin/i3-quickterm battery"
 
 [[block]]
 block = "time"
