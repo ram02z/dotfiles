@@ -28,5 +28,9 @@ rofi_highlight = True
 # dmenu_password = <True or False> (Default: False) Use the -P option for dmenu (you need the appropriate dmenu patch!)
 
 [editor]
-terminal = alacritty 
+{{- if .is_wayland  }}
+terminal = footclient
+{{ else }}
+terminal = alacritty
+{{ end -}}
 gui_if_available = True 
