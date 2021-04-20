@@ -10,10 +10,19 @@
 # - pactl
 # - ripgrep
 # - rofi
+if ! [ -x "${AUDIOCLI=$(command -v pactl)}" ]; then
+    printf "AUDIOCLI not found.\n"
+    exit 1
+elif ! [ -x "${GREPTOOL=$(command -v rg)}" ]; then
+    printf "GREPTOOL not found.\n"
+    exit 2
+elif ! [ -x "${DMENU=$(command -v rofi)}" ]; then
+    printf "DMENU not found.\n"
+    exit 3
+fi
 
-AUDIOCLI=$(which pactl)
-GREPTOOL=$(which rg)
-DMENU="$(which rofi) -dmenu -format i"
+# Additional arguments
+DMENU+=" -dmenu -format i"
 
 # Get the current default sink
 SINK_DEFAULT=$($AUDIOCLI info | sed -En 's/Default Sink: (.*)/\1/p')
