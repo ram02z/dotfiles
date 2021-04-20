@@ -79,6 +79,13 @@ call plug#end()
 " Change leader to space
 let mapleader = "\<Space>"
 
+" Silent remap function
+function! Map(lhs, rhs, modes)
+    for m in a:modes
+        execute m.'noremap' '<silent>' a:lhs a:rhs
+    endfor
+endfunction
+
 " Swap two lines
 nnoremap <silent> <C-j> :m .+1<CR>==
 nnoremap <silent> <C-k> :m .-2<CR>==
@@ -178,6 +185,10 @@ let g:NERDToggleCheckAllLines = 1"
 "
 " Misc
 "
+" detect zig files
+au BufRead,BufNewFile *.zig set filetype=zig
+au BufRead,BufNewFile *.zir set filetype=zir
+
 
 " removes annoying paren highlighting
 let g:loaded_matchparen=1
@@ -185,6 +196,9 @@ let g:loaded_matchparen=1
 "
 " buffer manipulation using leader + key
 "
+
+" Leave terminal insert mode using Esc+i 
+tnoremap <silent> <Esc>i <C-\><C-n>
 
 " Magic buffer picker
 nnoremap <silent> <Leader>m :BufferPick<CR>
