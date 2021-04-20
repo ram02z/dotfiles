@@ -1,8 +1,6 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Borrowed from https://gist.github.com/pdonadeo/aaf5f3f164ef23c9db4ac8458137c2c8
-
-set -e
 
 # FEATURES
 # - Shows the selected/default sink as active 
@@ -13,37 +11,42 @@ set -e
 # - ripgrep
 # - rofi
 
+AUDIOCLI=$(which pactl)
+GREPTOOL=$(which rg)
+DMENU="$(which rofi) -dmenu -format i"
 
 # Get the current default sink
-SINK_DEFAULT=$(pactl info | sed -En 's/Default Sink: (.*)/\1/p')
+SINK_DEFAULT=$($AUDIOCLI info | sed -En 's/Default Sink: (.*)/\1/p')
 # Get the audio sink names
 # Cuts 'Name: '
-SINK_NAMES=$(pactl list sinks | rg Name | cut --complement -c 1-7)
+SINK_NAMES=$($AUDIOCLI list sinks | $GREPTOOL Name | cut --complement -c 1-7)
 
 # Get the index of the default sink
-DEFAULT_INDEX=$(printf "%s" "$SINK_NAMES" | rg -n "$SINK_DEFAULT" | sed 's/:.*//')
+DEFAULT_INDEX=$(printf "%s" "$SINK_NAMES" | $GREPTOOL -n "$SINK_DEFAULT" | sed 's/:.*//')
 # Ripgrep column starts from 1
 DEFAULT_INDEX=$((DEFAULT_INDEX - 1))
 
 # Get the audio sink descriptions
 # Cuts 'Description: '
-SINK_DESCRIPTIONS=$(pactl list sinks | rg Description | cut --complement -c 1-13 | sed 's/^ \+//' | sed 's/ \+$//')
+SINK_DESCRIPTIONS=$($AUDIOCLI list sinks | $GREPTOOL Description | cut --complement -c 1-13 | sed 's/^ \+//' | sed 's/ \+$//')
 # Get all the programs that revieve the audio from the sinks
 # Cuts 'Sink Input #'
-SINK_INPUTS=$(pactl list sink-inputs | rg "Sink Input #" | cut --complement -c 1-12)
+SINK_INPUTS=$($AUDIOCLI list sink-inputs | $GREPTOOL "Sink Input #" | cut --complement -c 1-12)
 
 # Have the user pick a sink and return an index
-SINK_INDEX=$(printf "%s" "$SINK_DESCRIPTIONS" | rofi -a $DEFAULT_INDEX -format i -dmenu -p "Select sink:")
+SINK_INDEX=$(printf "%s" "$SINK_DESCRIPTIONS" | $DMENU -a $DEFAULT_INDEX -p "Select sink:")
 
-if [ $SINK_INDEX != $DEFAULT_INDEX ]; then
+EXIT_CODE=$?
+
+if [ $EXIT_CODE == 0 ] && [ $SINK_INDEX != $DEFAULT_INDEX ]; then
     # Set the default sink
-    pactl set-default-sink $SINK_INDEX
+    $AUDIOCLI set-default-sink $SINK_INDEX
 
     # Change all the ouputs for the programs that are using the default sink
     printf "%s\n" "$SINK_INPUTS" | while read -r SINK_INPUT
     do
         # Get the index for the program
         SINK_INPUT_INDEX=$(printf "%s" "$SINK_INPUT")
-        pactl move-sink-input "$SINK_INPUT_INDEX" "$SINK_INDEX"
+        $AUDIOCLI move-sink-input "$SINK_INPUT_INDEX" "$SINK_INDEX"
     done
 fi
