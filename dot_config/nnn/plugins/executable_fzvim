@@ -1,0 +1,49 @@
+#!/usr/bin/env sh
+
+# Description: Runs sk with ripgrep and navigates to line and col on enter
+# 
+# Limitations: file names with ':' will break the script  
+#
+# Shell: POSIX compliant
+
+. "$(dirname "$0")"/.nnn-plugin-helper
+
+if [ "$(cmd_exists nvim)" -eq "0" ]; then
+    editor="nvim"
+elif [ "$(cmd_exists vim)" -eq "0" ]; then
+    editor="vim"
+else
+    exit 1
+fi
+
+if [ "$(cmd_exists sk)" -eq "0" ]; then
+    sel=$(sk --ansi -i -c 'rg --smart-case --vimgrep --color ansi "{}"')
+# elif [ "$(cmd_exists fzf)" -eq "0" ]; then
+    # sel=$(fzf)
+else
+    exit 1
+fi
+
+if [ -n "$sel" ]; then
+    # Extract file name, line number, column number
+    fname=$(printf "%s" $sel | cut -f1 -d':')
+    lineno=$(printf "%s" $sel | cut -f2,2 -d':')
+    colno=$(printf "%s" $sel | cut -f2,3 -d':' | cut -f2 -d':')
+    
+    if [ "$fname" = "." ] || { ! [ -d "$fname" ] && ! [ -f "$fname" ]; }; then
+        printf "%s cannot be opened.\n" $fname
+        exit 0
+    fi
+    
+    case "$(file -biL "$fname")" in
+    *text*)
+        "$editor" "+call cursor($lineno,$colno)" "$fname" ;;
+    *)
+        if uname | grep -q "Darwin"; then
+            "$editor" "+call cursor($lineno,$colno)" "$fname" >/dev/null 2>&1
+        else
+            "$editor" "+call cursor($lineno,$colno)" "$fname" >/dev/null 2>&1
+        fi
+        ;;
+    esac
+fi
