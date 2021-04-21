@@ -24,9 +24,6 @@ nnn_cd () {
 
     if [ -n "$2" ]; then
         context=$2
-    elif [ $CUR_CTX -ne 1 ]; then
-        printf "Choose context 1-4 (blank for current): "
-        read -r context
     fi
 
     printf "%s" "${context:-0}c$dir" > "$NNN_PIPE"
