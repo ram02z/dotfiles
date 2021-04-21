@@ -127,6 +127,12 @@ set clipboard+=unnamedplus
 " Create terminal buffer
 nnoremap <silent> <Leader><CR> :term <CR>
 
+" Nnn command override
+let g:nnn#command = 'n'
+
+" Start nnn in current buffer
+nnoremap <leader>n :NnnPicker%<CR>
+
 " Run nnn as a floating window
 let g:nnn#layout = { 'window': { 'width': 0.9, 'height': 0.6, 'highlight': 'Debug' } }
 
