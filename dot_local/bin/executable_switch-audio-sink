@@ -23,7 +23,7 @@ elif ! [ -x "${DMENU=$(command -v rofi)}" ]; then
 fi
 
 # Additional arguments
-DMENU+=" -dmenu -format i"
+DMENU+=" -dmenu -format i -i"
 
 # Get the default sink index value 
 SINK_VAL=$($AUDIOCLI list-sinks | $GREPTOOL "\* index:" | cut --complement -c 1-11)

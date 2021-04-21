@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 # This script has been adapted from https://github.com/davatorium/rofi-scripts/blob/master/rofi-finder/finder.sh
 
-ITEM_LIMIT=$(xrescat rofi.search.limit 64)
-SHOW_HELP=$(xrescat rofi.search.help "true")
+ITEM_LIMIT=64
+SHOW_HELP="true"
 
 print_help() {
     echo "Returns matches from all local files"

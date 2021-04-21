@@ -3,4 +3,5 @@ configuration {
     font: "hack 16";
     show-icons: true;
     matching: "fuzzy";
+    case-sensitive: false; 
 }
