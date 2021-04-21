@@ -141,11 +141,13 @@ if executable('rg')
     let g:ackprg = 'rg --vimgrep --smart-case'
 endif
 
-" Abbreviations for ack
-cnoreabbrev rg Ack
-cnoreabbrev Rg Ack
-cnoreabbrev rG Ack
-cnoreabbrev RG Ack
+" Ripgrep abbreviations for Ack
+cnoreabbrev <expr> rg (getcmdtype() == ':' && getcmdline() =~ '^rg$')? 'Ack!' : 'rg'
+
+" Ack bind
+nnoremap <Leader>a :Ack!<Space>
+
+" Use :cc$ ,where $ is a number, to navigate quickfix menu
 
 "
 " UI
