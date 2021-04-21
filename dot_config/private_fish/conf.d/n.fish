@@ -8,7 +8,7 @@ set -x NNN_TRASH 2
 set -x NNN_OPTS "dcHr"
 set -x NNN_FIFO '/tmp/nnn.fifo'
 set -x NNN_OPENER "$HOME/.config/nnn/plugins/nuke"
-set -x GUI 1
+set -x GUI 0 
 
 function n --wraps nnn --description 'support nnn quit and change directory'
     # Block nesting of nnn in subshells

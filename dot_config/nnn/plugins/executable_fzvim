@@ -37,12 +37,12 @@ if [ -n "$sel" ]; then
     
     case "$(file -biL "$fname")" in
     *text*)
-        "$editor" "+call cursor($lineno,$colno)" "$fname" ;;
+        "$editor" "$fname" "+call cursor($lineno,$colno)" ;;
     *)
         if uname | grep -q "Darwin"; then
-            "$editor" "+call cursor($lineno,$colno)" "$fname" >/dev/null 2>&1
+            "$editor" "$fname" "+call cursor($lineno,$colno)" >/dev/null 2>&1
         else
-            "$editor" "+call cursor($lineno,$colno)" "$fname" >/dev/null 2>&1
+            "$editor" "$fname" "+call cursor($lineno,$colno)" >/dev/null 2>&1
         fi
         ;;
     esac
