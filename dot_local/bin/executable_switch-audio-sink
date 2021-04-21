@@ -7,10 +7,11 @@
 # - Automatically switches all running input sinks when switching the default sink
 
 # Dependancies
-# - pactl
+# - pacmd
 # - ripgrep
 # - rofi
-if ! [ -x "${AUDIOCLI=$(command -v pactl)}" ]; then
+
+if ! [ -x "${AUDIOCLI=$(command -v pacmd)}" ]; then
     printf "AUDIOCLI not found.\n"
     exit 1
 elif ! [ -x "${GREPTOOL=$(command -v rg)}" ]; then
@@ -24,38 +25,43 @@ fi
 # Additional arguments
 DMENU+=" -dmenu -format i"
 
-# Get the current default sink
-SINK_DEFAULT=$($AUDIOCLI info | sed -En 's/Default Sink: (.*)/\1/p')
-# Get the audio sink names
+# Get the default sink index value 
+SINK_VAL=$($AUDIOCLI list-sinks | $GREPTOOL "\* index:" | cut --complement -c 1-11)
+# Get the audio sink index values 
 # Cuts 'Name: '
-SINK_NAMES=$($AUDIOCLI list sinks | $GREPTOOL Name | cut --complement -c 1-7)
+SINK_VALUES=$($AUDIOCLI list-sinks | $GREPTOOL "index:" | cut --complement -c 1-11)
 
-# Get the index of the default sink
-DEFAULT_INDEX=$(printf "%s" "$SINK_NAMES" | $GREPTOOL -n "$SINK_DEFAULT" | sed 's/:.*//')
-# Ripgrep column starts from 1
-DEFAULT_INDEX=$((DEFAULT_INDEX - 1))
+# Get the position/index of the default sink
+# Cuts before colon delmitter 
+SINK_POS=$(printf "%s" "$SINK_VALUES" | $GREPTOOL -n "$SINK_VAL" | cut -f1 -d':')
+SINK_INDEX=$((SINK_POS - 1))
 
 # Get the audio sink descriptions
-# Cuts 'Description: '
-SINK_DESCRIPTIONS=$($AUDIOCLI list sinks | $GREPTOOL Description | cut --complement -c 1-13 | sed 's/^ \+//' | sed 's/ \+$//')
-# Get all the programs that revieve the audio from the sinks
-# Cuts 'Sink Input #'
-SINK_INPUTS=$($AUDIOCLI list sink-inputs | $GREPTOOL "Sink Input #" | cut --complement -c 1-12)
+# Cuts between quote delimitter
+SINK_DESCRIPTIONS=$($AUDIOCLI list-sinks | $GREPTOOL "device.description" | cut -f2 -d'"')
 
 # Have the user pick a sink and return an index
-SINK_INDEX=$(printf "%s" "$SINK_DESCRIPTIONS" | $DMENU -a $DEFAULT_INDEX -p "Select sink:")
+SEL_SINK_INDEX=$(printf "%s" "$SINK_DESCRIPTIONS" | $DMENU -a $SINK_INDEX -p "Select sink:")
 
-EXIT_CODE=$?
+if [ -z "$SEL_SINK_INDEX" ]; then
+    printf "No selection was made.\n"
+    exit 4
+fi
 
-if [ $EXIT_CODE == 0 ] && [ $SINK_INDEX != $DEFAULT_INDEX ]; then
+# Gets sink value based on index
+SEL_SINK_VAL=$(printf "%s" "$SINK_VALUES" | sed "$((SEL_SINK_INDEX + 1))q;d")
+
+# Ends if no selection is made or selection is same as default
+if [ -n "$SEL_SINK_INDEX" ] && (( $SINK_VAL != $SEL_SINK_VAL )); then
     # Set the default sink
-    $AUDIOCLI set-default-sink $SINK_INDEX
+    $AUDIOCLI set-default-sink $SEL_SINK_VAL
+
+    # pacmd sets a different sink if the selected sink can't be set
+    NEW_SINK_VAL=$($AUDIOCLI list-sinks | $GREPTOOL "\* index:" | cut --complement -c 1-11)  
 
     # Change all the ouputs for the programs that are using the default sink
-    printf "%s\n" "$SINK_INPUTS" | while read -r SINK_INPUT
+    for sink_input in $($AUDIOCLI list-sink-inputs | $GREPTOOL "index:" | cut --complement -c 1-11)
     do
-        # Get the index for the program
-        SINK_INPUT_INDEX=$(printf "%s" "$SINK_INPUT")
-        $AUDIOCLI move-sink-input "$SINK_INPUT_INDEX" "$SINK_INDEX"
+        $AUDIOCLI move-sink-input "$sink_input" "$NEW_SINK_VAL" 
     done
 fi
