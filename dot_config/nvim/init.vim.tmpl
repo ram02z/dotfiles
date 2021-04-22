@@ -1,7 +1,18 @@
 set nocompatible
 filetype plugin indent on
 {{- if (ne .chezmoi.os "windows") }}
+" Install vimplug
+if ! filereadable(expand('~/.config/nvim/autoload/plug.vim'))
+    echo 'Downloading junegunn/vim-plug to manage plugins...'
+    silent !mkdir -p ~/.config/nvim/autoload/
+    silent !curl "https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim" > ~/.config/nvim/autoload/plug.vim
+    augroup plug
+        au!
+        au VimEnter * PlugInstall
+    augroup END
+endif
 
+" Plug manager
 call plug#begin()
 
 " Neovim's (not yet) inbuilt lsp plugin config
@@ -17,8 +28,12 @@ Plug 'hrsh7th/vim-vsnip-integ'
 " File manager
 Plug 'mcchrish/nnn.vim'
 
-" Search tool (using ripgrep)
-Plug 'wincent/ferret'
+" Fuzzy finder
+Plug 'nvim-lua/popup.nvim'
+Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-telescope/telescope.nvim'
+" FZF native
+Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
 
 " Comments stuff out
 Plug 'preservim/nerdcommenter'
@@ -27,7 +42,8 @@ Plug 'preservim/nerdcommenter'
 Plug 'mhinz/vim-startify'
 
 " Vim fancy status bar
-Plug 'vim-airline/vim-airline'
+" Plug 'vim-airline/vim-airline'
+Plug 'hoob3rt/lualine.nvim'
 
 " NVIM icons wow
 Plug 'kyazdani42/nvim-web-devicons'
@@ -43,14 +59,17 @@ Plug 'tpope/vim-fugitive'
 Plug 'airblade/vim-gitgutter'
 Plug 'rhysd/git-messenger.vim'
 
-" Auto pair
-Plug 'Raimondi/delimitMate'
+" Auto pair (enable when more stable)
+" Plug 'steelsojka/pears.nvim'
 
 " Color Highlighting !!!
 Plug 'norcalli/nvim-colorizer.lua'
 
+" Remember last position of file
+Plug 'farmergreg/vim-lastplace'
+
 " Rainbow paranthesis
-Plug 'luochen1990/rainbow'
+" Plug 'luochen1990/rainbow'
 
 " Indentation lines
 Plug 'lukas-reineke/indent-blankline.nvim', {'branch': 'lua'}
@@ -59,6 +78,8 @@ Plug 'lukas-reineke/indent-blankline.nvim', {'branch': 'lua'}
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " We recommend updating the parsers on update
 Plug 'romgrk/nvim-treesitter-context'
 Plug 'nvim-treesitter/nvim-treesitter-refactor'
+" Pair html tags
+Plug 'windwp/nvim-ts-autotag'
 
 " Multiple cursor
 Plug 'mg979/vim-visual-multi', {'branch': 'master'}
@@ -69,8 +90,11 @@ Plug 'romainl/vim-cool'
 " Useful quickfix settings
 Plug 'romainl/vim-qf'
 
-" Handy binds
-Plug 'tpope/vim-unimpaired'
+" Vimrc commands in lua
+Plug 'svermeulen/vimpeccable'
+
+" Handy binds (disabled due to high startup time)
+" Plug 'tpope/vim-unimpaired'
 
 " To profile startup
 Plug 'dstein64/vim-startuptime', {'on': 'StartupTime'}
@@ -114,7 +138,6 @@ set termguicolors
 set tabstop=4
 set shiftwidth=4
 set expandtab
-inoremap <silent> <S-Tab> <C-d>
 
 " Relative line number
 set number
@@ -148,14 +171,6 @@ let g:nnn#action = {
       \ '<c-t>': 'tab split',
       \ '<c-x>': 'split',
       \ '<c-v>': 'vsplit' }
-
-" Abbreviate Ack to rg 
-cnoreabbrev <expr> rg (getcmdtype() == ':' && getcmdline() =~ '^rg$')? 'Ack' : 'rg'
-
-" Ferret binds
-nnoremap <Leader>f :Black<Space>
-
-" Use :cc$ ,where $ is a number, to navigate quickfix menu
 
 "
 " UI
@@ -217,13 +232,11 @@ let g:loaded_matchparen=1
 " buffer manipulation using leader + key
 "
 
-" Leave terminal insert mode using Esc+i 
-tnoremap <silent> <Esc>i <C-\><C-n>
+" Leave terminal insert mode using Esc+q 
+tnoremap <silent> <Esc>q <C-\><C-n>
 
 " Magic buffer picker
 nnoremap <silent> <Leader><Leader> :BufferPick<CR>
-" List buffers
-nnoremap <silent> <Leader>? :ls<CR>
 " Ordering
 nnoremap <silent> <Leader>, :BufferPrevious<CR>
 nnoremap <silent> <Leader>. :BufferNext<CR>
@@ -257,16 +270,39 @@ nmap cq <Plug>(qf_qf_toggle)
 nmap cl <Plug>(qf_loc_toggle)
 nmap cs <Plug>(qf_qf_switch)
 
-" Snippet binds
-inoremap <silent><expr> <C-Space> compe#complete()
-inoremap <silent><expr> <CR>      compe#confirm({ 'keys': "\<Plug>delimitMateCR", 'mode': '' })
-inoremap <silent><expr> <C-e>     compe#close('<C-e>')
-inoremap <silent><expr> <TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+" Snippet binds (moved to init.lua)
+"inoremap <silent><expr> <C-Space> compe#complete()
+" inoremap <silent><expr> <CR>      compe#confirm({ 'keys': "\<Plug>delimitMateCR", 'mode': '' })
+" inoremap <silent><expr> <C-e>     compe#close('<C-e>')
+" inoremap <silent><expr> <TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
+" inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
 
 " Blankline plugin settings
-let g:indent_blankline_use_treesitter = v:true
+let g:indent_blankline_char = "|"
 let g:indent_blankline_show_first_indent_level = v:false
+let g:indent_blankline_show_current_context = v:true
+let g:indent_blankline_filetype_exclude = ["help", "defx", "vimwiki", "man"]
+let g:indent_blankline_buftype_exclude = ["terminal"]
+let g:indent_blankline_space_char_blankline = " "
+let g:indent_blankline_strict_tabs = v:true
+let g:indent_blankline_debug = v:true
+let g:indent_blankline_context_patterns = [ 
+    \"class",
+    \"function",
+    \"method",
+    \"^if",
+    \"while",
+    \"for",
+    \"with",
+    \"case",
+    \"func_literal",
+    \"block",
+    \"try",
+    \"except",
+    \"argument_list",
+    \"object",
+    \"dictionary",
+    \]
 
 " Source lua init file
 lua require('init')

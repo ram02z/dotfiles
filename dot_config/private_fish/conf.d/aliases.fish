@@ -20,7 +20,7 @@ if type -q git
     alias gcam "git commit -am"
     alias gca "git commit -a"
     alias gcaa "git commit -a --amend"
-    alias gi "git init && gac 'Initial commit'"
+    alias gi "git init"
     alias gp "git push"
     alias gl "git pull"
     # Pushing/pulling to origin remote
