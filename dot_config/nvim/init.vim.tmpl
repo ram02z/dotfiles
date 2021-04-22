@@ -66,6 +66,9 @@ Plug 'mg979/vim-visual-multi', {'branch': 'master'}
 " Removes annoying search highlighting
 Plug 'romainl/vim-cool'
 
+" Useful quickfix settings
+Plug 'romainl/vim-qf'
+
 " Handy binds
 Plug 'tpope/vim-unimpaired'
 
@@ -152,9 +155,6 @@ cnoreabbrev <expr> rg (getcmdtype() == ':' && getcmdline() =~ '^rg$')? 'Ack' : '
 " Ferret binds
 nnoremap <Leader>f :Black<Space>
 
-" Don't focus list 
-let g:FerretAutojump=0
-
 " Use :cc$ ,where $ is a number, to navigate quickfix menu
 
 "
@@ -220,9 +220,6 @@ let g:loaded_matchparen=1
 " Leave terminal insert mode using Esc+i 
 tnoremap <silent> <Esc>i <C-\><C-n>
 
-" Close all lcl and ccl
-nmap <Leader>c :windo lcl\|ccl<CR>
-
 " Magic buffer picker
 nnoremap <silent> <Leader><Leader> :BufferPick<CR>
 " List buffers
@@ -247,6 +244,18 @@ nnoremap <silent> <Leader>l :e#<CR>
 " Close buffer
 nnoremap <silent> <Leader>q :BufferClose!<CR>
 
+" Quickfix plugin settings
+let g:qf_shorten_path = 3
+
+nmap ]q <Plug>(qf_qf_previous)
+nmap [q <Plug>(qf_qf_next)
+
+nmap ]l <Plug>(qf_loc_previous)
+nmap [l <Plug>(qf_loc_next)
+
+nmap cq <Plug>(qf_qf_toggle)
+nmap cl <Plug>(qf_loc_toggle)
+nmap cs <Plug>(qf_qf_switch)
 
 " Snippet binds
 inoremap <silent><expr> <C-Space> compe#complete()
