@@ -18,7 +18,7 @@ Plug 'hrsh7th/vim-vsnip-integ'
 Plug 'mcchrish/nnn.vim'
 
 " Search tool (using ripgrep)
-Plug 'mileszs/ack.vim'
+Plug 'wincent/ferret'
 
 " Comments stuff out
 Plug 'preservim/nerdcommenter'
@@ -65,6 +65,9 @@ Plug 'mg979/vim-visual-multi', {'branch': 'master'}
 
 " Removes annoying search highlighting
 Plug 'romainl/vim-cool'
+
+" Handy binds
+Plug 'tpope/vim-unimpaired'
 
 " To profile startup
 Plug 'dstein64/vim-startuptime', {'on': 'StartupTime'}
@@ -131,7 +134,8 @@ nnoremap <silent> <Leader><CR> :term <CR>
 let g:nnn#command = 'n'
 
 " Start nnn in current buffer
-nnoremap <leader>n :NnnPicker%<CR>
+let g:nnn#set_default_mappings = 0
+nnoremap <leader>n :NnnPicker %:p:h<CR>
 
 " Run nnn as a floating window
 let g:nnn#layout = { 'window': { 'width': 0.9, 'height': 0.6, 'highlight': 'Debug' } }
@@ -142,16 +146,14 @@ let g:nnn#action = {
       \ '<c-x>': 'split',
       \ '<c-v>': 'vsplit' }
 
-" Use ripgrep for ack
-if executable('rg')
-    let g:ackprg = 'rg --vimgrep --smart-case'
-endif
+" Abbreviate Ack to rg 
+cnoreabbrev <expr> rg (getcmdtype() == ':' && getcmdline() =~ '^rg$')? 'Ack' : 'rg'
 
-" Ripgrep abbreviations for Ack
-cnoreabbrev <expr> rg (getcmdtype() == ':' && getcmdline() =~ '^rg$')? 'Ack!' : 'rg'
+" Ferret binds
+nnoremap <Leader>f :Black<Space>
 
-" Ack bind
-nnoremap <Leader>a :Ack!<Space>
+" Don't focus list 
+let g:FerretAutojump=0
 
 " Use :cc$ ,where $ is a number, to navigate quickfix menu
 
@@ -217,6 +219,9 @@ let g:loaded_matchparen=1
 
 " Leave terminal insert mode using Esc+i 
 tnoremap <silent> <Esc>i <C-\><C-n>
+
+" Close all lcl and ccl
+nmap <Leader>c :windo lcl\|ccl<CR>
 
 " Magic buffer picker
 nnoremap <silent> <Leader><Leader> :BufferPick<CR>
