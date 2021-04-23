@@ -54,6 +54,10 @@ local function is_buffer_empty()
     return vim.fn.empty(vim.fn.expand('%:t')) == 1
 end
 
+local function no_buffers()
+    return #vim.fn.getbufinfo({buflisted = 1})
+end
+
 local function has_width_gt(cols)
     return vim.fn.winwidth(0) / 2 > cols
 end
@@ -67,7 +71,7 @@ end
 
 local function file_readonly()
     if vim.bo.filetype == 'help' then return '' end
-    if vim.bo.readonly == true then return ' 🔒' end
+    if vim.bo.readonly == true then return '' end
     return ''
 end
 
@@ -75,6 +79,9 @@ local function get_current_file_name()
     local file = vim.fn.expand('%:t')
     if vim.fn.empty(file) == 1 then return '' end
     if string.len(file_readonly()) ~= 0 then return file .. file_readonly() end
+    if vim.bo.modifiable and no_buffers() < 2 then
+        if vim.bo.modified then return file .. ' + ' end
+    end
     return file .. ' '
 end
 
@@ -86,7 +93,7 @@ end
 
 local function mode_label() return mode_map[vim.fn.mode()][1] or 'N/A' end
 
-local function mode_hl() return mode_map[vim.fn.mode()][2] or cl.none end
+local function mode_hl() return mode_map[vim.fn.mode()][2] or colors.middlegrey end
 
 -- local function trailing_whitespace()
 --     local trail = vim.fn.search('\\s$', 'nw')
@@ -173,6 +180,8 @@ gls.left[4] = {
         separator_highlight = {colors.section_bg, colors.bg}
     }
 }
+
+
 -- gls.left[4] = {
 --     WhiteSpace = {
 --         provider = trailing_whitespace,

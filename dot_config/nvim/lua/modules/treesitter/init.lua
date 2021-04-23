@@ -6,6 +6,7 @@ local ts_config = {
     highlight = { 
         enable = true,
         disable = { "html", "xml"},
+        additional_vim_regex_highlighting = true,
     },
     incremental_selection = { enable = true },
     indent = { 
@@ -32,6 +33,8 @@ local ts_config = {
         enable = true,
         filetypes = { "html", "xml" },
     },
+    -- vim-matchup
+    matchup = { enable = true },
 }
 
 tree_sitter.setup(ts_config)

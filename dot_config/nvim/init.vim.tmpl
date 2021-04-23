@@ -95,6 +95,9 @@ Plug 'romainl/vim-qf'
 " Vimrc commands in lua
 Plug 'svermeulen/vimpeccable'
 
+" Extending the % functionality
+Plug 'andymass/vim-matchup'
+
 " Handy binds (disabled due to high startup time)
 " Plug 'tpope/vim-unimpaired'
 
@@ -103,6 +106,10 @@ Plug 'dstein64/vim-startuptime', {'on': 'StartupTime'}
 
 " fish syntax (remove if treesitter gets support)
 Plug 'blankname/vim-fish', {'for': 'fish'}
+
+{{ if .is_wsl -}}
+Plug 'dstein64/nvim-scrollview'
+{{ end -}}
 
 call plug#end()
 {{ end }}
