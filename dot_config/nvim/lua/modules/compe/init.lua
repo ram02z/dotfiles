@@ -5,6 +5,9 @@ vim.o.completeopt="menuone,noselect"
 -- Avoid showing extra message when using completion
 vim.o.shortmess = vim.o.shortmess .. "c"
 
+-- Limit menu items to 5
+vim.o.pumheight = 5
+
 local compe = require('compe')
 
 local compe_conf = {
