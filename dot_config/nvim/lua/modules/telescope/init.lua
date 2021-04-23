@@ -64,4 +64,8 @@ M.key_binds = function()
     require'telescope.builtin'.keymaps()
 end
 
+M.treesitter = function()
+    require'telescope.builtin'.treesitter()
+end
+
 return M
