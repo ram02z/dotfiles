@@ -42,8 +42,8 @@ Plug 'preservim/nerdcommenter'
 Plug 'mhinz/vim-startify'
 
 " Vim fancy status bar
-" Plug 'vim-airline/vim-airline'
-Plug 'hoob3rt/lualine.nvim'
+" Plug 'hoob3rt/lualine.nvim'
+Plug 'glepnir/galaxyline.nvim'
 
 " NVIM icons wow
 Plug 'kyazdani42/nvim-web-devicons'
@@ -55,12 +55,14 @@ Plug 'romgrk/barbar.nvim'
 Plug 'dracula/vim', {'as': 'dracula'}
 
 " Git integration
-Plug 'tpope/vim-fugitive'
-Plug 'airblade/vim-gitgutter'
-Plug 'rhysd/git-messenger.vim'
+" Plug 'tpope/vim-fugitive'
+" Plug 'airblade/vim-gitgutter'
+" Plug 'rhysd/git-messenger.vim'
+Plug 'lewis6991/gitsigns.nvim'
 
 " Auto pair (enable when more stable)
 " Plug 'steelsojka/pears.nvim'
+Plug 'windwp/nvim-autopairs'
 
 " Color Highlighting !!!
 Plug 'norcalli/nvim-colorizer.lua'
@@ -183,16 +185,13 @@ set mouse=a
 colorscheme dracula
 hi Normal guibg=NONE ctermbg=NONE
 {{ end }}
-" Airline theming 
-let g:airline_theme='dracula'
-let g:airline_powerline_fonts = 1
 
 " Tab autohide
 let bufferline = get(g:, 'bufferline', {})
 let bufferline.auto_hide = v:true
 
 " Enable rainbow
-let g:rainbow_active = 1
+" let g:rainbow_active = 1
 
 nmap <C-_> <Plug>NERDCommenterToggle
 vmap <C-_> <Plug>NERDCommenterToggle<CR>gv

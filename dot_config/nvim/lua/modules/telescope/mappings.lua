@@ -23,3 +23,6 @@ vimp.nnoremap({'silent'}, '<Leader>pb', tscope.fz_buffer)
 
 -- List git commits
 vimp.nnoremap({'silent'}, '<Leader>pc', tscope.git_commits)
+
+-- Treesitter picker
+vimp.nnoremap({'silent'}, '<Leader>pt', tscope.treesitter)
