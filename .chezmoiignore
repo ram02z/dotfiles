@@ -19,6 +19,8 @@ TODO.md
 .config/rofi/
 .config/gtk-3.0/**
 .config/gtk-3.0/
+.config/foot/**
+.config/foot/
 .config/networkmanager-dmenu/**
 .config/networkmanager-dmenu/
 .config/Xresources
