@@ -77,7 +77,7 @@ if ! command -v paru >/dev/null 2>&1; then
     makepkg -si
 fi;
 
-packages=("sway" "fish" "neovim-nightly-bin" "nnn" "starship");
+packages=("sway" "fish" "neovim-nightly-bin" "nnn" "starship", "gcc", "make", "git-delta-bin", "rustup");
 {{ else if (eq .chezmoi.osRelease.idLike "debian") }}
 {{ if (eq .chezmoi.osRelease.id "ubuntu") }}
 curl -fsSL https://starship.rs/install.sh | bash
@@ -85,9 +85,10 @@ _installMany "software-properties-common" >/dev/null 2>&1
 _addPPA "neovim-ppa/unstable"
 _addPPA "fish-shell/release-3"
 {{ end }}
-packages=("fish" "neovim" "python3-neovim" "nnn");
+packages=("fish" "neovim" "python3-neovim" "nnn" "gcc" "make");
 {{ end }}
 _installMany "${packages[@]}";
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 
 # Set fish as default shell
 sudo chsh -s "$(command -v fish)" "$USER"
