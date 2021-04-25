@@ -157,10 +157,19 @@ nnoremap <silent> <leader>d :set nu! rnu! <CR>
 " Enable hidden buffers (don't need to save when switching files
 set hidden
 
-" Use system clipboard
-if !has("clipboard") && executable("win32yank.exe")
-    set clipboard+=unnamedplus
+{{ if .is_wsl }}
+" WSL yank support
+let s:clip = '/mnt/c/Windows/System32/clip.exe'
+if executable(s:clip)
+    augroup WSLYank
+        autocmd!
+        autocmd TextYankPost * if v:event.operator ==# 'y' | call system(s:clip, @0) | endif
+    augroup END
 endif
+{{ else }}
+" System clipboard support
+set clipboard+=unnamedplus
+{{ end -}}
 
 " Create terminal buffer
 nnoremap <silent> <Leader><CR> :term <CR>
