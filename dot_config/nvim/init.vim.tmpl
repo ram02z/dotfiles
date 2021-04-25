@@ -158,7 +158,7 @@ nnoremap <silent> <leader>d :set nu! rnu! <CR>
 set hidden
 
 " Use system clipboard
-if !has("clipboard) && executable("win32yank.exe")
+if !has("clipboard") && executable("win32yank.exe")
     set clipboard+=unnamedplus
 endif
 
