@@ -20,8 +20,8 @@ symbol = " "
 read_only = " "
 truncation_length = 4
 
-[docker]
-symbol = " "
+# [docker]
+# symbol = " "
 
 [elixir]
 symbol = " "
@@ -32,8 +32,8 @@ symbol = " "
 [golang]
 symbol = " "
 
-[haskell]
-symbol = " "
+# [haskell]
+# symbol = " "
 
 [java]
 symbol = " "
