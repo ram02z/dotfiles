@@ -157,10 +157,8 @@ nnoremap <silent> <leader>d :set nu! rnu! <CR>
 " Enable hidden buffers (don't need to save when switching files
 set hidden
 
-{{ if not .is_wsl -}}
 " Use system clipboard
 set clipboard+=unnamedplus
-{{ end -}}
 
 " Create terminal buffer
 nnoremap <silent> <Leader><CR> :term <CR>
@@ -244,7 +242,7 @@ let g:loaded_matchparen=1
 " buffer manipulation using leader + key
 "
 
-" Leave terminal insert mode using Esc+q 
+" Leave terminal insert mode using Esc+q
 tnoremap <silent> <Esc>q <C-\><C-n>
 
 " Magic buffer picker
@@ -298,7 +296,7 @@ let g:indent_blankline_buftype_exclude = ["terminal"]
 let g:indent_blankline_space_char_blankline = " "
 let g:indent_blankline_strict_tabs = v:true
 let g:indent_blankline_debug = v:true
-let g:indent_blankline_context_patterns = [ 
+let g:indent_blankline_context_patterns = [
     \"class",
     \"function",
     \"method",
