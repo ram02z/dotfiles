@@ -110,11 +110,14 @@ Plug 'svermeulen/vimpeccable'
 " To profile startup
 Plug 'dstein64/vim-startuptime', {'on': 'StartupTime'}
 
+" Easily deal with 'surroundings'
+Plug 'blackCauldron7/surround.nvim'
+
 " fish syntax (remove if treesitter gets support)
 Plug 'blankname/vim-fish', {'for': 'fish'}
 
 {{ if .is_wsl -}}
-Plug 'dstein64/nvim-scrollview'
+" Plug 'dstein64/nvim-scrollview'
 {{ end -}}
 
 call plug#end()
