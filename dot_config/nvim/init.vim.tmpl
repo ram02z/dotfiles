@@ -120,8 +120,11 @@ Plug 'blankname/vim-fish', {'for': 'fish'}
 " Remove if https://github.com/neovim/neovim/issues/12587 gets closed
 Plug 'antoinemadec/FixCursorHold.nvim'
 
+" Peek at lines when searching
+Plug 'nacro90/numb.nvim'
+
 {{ if .is_wsl -}}
-" Plug 'dstein64/nvim-scrollview'
+Plug 'dstein64/nvim-scrollview'
 {{ end -}}
 
 call plug#end()
@@ -252,6 +255,7 @@ let g:NERDCustomDelimiters = {
 
 " nvim-reload config
 nnoremap <silent> <Leader>r :Reload<CR>
+nnoremap <silent> <Leader>R :Restart<CR>
 
 
 "
@@ -341,6 +345,9 @@ let g:indent_blankline_context_patterns = [
     \"object",
     \"dictionary",
     \]
+
+" abbreviate chezmoi apply
+ab ca !chezmoi apply
 
 " Source lua init file
 lua require('init')

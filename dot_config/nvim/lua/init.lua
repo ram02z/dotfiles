@@ -22,6 +22,8 @@ require'modules.telescope.mappings'
 
 require'modules.surround'
 
+require'modules.numb'
+
 -- LSP config
 -- local nvim_lsp = require('lspconfig')
 -- TODO: Add LSPs
