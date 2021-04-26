@@ -2,6 +2,7 @@
 local tree_sitter = require('nvim-treesitter.configs')
 
 local ts_config = {
+    ensure_installed = 'maintained',
     highlight = { 
         enable = true,
         disable = { "html", "xml"},
