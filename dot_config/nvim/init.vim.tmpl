@@ -41,6 +41,9 @@ Plug 'famiu/nvim-reload', {'on': ['Reload', 'Restart']}
 " Comments stuff out
 Plug 'preservim/nerdcommenter', {'on': '<Plug>NERDCommenterToggle'}
 
+" Lua easymotion-like plugin
+Plug 'phaazon/hop.nvim'
+
 " Start screen for vim
 Plug 'mhinz/vim-startify'
 
@@ -259,8 +262,9 @@ let g:loaded_matchparen=1
 " buffer manipulation using leader + key
 "
 
-" Leave terminal insert mode using Ctrl+[ 
-tnoremap <silent> <C-[> <C-\><C-n>
+" Leave terminal insert mode using Ctrl+] 
+" C-[ is an alternative for <Esc>
+tnoremap <silent> <C-]> <C-\><C-n>
 
 " Magic buffer picker
 nnoremap <silent> <Leader><Leader> :BufferPick<CR>
