@@ -11,6 +11,7 @@ require'modules.hop'
 require'modules.hop.mappings'
 
 require'modules.autopairs'
+-- require'modules.autopairs.mappings'
 
 require'modules.gitsigns'
 
@@ -23,6 +24,9 @@ require'modules.telescope.mappings'
 require'modules.surround'
 
 require'modules.numb'
+
+require'modules.bufferline'
+require'modules.bufferline.mappings'
 
 -- LSP config
 -- local nvim_lsp = require('lspconfig')

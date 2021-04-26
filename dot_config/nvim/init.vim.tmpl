@@ -55,7 +55,8 @@ Plug 'glepnir/galaxyline.nvim'
 Plug 'kyazdani42/nvim-web-devicons'
 
 " Vim fancy tab line
-Plug 'romgrk/barbar.nvim'
+" Plug 'romgrk/barbar.nvim'
+Plug 'akinsho/nvim-bufferline.lua'
 
 " Dracula theme
 Plug 'dracula/vim', {'as': 'dracula'}
@@ -129,6 +130,7 @@ Plug 'dstein64/nvim-scrollview'
 
 call plug#end()
 {{ end }}
+
 
 "
 " Cross platform tweaks
@@ -218,10 +220,6 @@ colorscheme dracula
 hi Normal guibg=NONE ctermbg=NONE
 {{ end }}
 
-" Tab autohide
-let bufferline = get(g:, 'bufferline', {})
-let bufferline.auto_hide = v:true
-
 " Enable rainbow
 " let g:rainbow_active = 1
 
@@ -269,35 +267,10 @@ au BufRead,BufNewFile *.zir set filetype=zir
 " removes annoying paren highlighting
 let g:loaded_matchparen=1
 
-"
-" buffer manipulation using leader + key
-"
-
 " Leave terminal insert mode using Ctrl+] 
 " C-[ is an alternative for <Esc>
 tnoremap <silent> <C-]> <C-\><C-n>
 
-" Magic buffer picker
-nnoremap <silent> <Leader><Leader> :BufferPick<CR>
-" Ordering
-nnoremap <silent> <Leader>, :BufferPrevious<CR>
-nnoremap <silent> <Leader>. :BufferNext<CR>
-nnoremap <silent> <Leader>> :BufferMoveNext<CR>
-nnoremap <silent> <Leader>< :BufferMovePrevious<CR>
-" Position
-nnoremap <silent> <Leader>1 :BufferGoto 1<CR>
-nnoremap <silent> <Leader>2 :BufferGoto 2<CR>
-nnoremap <silent> <Leader>3 :BufferGoto 3<CR>
-nnoremap <silent> <Leader>4 :BufferGoto 4<CR>
-nnoremap <silent> <Leader>5 :BufferGoto 5<CR>
-nnoremap <silent> <Leader>6 :BufferGoto 6<CR>
-nnoremap <silent> <Leader>7 :BufferGoto 7<CR>
-nnoremap <silent> <Leader>8 :BufferGoto 8<CR>
-nnoremap <silent> <Leader>9 :BufferGoto 9<CR>
-" Last used buffer
-nnoremap <silent> <Leader>l :e#<CR>
-" Close buffer
-nnoremap <silent> <Leader>q :BufferClose!<CR>
 
 " Quickfix plugin settings
 let g:qf_shorten_path = 3
