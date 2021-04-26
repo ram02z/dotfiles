@@ -21,7 +21,7 @@ require'modules.statusline'
 require'modules.telescope'
 require'modules.telescope.mappings'
 
-require'modules.surround'
+-- require'modules.surround'
 
 require'modules.numb'
 
