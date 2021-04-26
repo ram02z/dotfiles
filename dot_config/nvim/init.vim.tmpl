@@ -116,6 +116,10 @@ Plug 'blackCauldron7/surround.nvim'
 " fish syntax (remove if treesitter gets support)
 Plug 'blankname/vim-fish', {'for': 'fish'}
 
+" Fix CursorHold Performance
+" Remove if https://github.com/neovim/neovim/issues/12587 gets closed
+Plug 'antoinemadec/FixCursorHold.nvim'
+
 {{ if .is_wsl -}}
 " Plug 'dstein64/nvim-scrollview'
 {{ end -}}
