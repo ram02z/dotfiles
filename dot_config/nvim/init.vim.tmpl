@@ -35,6 +35,9 @@ Plug 'nvim-telescope/telescope.nvim'
 " FZF native
 Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
 
+" Reloads neovim
+Plug 'famiu/nvim-reload'
+
 " Comments stuff out
 Plug 'preservim/nerdcommenter', {'on': '<Plug>NERDCommenterToggle'}
 
@@ -237,6 +240,9 @@ let g:matchup_matchparen_enabled = 0
 
 let g:matchup_delim_noskips = 2
 
+" nvim-reload config
+nnoremap <silent> <Leader>r :Reload<CR>
+
 
 "
 " Misc
@@ -253,8 +259,8 @@ let g:loaded_matchparen=1
 " buffer manipulation using leader + key
 "
 
-" Leave terminal insert mode using Esc+q
-tnoremap <silent> <Esc>q <C-\><C-n>
+" Leave terminal insert mode using Ctrl+[ 
+tnoremap <silent> <C-[> <C-\><C-n>
 
 " Magic buffer picker
 nnoremap <silent> <Leader><Leader> :BufferPick<CR>
