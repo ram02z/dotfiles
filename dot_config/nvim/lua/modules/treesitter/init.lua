@@ -30,10 +30,6 @@ local ts_config = {
             },
         },
     },
-    -- nvim-ts-context-commentstring
-    context_commentstring = {
-        enable = true,
-    },
 }
 
 tree_sitter.setup(ts_config)

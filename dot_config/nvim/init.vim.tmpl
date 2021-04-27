@@ -15,6 +15,10 @@ endif
 " Plug manager
 call plug#begin()
 
+" Fix CursorHold Performance
+" Remove if https://github.com/neovim/neovim/issues/12587 gets closed
+Plug 'antoinemadec/FixCursorHold.nvim'
+
 " Neovim's (not yet) inbuilt lsp plugin config
 Plug 'neovim/nvim-lspconfig'
 
@@ -41,8 +45,6 @@ Plug 'famiu/nvim-reload', {'on': ['Reload', 'Restart']}
 " Comments stuff out
 " Plug 'preservim/nerdcommenter', {'on': '<Plug>NERDCommenterToggle'}
 Plug 'b3nj5m1n/kommentary' 
-" Big brain comments (changes commentstring)
-Plug 'JoosepAlviste/nvim-ts-context-commentstring'
 
 " Lua easymotion-like plugin
 Plug 'phaazon/hop.nvim'
@@ -118,9 +120,6 @@ Plug 'machakann/vim-sandwich'
 " fish syntax (remove if treesitter gets support)
 Plug 'blankname/vim-fish', {'for': 'fish'}
 
-" Fix CursorHold Performance
-" Remove if https://github.com/neovim/neovim/issues/12587 gets closed
-Plug 'antoinemadec/FixCursorHold.nvim'
 
 " Peek at lines when searching
 Plug 'nacro90/numb.nvim'
