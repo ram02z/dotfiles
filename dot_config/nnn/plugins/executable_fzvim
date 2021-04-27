@@ -16,10 +16,15 @@ else
     exit 1
 fi
 
-if [ "$(cmd_exists sk)" -eq "0" ]; then
-    sel=$(sk --ansi -i -c 'rg --smart-case --vimgrep --color ansi "{}"')
-# elif [ "$(cmd_exists fzf)" -eq "0" ]; then
-    # sel=$(fzf)
+RG_PREFIX="rg --vimgrep --smart-case --color=ansi "
+if [ "$(cmd_exists fzf)" -eq "0" ]; then
+    sel=$(
+    FZF_DEFAULT_COMMAND="$RG_PREFIX ''" \
+      fzf --bind "change:reload:$RG_PREFIX {q}" \
+          --ansi --phony --query "" 
+    ) 
+elif [ "$(cmd_exists sk)" -eq "0" ]; then
+    sel=$(sk --ansi -i -c "$RG_PREFIX \"{}\"")
 else
     exit 1
 fi
@@ -29,7 +34,7 @@ if [ -n "$sel" ]; then
     fname=$(printf "%s" $sel | cut -f1 -d':')
     lineno=$(printf "%s" $sel | cut -f2,2 -d':')
     colno=$(printf "%s" $sel | cut -f2,3 -d':' | cut -f2 -d':')
-    
+
     if [ "$fname" = "." ] || { ! [ -d "$fname" ] && ! [ -f "$fname" ]; }; then
         printf "%s cannot be opened.\n" $fname
         exit 0
