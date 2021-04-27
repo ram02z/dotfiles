@@ -1,5 +1,6 @@
 -- pears.nvim config
-local pears = require('pears')
+-- TODO: try out rules 
+local pears = require'pears'
 
 pears.setup(function(conf)
     conf.preset "tag_matching"

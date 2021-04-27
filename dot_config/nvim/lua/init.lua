@@ -28,6 +28,9 @@ require'modules.numb'
 require'modules.bufferline'
 require'modules.bufferline.mappings'
 
+require'modules.kommentary'
+require'modules.kommentary.mappings'
+
 -- LSP config
 -- local nvim_lsp = require('lspconfig')
 -- TODO: Add LSPs

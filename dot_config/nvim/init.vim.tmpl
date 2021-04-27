@@ -39,7 +39,10 @@ Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
 Plug 'famiu/nvim-reload', {'on': ['Reload', 'Restart']}
 
 " Comments stuff out
-Plug 'preservim/nerdcommenter', {'on': '<Plug>NERDCommenterToggle'}
+" Plug 'preservim/nerdcommenter', {'on': '<Plug>NERDCommenterToggle'}
+Plug 'b3nj5m1n/kommentary' 
+" Big brain comments (changes commentstring)
+Plug 'JoosepAlviste/nvim-ts-context-commentstring'
 
 " Lua easymotion-like plugin
 Plug 'phaazon/hop.nvim'
@@ -140,6 +143,9 @@ call plug#end()
 " Change leader to space
 let mapleader = "\<Space>"
 
+" disables continuing comments
+autocmd BufNewFile,BufRead * setlocal formatoptions-=cro
+
 " Silent remap function
 function! Map(lhs, rhs, modes)
     for m in a:modes
@@ -224,28 +230,28 @@ hi Normal guibg=NONE ctermbg=NONE
 " Enable rainbow
 " let g:rainbow_active = 1
 
-nmap <C-_> <Plug>NERDCommenterToggle
-vmap <C-_> <Plug>NERDCommenterToggle<CR>gv
-imap <C-_> <esc><Plug>NERDCommenterToggle gi
-
-" Add spaces after comment delimiters by default
-let g:NERDSpaceDelims = 1
-
-" Use compact syntax for prettified multi-line comments
-let g:NERDCompactSexyComs = 1
-
-" Allow commenting and inverting empty lines (useful when commenting a region)
-let g:NERDCommentEmptyLines = 1
-
-" Enable trimming of trailing whitespace when uncommenting
-let g:NERDTrimTrailingWhitespace = 1
-
-" Enable NERDCommenterToggle to check all selected lines is commented or not
-let g:NERDToggleCheckAllLines = 1"
-
-let g:NERDCustomDelimiters = {
-    \ 'dosini': { 'left': '#' }
-\ }
+" nmap <C-_> <Plug>NERDCommenterToggle
+" vmap <C-_> <Plug>NERDCommenterToggle<CR>gv
+" imap <C-_> <esc><Plug>NERDCommenterToggle gi
+" 
+" " Add spaces after comment delimiters by default
+" let g:NERDSpaceDelims = 1
+" 
+" " Use compact syntax for prettified multi-line comments
+" let g:NERDCompactSexyComs = 1
+" 
+" " Allow commenting and inverting empty lines (useful when commenting a region)
+" let g:NERDCommentEmptyLines = 1
+" 
+" " Enable trimming of trailing whitespace when uncommenting
+" let g:NERDTrimTrailingWhitespace = 1
+" 
+" " Enable NERDCommenterToggle to check all selected lines is commented or not
+" let g:NERDToggleCheckAllLines = 1"
+" 
+" let g:NERDCustomDelimiters = {
+"     \ 'dosini': { 'left': '#' }
+" \ }
 
 " vim-matchup config
 " let g:matchup_matchparen_enabled = 0
@@ -260,10 +266,10 @@ nnoremap <silent> <Leader>R :Restart<CR>
 "
 " Misc
 "
+
 " detect zig files
 au BufRead,BufNewFile *.zig set filetype=zig
 au BufRead,BufNewFile *.zir set filetype=zir
-
 
 " removes annoying paren highlighting
 let g:loaded_matchparen=1
