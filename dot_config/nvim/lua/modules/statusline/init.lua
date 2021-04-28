@@ -154,7 +154,11 @@ gls.left[2] = {
        provider = function()
             local modehl = mode_hl()
             highlight('GalaxyViMode', colors.bg, modehl, 'bold')
-            highlight('GalaxyViModeInv', modehl, colors.section_bg, 'bold')
+            if buffer_not_empty() then
+                highlight('GalaxyViModeInv', modehl, colors.section_bg, 'bold')
+            else
+                highlight('GalaxyViModeInv', modehl, colors.bg, 'bold')
+            end
             return string.format('  %s ', mode_label())
         end,
         separator = '',
