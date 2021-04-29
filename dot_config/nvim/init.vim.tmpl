@@ -218,13 +218,12 @@ let g:nnn#action = {
 " UI
 "
 {{ if .is_wsl }}
-colorscheme dracula
 " Hold shift to disable
 set mouse=a
 {{ else }}
-colorscheme dracula
-hi Normal guibg=NONE ctermbg=NONE
+" let g:dracula_colorterm = 0
 {{ end }}
+colorscheme dracula
 
 " Enable rainbow
 " let g:rainbow_active = 1
