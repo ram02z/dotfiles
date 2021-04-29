@@ -9,7 +9,6 @@
         "mpsyt": "{$SHELL} -c mpsyt",
         "btm_simple": "{$SHELL} -c 'btm -b'",
         "battery": "{$SHELL} -c 'battop'",
-        "upgrades": "{$SHELL} -c 'APT_CONFIG=/tmp/i3rs-apt/apt.conf apt list --upgradable'",
         "weather": "{$SHELL} -c 'curl \"wttr.in/?1n\"'"
         
     }

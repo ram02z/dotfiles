@@ -15,7 +15,7 @@ interval = 1800
 format_singular="{count:1}"
 format = "{count:1}"
 critical_updates_regex = "(linux |linux-lts|linux-zen)"
-on_click = "~/.local/bin/i3-quickterm upgrades" 
+on_click = "APT_CONFIG=/tmp/i3rs-apt/apt.conf apt list --upgradable | tail -n +2 | rofi -dmenu" 
 
 [[block]]
 block = "music"
