@@ -120,12 +120,14 @@ Plug 'machakann/vim-sandwich'
 " fish syntax (remove if treesitter gets support)
 Plug 'blankname/vim-fish', {'for': 'fish'}
 
-
 " Peek at lines when searching
 Plug 'nacro90/numb.nvim'
 
 " Automatically create non-existant directory
 Plug 'pbrisbin/vim-mkdir'
+
+" Extended Increment and decrement
+Plug 'monaqa/dial.nvim'
 
 {{ if .is_wsl -}}
 Plug 'dstein64/nvim-scrollview'
@@ -256,10 +258,15 @@ colorscheme dracula
 
 " let g:matchup_delim_noskips = 2
 
-" nvim-reload config
+" nvim-reload mappings 
 nnoremap <silent> <Leader>r :Reload<CR>
 nnoremap <silent> <Leader>R :Restart<CR>
 
+" dial.nvim mappings
+nmap <C-a> <Plug>(dial-increment)
+nmap <C-x> <Plug>(dial-decrement)
+vmap <C-a> <Plug>(dial-increment)
+vmap <C-x> <Plug>(dial-decrement)
 
 "
 " Misc
