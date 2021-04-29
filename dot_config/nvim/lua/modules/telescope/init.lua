@@ -68,4 +68,8 @@ M.treesitter = function()
     require'telescope.builtin'.treesitter()
 end
 
+M.registers = function()
+    require'telescope.builtin'.registers()
+end
+
 return M
