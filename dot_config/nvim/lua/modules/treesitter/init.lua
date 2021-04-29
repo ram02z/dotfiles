@@ -11,6 +11,7 @@ local ts_config = {
         enable = true,
         disable = { "html", "xml"},
         additional_vim_regex_highlighting = true,
+        language_tree = true,
     },
     incremental_selection = { enable = true },
     indent = { 
