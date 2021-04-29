@@ -32,5 +32,4 @@ require'modules.kommentary'
 require'modules.kommentary.mappings'
 
 -- LSP config
--- local nvim_lsp = require('lspconfig')
--- TODO: Add LSPs
+require'modules.lspinstall'
