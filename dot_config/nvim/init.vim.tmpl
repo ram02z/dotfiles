@@ -65,7 +65,7 @@ Plug 'kyazdani42/nvim-web-devicons'
 Plug 'akinsho/nvim-bufferline.lua'
 
 " Dracula theme
-Plug 'dracula/vim', {'as': 'dracula'}
+Plug 'ram02z/vim', {'as': 'dracula', 'branch': 'nvim_plugs'}
 
 " Git integration
 " Plug 'tpope/vim-fugitive'
@@ -148,6 +148,9 @@ let mapleader = "\<Space>"
 
 " disables continuing comments
 autocmd BufNewFile,BufRead * setlocal formatoptions-=cro
+
+" Disables folding
+set nofoldenable
 
 " Silent remap function
 function! Map(lhs, rhs, modes)

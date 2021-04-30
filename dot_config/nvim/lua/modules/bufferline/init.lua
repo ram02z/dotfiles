@@ -9,6 +9,15 @@ bline_conf = {
         diagnostics = "nvim_lsp",
     },
     highlights = {
+        fill = {
+            guibg = '#21232B'
+        },
+        background = {
+            guibg = '#21232B'
+        },
+        separator = {
+            guibg = '#21232B'
+        },
         modified = {
             guifg = '#44475A'
         },
