@@ -6,7 +6,7 @@ local tree_sitter = require('nvim-treesitter.configs')
 -- vim.api.nvim_set_option("foldexpr", "nvim_treesitter#foldexpr()")
 
 local ts_config = {
-    ensure_installed = 'maintained',
+    -- ensure_installed = 'maintained',
     highlight = { 
         enable = true,
         disable = { "html", "xml"},

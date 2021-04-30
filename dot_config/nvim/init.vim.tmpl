@@ -50,8 +50,9 @@ Plug 'b3nj5m1n/kommentary'
 " Lua easymotion-like plugin
 Plug 'phaazon/hop.nvim'
 
-" Start screen for vim
-Plug 'mhinz/vim-startify'
+" Start screen for vim (vim-startify is slow)
+" Plug 'mhinz/vim-startify'
+Plug 'glepnir/dashboard-nvim'
 
 " Vim fancy status bar
 " Plug 'hoob3rt/lualine.nvim'
@@ -65,7 +66,7 @@ Plug 'kyazdani42/nvim-web-devicons'
 Plug 'akinsho/nvim-bufferline.lua'
 
 " Dracula theme
-Plug 'dracula/vim', {'as': 'dracula'}
+Plug 'ram02z/vim', {'as': 'dracula', 'branch': 'nvim_plugs'}
 
 " Git integration
 " Plug 'tpope/vim-fugitive'
@@ -148,6 +149,9 @@ let mapleader = "\<Space>"
 
 " disables continuing comments
 autocmd BufNewFile,BufRead * setlocal formatoptions-=cro
+
+" Disables folding
+set nofoldenable
 
 " Silent remap function
 function! Map(lhs, rhs, modes)
@@ -270,6 +274,67 @@ nmap <C-x> <Plug>(dial-decrement)
 vmap <C-a> <Plug>(dial-increment)
 vmap <C-x> <Plug>(dial-decrement)
 
+" dashboard-nvim settings
+let g:dashboard_custom_header = [
+\ '',
+\ '',
+\ '',
+\ '',
+\ '',
+\ '[ dashboard ]',
+\ '',
+\ '',
+\ '',
+\ '',
+\ '',
+\ ]
+
+let g:dashboard_custom_footer = [
+\ '',
+\ 'neovim loaded '. len(keys(g:plugs)) .' plugins ',
+\ '',
+\ ]
+
+let g:dashboard_default_executive = "telescope"
+
+nmap <Leader>ss :<C-u>SessionSave<CR>
+nmap <Leader>sl :<C-u>SessionLoad<CR>
+nnoremap <silent> <Leader>cn :DashboardNewFile<CR>
+
+function! NnnDotFiles()
+    if isdirectory($HOME.'/.local/share/chezmoi/dot_config/')
+        NnnPicker $HOME/.local/share/chezmoi/dot_config
+    else
+        NnnPicker $HOME/.config
+    endif
+endfunction
+
+let g:dashboard_custom_section={
+	\ 'last_session' :{
+        \ 'description': ['    Open last session                       SPC sl   '],
+        \ 'command':function('dashboard#handler#last_session')},
+    \ 'find_history' :{
+        \ 'description': ['   ﭯ Recently opened files                   SPC fh   '],
+        \ 'command':function('dashboard#handler#find_history')},
+    \ 'find_file'    :{
+        \ 'description': ['    Find File                               SPC ff   '],
+        \ 'command':function('dashboard#handler#find_file')},
+    \ 'find_word'    :{
+        \ 'description': ['    Find word                               SPC fw   '],
+        \ 'command': function('dashboard#handler#find_word')},
+    \ 'book_marks'   :{
+        \ 'description': ['    Jump to book marks                      SPC fm   '],
+        \ 'command':function('dashboard#handler#book_marks')},
+    \ 'update_plugins'   :{
+        \ 'description': ['  🡅 Update plugins                                   '],
+        \ 'command': 'PlugUpdate'},
+    \ 'dot_files'   :{
+        \ 'description': ['   • Dot files                               SPC gd   '],
+        \ 'command': function('NnnDotFiles')},
+    \ }
+
+nnoremap <silent> <Leader>gd :call NnnDotFiles()<CR> 
+
 "
 " Misc
 "
@@ -310,7 +375,7 @@ nmap cs <Plug>(qf_qf_switch)
 let g:indent_blankline_char = "|"
 let g:indent_blankline_show_first_indent_level = v:false
 let g:indent_blankline_show_current_context = v:true
-let g:indent_blankline_filetype_exclude = ["help", "vimwiki", "man"]
+let g:indent_blankline_filetype_exclude = ["help", "vimwiki", "man", "dashboard"]
 let g:indent_blankline_buftype_exclude = ["terminal"]
 let g:indent_blankline_space_char_blankline = " "
 let g:indent_blankline_strict_tabs = v:true

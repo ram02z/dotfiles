@@ -72,4 +72,12 @@ M.registers = function()
     require'telescope.builtin'.registers()
 end
 
+M.old_files = function()
+    require'telescope.builtin'.oldfiles()
+end
+
+M.bmarks = function()
+    require'telescope.builtin'.marks()
+end
+
 return M

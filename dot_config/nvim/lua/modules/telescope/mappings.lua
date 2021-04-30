@@ -30,3 +30,9 @@ vimp.nnoremap(opts, '<Leader>pt', tscope.treesitter)
 
 -- Register picker
 vimp.nnoremap(opts, '<Leader>pr', tscope.registers)
+
+-- File history picker
+vimp.nnoremap(opts, '<Leader>ph', tscope.old_files)
+
+-- Mark picker
+vimp.nnoremap(opts, '<Leader>pm', tscope.bmarks)
