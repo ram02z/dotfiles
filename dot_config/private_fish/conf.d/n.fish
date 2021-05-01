@@ -5,10 +5,14 @@ set -x NNN_PLUG "$NNN_PLUG_UTIL;$NNN_PLUG_STD"
 # set -x NNN_COLORS 'b7d49f2e;5555'
 set -x NNN_FCOLORS 'c1e2b72e006033f7c6d6abc4'
 set -x NNN_TRASH 2
-set -x NNN_OPTS "dcHr"
+if type -q mvg
+    set -x NNN_OPTS "dcHr"
+else
+    set -x NNN_OPTS "dcH"
+end
 set -x NNN_FIFO '/tmp/nnn.fifo'
 set -x NNN_OPENER "$HOME/.config/nnn/plugins/nuke"
-set -x GUI 0 
+set -x GUI 0
 
 function n --wraps nnn --description 'support nnn quit and change directory'
     # Block nesting of nnn in subshells
