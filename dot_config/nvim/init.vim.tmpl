@@ -95,6 +95,7 @@ Plug 'lukas-reineke/indent-blankline.nvim', {'branch': 'lua'}
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " We recommend updating the parsers on update
 Plug 'romgrk/nvim-treesitter-context'
 Plug 'nvim-treesitter/nvim-treesitter-refactor'
+Plug 'nvim-treesitter/playground'
 
 " Multiple cursor
 Plug 'mg979/vim-visual-multi', {'branch': 'master'}
@@ -121,6 +122,7 @@ Plug 'dstein64/vim-startuptime', {'on': 'StartupTime'}
 Plug 'machakann/vim-sandwich'
 
 " fish syntax (remove if treesitter gets support)
+" TODO: https://github.com/nvim-treesitter/nvim-treesitter/pull/1269
 Plug 'blankname/vim-fish', {'for': 'fish'}
 
 " Peek at lines when searching
@@ -340,8 +342,11 @@ nnoremap <silent> <Leader>gd :call NnnDotFiles()<CR>
 "
 
 " detect zig files
-au BufRead,BufNewFile *.zig set filetype=zig
-au BufRead,BufNewFile *.zir set filetype=zir
+au! BufRead,BufNewFile *.zig set filetype=zig
+au! BufRead,BufNewFile *.zir set filetype=zir
+
+" detect fish files
+" au! BufRead,BufNewFile *.fish set filetype=fish
 
 " removes annoying paren highlighting
 let g:loaded_matchparen=1
