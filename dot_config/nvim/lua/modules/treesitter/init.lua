@@ -40,3 +40,12 @@ local ts_config = {
 }
 
 tree_sitter.setup(ts_config)
+
+local parser_config = require "nvim-treesitter.parsers".get_parser_configs()
+parser_config.fish = {
+  install_info = {
+    url = "https://github.com/krnik/tree-sitter-fish.git", -- local path or git repo
+    files = {"src/parser.c", "src/scanner.c"}
+  },
+  filetype = "fish", -- if filetype does not agrees with parser name
+}

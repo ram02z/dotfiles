@@ -27,19 +27,16 @@ local colors = {
 
 
 local mode_map = {
-    ['n'] = {'NORMAL', colors.purple},
-    ['i'] = {'INSERT', colors.green},
-    ['R'] = {'REPLACE', colors.red1},
-    ['v'] = {'VISUAL', colors.yellow},
-    ['V'] = {'V-LINE', colors.yellow},
-    ['c'] = {'COMMAND', colors.orange},
-    ['s'] = {'SELECT', colors.red2},
-    ['S'] = {'S-LINE', colors.red2},
-    ['t'] = {'TERMINAL', colors.gray1},
-    [''] = {'V-BLOCK', colors.blue},
-    [''] = {'S-BLOCK', colors.red2},
-    ['Rv'] = {'VIRTUAL'},
-    ['rm'] = {'--MORE'},
+    [110]  = {'NORMAL', colors.purple},
+    [105]  = {'INSERT', colors.green},
+    [82]   = {'REPLACE', colors.red1},
+    [118]  = {'VISUAL', colors.yellow},
+    [86]   = {'V-LINE', colors.yellow},
+    [99]   = {'COMMAND', colors.orange},
+    [115]  = {'SELECT', colors.red2},
+    [83]   = {'S-LINE', colors.red2},
+    [116]  = {'TERMINAL', colors.gray1},
+    [22]   = {'V-BLOCK', colors.blue},
 }
 
 -- Local helper functions
@@ -91,9 +88,21 @@ local function highlight(group, fg, bg, gui)
     vim.cmd(cmd)
 end
 
-local function mode_label() return mode_map[vim.fn.mode()][1] or 'N/A' end
+local function mode_label()
+    local mode = mode_map[vim.fn.mode():byte()]
+    if mode ~= nil then
+        return mode[1]
+    end
+    return "N/A" 
+end
 
-local function mode_hl() return mode_map[vim.fn.mode()][2] or colors.middlegrey end
+local function mode_hl()
+    local mode = mode_map[vim.fn.mode():byte()]
+    if mode ~= nil then 
+        return mode[2]
+    end
+    return colors.darkgrey 
+end
 
 -- local function trailing_whitespace()
 --     local trail = vim.fn.search('\\s$', 'nw')

@@ -123,7 +123,7 @@ Plug 'machakann/vim-sandwich'
 
 " fish syntax (remove if treesitter gets support)
 " TODO: https://github.com/nvim-treesitter/nvim-treesitter/pull/1269
-Plug 'blankname/vim-fish', {'for': 'fish'}
+" Plug 'blankname/vim-fish', {'for': 'fish'}
 
 " Peek at lines when searching
 Plug 'nacro90/numb.nvim'
@@ -346,7 +346,7 @@ au! BufRead,BufNewFile *.zig set filetype=zig
 au! BufRead,BufNewFile *.zir set filetype=zir
 
 " detect fish files
-" au! BufRead,BufNewFile *.fish set filetype=fish
+au! BufRead,BufNewFile *.fish set filetype=fish
 
 " removes annoying paren highlighting
 let g:loaded_matchparen=1
