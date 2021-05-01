@@ -1,10 +1,14 @@
 -- Nvim-telescope config
 local telescope = require('telescope')
+local previewers = require('telescope.previewers')
 
 tscope_config = {
     defaults = {
         layout_strategy = 'flex',
         scroll_strategy = 'cycle',
+        file_previewer = previewers.vim_buffer_cat.new,
+        grep_previewer = previewers.vim_buffer_vimgrep.new,
+        qflist_previewer = previewers.vim_buffer_qflist.new,
         layout_defaults = {
           horizontal = {
             mirror = false,
