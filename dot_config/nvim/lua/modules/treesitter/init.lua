@@ -34,6 +34,15 @@ local ts_config = {
     -- nvim-ts-rainbow
     rainbow = {
         enable = true,
+        colors = {
+            "#1795FD",
+            "#43A64B",
+            "#911EA3",
+            "#FE6C7F",
+            "#C7005C",
+            "#DEA727",
+            "#85E7FF",
+        },
         -- extended_mode = true,
         max_file_lines = 1000,
     },
