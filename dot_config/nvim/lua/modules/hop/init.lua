@@ -2,7 +2,7 @@
 local hop = require'hop'
 
 local hop_conf = {
-    keys = 'asdghklwertyuipzxcvbnmfj',
+  keys = 'asdghklwertyuipzxcvbnmfj',
 }
 
 hop.setup(hop_conf)

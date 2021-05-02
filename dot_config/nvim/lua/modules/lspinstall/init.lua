@@ -1,11 +1,11 @@
 local lspinstall = require'lspinstall'
 
 local setup_servers = function()
-    lspinstall.setup()
-    local servers = lspinstall.installed_servers()
-    for _, server in pairs(servers) do
-      lspinstall[server].setup{}
-    end
+  lspinstall.setup()
+  local servers = lspinstall.installed_servers()
+  for _, server in pairs(servers) do
+    lspinstall[server].setup{}
+  end
 end
 
 setup_servers()

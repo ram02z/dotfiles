@@ -1,5 +1,5 @@
 set nocompatible
-filetype plugin on
+filetype plugin indent on
 {{- if (ne .chezmoi.os "windows") }}
 " Install vimplug
 if ! filereadable(expand('~/.config/nvim/autoload/plug.vim'))
@@ -177,10 +177,21 @@ set fileformats=unix
 " True terminal colors
 set termguicolors
 
-" Tabbing the right way
+set expandtab                         " default to spaces instead of tabs
+set shiftwidth=2                      " softtabs are 2 spaces for expandtab
+set autoindent
+
+" Alignment tabs are two spaces, and never tabs. Negative means use same as
+" shiftwidth (so the 2 actually doesn't matter).
+" Works with IndentTab.
+set softtabstop=-2
+
+" real tabs render 4 wide. Applicable to HTML, PHP, anything using real tabs.
+" I.e., not applicable to JS.
 set tabstop=4
-set shiftwidth=4
-set expandtab
+
+" use multiple of shiftwidth when shifting indent levels.
+set noshiftround
 
 " Relative line number
 set number
@@ -188,8 +199,12 @@ set relativenumber
 " Toggle line numbering (useful when copying mutliple lines)
 nnoremap <silent> <leader>d :set nu! rnu! <CR>
 
-" Enable hidden buffers (don't need to save when switching files
+" Enable hidden buffers (don't need to save when switching files)
 set hidden
+
+" Search settings
+set hlsearch
+set smartcase
 
 {{ if .is_wsl }}
 " WSL yank support
