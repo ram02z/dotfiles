@@ -14,6 +14,9 @@ vim.api.nvim_exec([[
   augroup end
 ]], false)
 
+-- Source plugins
+require'plugins'
+
 --[[ require'modules.colorizer'
 
 require'modules.devicons'
