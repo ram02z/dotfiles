@@ -1,0 +1,53 @@
+# My editorconfig
+# mostly borrowed from RehanSaeed/EditorConfig
+
+root = true
+
+# All files
+[*]
+charset=utf-8
+indent_size=4
+indent_style=space
+insert_final_newline=true
+trim_trailing_whitespace=true
+
+# Batch Files
+[*.{cmd,bat}]
+end_of_line = crlf
+
+# Shell Files
+[*.{sh,zsh,fish}]
+end_of_line = lf
+
+# Makefiles
+[Makefile]
+indent_style = tab
+
+# JSON Files
+[*.{json,json5,webmanifest}]
+indent_size = 2
+
+# YAML/TOML Files
+[*.{yml,yaml,toml}]
+indent_size = 2
+
+# XML Configuration Files
+[*.{xml,config,props,targets,nuspec,resx,ruleset,vsixmanifest,vsct}]
+indent_size = 2
+
+# Markdown Files
+[*.md]
+trim_trailing_whitespace = false
+
+# Web Files
+[*.{htm,html,js,jsm,ts,tsx,css,sass,scss,less,svg,vue}]
+indent_size = 2
+
+# Vim/Lua
+[*.{vim,lua}]
+indent_style=space
+indent_size=2
+
+# Golang
+[*.go]
+indent_style=tab
