@@ -31,5 +31,6 @@ require'modules.bufferline.mappings'
 require'modules.kommentary'
 require'modules.kommentary.mappings'
 
--- LSP config
 require'modules.lspinstall'
+
+require'modules.neoscroll'
