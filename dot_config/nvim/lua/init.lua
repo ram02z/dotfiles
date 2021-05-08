@@ -15,13 +15,10 @@ require'modules.autopairs'
 
 require'modules.gitsigns'
 
--- require'modules.lualine'
 require'modules.statusline'
 
 require'modules.telescope'
 require'modules.telescope.mappings'
-
--- require'modules.surround'
 
 require'modules.numb'
 
