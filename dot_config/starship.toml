@@ -11,7 +11,7 @@ disabled = true
 symbol = " "
 
 [conda]
-symbol = " "
+disabled = true
 
 [dart]
 symbol = " "
@@ -20,8 +20,8 @@ symbol = " "
 read_only = " "
 truncation_length = 4
 
-# [docker]
-# symbol = " "
+[docker_context]
+symbol = " "
 
 [elixir]
 symbol = " "
@@ -32,9 +32,6 @@ symbol = " "
 [golang]
 symbol = " "
 
-# [haskell]
-# symbol = " "
-
 [java]
 symbol = " "
 
@@ -42,7 +39,7 @@ symbol = " "
 symbol = " "
 
 [lua]
-symbol = " "
+symbol = " "
 
 [memory_usage]
 symbol = " "
