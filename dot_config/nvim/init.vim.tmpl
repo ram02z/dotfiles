@@ -227,6 +227,8 @@ nnoremap <leader>n :NnnPicker %:p:h<CR>
 " Run nnn as a floating window
 let g:nnn#layout = { 'window': { 'width': 0.9, 'height': 0.6, 'highlight': 'Debug' } }
 
+let g:nnn#replace_netrw = 1
+
 " NNN binds
 let g:nnn#action = {
       \ '<c-t>': 'tab split',
@@ -389,10 +391,10 @@ nmap cs <Plug>(qf_qf_switch)
 let g:indent_blankline_char = "|"
 let g:indent_blankline_show_first_indent_level = v:false
 let g:indent_blankline_show_current_context = v:true
-let g:indent_blankline_filetype_exclude = ["help", "vimwiki", "man", "dashboard"]
+let g:indent_blankline_filetype_exclude = ['help', 'vimwiki', 'man', 'dashboard', 'TelescopePrompt']
 
-let g:indent_blankline_buftype_exclude = ["terminal"]
-let g:indent_blankline_space_char_blankline = " "
+let g:indent_blankline_buftype_exclude = ['terminal']
+let g:indent_blankline_space_char_blankline = ' '
 let g:indent_blankline_strict_tabs = v:true
 let g:indent_blankline_debug = v:true
 let g:indent_blankline_context_patterns = [
@@ -417,7 +419,7 @@ let g:indent_blankline_context_patterns = [
 
 let g:Illuminate_delay = 500
 
-let g:Illuminate_ftblacklist = ['dashboard', 'vimwiki', 'man', 'help']
+let g:Illuminate_ftblacklist = ['TelescopePrompt','dashboard', 'vimwiki', 'man', 'help', 'nnn']
 
 " abbreviate chezmoi apply
 ab ca !chezmoi apply
