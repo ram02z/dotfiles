@@ -6,16 +6,16 @@ local tree_sitter = require('nvim-treesitter.configs')
 -- vim.api.nvim_set_option("foldexpr", "nvim_treesitter#foldexpr()")
 local ts_config = {
   -- ensure_installed = 'maintained',
-  highlight = { 
+  highlight = {
       enable = true,
       disable = { "html", "xml"},
       additional_vim_regex_highlighting = true,
       language_tree = true,
   },
   incremental_selection = { enable = true },
-  -- Disabled until merged (vim-sleuth used meanwhile)
+  -- Disabled until merge
   -- https://github.com/nvim-treesitter/nvim-treesitter/pull/1127
-  indent = { 
+  indent = {
       enable = false,
       disable = { "html", "xml" },
   },
@@ -50,12 +50,3 @@ local ts_config = {
 }
 
 tree_sitter.setup(ts_config)
-
-local parser_config = require "nvim-treesitter.parsers".get_parser_configs()
-parser_config.fish = {
-  install_info = {
-    url = "https://github.com/krnik/tree-sitter-fish.git", -- local path or git repo
-    files = {"src/parser.c", "src/scanner.c"}
-  },
-  filetype = "fish", -- if filetype does not agrees with parser name
-}
