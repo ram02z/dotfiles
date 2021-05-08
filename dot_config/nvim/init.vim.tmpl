@@ -65,6 +65,7 @@ Plug 'nvim-lua/lsp-status.nvim'
 
 " NVIM icons wow
 Plug 'kyazdani42/nvim-web-devicons'
+Plug 'yamatsum/nvim-nonicons'
 
 " Vim fancy tab line
 " Plug 'romgrk/barbar.nvim'
@@ -324,19 +325,19 @@ endfunction
 
 let g:dashboard_custom_section={
 	\ 'last_session' :{
-        \ 'description': ['    Open last session                       SPC sl   '],
+        \ 'description': ['   Open last session                       SPC sl   '],
         \ 'command':function('dashboard#handler#last_session')},
     \ 'find_history' :{
         \ 'description': ['   ﭯ Recently opened files                   SPC ph   '],
         \ 'command':function('dashboard#handler#find_history')},
     \ 'find_file'    :{
-        \ 'description': ['    Find File                               SPC pg   '],
+        \ 'description': ['    Find File                               SPC pg   '],
         \ 'command':function('dashboard#handler#find_file')},
     \ 'find_word'    :{
-        \ 'description': ['    Find word                               SPC pl   '],
+        \ 'description': ['    Find word                               SPC pl   '],
         \ 'command': function('dashboard#handler#find_word')},
     \ 'book_marks'   :{
-        \ 'description': ['    Jump to book marks                      SPC pm   '],
+        \ 'description': ['    Jump to book marks                      SPC pm   '],
         \ 'command':function('dashboard#handler#book_marks')},
     \ 'update_plugins'   :{
         \ 'description': ['   ↑ Update plugins                                   '],
