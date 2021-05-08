@@ -8,6 +8,9 @@ vim.o.shortmess = vim.o.shortmess .. "c"
 -- Limit menu items to 5
 vim.o.pumheight = 5
 
+-- Increase menu width
+vim.o.pumwidth = 25
+
 local compe = require('compe')
 
 local compe_conf = {
