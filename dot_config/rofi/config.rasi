@@ -1,7 +1,7 @@
 configuration {
     theme: "dracula";
-    font: "hack 16";
+    font: "hack 15";
     show-icons: true;
     matching: "fuzzy";
-    case-sensitive: false; 
+    case-sensitive: false;
 }
