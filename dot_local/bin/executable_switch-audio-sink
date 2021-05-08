@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -e
+
 # Borrowed from https://gist.github.com/pdonadeo/aaf5f3f164ef23c9db4ac8458137c2c8
 
 # FEATURES

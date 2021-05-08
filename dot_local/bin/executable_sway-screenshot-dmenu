@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Attribution:
+# - yschaeff
+
 # Dependencies:
 # - grim
 # - rofi
@@ -38,7 +41,7 @@ if [ ! -z $REC_PID ]; then
     exit 0
 fi
 
-CHOICE=`$MENU -l 10 -p "How to make a screenshot?" << EOF
+CHOICE=`$MENU -l 10 -p "Screenshot" << EOF
  Screenshot Fullscreen
  Screenshot Focused
  Screenshot Selected Window
