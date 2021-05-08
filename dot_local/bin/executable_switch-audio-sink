@@ -3,7 +3,7 @@
 # Borrowed from https://gist.github.com/pdonadeo/aaf5f3f164ef23c9db4ac8458137c2c8
 
 # FEATURES
-# - Shows the selected/default sink as active 
+# - Shows the selected/default sink as active
 # - Automatically switches all running input sinks when switching the default sink
 
 # Dependancies
@@ -25,14 +25,14 @@ fi
 # Additional arguments
 DMENU+=" -dmenu -format i -i"
 
-# Get the default sink index value 
+# Get the default sink index value
 SINK_VAL=$($AUDIOCLI list-sinks | $GREPTOOL "\* index:" | cut --complement -c 1-11)
-# Get the audio sink index values 
+# Get the audio sink index values
 # Cuts 'Name: '
 SINK_VALUES=$($AUDIOCLI list-sinks | $GREPTOOL "index:" | cut --complement -c 1-11)
 
 # Get the position/index of the default sink
-# Cuts before colon delmitter 
+# Cuts before colon delmitter
 SINK_POS=$(printf "%s" "$SINK_VALUES" | $GREPTOOL -n "$SINK_VAL" | cut -f1 -d':')
 SINK_INDEX=$((SINK_POS - 1))
 
@@ -57,11 +57,11 @@ if [ -n "$SEL_SINK_INDEX" ] && (( $SINK_VAL != $SEL_SINK_VAL )); then
     $AUDIOCLI set-default-sink $SEL_SINK_VAL
 
     # pacmd sets a different sink if the selected sink can't be set
-    NEW_SINK_VAL=$($AUDIOCLI list-sinks | $GREPTOOL "\* index:" | cut --complement -c 1-11)  
+    NEW_SINK_VAL=$($AUDIOCLI list-sinks | $GREPTOOL "\* index:" | cut --complement -c 1-11)
 
     # Change all the ouputs for the programs that are using the default sink
     for sink_input in $($AUDIOCLI list-sink-inputs | $GREPTOOL "index:" | cut --complement -c 1-11)
     do
-        $AUDIOCLI move-sink-input "$sink_input" "$NEW_SINK_VAL" 
+        $AUDIOCLI move-sink-input "$sink_input" "$NEW_SINK_VAL"
     done
 fi
