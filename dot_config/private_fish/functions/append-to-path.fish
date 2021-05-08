@@ -1,3 +1,4 @@
+# Superseded by fish_add_path
 function append-to-path -d 'Adds the given directory to the end of path'
     set -l dir ''
     if test (count $argv) -ne 0
