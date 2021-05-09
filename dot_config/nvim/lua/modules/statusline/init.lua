@@ -93,15 +93,15 @@ local function mode_label()
   if mode ~= nil then
     return mode[1]
   end
-  return "N/A" 
+  return "N/A"
 end
 
 local function mode_hl()
   local mode = mode_map[vim.fn.mode():byte()]
-  if mode ~= nil then 
+  if mode ~= nil then
     return mode[2]
   end
-  return colors.darkgrey 
+  return colors.darkgrey
 end
 
 -- local function trailing_whitespace()
@@ -142,20 +142,20 @@ local GetGitRoot = function()
   return get_basename(git_root)
 end
 
-local LspStatus = function()
+--[[ local LspStatus = function()
   -- if #vim.lsp.buf_get_clients() > 0 then
   if #vim.lsp.get_active_clients() > 0 then
     return require'lsp-status'.status()
   end
   return ''
-end
+end ]]
 
-local LspCheckDiagnostics = function()
+--[[ local LspCheckDiagnostics = function()
   if #vim.lsp.get_active_clients() > 0 and diagnostic.get_diagnostic_error() ==
     nil and diagnostic.get_diagnostic_warn() == nil and
     diagnostic.get_diagnostic_info() == nil then return ' ' end
     return ''
-  end
+end ]]
 
 -- Left side
 gls.left[2] = {
@@ -171,7 +171,7 @@ gls.left[2] = {
       return string.format('  %s ', mode_label())
     end,
     separator = '',
-    separator_highlight = 'GalaxyViModeInv', 
+    separator_highlight = 'GalaxyViModeInv',
   }
 }
 gls.left[3] = {
@@ -195,12 +195,12 @@ gls.left[4] = {
 }
 
 
-gls.left[8] = {
+--[[ gls.left[8] = {
   DiagnosticsCheck = {
     provider = {LspCheckDiagnostics},
     highlight = {colors.middlegrey, colors.bg}
   }
-}
+} ]]
 gls.left[9] = {
   DiagnosticError = {
     provider = {'DiagnosticError'},
@@ -240,14 +240,14 @@ gls.left[13] = {
     separator_highlight = {colors.section_bg, colors.bg}
   }
 }
-gls.left[14] = {
+--[[ gls.left[14] = {
   LspStatus = {
     provider = {LspStatus},
     -- separator = ' ',
     -- separator_highlight = {colors.bg, colors.bg},
     highlight = {colors.middlegrey, colors.bg}
   }
-}
+} ]]
 
 gls.right[1] = {
   DiffAdd = {
