@@ -1,8 +1,8 @@
 #!/usr/bin/env sh
 
 # Description: Runs sk with ripgrep and navigates to line and col on enter
-# 
-# Limitations: file names with ':' will break the script  
+#
+# Limitations: file names with ':' will break the script
 #
 # Shell: POSIX compliant
 
@@ -16,13 +16,13 @@ else
     exit 1
 fi
 
-RG_PREFIX="rg --vimgrep --smart-case --color=ansi "
+RG_PREFIX="rg --vimgrep --smart-case --hidden -g \"!.git/\" --color=ansi "
 if [ "$(cmd_exists fzf)" -eq "0" ]; then
     sel=$(
     FZF_DEFAULT_COMMAND="$RG_PREFIX ''" \
       fzf --bind "change:reload:$RG_PREFIX {q}" \
-          --ansi --phony --query "" 
-    ) 
+          --ansi --phony --query ""
+    )
 elif [ "$(cmd_exists sk)" -eq "0" ]; then
     sel=$(sk --ansi -i -c "$RG_PREFIX \"{}\"")
 else
@@ -39,7 +39,7 @@ if [ -n "$sel" ]; then
         printf "%s cannot be opened.\n" $fname
         exit 0
     fi
-    
+
     case "$(file -biL "$fname")" in
     *text*)
         "$editor" "$fname" "+call cursor($lineno,$colno)" ;;
