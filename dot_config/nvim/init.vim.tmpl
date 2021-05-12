@@ -389,8 +389,12 @@ nmap cs <Plug>(qf_qf_switch)
 " inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
 
 " Blankline plugin settings
+set colorcolumn=99999 " fix weird cursor artifacts #59
 let g:indent_blankline_show_first_indent_level = v:false
 let g:indent_blankline_show_current_context = v:true
+highlight IndentColor guifg=#5E6068
+let g:indent_blankline_context_highlight = 'IndentColor'
+
 let g:indent_blankline_filetype_exclude = ['help', 'vimwiki', 'man', 'dashboard', 'TelescopePrompt']
 
 let g:indent_blankline_buftype_exclude = ['terminal']
@@ -413,13 +417,14 @@ let g:indent_blankline_context_patterns = [
     \"argument_list",
     \"object",
     \"dictionary",
+    \"table",
     \]
 
 " vim-illuminate config
 
 let g:Illuminate_delay = 500
 
-let g:Illuminate_ftblacklist = ['TelescopePrompt','dashboard', 'vimwiki', 'man', 'help', 'nnn']
+let g:Illuminate_ftblacklist = ['TelescopePrompt', 'dashboard', 'vimwiki', 'man', 'help', 'nnn']
 
 " abbreviate chezmoi apply
 ab ca !chezmoi apply
