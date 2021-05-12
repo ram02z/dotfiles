@@ -53,6 +53,9 @@ Plug 'b3nj5m1n/kommentary'
 " Lua easymotion-like plugin
 Plug 'phaazon/hop.nvim'
 
+" Highlight vim's builtin 'f' command
+Plug 'unblevable/quick-scope'
+
 " Start screen for vim (vim-startify is slow)
 " Plug 'mhinz/vim-startify'
 Plug 'glepnir/dashboard-nvim'
@@ -425,6 +428,11 @@ let g:indent_blankline_context_patterns = [
 let g:Illuminate_delay = 500
 
 let g:Illuminate_ftblacklist = ['TelescopePrompt', 'dashboard', 'vimwiki', 'man', 'help', 'nnn']
+
+" quickscope config
+let g:qs_highlight_on_keys = ['f', 'F', 't', 'T']
+highlight QuickScopePrimary guifg='#ff007c' gui=underline ctermfg=155 cterm=underline
+highlight QuickScopeSecondary guifg='#2b8db3' gui=underline ctermfg=81 cterm=underline
 
 " abbreviate chezmoi apply
 ab ca !chezmoi apply
