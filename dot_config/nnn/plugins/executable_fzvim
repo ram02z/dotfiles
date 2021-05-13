@@ -12,7 +12,8 @@
 #
 
 # Turning this on can slow down the grep tool
-include_line_col=0 # default 0
+# Guaranteed to jump to specific match
+print_every_match=0 # default 0
 
 . "$(dirname "$0")"/.nnn-plugin-helper
 
@@ -44,8 +45,8 @@ if [ -n "$git_dirs" ]; then
 fi
 
 # Vim grep the directory
-if [ "$include_line_col" -eq "0" ]; then
-    RG_PREFIX="rg --with-filename --no-heading -n --smart-case --color=ansi "
+if [ "$print_every_match" -eq "0" ]; then
+    RG_PREFIX="rg --column --no-heading --line-number --smart-case --color=ansi "
 else
     RG_PREFIX="rg --vimgrep --smart-case --color=ansi "
 fi
@@ -53,7 +54,7 @@ if [ "$(cmd_exists fzf)" -eq "0" ]; then
     [ -n "$dirs" ] && cd $(printf "%s" "$dirs" | fzf)
     sel=$(
     FZF_DEFAULT_COMMAND="$RG_PREFIX ''" \
-      fzf --bind "change:reload:$RG_PREFIX {q}" \
+      fzf --bind "change:reload:$RG_PREFIX {q} || true" \
           --ansi --phony --query ""
     )
 elif [ "$(cmd_exists sk)" -eq "0" ]; then
@@ -67,11 +68,7 @@ if [ -n "$sel" ]; then
     # Extract file name, line number, column number
     fname=$(printf "%s" $sel | cut -f1 -d':')
     lineno=$(printf "%s" $sel | cut -f2,2 -d':')
-    if [ "$include_line_col" -eq "0" ]; then
-        colno="1"
-    else
-        colno=$(printf "%s" $sel | cut -f2,3 -d':' | cut -f2 -d':')
-    fi
+    colno=$(printf "%s" $sel | cut -f2,3 -d':' | cut -f2 -d':')
 
     # Check if file can be opened
     if [ "$fname" = "." ] || { ! [ -d "$fname" ] && ! [ -f "$fname" ]; }; then
