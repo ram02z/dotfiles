@@ -68,7 +68,7 @@ if [ -n "$sel" ]; then
     fname=$(printf "%s" $sel | cut -f1 -d':')
     lineno=$(printf "%s" $sel | cut -f2,2 -d':')
     if [ "$include_line_col" -eq "0" ]; then
-        colno="0"
+        colno="1"
     else
         colno=$(printf "%s" $sel | cut -f2,3 -d':' | cut -f2 -d':')
     fi
@@ -79,15 +79,6 @@ if [ -n "$sel" ]; then
         exit 4
     fi
 
-    case "$(file -biL "$fname")" in
-    *text*)
-        "$editor" "$fname" "+call cursor($lineno,$colno)" ;;
-    *)
-        if uname | grep -q "Darwin"; then
-            "$editor" "$fname" "+call cursor($lineno,$colno)" >/dev/null 2>&1
-        else
-            "$editor" "$fname" "+call cursor($lineno,$colno)" >/dev/null 2>&1
-        fi
-        ;;
-    esac
+    # Open file in editor
+    "$editor" "$fname" "+call cursor($lineno,$colno)"
 fi
