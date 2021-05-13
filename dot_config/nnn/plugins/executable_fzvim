@@ -1,6 +1,7 @@
 #!/usr/bin/env sh
 
-# Description: Runs sk with ripgrep and navigates to line and col on enter
+# Description: Prompts all relative git directories and vimgreps their files
+#              (if one/no git directories found, the cwd is used)
 #
 # Limitations: file names with ':' will break the script
 #
@@ -8,6 +9,7 @@
 
 . "$(dirname "$0")"/.nnn-plugin-helper
 
+# Supported editors
 if [ "$(cmd_exists nvim)" -eq "0" ]; then
     editor="nvim"
 elif [ "$(cmd_exists vim)" -eq "0" ]; then
@@ -16,17 +18,38 @@ else
     exit 1
 fi
 
+# Supported file search utility
+if [ "$(cmd_exists fd)" -eq "0" ]; then
+    git_dirs=$(fd --type d -H -g '.git' --color=never --prune)
+elif [ "$(cmd_exists find)" -eq "0" ]; then
+    git_dirs=$(find . -type d -name '.git' -prune)
+else
+    exit 2
+fi
+
+# Remove git suffix and check if only one directory exists
+if [ -n "$git_dirs" ]; then
+    dirs=$(printf "%s" "$git_dirs" | rev | cut -d"/" -f2- | rev)
+    if [ $(printf "%s" "$git_dirs" | rg . -c) -eq "1" ]; then
+        [ "$dirs" != ".git" ] && cd "$dirs"
+        unset dirs
+    fi
+fi
+
+# Vim grep the directory
 RG_PREFIX="rg --vimgrep --smart-case --color=ansi "
 if [ "$(cmd_exists fzf)" -eq "0" ]; then
+    [ -n "$dirs" ] && cd $(printf "%s" "$dirs" | fzf)
     sel=$(
     FZF_DEFAULT_COMMAND="$RG_PREFIX ''" \
       fzf --bind "change:reload:$RG_PREFIX {q}" \
           --ansi --phony --query ""
     )
 elif [ "$(cmd_exists sk)" -eq "0" ]; then
+    [ -n "$dirs" ] && cd $(printf "%s" "$dirs" | fzf)
     sel=$(sk --ansi -i -c "$RG_PREFIX \"{}\"")
 else
-    exit 1
+    exit 3
 fi
 
 if [ -n "$sel" ]; then
