@@ -7,6 +7,13 @@
 #
 # Shell: POSIX compliant
 
+#
+# Options
+#
+
+# Turning this on can slow down the grep tool
+include_line_col=0 # default 0
+
 . "$(dirname "$0")"/.nnn-plugin-helper
 
 # Supported editors
@@ -37,7 +44,11 @@ if [ -n "$git_dirs" ]; then
 fi
 
 # Vim grep the directory
-RG_PREFIX="rg --vimgrep --smart-case --color=ansi "
+if [ "$include_line_col" -eq "0" ]; then
+    RG_PREFIX="rg --with-filename --no-heading -n --smart-case --color=ansi "
+else
+    RG_PREFIX="rg --vimgrep --smart-case --color=ansi "
+fi
 if [ "$(cmd_exists fzf)" -eq "0" ]; then
     [ -n "$dirs" ] && cd $(printf "%s" "$dirs" | fzf)
     sel=$(
@@ -56,11 +67,16 @@ if [ -n "$sel" ]; then
     # Extract file name, line number, column number
     fname=$(printf "%s" $sel | cut -f1 -d':')
     lineno=$(printf "%s" $sel | cut -f2,2 -d':')
-    colno=$(printf "%s" $sel | cut -f2,3 -d':' | cut -f2 -d':')
+    if [ "$include_line_col" -eq "0" ]; then
+        colno="0"
+    else
+        colno=$(printf "%s" $sel | cut -f2,3 -d':' | cut -f2 -d':')
+    fi
 
+    # Check if file can be opened
     if [ "$fname" = "." ] || { ! [ -d "$fname" ] && ! [ -f "$fname" ]; }; then
         printf "%s cannot be opened.\n" $fname
-        exit 0
+        exit 4
     fi
 
     case "$(file -biL "$fname")" in
