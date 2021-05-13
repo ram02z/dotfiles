@@ -20,7 +20,8 @@ on_click = "APT_CONFIG=/tmp/i3rs-apt/apt.conf apt list --upgradable | tail -n +2
 [[block]]
 block = "music"
 buttons = ["prev", "play", "next"]
-marquee_interval = 0
+marquee = false
+marquee_interval = 1
 marquee_speed = 0.25
 dynamic_width = true
 separator = " "
