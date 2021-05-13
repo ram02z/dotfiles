@@ -16,7 +16,7 @@ else
     exit 1
 fi
 
-RG_PREFIX="rg --vimgrep --smart-case --hidden -g \"!.git/\" --color=ansi "
+RG_PREFIX="rg --vimgrep --smart-case --color=ansi "
 if [ "$(cmd_exists fzf)" -eq "0" ]; then
     sel=$(
     FZF_DEFAULT_COMMAND="$RG_PREFIX ''" \
