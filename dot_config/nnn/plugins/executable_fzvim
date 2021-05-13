@@ -28,7 +28,7 @@ fi
 
 # Supported file search utility
 if [ "$(cmd_exists fd)" -eq "0" ]; then
-    git_dirs=$(fd --type d -H -g '.git' --color=never --prune)
+    git_dirs=$(fd --type d -H -g '.git' --color=always --prune)
 elif [ "$(cmd_exists find)" -eq "0" ]; then
     git_dirs=$(find . -type d -name '.git' -prune)
 else
@@ -51,14 +51,14 @@ else
     RG_PREFIX="rg --vimgrep --smart-case --color=ansi "
 fi
 if [ "$(cmd_exists fzf)" -eq "0" ]; then
-    [ -n "$dirs" ] && cd $(printf "%s" "$dirs" | fzf)
+    [ -n "$dirs" ] && cd $(printf "%s" "$dirs" | fzf --ansi)
     sel=$(
     FZF_DEFAULT_COMMAND="$RG_PREFIX ''" \
       fzf --bind "change:reload:$RG_PREFIX {q} || true" \
           --ansi --phony --query ""
     )
 elif [ "$(cmd_exists sk)" -eq "0" ]; then
-    [ -n "$dirs" ] && cd $(printf "%s" "$dirs" | fzf)
+    [ -n "$dirs" ] && cd $(printf "%s" "$dirs" | fzf --ansi)
     sel=$(sk --ansi -i -c "$RG_PREFIX \"{}\"")
 else
     exit 3
