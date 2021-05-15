@@ -72,8 +72,7 @@ Plug 'yamatsum/nvim-nonicons'
 
 " Vim fancy tab line
 " Plug 'romgrk/barbar.nvim'
-" Plug 'akinsho/nvim-bufferline.lua'
-Plug 'ram02z/nvim-bufferline.lua'
+Plug 'akinsho/nvim-bufferline.lua'
 
 " Dracula theme
 Plug 'ram02z/vim', {'as': 'dracula', 'branch': 'nvim_plugs'}
@@ -167,6 +166,9 @@ autocmd BufNewFile,BufRead * setlocal formatoptions-=cro
 " Disables folding
 set nofoldenable
 
+" Set the current directory automatically
+set autochdir
+
 " Silent remap function
 function! Map(lhs, rhs, modes)
     for m in a:modes
@@ -220,7 +222,7 @@ set clipboard+=unnamedplus
 {{ end -}}
 
 " Create terminal buffer
-nnoremap <silent> <Leader><CR> :term <CR>
+nnoremap <silent> <Leader><CR> :term<CR>
 
 " Nnn command override
 let g:nnn#command = 'n'
