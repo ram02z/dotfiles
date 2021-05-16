@@ -4,5 +4,5 @@ function fish_mode_prompt; end
 
 # Autostart functions moved to ./conf.d
 
-# Source init scripts 
-
+# Source init scripts
+init_source zoxide
