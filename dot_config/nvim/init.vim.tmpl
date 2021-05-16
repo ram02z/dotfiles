@@ -18,6 +18,9 @@ call plug#begin()
 " Editor config woohoo
 Plug 'editorconfig/editorconfig-vim'
 
+" Change directory to project root
+Plug 'airblade/vim-rooter'
+
 " Fix CursorHold Performance
 " Remove if https://github.com/neovim/neovim/issues/12587 gets closed
 Plug 'antoinemadec/FixCursorHold.nvim'
@@ -118,6 +121,9 @@ Plug 'romainl/vim-qf'
 " Vimrc commands in lua
 Plug 'svermeulen/vimpeccable'
 
+" Zoxide wrapper
+Plug 'nanotee/zoxide.vim', {'do': 'cargo install zoxide'}
+
 " Extending the % functionality
 " Plug 'andymass/vim-matchup'
 
@@ -165,9 +171,6 @@ autocmd BufNewFile,BufRead * setlocal formatoptions-=cro
 
 " Disables folding
 set nofoldenable
-
-" Set the current directory automatically
-set autochdir
 
 " Silent remap function
 function! Map(lhs, rhs, modes)
@@ -437,6 +440,9 @@ let g:Illuminate_ftblacklist = ['TelescopePrompt', 'dashboard', 'vimwiki', 'man'
 let g:qs_highlight_on_keys = ['f', 'F', 't', 'T']
 highlight QuickScopePrimary guifg='#ff007c' gui=underline ctermfg=155 cterm=underline
 highlight QuickScopeSecondary guifg='#2b8db3' gui=underline ctermfg=81 cterm=underline
+
+" vim-rooter config
+let g:rooter_change_directory_for_non_project_files = 'current'
 
 " abbreviate chezmoi apply
 ab ca !chezmoi apply
