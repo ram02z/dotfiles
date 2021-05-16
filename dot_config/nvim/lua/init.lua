@@ -1,3 +1,6 @@
+-- Append plenary.filetypes
+require'plenary.filetype'.add_file('extra')
+
 require'modules.colorizer'
 
 require'modules.devicons'
