@@ -199,6 +199,7 @@ set number
 set relativenumber
 " Toggle line numbering (useful when copying mutliple lines)
 nnoremap <silent> <leader>d :set nu! rnu! <CR>
+autocmd TermOpen * setlocal nonumber norelativenumber
 
 " Enable hidden buffers (don't need to save when switching files)
 set hidden
