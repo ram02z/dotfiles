@@ -228,12 +228,16 @@ set clipboard+=unnamedplus
 " Create terminal buffer
 nnoremap <silent> <Leader><CR> :term<CR>
 
+let g:nnn#set_default_mappings = 0
 " Nnn command override
 let g:nnn#command = 'n'
+autocmd! FileType nnn
 
-" Start nnn in current buffer
-let g:nnn#set_default_mappings = 0
-nnoremap <leader>n :NnnPicker<CR>
+" Start NNN in pwd (relies on vim-rooter)
+nnoremap <leader>N :NnnPicker<CR>
+
+" Start NNN in cwd
+nnoremap <leader>n :NnnPicker %:p:h<CR>
 
 " Run nnn as a floating window
 let g:nnn#layout = { 'window': { 'width': 0.9, 'height': 0.6, 'highlight': 'Debug' } }
