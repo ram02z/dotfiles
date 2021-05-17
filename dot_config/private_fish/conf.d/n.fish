@@ -1,5 +1,5 @@
 # NNN Variables
-set NNN_PLUG_UTIL 's:suedit;u:upgrade;x:togglex;f:fzcd;k:pskill'
+set NNN_PLUG_UTIL 's:suedit;u:upgrade;x:togglex;f:fzcd;k:pskill;j:autojump'
 set NNN_PLUG_STD 'a:chezmoi-add;r:chezmoi-remove;v:fzvim;o:fzopen'
 set -x NNN_PLUG "$NNN_PLUG_UTIL;$NNN_PLUG_STD"
 # set -x NNN_COLORS 'b7d49f2e;5555'
