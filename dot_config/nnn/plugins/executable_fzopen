@@ -51,15 +51,16 @@ if [ "$3" ]; then
     exit 0
 fi
 
-# Open the file (works for a single file only)
-# case "$(file -biL "$entry")" in
-#     *text*)
-#         "${VISUAL:-$EDITOR}" "$entry" ;;
-#     *)
-#         if uname | grep -q "Darwin"; then
-#             open "$entry" >/dev/null 2>&1
-#         else
-#             xdg-open "$entry" >/dev/null 2>&1
-#         fi
-#         ;;
-# esac
+# Open the files (multiple files tested on (n)vim and vscode)
+IFS='
+'
+cmd="${VISUAL:-$EDITOR}"
+for fname in $entry; do
+    if [ "$fname" = "." ] || { ! [ -d "$fname" ] && ! [ -f "$fname" ]; }; then
+        printf "%s cannot be opened\n" "$fname"
+        continue
+    fi
+    cmd="$cmd $fname"
+done
+
+eval $cmd || exit
