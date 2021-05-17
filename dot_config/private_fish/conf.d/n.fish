@@ -1,14 +1,14 @@
 # NNN Variables
 set NNN_PLUG_UTIL 's:suedit;u:upgrade;x:togglex;f:fzcd;k:pskill;j:autojump'
-set NNN_PLUG_STD 'a:chezmoi-add;r:chezmoi-remove;v:fzvim;o:fzopen'
+set NNN_PLUG_STD 'a:chezmoi-add;r:chezmoi-remove;v:fzvim;o:fzopen;c:cbcp'
 set -x NNN_PLUG "$NNN_PLUG_UTIL;$NNN_PLUG_STD"
 # set -x NNN_COLORS 'b7d49f2e;5555'
 set -x NNN_FCOLORS 'c1e2b72e006033f7c6d6abc4'
 set -x NNN_TRASH 2
 if type -q mvg
-    set -x NNN_OPTS "dcHr"
+    set -x NNN_OPTS "dcHxr"
 else
-    set -x NNN_OPTS "dcH"
+    set -x NNN_OPTS "dcHx"
 end
 set -x NNN_FIFO '/tmp/nnn.fifo'
 set -x NNN_OPENER "$HOME/.config/nnn/plugins/nuke"
