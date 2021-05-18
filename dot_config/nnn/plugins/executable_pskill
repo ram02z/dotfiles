@@ -28,7 +28,13 @@ if [ -n "$psname" ]; then
         exit 1
     fi
 
-    cmd="$(ps -ax | grep -iw "$psname" | "$fuzzy" | sed -e 's/^[ \t]*//' | cut -d' ' -f1)"
+    if type rg >/dev/null 2>&1; then
+        srch=rg
+    else
+        srch=grep
+    fi
+
+    cmd="$(ps -ax | "$srch" -iw "$psname" | "$fuzzy" | sed -e 's/^[ \t]*//' | cut -d' ' -f1)"
     if [ -n "$cmd" ]; then
         $sucmd kill -9 "$cmd"
     fi
