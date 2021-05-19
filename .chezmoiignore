@@ -25,8 +25,8 @@ TODO.md
 .config/networkmanager-dmenu/
 .config/Xresources
 .config/greenclip.cfg
-.local/bin/**
-./local/lib/**
+.local/**
+.local/
 .icons/**
 .icons/
 {{ end }}
