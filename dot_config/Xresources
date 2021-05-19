@@ -1,8 +1,0 @@
-gnome.wallpaper: /usr/share/backgrounds/d2pw.png
-i3-wm.bar.position:	top
-i3_wm.program.file_search: rofi -show find -modi find:~/.config/rofi/modi/finder.sh
-i3-wm.bar.status_command: $HOME/.cargo/bin/i3status-rs $HOME/.config/i3status-rust/config.toml
-i3-wm.bar.font: pango:DejaVu Sans Mono, FontAwesome 12
-i3-wm.bar.workspace.urgent.background.color: #bd93f9
-i3-wm.bar.workspace.urgent.border.color: #f8f8f2
-i3-wm.client.urgent.color.child_border: #ff79c6
