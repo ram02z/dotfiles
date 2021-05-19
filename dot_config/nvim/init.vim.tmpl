@@ -119,6 +119,7 @@ Plug 'romainl/vim-cool'
 Plug 'romainl/vim-qf'
 
 " Vimrc commands in lua
+" TODO: remove vimp usage
 Plug 'svermeulen/vimpeccable'
 
 " Zoxide wrapper
@@ -167,7 +168,7 @@ call plug#end()
 let mapleader = "\<Space>"
 
 " disables continuing comments
-autocmd BufNewFile,BufRead * setlocal formatoptions-=cro
+autocmd FileType * setlocal formatoptions-=cro
 
 " Disables folding
 set nofoldenable
