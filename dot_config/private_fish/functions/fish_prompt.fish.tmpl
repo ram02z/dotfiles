@@ -74,6 +74,8 @@ function __prompt_git_status
 
     end
 
+    # Fetch git commit ahead/behind synchronously
+    # TODO: make async (right now its 2-3x slower)
     if test -z $__prompt_git_commits
         # Commit up/down
         command git rev-list --count --left-right @{upstream}...@ 2>/dev/null |
@@ -87,8 +89,10 @@ function __prompt_git_status
             case "*"
                 set upstream "$prompt_ahead_symbol$ahead $prompt_behind_symbol$behind"
         end
-
         set -g __prompt_git_commits $upstream
+
+        # Fetch in background
+        fish -c "command git fetch --no-tags 2>/dev/null" &
     end
 
     # Fetch dirty status asynchronously.
