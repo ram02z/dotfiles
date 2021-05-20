@@ -138,7 +138,7 @@ function __prompt_git_status
 
     # Render git status. When in-progress, use previous state to reduce flicker.
     set_color --bold $prompt_git_color
-    echo -n ' '$__prompt_git_static
+    echo -n $prompt_branch_symbol' '$__prompt_git_static
 
     if ! test -z $__prompt_dirty
         echo -n $__prompt_dirty
