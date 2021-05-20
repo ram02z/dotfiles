@@ -48,14 +48,16 @@ if ! set -q lucid_dir_depth
     set -g lucid_dir_depth 4
 end
 
+# Used to track if user is in git repo
+if ! set -q lucid_git_repo
+    set -g lucid_git_repo ""
+end
+
 # State used for memoization and async calls.
 set -g __lucid_cmd_id 0
 set -g __lucid_git_state_cmd_id -1
 set -g __lucid_git_static ""
 set -g __lucid_dirty ""
-# TODO rename
-set -g git_repo ""
-
 
 
 # Increment a counter each time a prompt is about to be displayed.
@@ -235,15 +237,15 @@ function fish_mode_prompt
 end
 
 function __lucid_pwd --on-variable PWD
-    set git_repo (command git rev-parse --show-toplevel 2>/dev/null)
+    set lucid_git_repo (command git rev-parse --show-toplevel 2>/dev/null)
     set -q __lucid_pwd || set -g __lucid_pwd
 
-    if test -z "$git_repo"
+    if test -z "$lucid_git_repo"
         set -l realhome ~
         set  __lucid_pwd (string replace -r '^'"$realhome"'($|/)' '~$1' $PWD)
     else
-        set root (printf "%s" $git_repo | string replace --all --regex -- "^.*/" "")
-        set __lucid_pwd (string replace $git_repo $root $PWD)
+        set root (printf "%s" $lucid_git_repo | string replace --all --regex -- "^.*/" "")
+        set __lucid_pwd (string replace $lucid_git_repo $root $PWD)
     end
 
     if test "$lucid_dir_depth" -ne 0
@@ -267,7 +269,6 @@ end
 function fish_prompt
     set -l last_pipestatus "$pipestatus"
     set --query __lucid_pwd || __lucid_pwd
-    set -l cwd_extra ' '
 
     if test -n "$lucid_skip_newline"
         echo ''
@@ -277,19 +278,18 @@ function fish_prompt
     echo -sn $__lucid_pwd
 
     # Check if current directory is writeable
-    ! test -w $PWD && set_color brred && set cwd_extra " $lucid_lock_dir_symbol "
-    echo -sn $cwd_extra
+    ! test -w $PWD && set_color brred && echo -sn " $lucid_lock_dir_symbol "
     set_color normal
 
-    if test -n "$git_repo"
+    if test -n "$lucid_git_repo"
         set -l git_state (__lucid_git_status)
         if test $status -eq 0
-            echo -sn "on $git_state "
+            echo -sn " on $git_state"
         end
     end
 
     if test -n "$__lucid_cmd_duration"
-        echo -sn "took $__lucid_cmd_duration"
+        echo -sn " took $__lucid_cmd_duration"
     end
 
     echo ''
