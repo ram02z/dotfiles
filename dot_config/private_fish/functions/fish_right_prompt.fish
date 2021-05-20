@@ -12,7 +12,7 @@ function __prompt_postexec --on-event fish_postexec
     set --local hours (math --scale=0 $CMD_DURATION/3600000)
 
     test $hours -gt 0 && set --local --append out $hours"h"
-    test $mins -gt 0 && set --local --append out $mins"m"
+    test $mins -gt 0 && set --local --append out $mins"m" && set --local secs (string split . $secs)[1]
     test $secs -gt 0 && set --local --append out $secs"s"
 
     if test $CMD_DURATION -lt 1000
