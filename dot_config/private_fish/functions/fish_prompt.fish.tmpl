@@ -153,17 +153,17 @@ end
 
 function __prompt_vi_indicator
     if [ $fish_key_bindings = "fish_vi_key_bindings" ]
-        set -g prompt_prompt_symbol "❮"
+        set -g prompt_symbol "❮"
         switch $fish_bind_mode
             case "insert"
-                set -g prompt_prompt_symbol "❯"
-                set -g prompt_prompt_symbol_color brgreen
+                set -g prompt_symbol "❯"
+                set -g prompt_symbol_color brgreen
             case "default"
-                set -g prompt_prompt_symbol_color brblue
+                set -g prompt_symbol_color brblue
             case "visual"
-                set -g prompt_prompt_symbol_color bryellow
+                set -g prompt_symbol_color bryellow
             case "replace"
-                set -g prompt_prompt_symbol_color brred
+                set -g prompt_symbol_color brred
         end
         set_color normal
     end
@@ -228,13 +228,13 @@ function fish_prompt
     echo ''
     __prompt_vi_indicator
 
-    set -l prompt_symbol "$prompt_prompt_symbol"
-    set -l prompt_symbol_color "$prompt_prompt_symbol_color"
+    set -l prompt_symbol "$prompt_symbol"
+    set -l prompt_symbol_color "$prompt_symbol_color"
 
     for status_code in "$last_pipestatus"
         if test "$status_code" -ne 0
-            set prompt_symbol "$prompt_prompt_symbol_error"
-            set prompt_symbol_color "$prompt_prompt_symbol_error_color"
+            set prompt_symbol "$prompt_symbol_error"
+            set prompt_symbol_color "$prompt_symbol_error_color"
             break
         end
     end
