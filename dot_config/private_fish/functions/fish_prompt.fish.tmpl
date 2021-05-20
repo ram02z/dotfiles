@@ -1,30 +1,321 @@
-function fish_prompt -d "Starship init with a few additions"
-    switch "$fish_key_bindings"
-        case fish_hybrid_key_bindings fish_vi_key_bindings
-            set keymap "$fish_bind_mode"
-        case '*'
-            set keymap insert
+# My fork of lucid.fish
+# TODO: Async load the project lanuage icon and version
+# TODO: fetch commit ahead/behind async
+
+# Default appearance options. Override in config.fish if you want.
+if ! set -q lucid_dirty_indicator
+    set -g lucid_dirty_indicator "•"
+end
+
+if ! set -q lucid_prompt_symbol
+    set -g lucid_prompt_symbol "❯"
+end
+
+if ! set -q lucid_prompt_symbol_error
+    set -g lucid_prompt_symbol_error "❯"
+end
+
+if ! set -q lucid_prompt_symbol_color
+    set -g lucid_prompt_symbol_color brgreen
+end
+
+if ! set -q lucid_prompt_symbol_error_color
+    set -g lucid_prompt_symbol_error_color brred
+end
+
+# This should be set to be at least as long as lucid_dirty_indicator, due to a fish bug
+if ! set -q lucid_clean_indicator
+    set -g lucid_clean_indicator (string replace -r -a '.' ' ' $lucid_dirty_indicator)
+end
+
+if ! set -q lucid_cwd_color
+    set -g lucid_cwd_color brcyan
+end
+
+if ! set -q lucid_git_color
+    set -g lucid_git_color brmagenta
+end
+
+if ! set -q lucid_dur_color
+    set -g lucid_dur_color bryellow
+end
+
+if ! set -q lucid_lock_dir_symbol
+    set -g lucid_lock_dir_symbol ""
+end
+
+if ! set -q lucid_dir_depth
+    set -g lucid_dir_depth 4
+end
+
+# State used for memoization and async calls.
+set -g __lucid_cmd_id 0
+set -g __lucid_git_state_cmd_id -1
+set -g __lucid_git_static ""
+set -g __lucid_dirty ""
+# TODO rename
+set -g git_repo ""
+
+
+
+# Increment a counter each time a prompt is about to be displayed.
+# Enables us to distingish between redraw requests and new prompts.
+function __lucid_increment_cmd_id --on-event fish_prompt
+    set __lucid_cmd_id (math $__lucid_cmd_id + 1)
+end
+
+function __lucid_postexec --on-event fish_postexec
+    test "$CMD_DURATION" -lt 1000 && set __lucid_cmd_duration && return
+
+    set --local secs (math --scale=0 $CMD_DURATION/1000 % 60)
+    set --local mins (math --scale=0 $CMD_DURATION/60000 % 60)
+    set --local hours (math --scale=0 $CMD_DURATION/3600000)
+
+    test $hours -gt 0 && set --local --append out $hours"h"
+    test $mins -gt 0 && set --local --append out $mins"m"
+    test $secs -gt 0 && set --local --append out $secs"s"
+
+    set --global __lucid_cmd_duration (set_color $lucid_dur_color)"$out"(set_color normal)
+end
+
+# Abort an in-flight dirty check, if any.
+function __lucid_abort_check
+    if set -q __lucid_check_pid
+        set -l pid $__lucid_check_pid
+        functions -e __lucid_on_finish_$pid
+        command kill $pid >/dev/null 2>&1
+        set -e __lucid_check_pid
+    end
+end
+
+function __lucid_git_status
+    # Reset state if this call is *not* due to a redraw request
+    set -l prev_dirty $__lucid_dirty
+    if test $__lucid_cmd_id -ne $__lucid_git_state_cmd_id
+        __lucid_abort_check
+
+        set __lucid_git_state_cmd_id $__lucid_cmd_id
+        set __lucid_git_static ""
+        set __lucid_dirty ""
     end
 
-    set -l exit_code $status
-    # Account for changes in variable name between v2.7 and v3.0
-    set -l starship_duration "$CMD_DURATION$cmd_duration"
-    "/usr/local/bin/starship" prompt --status=$exit_code --keymap=$keymap --cmd-duration=$starship_duration --jobs=(count (jobs -p))
-    
+    # Fetch git position & action synchronously.
+    # Memoize results to avoid recomputation on subsequent redraws.
+    if test -z $__lucid_git_static
+        # Determine git working directory
+        set -l git_dir (command git --no-optional-locks rev-parse --absolute-git-dir 2>/dev/null)
+        if test $status -ne 0
+            return 1
+        end
+
+        set -l position (command git --no-optional-locks symbolic-ref --short HEAD 2>/dev/null)
+        if test $status -ne 0
+            # Denote detached HEAD state with short commit hash
+            set position (command git --no-optional-locks rev-parse --short HEAD 2>/dev/null)
+            if test $status -eq 0
+                set position "@$position"
+            end
+        end
+
+        # TODO: add bisect
+        set -l action ""
+        if test -f "$git_dir/MERGE_HEAD"
+            set action "merge"
+        else if test -d "$git_dir/rebase-merge"
+            set branch "rebase"
+        else if test -d "$git_dir/rebase-apply"
+            set branch "rebase"
+        end
+
+        set -l state $position
+        if test -n $action
+            set state "$state <$action>"
+        end
+
+        set -g __lucid_git_static $state
+    end
+
+    # Fetch dirty status asynchronously.
+    if test -z $__lucid_dirty
+        if ! set -q __lucid_check_pid
+            # Compose shell command to run in background
+            set -l check_cmd "git --no-optional-locks status -unormal --porcelain --ignore-submodules 2>/dev/null | head -n1 | count"
+            set -l cmd "if test ($check_cmd) != "0"; exit 1; else; exit 0; end"
+
+            begin
+                # Defer execution of event handlers by fish for the remainder of lexical scope.
+                # This is to prevent a race between the child process exiting before we can get set up.
+                block -l
+
+                set -g __lucid_check_pid 0
+                command fish --private --command "$cmd" >/dev/null 2>&1 &
+                set -l pid (jobs --last --pid)
+
+                set -g __lucid_check_pid $pid
+
+                # Use exit code to convey dirty status to parent process.
+                function __lucid_on_finish_$pid --inherit-variable pid --on-process-exit $pid
+                    functions -e __lucid_on_finish_$pid
+
+                    if set -q __lucid_check_pid
+                        if test $pid -eq $__lucid_check_pid
+                            switch $argv[3]
+                                case 0
+                                    set -g __lucid_dirty_state 0
+                                    if status is-interactive
+                                        commandline -f repaint
+                                    end
+                                case 1
+                                    set -g __lucid_dirty_state 1
+                                    if status is-interactive
+                                        commandline -f repaint
+                                    end
+                                case '*'
+                                    set -g __lucid_dirty_state 2
+                                    if status is-interactive
+                                        commandline -f repaint
+                                    end
+                            end
+                        end
+                    end
+                end
+            end
+        end
+
+        if set -q __lucid_dirty_state
+            switch $__lucid_dirty_state
+                case 0
+                    set -g __lucid_dirty $lucid_clean_indicator
+                case 1
+                    set -g __lucid_dirty $lucid_dirty_indicator
+                case 2
+                    set -g __lucid_dirty "<err>"
+            end
+
+            set -e __lucid_check_pid
+            set -e __lucid_dirty_state
+        end
+    end
+
+    # Render git status. When in-progress, use previous state to reduce flicker.
+    set_color $lucid_git_color
+    echo -n ' '$__lucid_git_static
+
+    if ! test -z $__lucid_dirty
+        echo -n $__lucid_dirty
+    else if ! test -z $prev_dirty
+        set_color $lucid_git_color
+        echo -n $prev_dirty
+        set_color normal
+    end
+
+    set_color normal
+end
+
+function __lucid_vi_indicator
+    if [ $fish_key_bindings = "fish_vi_key_bindings" ]
+        set -g lucid_prompt_symbol "❮"
+        switch $fish_bind_mode
+            case "insert"
+                set -g lucid_prompt_symbol "❯"
+                set -g lucid_prompt_symbol_color brgreen
+            case "default"
+                set -g lucid_prompt_symbol_color brblue
+            case "visual"
+                set -g lucid_prompt_symbol_color bryellow
+            case "replace"
+                set -g lucid_prompt_symbol_color brred
+        end
+        set_color normal
+    end
+end
+
+# Suppress default mode prompt
+function fish_mode_prompt
+end
+
+function __lucid_pwd --on-variable PWD
+    set git_repo (command git rev-parse --show-toplevel 2>/dev/null)
+    set -q __lucid_pwd || set -g __lucid_pwd
+
+    if test -z "$git_repo"
+        set -l realhome ~
+        set  __lucid_pwd (string replace -r '^'"$realhome"'($|/)' '~$1' $PWD)
+    else
+        set root (printf "%s" $git_repo | string replace --all --regex -- "^.*/" "")
+        set __lucid_pwd (string replace $git_repo $root $PWD)
+    end
+
+    if test "$lucid_dir_depth" -ne 0
+        set -l folders (string split / $__lucid_pwd)
+        if test (count $folders) -gt "$lucid_dir_depth"
+            if set -q root
+                set __lucid_pwd (
+                string replace -- "$root" /:/ $__lucid_pwd |
+                string replace --regex --all -- "(\.?[^/]{1})[^/]*/" \$1/ |
+                string replace -- /:/ "$root" |
+                string replace --regex -- '([^/]+)$' "\x1b[1m\$1\x1b[22m" |
+                string replace --regex --all -- '(?!^/$)/' "\x1b[2m/\x1b[22m"
+                )
+            else
+                set __lucid_pwd (string join / $folders[(math 0 - $lucid_dir_depth)..-1])
+            end
+        end
+    end
+end
+
+function fish_prompt
+    set -l last_pipestatus "$pipestatus"
+    set --query __lucid_pwd || __lucid_pwd
+    set -l cwd_extra ' '
+
+    if test -n "$lucid_skip_newline"
+        echo ''
+    end
+
+    set_color $lucid_cwd_color
+    echo -sn $__lucid_pwd
+
+    # Check if current directory is writeable
+    ! test -w $PWD && set_color brred && set cwd_extra " $lucid_lock_dir_symbol "
+    echo -sn $cwd_extra
+    set_color normal
+
+    if test -n "$git_repo"
+        set -l git_state (__lucid_git_status)
+        if test $status -eq 0
+            echo -sn "on $git_state "
+        end
+    end
+
+    if test -n "$__lucid_cmd_duration"
+        echo -sn "took $__lucid_cmd_duration"
+    end
+
+    echo ''
+    __lucid_vi_indicator
+
+    set -l prompt_symbol "$lucid_prompt_symbol"
+    set -l prompt_symbol_color "$lucid_prompt_symbol_color"
+
+    for status_code in "$last_pipestatus"
+        if test "$status_code" -ne 0
+            set prompt_symbol "$lucid_prompt_symbol_error"
+            set prompt_symbol_color "$lucid_prompt_symbol_error_color"
+            break
+        end
+    end
+
+    set_color "$prompt_symbol_color"
+    echo -n "$prompt_symbol "
+    set_color normal
+
     {{ if .is_wsl }}
     # inform Windows Terminal about $PWD
     printf '\e]9;9;%s\e\\' (wslpath -m $PWD)
     {{ else }}
     update_cwd_osc
     {{ end }}
+    # line cursor
     printf '\e[6 q'
-
-    # disable virtualenv prompt, it breaks starship
-    set VIRTUAL_ENV_DISABLE_PROMPT 1
-
-    function fish_mode_prompt; end
-    set -gx STARSHIP_SHELL "fish"
-
-    # Set up the session key that will be used to store logs
-    set -gx STARSHIP_SESSION_KEY (random 10000000000000 9999999999999999)
 end
