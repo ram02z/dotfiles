@@ -69,7 +69,7 @@ function __lucid_increment_cmd_id --on-event fish_prompt
 end
 
 function __lucid_postexec --on-event fish_postexec
-    test "$CMD_DURATION" -lt 1000 && set __lucid_cmd_duration && return
+    test "$CMD_DURATION" -lt 2000 && set --global __lucid_cmd_duration && return
 
     set --local secs (math --scale=0 $CMD_DURATION/1000 % 60)
     set --local mins (math --scale=0 $CMD_DURATION/60000 % 60)
@@ -283,15 +283,15 @@ function fish_prompt
     ! test -w $PWD && set_color brred && echo -sn " $lucid_lock_dir_symbol "
     set_color normal
 
+    if test -n "$__lucid_cmd_duration"
+        echo -sn " took $__lucid_cmd_duration"
+    end
+
     if test -n "$lucid_git_repo"
         set -l git_state (__lucid_git_status)
         if test $status -eq 0
             echo -sn " on $git_state"
         end
-    end
-
-    if test -n "$__lucid_cmd_duration"
-        echo -sn " took $__lucid_cmd_duration"
     end
 
     echo ''
