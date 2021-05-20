@@ -1,12 +1,11 @@
 # TODO: Async load the project lanuage icon and version
-# TODO: fetch commit ahead/behind async
-# TODO: Add statuscode to prompt
 # TODO: Add jobs to (right) prompt
 
 # State used for memoization and async calls.
 set -g __prompt_cmd_id 0
 set -g __prompt_git_state_cmd_id -1
 set -g __prompt_git_static ""
+set -g __prompt_git_commits ""
 set -g __prompt_dirty ""
 set -q prompt_git_repo || set -g prompt_git_repo ""
 
@@ -35,6 +34,7 @@ function __prompt_git_status
 
         set __prompt_git_state_cmd_id $__prompt_cmd_id
         set __prompt_git_static ""
+        set __prompt_git_commits ""
         set __prompt_dirty ""
     end
 
@@ -70,8 +70,25 @@ function __prompt_git_status
         if test -n $action
             set state "$state <$action>"
         end
-
         set -g __prompt_git_static $state
+
+    end
+
+    if test -z $__prompt_git_commits
+        # Commit up/down
+        command git rev-list --count --left-right @{upstream}...@ 2>/dev/null |
+            read behind ahead
+        switch "$behind $ahead"
+            case " " "0 0"
+            case "0 *"
+                set upstream "$prompt_ahead_symbol$ahead"
+            case "* 0"
+                set upstream "$prompt_behind_symbol$behind"
+            case *
+                set upstream "$prompt_ahead_symbol$ahead $prompt_behind_symbol$behind"
+        end
+
+        set -g __prompt_git_commits $upstream
     end
 
     # Fetch dirty status asynchronously.
@@ -138,7 +155,10 @@ function __prompt_git_status
 
     # Render git status. When in-progress, use previous state to reduce flicker.
     set_color --bold $prompt_git_color
-    echo -n $prompt_branch_symbol' '$__prompt_git_static
+    echo -n "$prompt_branch_symbol $__prompt_git_static"
+    set_color brblue
+    echo -n " $__prompt_git_commits "
+    set_color red
 
     if ! test -z $__prompt_dirty
         echo -n $__prompt_dirty
@@ -214,7 +234,7 @@ function __prompt_pwd --on-variable PWD
 end
 
 function fish_prompt
-    set -l last_pipestatus "$pipestatus"
+    set -l last_pipestatus $pipestatus
     set --query __prompt_pwd || __prompt_pwd
 
     if test -n "$prompt_skip_newline"
@@ -241,9 +261,9 @@ function fish_prompt
     set -l symbol "$prompt_symbol"
     set -l symbol_color "$prompt_symbol_color"
 
-    for status_code in "$last_pipestatus"
-        if test "$status_code" -ne 0
-            set symbol "$prompt_symbol_error"
+    for code in $last_pipestatus
+        if test $code -ne 0
+            set symbol [(string join "|" $last_pipestatus)]"$prompt_symbol_error"
             set symbol_color "$prompt_symbol_error_color"
             break
         end

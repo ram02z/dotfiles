@@ -25,6 +25,14 @@ if ! set -q prompt_branch_symbol
     set -g prompt_branch_symbol ""
 end
 
+if ! set -q prompt_ahead_symbol
+    set -g prompt_ahead_symbol "↑"
+end
+
+if ! set -q prompt_behind_symbol
+    set -g prompt_behind_symbol "↓"
+end
+
 if ! set -q prompt_symbol_color
     set -g prompt_symbol_color brgreen
 end
