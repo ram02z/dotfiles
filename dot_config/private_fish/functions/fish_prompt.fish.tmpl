@@ -1,6 +1,8 @@
 # My fork of lucid.fish
 # TODO: Async load the project lanuage icon and version
 # TODO: fetch commit ahead/behind async
+# TODO: Add statuscode to prompt
+# TODO: Add jobs to (right) prompt
 
 # Default appearance options. Override in config.fish if you want.
 if ! set -q lucid_dirty_indicator
@@ -77,7 +79,7 @@ function __lucid_postexec --on-event fish_postexec
     test $mins -gt 0 && set --local --append out $mins"m"
     test $secs -gt 0 && set --local --append out $secs"s"
 
-    set --global __lucid_cmd_duration (set_color $lucid_dur_color)"$out"(set_color normal)
+    set --global __lucid_cmd_duration (set_color --bold $lucid_dur_color)"$out"(set_color normal)
 end
 
 # Abort an in-flight dirty check, if any.
@@ -200,13 +202,13 @@ function __lucid_git_status
     end
 
     # Render git status. When in-progress, use previous state to reduce flicker.
-    set_color $lucid_git_color
+    set_color --bold $lucid_git_color
     echo -n ' '$__lucid_git_static
 
     if ! test -z $__lucid_dirty
         echo -n $__lucid_dirty
     else if ! test -z $prev_dirty
-        set_color $lucid_git_color
+        set_color --bold $lucid_git_color
         echo -n $prev_dirty
         set_color normal
     end
@@ -274,7 +276,7 @@ function fish_prompt
         echo ''
     end
 
-    set_color $lucid_cwd_color
+    set_color --bold $lucid_cwd_color
     echo -sn $__lucid_pwd
 
     # Check if current directory is writeable
