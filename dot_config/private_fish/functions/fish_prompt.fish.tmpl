@@ -204,6 +204,10 @@ function __prompt_pwd --on-variable PWD
                 )
             else
                 set __prompt_pwd (string join / $folders[(math 0 - $prompt_dir_depth)..-1])
+                # TODO: find a better way to prepend "/" when it makes sense
+                if test -d "/"$__prompt_pwd
+                    set --prepend __prompt_pwd "/"
+                end
             end
         end
     end
