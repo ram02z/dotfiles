@@ -228,19 +228,19 @@ function fish_prompt
     echo ''
     __prompt_vi_indicator
 
-    set -l prompt_symbol "$prompt_symbol"
-    set -l prompt_symbol_color "$prompt_symbol_color"
+    set -l symbol "$prompt_symbol"
+    set -l symbol_color "$prompt_symbol_color"
 
     for status_code in "$last_pipestatus"
         if test "$status_code" -ne 0
-            set prompt_symbol "$prompt_symbol_error"
-            set prompt_symbol_color "$prompt_symbol_error_color"
+            set symbol "$prompt_symbol_error"
+            set symbol_color "$prompt_symbol_error_color"
             break
         end
     end
 
-    set_color "$prompt_symbol_color"
-    echo -n "$prompt_symbol "
+    set_color "$symbol_color"
+    echo -n "$symbol "
     set_color normal
 
     {{ if .is_wsl }}
