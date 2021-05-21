@@ -54,6 +54,15 @@ local function setup_servers()
 
   for _, server in pairs(servers) do
     local config = make_config()
+
+    -- language specific config
+    if server == "lua" then
+      config = require'lua-dev'.setup({
+        library = {
+          plugins = { "nvim-treesitter", "plenary.nvim", "telescope.nvim" },
+        },
+      })
+    end
     require'lspconfig'[server].setup(config)
   end
 end
