@@ -20,32 +20,32 @@ local ts_config = {
       disable = { "html", "xml" },
   },
   refactor = {
-      highlight_definitions = { enable = true },
-      navigation = {
-          enable = true,
-          keymaps = {
-              goto_definition = "gnd",
-              list_definitions = "gnD",
-              list_definitions_toc = "gO",
-              goto_next_usage = "<a-*>",
-              goto_previous_usage = "<a-#>",
-          },
+    highlight_definitions = { enable = true },
+    navigation = {
+      enable = true,
+      keymaps = {
+          goto_definition = "gnd",
+          list_definitions = "gnD",
+          list_definitions_toc = "gO",
+          goto_next_usage = "<a-*>",
+          goto_previous_usage = "<a-#>",
       },
+    },
   },
   -- nvim-ts-rainbow
   rainbow = {
-      enable = true,
-      colors = {
-          "#1795FD",
-          "#43A64B",
-          "#911EA3",
-          "#FE6C7F",
-          "#C7005C",
-          "#DEA727",
-          "#85E7FF",
-      },
-      -- extended_mode = true,
-      max_file_lines = 200,
+    enable = true,
+    colors = {
+      "#1795FD",
+      "#43A64B",
+      "#911EA3",
+      "#FE6C7F",
+      "#C7005C",
+      "#DEA727",
+      "#85E7FF",
+    },
+    -- extended_mode = true,
+    max_file_lines = 200,
   },
 }
 

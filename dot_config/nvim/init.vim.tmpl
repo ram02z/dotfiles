@@ -207,9 +207,6 @@ set fileformats=unix
 " True terminal colors
 set termguicolors
 
-" Apply the indentation of current to next
-set autoindent
-
 " Relative line number
 set number
 set relativenumber
@@ -241,6 +238,8 @@ set clipboard+=unnamedplus
 " Create terminal buffer
 nnoremap <silent> <Leader><CR> :term<CR>
 
+
+" TODO: use sessions
 let g:nnn#set_default_mappings = 0
 " Nnn command override
 let g:nnn#command = 'n'

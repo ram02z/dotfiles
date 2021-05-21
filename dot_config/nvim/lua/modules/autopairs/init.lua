@@ -19,11 +19,15 @@ pears.setup(function(conf)
   })
   conf.pair("\"", {
     close = "\"",
-    should_expand = R.not_(R.match_next "[a-zA-Z0-9_]"),
+    should_expand = R.all_of(
+      R.not_(R.end_of_context "[a-zA-Z0-9_]"),
+      R.not_(R.match_next "[a-zA-Z0-9_]"))
   })
   conf.pair("'", {
     close = "'",
-    should_expand = R.not_(R.match_next "[a-zA-Z0-9_]"),
+    should_expand = R.all_of(
+      R.not_(R.end_of_context "[a-zA-Z0-9_]"),
+      R.not_(R.match_next "[a-zA-Z0-9_]"))
   })
   conf.pair("`", {
     close = "`",
