@@ -170,6 +170,12 @@ let mapleader = "\<Space>"
 " disables continuing comments
 autocmd FileType * setlocal formatoptions-=cro
 
+" start terminal in insert mode
+" disable vim-illuminate (TODO: create a PR to make a blacklist)
+autocmd TermOpen *
+                \ startinsert |
+                \ IlluminationDisable!
+
 " Disables folding
 set nofoldenable
 
