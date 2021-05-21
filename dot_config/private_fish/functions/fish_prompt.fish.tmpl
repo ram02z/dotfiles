@@ -92,8 +92,14 @@ function __prompt_git_status
         set -g __prompt_git_commits $upstream
 
         # Fetch in background
+        # Checks if ssh urls are used
         if test "$prompt_bg_fetch" = "true"
-            fish -c "command git fetch --no-tags 2>/dev/null" &
+            fish --private --command "
+            set -l tmp (command git remote -v)
+            if ! string match -q "@" \$tmp
+                command git fetch --no-tags 2>/dev/null
+            end
+            " &
         end
     end
 

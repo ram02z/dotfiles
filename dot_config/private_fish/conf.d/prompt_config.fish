@@ -54,6 +54,6 @@ if ! set -q prompt_dir_depth
 end
 
 if ! set -q prompt_bg_fetch
-    set -g prompt_bg_fetch false
+    set -g prompt_bg_fetch true
 end
 
