@@ -188,6 +188,12 @@ inoremap <silent> <A-k> <Esc> :m .-2<CR>==gi
 vnoremap <silent> <A-j> :m '>+1<CR>==gv
 vnoremap <silent> <A-k> :m '<-2<CR>==gv
 
+" Map page-up and page-down
+map <silent> <PageUp> <C-b>
+map <silent> <PageDown> <C-f>
+imap <silent> <PageUp> <C-O><C-b>
+imap <silent> <PageDown> <C-O><C-f>
+
 {{ if (ne .chezmoi.os "windows") }}
 " Unix line endings
 set fileformats=unix
