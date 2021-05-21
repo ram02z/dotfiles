@@ -5,6 +5,8 @@ local colorizer_opts = {
   RRGGBB = true;
   RRGGBBAA = true;
   css_fn = true;
+  mode = 'virtualtext';
+  virtualtext = '■';
 }
 
 -- init colorizer
