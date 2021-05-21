@@ -99,7 +99,7 @@ function __prompt_git_status
             if ! string match -q -- \"*@*\" \$tmp
                 command git fetch --no-tags 2>/dev/null
             end
-            " &
+            " >/dev/null 2>&1 &
         end
     end
 
@@ -107,6 +107,7 @@ function __prompt_git_status
     if test -z $__prompt_dirty
         if ! set -q __prompt_check_pid
             # Compose shell command to run in background
+            # TODO: use a faster command maybe?
             set -l check_cmd "git --no-optional-locks status -unormal --porcelain --ignore-submodules 2>/dev/null | head -n1 | count"
             set -l cmd "if test ($check_cmd) != "0"; exit 1; else; exit 0; end"
 
@@ -187,20 +188,18 @@ end
 
 function __prompt_vi_indicator
     if [ $fish_key_bindings = "fish_vi_key_bindings" ]
-        set -g prompt_symbol "❮"
         switch $fish_bind_mode
             case "insert"
-                set -g prompt_symbol "❯"
-                set -g prompt_symbol_color brgreen
+                return 1
             case "default"
-                set -g prompt_symbol_color brblue
+                return 2
             case "visual"
-                set -g prompt_symbol_color bryellow
+                return 3
             case "replace"
-                set -g prompt_symbol_color brred
+                return 4
         end
-        set_color normal
     end
+    return 0
 end
 
 # Suppress default mode prompt
@@ -269,18 +268,31 @@ function fish_prompt
         end
     end
 
+    # Newline
     echo ''
-    __prompt_vi_indicator
 
-    set -l symbol "$prompt_symbol"
+    set -l symbol "$prompt_vi_symbol"
     set -l symbol_color "$prompt_symbol_color"
 
     for code in $last_pipestatus
         if test $code -ne 0
-            set symbol [(string join "|" $last_pipestatus)]"$prompt_symbol_error"
-            set symbol_color "$prompt_symbol_error_color"
+            set_color "$prompt_error_color"
+            set symbol_color "$prompt_error_color"
+            echo -n [(string join "|" $last_pipestatus)]
             break
         end
+    end
+
+    __prompt_vi_indicator
+    switch $status
+    case 0 1
+        set symbol "$prompt_symbol"
+    case 2
+        set symbol_color brblue
+    case 3
+        set symbol_color bryellow
+    case 4
+        set symbol_color brmagenta
     end
 
     set_color "$symbol_color"
