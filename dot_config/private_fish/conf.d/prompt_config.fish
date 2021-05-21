@@ -7,8 +7,8 @@ if ! set -q prompt_symbol
     set -g prompt_symbol "❯"
 end
 
-if ! set -q prompt_symbol_error
-    set -g prompt_symbol_error "❯"
+if ! set -q prompt_vi_symbol
+    set -g prompt_vi_symbol "❮"
 end
 
 # This should be set to be at least as long as prompt_dirty_indicator, due to a fish bug
@@ -37,8 +37,8 @@ if ! set -q prompt_symbol_color
     set -g prompt_symbol_color brgreen
 end
 
-if ! set -q prompt_symbol_error_color
-    set -g prompt_symbol_error_color brred
+if ! set -q prompt_error_color
+    set -g prompt_error_color brred
 end
 
 if ! set -q prompt_cwd_color
