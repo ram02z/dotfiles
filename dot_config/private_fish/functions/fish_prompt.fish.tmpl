@@ -92,7 +92,9 @@ function __prompt_git_status
         set -g __prompt_git_commits $upstream
 
         # Fetch in background
-        fish -c "command git fetch --no-tags 2>/dev/null" &
+        if test "$prompt_bg_fetch" = "true"
+            fish -c "command git fetch --no-tags 2>/dev/null" &
+        end
     end
 
     # Fetch dirty status asynchronously.
