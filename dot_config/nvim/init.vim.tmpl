@@ -227,6 +227,13 @@ set hidden
 set hlsearch
 set smartcase
 
+" Break words rather than characters when wrapping
+set wrap
+set linebreak
+
+" Show confirm dialog
+set confirm
+
 {{ if .is_wsl }}
 " WSL yank support
 let s:clip = '/mnt/c/Windows/System32/clip.exe'
