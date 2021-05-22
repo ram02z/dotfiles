@@ -158,6 +158,9 @@ Plug 'folke/lua-dev.nvim'
 " Paste image into buffer
 Plug 'ekickx/clipboard-image.nvim', {'on': 'PasteImg'}
 
+" Undo tree
+Plug 'mbbill/undotree', {'on': 'UndotreeToggle'}
+
 {{ if .is_wsl -}}
 Plug 'dstein64/nvim-scrollview'
 {{ end -}}
@@ -465,6 +468,9 @@ highlight QuickScopeSecondary guifg='#2b8db3' gui=underline ctermfg=81 cterm=und
 
 " vim-rooter config
 let g:rooter_change_directory_for_non_project_files = 'current'
+
+" Undotree config
+nnoremap <silent> <Leader>ut :UndotreeToggle<CR>
 
 " abbreviate chezmoi apply
 ab ca !chezmoi apply
