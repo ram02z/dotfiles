@@ -25,4 +25,5 @@ vimp.nnoremap(opts, '<Leader>9', function() bline.go_to_buffer(9) end)
 -- Last used buffer
 vimp.nnoremap(opts, '<Leader>l', ':e#<CR>')
 -- Close buffer
-vimp.nnoremap(opts, "<Leader>q", ':bdelete!<CR>')
+vimp.nnoremap(opts, "<Leader>q", ':bwipeout<CR>')
+vimp.nnoremap(opts, "<Leader>Q", ':bwipeout!<CR>')
