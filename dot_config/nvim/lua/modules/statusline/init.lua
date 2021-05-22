@@ -1,9 +1,9 @@
 local gl = require('galaxyline')
 local condition = require('galaxyline.condition')
-local diagnostic = require('galaxyline.provider_diagnostic')
+-- local diagnostic = require('galaxyline.provider_diagnostic')
 
 local gls = gl.section
-gl.short_line_list = {'defx', 'packager', 'vista'}
+gl.short_line_list = {'nnn', 'packager', 'vista'}
 
 local colors = {
   bg = '#21232b',
@@ -41,7 +41,7 @@ local mode_map = {
 
 -- Local helper functions
 local function has_value(tab, val)
-  for index, value in ipairs(tab) do
+  for _, value in ipairs(tab) do
     if value[1] == val then return true end
   end
   return false
@@ -235,9 +235,9 @@ gls.left[13] = {
   DiagnosticInfo = {
     provider = {'DiagnosticInfo'},
     icon = '  ',
-    highlight = {colors.blue, colors.section_bg},
-    separator = ' ',
-    separator_highlight = {colors.section_bg, colors.bg}
+    highlight = {colors.blue, colors.bg}
+    -- separator = ' ',
+    -- separator_highlight = {colors.section_bg, colors.bg}
   }
 }
 --[[ gls.left[14] = {
