@@ -1,6 +1,9 @@
 -- Append plenary.filetypes
 require'plenary.filetype'.add_file('extra')
 
+-- TODO: Add to setup
+require'nvim-lastplace'.setup()
+
 require'modules.colorizer'
 
 require'modules.devicons'
@@ -32,5 +35,7 @@ require'modules.kommentary'
 require'modules.kommentary.mappings'
 
 require'modules.lspinstall'
+
+require'modules.dial'
 
 require'modules.neoscroll'

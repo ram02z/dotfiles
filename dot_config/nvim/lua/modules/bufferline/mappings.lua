@@ -25,5 +25,16 @@ vimp.nnoremap(opts, '<Leader>9', function() bline.go_to_buffer(9) end)
 -- Last used buffer
 vimp.nnoremap(opts, '<Leader>l', ':e#<CR>')
 -- Close buffer
-vimp.nnoremap(opts, "<Leader>q", ':bwipeout<CR>')
-vimp.nnoremap(opts, "<Leader>Q", ':bwipeout!<CR>')
+-- Function from https://github.com/ojroques/nvim-bufdel
+vimp.nnoremap(opts, "<Leader>q", function()
+  local buflisted = vim.fn.getbufinfo({buflisted = 1})
+  local cur_winnr, cur_bufnr = vim.fn.winnr(), vim.fn.bufnr()
+  if #buflisted < 2 then vim.cmd 'confirm qall' return end
+  for _, winid in ipairs(vim.fn.getbufinfo(cur_bufnr)[1].windows) do
+    vim.cmd(string.format('%d wincmd w', vim.fn.win_id2win(winid)))
+    vim.cmd(cur_bufnr == buflisted[#buflisted].bufnr and 'bp' or 'bn')
+  end
+  vim.cmd(string.format('%d wincmd w', cur_winnr))
+  local is_terminal = vim.fn.getbufvar(cur_bufnr, '&buftype') == 'terminal'
+  vim.cmd(is_terminal and 'bwipeout! #' or 'silent! confirm bwipeout #')
+end)
