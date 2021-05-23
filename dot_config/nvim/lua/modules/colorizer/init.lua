@@ -1,10 +1,11 @@
 local colorizer = require('colorizer')
 
 local colorizer_opts = {
-  RGB = true;
+  RGB = false;
   RRGGBB = true;
   RRGGBBAA = true;
   css_fn = true;
+  names = false;
   mode = 'virtualtext';
   virtualtext = '■';
 }

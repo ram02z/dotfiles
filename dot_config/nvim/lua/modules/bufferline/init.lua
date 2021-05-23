@@ -1,6 +1,6 @@
 local bline = require'bufferline'
 
-bline_conf = {
+local bline_conf = {
   options = {
     numbers = 'ordinal',
     number_style = 'none',
