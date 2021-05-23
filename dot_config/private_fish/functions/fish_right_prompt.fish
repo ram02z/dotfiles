@@ -7,16 +7,18 @@ if ! set -q __prompt_cmd_duration
 end
 
 function __prompt_postexec --on-event fish_postexec
-    set --local secs (math --scale=1 $CMD_DURATION/1000 % 60)
-    set --local mins (math --scale=0 $CMD_DURATION/60000 % 60)
-    set --local hours (math --scale=0 $CMD_DURATION/3600000)
-
-    test $hours -gt 0 && set --local --append out $hours"h"
-    test $mins -gt 0 && set --local --append out $mins"m" && set --local secs (string split . $secs)[1]
-    test $secs -gt 0 && set --local --append out $secs"s"
+    test "$CMD_DURATION" -lt 0 && set --global __prompt_cmd_duration && return
 
     if test $CMD_DURATION -lt 1000
-       set out $CMD_DURATION"ms"
+        set --local out $CMD_DURATION"ms"
+    else
+        set --local secs (math --scale=1 $CMD_DURATION/1000 % 60)
+        set --local mins (math --scale=0 $CMD_DURATION/60000 % 60)
+        set --local hours (math --scale=0 $CMD_DURATION/3600000)
+
+        test $hours -gt 0 && set --local --append out $hours"h"
+        test $mins -gt 0 && set --local --append out $mins"m" && set --local secs (string split . $secs)[1]
+        test $secs -gt 0 && set --local --append out $secs"s"
     end
 
     set --global __prompt_cmd_duration (set_color --bold $prompt_dur_color)"$out"(set_color normal)
