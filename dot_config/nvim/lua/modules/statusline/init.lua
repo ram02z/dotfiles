@@ -3,7 +3,7 @@ local condition = require('galaxyline.condition')
 -- local diagnostic = require('galaxyline.provider_diagnostic')
 
 local gls = gl.section
-gl.short_line_list = {'nnn', 'undotree'}
+gl.short_line_list = {'nnn', 'undotree', 'TelescopePrompt', 'help'}
 
 local colors = {
   bg = '#21232b',

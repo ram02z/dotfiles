@@ -187,6 +187,14 @@ autocmd TermOpen *
                 \ startinsert |
                 \ IlluminationDisable!
 
+" start help page in tab
+function! s:helptab()
+  if &buftype == 'help'
+    wincmd T
+  endif
+endfunction
+autocmd BufEnter *.txt call s:helptab()
+
 " Disables folding
 set nofoldenable
 

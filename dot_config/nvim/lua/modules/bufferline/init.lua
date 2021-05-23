@@ -2,12 +2,13 @@ local bline = require'bufferline'
 
 bline_conf = {
   options = {
-    numbers = "ordinal",
-    number_style = "none",
+    numbers = 'ordinal',
+    number_style = 'none',
     show_buffer_close_icons = false,
     show_close_icon = false,
     always_show_bufferline = false,
-    diagnostics = "nvim_lsp",
+    diagnostics = 'nvim_lsp',
+    mappings = false,
   },
   highlights = {
     fill = {
