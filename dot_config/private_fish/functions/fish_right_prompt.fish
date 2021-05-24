@@ -7,7 +7,7 @@ if ! set -q __prompt_cmd_duration
 end
 
 function __prompt_postexec --on-event fish_postexec
-    test "$CMD_DURATION" -lt 0 && set --global __prompt_cmd_duration && return
+    test "$CMD_DURATION" -le 0 && set --global __prompt_cmd_duration && return
 
     if test $CMD_DURATION -lt 1000
         set --local out $CMD_DURATION"ms"
