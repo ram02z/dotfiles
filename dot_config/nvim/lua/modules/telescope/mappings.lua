@@ -28,9 +28,6 @@ vimp.nnoremap(opts, '<Leader>pc', tscope.git_commits)
 -- Treesitter picker
 vimp.nnoremap(opts, '<Leader>pt', tscope.treesitter)
 
--- Register picker
-vimp.nnoremap(opts, '<Leader>pr', tscope.registers)
-
 -- File history picker
 vimp.nnoremap(opts, '<Leader>ph', tscope.old_files)
 

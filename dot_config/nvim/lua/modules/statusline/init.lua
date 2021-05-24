@@ -6,7 +6,7 @@ local gls = gl.section
 gl.short_line_list = {'nnn', 'undotree', 'TelescopePrompt', 'help'}
 
 local colors = {
-  bg = '#21232b',
+  bg = '#21222C',
   fg = '#f8f8f2',
   section_bg = '#3a3c4e',
   blue = '#62d6e8',

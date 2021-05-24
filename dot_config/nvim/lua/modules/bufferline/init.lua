@@ -12,13 +12,13 @@ local bline_conf = {
   },
   highlights = {
     fill = {
-      guibg = '#21232B'
+      guibg = '#21222C'
     },
     background = {
-      guibg = '#21232B'
+      guibg = '#21222C'
     },
     separator = {
-      guibg = '#21232B'
+      guibg = '#21222C'
     },
     modified = {
       guifg = '#44475A'
