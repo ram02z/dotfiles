@@ -45,7 +45,7 @@ local ts_config = {
       "#85E7FF",
     },
     -- extended_mode = true,
-    max_file_lines = 200,
+    -- max_file_lines = 200,
   },
 }
 
