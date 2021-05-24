@@ -39,3 +39,6 @@ require'modules.lspinstall'
 require'modules.dial'
 
 require'modules.neoscroll'
+
+-- Chord cancelation
+require'keychord'.cancel('<leader>')
