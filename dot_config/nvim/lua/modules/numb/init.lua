@@ -1,6 +1,6 @@
 local numb = require'numb'
 
-numb_conf = {
+local numb_conf = {
   show_cursorline = true,
 }
 

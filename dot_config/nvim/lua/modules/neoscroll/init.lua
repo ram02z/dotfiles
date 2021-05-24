@@ -1,6 +1,6 @@
 local neoscroll = require'neoscroll'
 
-ns_conf = {
+local ns_conf = {
     -- All these keys will be mapped. Pass an empty table ({}) for no mappings
   mappings = {'<C-u>', '<C-d>', '<C-b>', '<C-f>',
               '<C-y>', '<C-e>', 'zt', 'zz', 'zb'},

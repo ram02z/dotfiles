@@ -42,3 +42,5 @@ require'modules.neoscroll'
 
 -- Chord cancelation
 require'keychord'.cancel('<leader>')
+require'keychord'.cancel(']')
+require'keychord'.cancel('[')

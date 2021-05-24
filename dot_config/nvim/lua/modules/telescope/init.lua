@@ -2,7 +2,7 @@
 local telescope = require('telescope')
 local previewers = require('telescope.previewers')
 
-tscope_config = {
+local tscope_config = {
   defaults = {
     layout_strategy = 'flex',
     scroll_strategy = 'cycle',
@@ -37,8 +37,8 @@ local cwd_opt = {
 
 M.project_files = function()
   local ok = pcall(require'telescope.builtin'.git_files)
-  if not ok then 
-    require'telescope.builtin'.find_files(cwd_opt) 
+  if not ok then
+    require'telescope.builtin'.find_files(cwd_opt)
   end
 end
 
@@ -52,7 +52,7 @@ end
 
 M.grep_buffers = function()
   require'telescope.builtin'.live_grep({
-    grep_open_files = true, 
+    grep_open_files = true,
   })
 end
 
