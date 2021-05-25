@@ -44,20 +44,3 @@ pears.setup(function(conf)
   end)
 end)
 
--- nvim-autopairs config
-
--- local autopairs = require'nvim-autopairs'
---
---
--- autopairs.setup({
-    -- check_ts = true,
-    -- check_line_pair = false,
--- })
---
--- local M = {}
---
--- M.confirm = function()
-  -- autopairs.check_break_line_char()
--- end
---
--- return M

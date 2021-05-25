@@ -252,6 +252,9 @@ set relativenumber
 nnoremap <silent> <leader>d :set nu! rnu! <CR>
 autocmd TermOpen * setlocal nonumber norelativenumber
 
+" Fixed size signcolumn
+set signcolumn=yes:1
+
 " Enable hidden buffers (don't need to save when switching files)
 set hidden
 
@@ -459,12 +462,13 @@ nmap cq <Plug>(qf_qf_toggle)
 nmap cl <Plug>(qf_loc_toggle)
 nmap cs <Plug>(qf_qf_switch)
 
-" Snippet binds (moved to init.lua)
-"inoremap <silent><expr> <C-Space> compe#complete()
-" inoremap <silent><expr> <CR>      compe#confirm({ 'keys': "\<Plug>delimitMateCR", 'mode': '' })
-" inoremap <silent><expr> <C-e>     compe#close('<C-e>')
-" inoremap <silent><expr> <TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
-" inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+" nvim-compe binds
+" inoremap <silent><expr> <CR> compe#confirm('<CR>')
+" inoremap <silent><expr> <C-Space> pumvisible() ? compe#close() : compe#complete()
+" inoremap <silent><expr> <TAB>lua require('modules.compe').tab_complete()
+" snoremap <silent><expr> <TAB>lua require('modules.compe').tab_complete()
+" inoremap <silent><expr> <S-TAB>lua require('modules.compe').s_tab_complete()
+" snoremap <silent><expr> <S-TAB>lua require('modules.compe').s_tab_complete()
 
 " Blankline plugin settings
 set colorcolumn=99999 " fix weird cursor artifacts #59
@@ -521,9 +525,5 @@ ab ca !chezmoi apply
 " Source lua init file
 lua require('init')
 
-{{ else -}}
-nnoremap <silent> <C-/> <Plug>NERDCommenterToggle
-vnoremap <silent> <C-/> <Plug>NERDCommenterToggle<CR>gv
-inoremap <silent> <C-/> <esc><Plug>NERDCommenterToggle gi
+{{- end }}
 
-{{- end -}}

@@ -61,35 +61,30 @@ local compe_conf = {
 -- init compe
 compe.setup(compe_conf)
 
-local t = function(str)
-  return vim.api.nvim_replace_termcodes(str, true, true, true)
-end
+local t = require'utils.misc'.t
+local check_back_space = require'utils.misc'.check_back_space
+local check_not_comment = require'utils.misc'.check_not_comment
 
-local check_back_space = function()
-  local col = vim.fn.col('.') - 1
-  if col == 0 or vim.fn.getline('.'):sub(col, col):match('%s') then
-    return true
-  else
-    return false
-  end
-end
+local M = {}
 
 -- Use (s-)tab to:
 --- move to prev/next item in completion menuone
 --- jump to prev/next snippet's placeholder
-_G.tab_complete = function()
+M.tab_complete = function()
   if vim.fn.pumvisible() == 1 then
     return t "<C-n>"
-  elseif check_back_space() then
+  elseif check_back_space() or check_not_comment() then
     return t "<Tab>"
   else
     return vim.fn['compe#complete']()
   end
 end
-_G.s_tab_complete = function()
+M.s_tab_complete = function()
   if vim.fn.pumvisible() == 1 then
     return t "<C-p>"
   else
     return t "<C-d>"
   end
 end
+
+return M
