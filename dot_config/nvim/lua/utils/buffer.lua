@@ -9,7 +9,7 @@ M.bufwipeout = function()
     if vim.fn.getbufvar(cur_bufnr, '&filetype') ~= 'dashboard' then
       vim.cmd 'silent! confirm bwipeout'
       vim.cmd 'Dashboard'
-else
+    else
       vim.cmd 'confirm qall'
     end
     return
