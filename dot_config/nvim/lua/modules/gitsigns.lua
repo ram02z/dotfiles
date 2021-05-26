@@ -10,6 +10,7 @@ local gs_conf = {
   },
   numhl = false,
   linehl = false,
+  keymaps = {},
   watch_index = {
     interval = 1000
   },

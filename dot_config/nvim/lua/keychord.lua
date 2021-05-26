@@ -11,7 +11,7 @@ local M = {}
 
 local keys = {}
 -- Table of suffixes for which chord cancelation is applied
-local suffixes = {'<esc>', ''}
+local suffixes = {'<esc>', 'x', '', 'c', 'd', 's'}
 
 local function load_keys()
   keys = {}

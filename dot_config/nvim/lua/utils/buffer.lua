@@ -9,6 +9,8 @@ M.bufwipeout = function()
     if vim.fn.getbufvar(cur_bufnr, '&filetype') ~= 'dashboard' then
       vim.cmd 'silent! confirm bwipeout'
       vim.cmd 'Dashboard'
+      -- Ensure that tab line is hidden
+      vim.o.showtabline = 0
     else
       vim.cmd 'confirm qall'
     end

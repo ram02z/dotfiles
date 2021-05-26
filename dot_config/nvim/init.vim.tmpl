@@ -222,18 +222,18 @@ function! Map(lhs, rhs, modes)
 endfunction
 
 " Swap two lines
-nnoremap <silent> <A-j> :m .+1<CR>==
-nnoremap <silent> <A-k> :m .-2<CR>==
-inoremap <silent> <A-j> <Esc> :m .+1<CR>==gi
-inoremap <silent> <A-k> <Esc> :m .-2<CR>==gi
-vnoremap <silent> <A-j> :m '>+1<CR>==gv
-vnoremap <silent> <A-k> :m '<-2<CR>==gv
+" nnoremap <silent> <A-j> :m .+1<CR>==
+" nnoremap <silent> <A-k> :m .-2<CR>==
+" inoremap <silent> <A-j> <Esc> :m .+1<CR>==gi
+" inoremap <silent> <A-k> <Esc> :m .-2<CR>==gi
+" vnoremap <silent> <A-j> :m '>+1<CR>==gv
+" vnoremap <silent> <A-k> :m '<-2<CR>==gv
 
 " Map page-up and page-down
-map <silent> <PageUp> <C-b>
-map <silent> <PageDown> <C-f>
-imap <silent> <PageUp> <C-O><C-b>
-imap <silent> <PageDown> <C-O><C-f>
+" map <silent> <PageUp> <C-b>
+" map <silent> <PageDown> <C-f>
+" imap <silent> <PageUp> <C-O><C-b>
+" imap <silent> <PageDown> <C-O><C-f>
 
 {{ if (ne .chezmoi.os "windows") }}
 " Unix line endings
@@ -246,7 +246,7 @@ set termguicolors
 set number
 set relativenumber
 " Toggle line numbering (useful when copying mutliple lines)
-nnoremap <silent> <leader>d :set nu! rnu! <CR>
+" nnoremap <silent> <leader>d :set nu! rnu! <CR>
 autocmd TermOpen * setlocal nonumber norelativenumber
 
 " Fixed size signcolumn
@@ -295,7 +295,7 @@ set clipboard+=unnamedplus
 {{ end -}}
 
 " Create terminal buffer
-nnoremap <silent> <Leader><CR> :term<CR>
+" nnoremap <silent> <Leader><CR> :term<CR>
 
 
 " TODO: use sessions
@@ -368,10 +368,10 @@ nnoremap <silent> <Leader>r :Reload<CR>
 nnoremap <silent> <Leader>R :Restart<CR>
 
 " dial.nvim mappings
-nmap <C-a> <Plug>(dial-increment)
-nmap <C-x> <Plug>(dial-decrement)
-vmap <C-a> <Plug>(dial-increment)
-vmap <C-x> <Plug>(dial-decrement)
+" nmap <C-a> <Plug>(dial-increment)
+" nmap <C-x> <Plug>(dial-decrement)
+" vmap <C-a> <Plug>(dial-increment)
+" vmap <C-x> <Plug>(dial-decrement)
 
 " dashboard-nvim settings
 let g:dashboard_custom_header = [
