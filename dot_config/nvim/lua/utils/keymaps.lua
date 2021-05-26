@@ -1,4 +1,5 @@
 -- From https://github.com/tjdevries/astronauta.nvim
+-- Get rid of this file once !13823 is merged
 local keymap= {}
 
 -- Have to use a global to handle re-requiring this file and losing all of the keymap.
