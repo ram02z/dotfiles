@@ -8,10 +8,11 @@ set -e
 # - Shows the selected/default sink as active
 # - Automatically switches all running input sinks when switching the default sink
 
-# Dependancies
+# Dependencies
 # - pacmd
-# - ripgrep
-# - rofi
+# - ripgrep (can be substituted with another search tool)
+# - rofi (can be substituted as long as additional arguments are tweaked)
+# - GNU coreutils
 
 if ! [ -x "${AUDIOCLI=$(command -v pacmd)}" ]; then
     printf "AUDIOCLI not found.\n"
