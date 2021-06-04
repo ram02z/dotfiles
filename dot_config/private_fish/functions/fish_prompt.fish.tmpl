@@ -7,6 +7,7 @@ set -g __prompt_git_state_cmd_id -1
 set -g __prompt_git_static ""
 set -g __prompt_git_commits ""
 set -g __prompt_dirty ""
+set -g __prompt_behind ""
 set -q prompt_git_repo || set -g prompt_git_repo ""
 
 
@@ -18,17 +19,24 @@ end
 
 # Abort an in-flight dirty check, if any.
 function __prompt_abort_check
-    if set -q __prompt_check_pid
-        set -l pid $__prompt_check_pid
+    if set -q __prompt_check_dirty_pid
+        set -l pid $__prompt_check_dirty_pid
         functions -e __prompt_on_finish_$pid
         command kill $pid >/dev/null 2>&1
-        set -e __prompt_check_pid
+        set -e __prompt_check_dirty_pid
+    end
+    if set -q __prompt_check_behind_pid
+        set -l pid $__prompt_check_behind_pid
+        functions -e __prompt_on_finish_$pid
+        command kill $pid >/dev/null 2>&1
+        set -e __prompt_check_behind_pid
     end
 end
 
 function __prompt_git_status
     # Reset state if this call is *not* due to a redraw request
     set -l prev_dirty $__prompt_dirty
+    set -l prev_behind $__prompt_behind
     if test $__prompt_cmd_id -ne $__prompt_git_state_cmd_id
         __prompt_abort_check
 
@@ -36,6 +44,7 @@ function __prompt_git_status
         set __prompt_git_static ""
         set __prompt_git_commits ""
         set __prompt_dirty ""
+        set __prompt_behind ""
     end
 
     # Fetch git position & action synchronously.
@@ -76,38 +85,84 @@ function __prompt_git_status
 
     # Fetch git commit ahead/behind synchronously
     # TODO: make async (right now its 2-3x slower)
-    if test -z $__prompt_git_commits
-        # Commit up/down
-        command git rev-list --count --left-right @{upstream}...@ 2>/dev/null |
-            read behind ahead
-        switch "$behind $ahead"
-            case " " "0 0"
-            case "0 *"
-                set upstream "$prompt_ahead_symbol$ahead"
-            case "* 0"
-                set upstream "$prompt_behind_symbol$behind"
-            case "*"
-                set upstream "$prompt_ahead_symbol$ahead $prompt_behind_symbol$behind"
+    if test -z $__prompt_behind
+        if ! set -q __prompt_check_behind_pid
+            # Compose shell command to run in background
+            # TODO: make position var async
+            set -l position (command git --no-optional-locks symbolic-ref --short HEAD 2>/dev/null)
+            set -l check_cmd "git rev-list origin/$position...$position --ignore-submodules 2>/dev/null | head -n1 | count"
+            set -l cmd "if test ($check_cmd) != "0"; exit 1; else; exit 0; end"
+
+            begin
+                # Defer execution of event handlers by fish for the remainder of lexical scope.
+                # This is to prevent a race between the child process exiting before we can get set up.
+                block -l
+
+                set -g __prompt_check_behind_pid 0
+                command fish --private --command "$cmd" >/dev/null 2>&1 &
+                set -l pid (jobs --last --pid)
+
+                set -g __prompt_check_behind_pid $pid
+
+                # Use exit code to convey dirty status to parent process.
+                function __prompt_on_finish_$pid --inherit-variable pid --on-process-exit $pid
+                    functions -e __prompt_on_finish_$pid
+
+                    if set -q __prompt_check_behind_pid
+                        if test $pid -eq $__prompt_check_behind_pid
+                            switch $argv[3]
+                                case 0
+                                    set -g __prompt_behind_state 0
+                                    if status is-interactive
+                                        commandline -f repaint
+                                    end
+                                case 1
+                                    set -g __prompt_behind_state 1
+                                    if status is-interactive
+                                        commandline -f repaint
+                                    end
+                                case '*'
+                                    set -g __prompt_behind_state 2
+                                    if status is-interactive
+                                        commandline -f repaint
+                                    end
+                            end
+                        end
+                    end
+                end
+            end
         end
-        set -g __prompt_git_commits $upstream
+
+        if set -q __prompt_behind_state
+            switch $__prompt_behind_state
+                case 0
+                    set -g __prompt_behind " "
+                case 1
+                    set -g __prompt_behind $prompt_behind_symbol
+                case 2
+                    set -g __prompt_behind "<err>"
+            end
+
+            set -e __prompt_check_behind_pid
+            set -e __prompt_behind_state
+        end
 
         # Fetch in background
         # Ignores ssh git repos
         if test "$prompt_bg_fetch" = "true"
             fish --private --command "
-            set -l tmp (command git remote -v)
-            if ! string match -q -- \"*@*\" \$tmp
-                command git fetch --no-tags 2>/dev/null
-            end
+            set -x GIT_TERMINAL_PROMPT 0
+            set -x GIT_SSH_COMMAND 'ssh -o BatchMode=yes'
+            set -l ref (command git --no-optional-locks symbolic-ref --short HEAD 2>/dev/null)
+            command git fetch --quiet --no-tags --recurse-submodules=no $ref 2>/dev/null
             " &
         end
     end
 
     # Fetch dirty status asynchronously.
     if test -z $__prompt_dirty
-        if ! set -q __prompt_check_pid
+        if ! set -q __prompt_check_dirty_pid
             # Compose shell command to run in background
-            # TODO: use a faster command maybe?
             set -l check_cmd "git --no-optional-locks status -unormal --porcelain --ignore-submodules 2>/dev/null | head -n1 | count"
             set -l cmd "if test ($check_cmd) != "0"; exit 1; else; exit 0; end"
 
@@ -116,18 +171,18 @@ function __prompt_git_status
                 # This is to prevent a race between the child process exiting before we can get set up.
                 block -l
 
-                set -g __prompt_check_pid 0
+                set -g __prompt_check_dirty_pid 0
                 command fish --private --command "$cmd" >/dev/null 2>&1 &
                 set -l pid (jobs --last --pid)
 
-                set -g __prompt_check_pid $pid
+                set -g __prompt_check_dirty_pid $pid
 
                 # Use exit code to convey dirty status to parent process.
                 function __prompt_on_finish_$pid --inherit-variable pid --on-process-exit $pid
                     functions -e __prompt_on_finish_$pid
 
-                    if set -q __prompt_check_pid
-                        if test $pid -eq $__prompt_check_pid
+                    if set -q __prompt_check_dirty_pid
+                        if test $pid -eq $__prompt_check_dirty_pid
                             switch $argv[3]
                                 case 0
                                     set -g __prompt_dirty_state 0
@@ -161,7 +216,7 @@ function __prompt_git_status
                     set -g __prompt_dirty "<err>"
             end
 
-            set -e __prompt_check_pid
+            set -e __prompt_check_dirty_pid
             set -e __prompt_dirty_state
         end
     end
@@ -173,13 +228,23 @@ function __prompt_git_status
     if test -n "$__prompt_git_commits"
         echo -n " $__prompt_git_commits "
     end
-    set_color red
 
+    set_color red
     if ! test -z $__prompt_dirty
         echo -n $__prompt_dirty
     else if ! test -z $prev_dirty
-        set_color --bold $prompt_git_color
+        set_color --dim red
         echo -n $prev_dirty
+        set_color normal
+    end
+
+    # TODO: improve spacing
+    set_color brblue
+    if ! test -z $__prompt_behind
+        echo -n $__prompt_behind
+    else if ! test -z $prev_behind
+        set_color --dim brblue
+        echo -n $prev_behind
         set_color normal
     end
 
