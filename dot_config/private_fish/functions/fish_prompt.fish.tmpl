@@ -29,7 +29,7 @@ function __prompt_abort_check
         set -l pid $__prompt_check_behind_pid
         functions -e __prompt_on_finish_$pid
         command kill $pid >/dev/null 2>&1
-        set - e __prompt_check_behind_pid
+        set -e __prompt_check_behind_pid
     end
 end
 
@@ -149,14 +149,14 @@ function __prompt_git_status
 
         # Fetch in background
         # Ignores ssh git repos
-        # if test "$prompt_bg_fetch" = "true"
-        #     fish --private --command "
-        #     set -l tmp (command git remote -v)
-        #     if ! string match -q -- \"*@*\" \$tmp
-        #         command git fetch --no-tags 2>/dev/null
-        #     end
-        #     " &
-        # end
+        if test "$prompt_bg_fetch" = "true"
+            fish --private --command "
+            set -x GIT_TERMINAL_PROMPT 0
+            set -x GIT_SSH_COMMAND 'ssh -o BatchMode=yes'
+            set -l ref (command git --no-optional-locks symbolic-ref --short HEAD 2>/dev/null)
+            command git fetch --quiet --no-tags --recurse-submodules=no $ref 2>/dev/null
+            " &
+        end
     end
 
     # Fetch dirty status asynchronously.
