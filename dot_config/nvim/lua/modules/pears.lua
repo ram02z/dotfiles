@@ -4,39 +4,42 @@ local pears = require'pears'
 local R = require'pears.rule'
 
 pears.setup(function(conf)
-  -- Don't expand pair character if next character is alphanumeric/underscore/pear char
+  -- Don't expand pair character if next character is alphanumeric/underscore/pair
   conf.pair("(", {
     close = ")",
     should_expand = R.all_of(
+      R.not_(R.end_of_context "[\\]"),
       R.not_(R.match_next "[a-zA-Z0-9_({\"'\\[]"))
   })
   conf.pair("[", {
     close = "]",
     should_expand = R.all_of(
+      R.not_(R.end_of_context "[\\]"),
       R.not_(R.match_next "[a-zA-Z0-9_({\"'\\[]"))
   })
   conf.pair("{", {
     close = "}",
     should_expand = R.all_of(
+      R.not_(R.end_of_context "[\\]"),
       R.not_(R.match_next "[a-zA-Z0-9_({\"'\\[]"))
   })
-  -- Don't expand pair character if prev/next character is alphanumeric/underscore char
+  -- Don't expand pair character if prev/next character is alphanumeric/underscore
   conf.pair("\"", {
     close = "\"",
     should_expand = R.all_of(
-      R.not_(R.end_of_context "[a-zA-Z0-9_]"),
+      R.not_(R.end_of_context "[a-zA-Z0-9_\\]"),
       R.not_(R.match_next "[a-zA-Z0-9_]"))
   })
   conf.pair("'", {
     close = "'",
     should_expand = R.all_of(
-      R.not_(R.end_of_context "[a-zA-Z0-9_]"),
+      R.not_(R.end_of_context "[a-zA-Z0-9_\\]"),
       R.not_(R.match_next "[a-zA-Z0-9_]"))
   })
   conf.pair("`", {
     close = "`",
     should_expand = R.all_of(
-      R.not_(R.end_of_context "[a-zA-Z0-9_]"),
+      R.not_(R.end_of_context "[a-zA-Z0-9_\\]"),
       R.not_(R.match_next "[a-zA-Z0-9_]"))
   })
   conf.preset "tag_matching"

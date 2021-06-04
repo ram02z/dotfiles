@@ -1,11 +1,32 @@
-local on_attach = function(client, buffnr)
-  require'illuminate'.on_attach(client)
+if not packer_plugins['nvim-lspconfig'].loaded then
+  vim.cmd [[packadd nvim-lspconfig]]
+end
+local nvim_lsp = require'lspconfig'
+
+local on_attach = function(client, bufnr)
+  -- Set autocommands conditional on server_capabilities
+  if client.resolved_capabilities.document_highlight then
+    vim.api.nvim_exec([[
+    augroup lsp_document_highlight
+    autocmd! * <buffer>
+    autocmd CursorHold <buffer> lua vim.lsp.buf.document_highlight()
+    autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
+    augroup END
+    ]], false)
+  end
 end
 
 -- config that activates keymaps and enables snippet support
 local function make_config()
   local capabilities = vim.lsp.protocol.make_client_capabilities()
   capabilities.textDocument.completion.completionItem.snippetSupport = true
+  capabilities.textDocument.completion.completionItem.resolveSupport = {
+    properties = {
+      'documentation',
+      'detail',
+      'additionalTextEdits',
+    }
+  }
   return {
     -- enable snippet support
     capabilities = capabilities,
@@ -57,13 +78,16 @@ local function setup_servers()
 
     -- language specific config
     if server == "lua" then
+      if not packer_plugins['lua-dev.nvim'].loaded then
+        vim.cmd [[packadd lua-dev.nvim]]
+      end
       config = require'lua-dev'.setup({
         library = {
           plugins = { "nvim-treesitter", "plenary.nvim", "telescope.nvim" },
         },
       })
     end
-    require'lspconfig'[server].setup(config)
+    nvim_lsp[server].setup(config)
   end
 end
 

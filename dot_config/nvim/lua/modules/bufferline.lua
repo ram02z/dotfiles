@@ -9,19 +9,52 @@ local bline_conf = {
     always_show_bufferline = false,
     diagnostics = 'nvim_lsp',
     mappings = false,
+    offsets = {
+      {filetype = "packer", text = "Packer", highlight = "Directory", text_align = "left"},
+    },
   },
   highlights = {
     fill = {
-      guibg = '#21222C'
+      guibg = {
+        attribute = 'bg',
+        highlight = 'Pmenu'
+      }
     },
     background = {
-      guibg = '#21222C'
+      guibg = {
+        attribute = 'bg',
+        highlight = 'Pmenu'
+      }
     },
     separator = {
-      guibg = '#21222C'
+      guibg = {
+        attribute = 'bg',
+        highlight = 'Pmenu'
+      }
     },
     modified = {
-      guifg = '#44475A'
+      guifg = {
+        attribute = 'bg',
+        highlight = 'PmenuSel'
+      }
+    },
+    indicator_selected = {
+      guifg = {
+        attribute = 'fg',
+        highlight = 'Special'
+      }
+    },
+    pick = {
+      guibg = {
+        attribute = 'bg',
+        highlight = 'StatusLine'
+      }
+    },
+    pick_selected = {
+      guibg = {
+        attribute = 'bg',
+        highlight = 'Normal'
+      }
     },
     modified_selected = {
       guifg = '#C6C7D1'
@@ -33,3 +66,13 @@ local bline_conf = {
 }
 
 bline.setup(bline_conf)
+
+-- Maps
+vim.keymap.nnoremap({'<Leader><Leader>', bline.pick_buffer, silent = true})
+vim.keymap.nnoremap({'<Leader>,', function() bline.cycle(-1) end, silent = true})
+vim.keymap.nnoremap({'<Leader>.', function() bline.cycle(1) end, silent = true})
+vim.keymap.nnoremap({'<Leader><lt>', function() bline.move(-1) end, silent = true})
+vim.keymap.nnoremap({'<Leader>>', function() bline.move(1) end, silent = true})
+for i=1,9 do
+  vim.keymap.nnoremap({'<Leader>'..tostring(i), function() bline.go_to_buffer(i) end, silent = true})
+end
