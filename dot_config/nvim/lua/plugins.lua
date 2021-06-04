@@ -363,7 +363,10 @@ return packer.startup(function(use)
   -- Wrap and unwrap arguments
   use {
     'AndrewRadev/splitjoin.vim',
-    keys ={'gJ', 'gS'},
+    keys ={
+      {'n','gJ'},
+      {'n','gS'},
+    },
   }
 
   use {
@@ -392,10 +395,10 @@ return packer.startup(function(use)
       vim.keymap.xmap({'aa', '<Plug>(swap-textobject-a)', silent = true})
     end,
     keys = {
-      'gs',
+      {'n', 'gs'},
       {'x', 'gs'},
-      'g<',
-      'g>',
+      {'n', 'g<'},
+      {'n', 'g>'},
       {'o', 'ia'},
       {'x', 'ia'},
       {'o', 'aa'},
@@ -459,7 +462,11 @@ return packer.startup(function(use)
       vim.keymap.omap({'as', '<Plug>(textobj-sandwich-query-a)', silent = true})
     end,
     keys = {
-      'ys', 'yss', 'yS', 'cs', 'css',
+      {'n', 'ys'},
+      {'n', 'yss'},
+      {'n', 'yS'},
+      {'n', 'cs'},
+      {'n', 'css'},
       {'n', 'ds'},
       {'n', 'dss'},
       {'x', 'S'},
