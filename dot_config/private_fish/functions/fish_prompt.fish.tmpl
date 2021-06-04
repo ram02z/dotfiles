@@ -5,7 +5,6 @@
 set -g __prompt_cmd_id 0
 set -g __prompt_git_state_cmd_id -1
 set -g __prompt_git_static ""
-set -g __prompt_git_commits ""
 set -g __prompt_dirty ""
 set -g __prompt_behind ""
 set -q prompt_git_repo || set -g prompt_git_repo ""
@@ -42,7 +41,6 @@ function __prompt_git_status
 
         set __prompt_git_state_cmd_id $__prompt_cmd_id
         set __prompt_git_static ""
-        set __prompt_git_commits ""
         set __prompt_dirty ""
         set __prompt_behind ""
     end
@@ -224,10 +222,6 @@ function __prompt_git_status
     # Render git status. When in-progress, use previous state to reduce flicker.
     set_color --bold $prompt_git_color
     echo -n "$prompt_branch_symbol $__prompt_git_static"
-    set_color brblue
-    if test -n "$__prompt_git_commits"
-        echo -n " $__prompt_git_commits "
-    end
 
     set_color red
     if ! test -z $__prompt_dirty
@@ -236,9 +230,10 @@ function __prompt_git_status
         set_color --dim red
         echo -n $prev_dirty
         set_color normal
+    else
+        echo -n " "
     end
 
-    # TODO: improve spacing
     set_color brblue
     if ! test -z $__prompt_behind
         echo -n $__prompt_behind
