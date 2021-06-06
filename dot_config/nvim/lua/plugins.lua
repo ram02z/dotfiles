@@ -69,6 +69,7 @@ return packer.startup(function(use)
     after = 'vim-vsnip'
   }
 
+
   use {
     'nvim-treesitter/nvim-treesitter',
     event = 'BufRead',
@@ -97,7 +98,6 @@ return packer.startup(function(use)
     'nvim-treesitter/nvim-treesitter-refactor',
     after = 'nvim-treesitter'
   }
-
 
   --
   -- UI
@@ -274,7 +274,7 @@ return packer.startup(function(use)
   -- Fuzzy finder
   use {
     'nvim-telescope/telescope.nvim',
-    keys = {'<Leader>p', '<Leader>?', '<Leader>h'},
+    keys = {'n', '<Leader>p'},
     cmd = 'Telescope',
     module = 'telescope',
     requires = {
@@ -294,9 +294,23 @@ return packer.startup(function(use)
           require"telescope".load_extension("frecency")
         end
       },
+      {
+        'sudormrfbin/cheatsheet.nvim',
+        keys = {'n', '<Leader>?'}
+      },
       {'nvim-telescope/telescope-packer.nvim'},
     },
     config = [[require'modules.telescope']]
+  }
+
+  -- Registers picker
+  use {
+    'tversteeg/registers.nvim',
+    keys = {
+      'n', '"',
+      'x', '"',
+      'i', '<C-R>'
+    }
   }
 
   -- Zoxide wrapper
@@ -362,11 +376,11 @@ return packer.startup(function(use)
 
   -- Wrap and unwrap arguments
   use {
-    'AndrewRadev/splitjoin.vim',
-    keys ={
-      {'n','gJ'},
-      {'n','gS'},
-    },
+    'FooSoft/vim-argwrap',
+    setup = function ()
+      vim.keymap.nnoremap({'<Leader>j', ':ArgWrap<CR>', silent = true})
+    end,
+    cmd = 'ArgWrap'
   }
 
   use {
@@ -387,23 +401,12 @@ return packer.startup(function(use)
   }
 
   use {
-    'machakann/vim-swap',
-    setup = function()
-      vim.keymap.omap({'ia', '<Plug>(swap-textobject-i)', silent = true})
-      vim.keymap.xmap({'ia', '<Plug>(swap-textobject-i)', silent = true})
-      vim.keymap.omap({'aa', '<Plug>(swap-textobject-a)', silent = true})
-      vim.keymap.xmap({'aa', '<Plug>(swap-textobject-a)', silent = true})
+    'mizlan/iswap.nvim',
+    setup = function ()
+      vim.keymap.nnoremap({'gs', ':ISwap<CR>', silent = true})
     end,
-    keys = {
-      {'n', 'gs'},
-      {'x', 'gs'},
-      {'n', 'g<'},
-      {'n', 'g>'},
-      {'o', 'ia'},
-      {'x', 'ia'},
-      {'o', 'aa'},
-      {'x', 'aa'},
-    }
+    cmd = 'ISwap',
+    after = 'nvim-treesitter'
   }
 
   -- Comments
@@ -424,6 +427,7 @@ return packer.startup(function(use)
       '<Plug>kommentary_motion_default'
     },
     config = function()
+      require'keychord'.cancel('gcc')
       local kommentary = require'kommentary.config'
 
       kommentary.configure_language("default", {

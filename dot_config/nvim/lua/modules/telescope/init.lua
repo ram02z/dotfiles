@@ -44,9 +44,7 @@ telescope.setup(tscope_config)
 local tscope = require'modules.telescope.functions'
 local cancel = require'keychord'.cancel
 -- View help pages
-vim.keymap.nnoremap({'<Leader>h', ':Telescope help_tags<CR>' , silent = true})
--- View mappings
-vim.keymap.nnoremap({'<Leader>?',':Telescope keymaps<CR>', silent = true})
+vim.keymap.nnoremap({'<Leader>pm', ':Telescope help_tags<CR>' , silent = true})
 -- Git project files (fallback to cwd)
 vim.keymap.nnoremap({'<Leader>pg', tscope.project_files, silent = true})
 -- Live grep cwd
@@ -55,14 +53,18 @@ vim.keymap.nnoremap({'<Leader>pl', tscope.grep_cwd, silent = true})
 vim.keymap.nnoremap({'<Leader>po', tscope.grep_buffers, silent = true})
 -- Current buffer search
 vim.keymap.nnoremap({'<Leader>pb', ':Telescope current_buffer_fuzzy_find<CR>', silent = true})
--- List git commits
-vim.keymap.nnoremap({'<Leader>pc', tscope.git_commits, silent = true})
+-- List git status
+vim.keymap.nnoremap({'<Leader>ps', ':cd %:p:h | Telescope git_status<CR>', silent = true})
+-- Git branches
+vim.keymap.nnoremap({'<Leader>pgb', ':cd %:p:h | Telescope git_branches<CR>', silent = true})
 -- Treesitter picker
 vim.keymap.nnoremap({'<Leader>pt', ':Telescope treesitter<CR>', silent = true})
+-- Keymaps picker
+vim.keymap.nnoremap({'<Leader>pk', ':Telescope keymaps<CR>', silent = true})
+-- Commands picker
+vim.keymap.nnoremap({'<Leader>pc', ':Telescope commands<CR>', silent = true})
 -- File history picker (using frecency)
 vim.keymap.nnoremap({'<Leader>ph', tscope.old_files, silent = true})
--- Mark picker
-vim.keymap.nnoremap({'<Leader>pm', ':Telescope marks<CR>', silent = true})
 -- Packer plugin
 vim.keymap.nnoremap({'<Leader>pp', telescope.extensions.packer.plugins, silent = true})
 

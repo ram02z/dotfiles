@@ -10,10 +10,6 @@ M.project_files = function()
   end
 end
 
-M.git_commits = function()
-  pcall(require'telescope.builtin'.git_commits,cwd_opt)
-end
-
 M.grep_cwd = function()
   require'telescope.builtin'.live_grep(cwd_opt)
 end

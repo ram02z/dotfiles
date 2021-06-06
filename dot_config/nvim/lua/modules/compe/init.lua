@@ -18,16 +18,19 @@ local compe_conf = {
   autocomplete = true,
 
   source = {
-    path = true,
-    -- buffer = {
-    --   menu = '  Buffer',
-    -- },
-    vsnip = {
-      menu = '  VSnip'
+    path = {
+      kind = ''
     },
-    nvim_lsp = true,
-    treesitter = {
-      menu = ' Treesitter'
+    buffer = {
+      kind = '',
+      filetypes = {'fish'}
+    },
+    vsnip = {
+      kind = '',
+      priority = 10000
+    },
+    nvim_lsp = {
+      priority = 9999
     },
   },
 }
