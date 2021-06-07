@@ -71,6 +71,7 @@ return packer.startup(function(use)
 
 
   use {
+    -- '~/Downloads/nvim-treesitter',
     'nvim-treesitter/nvim-treesitter',
     event = 'BufRead',
     cmd = 'TSUpdate',
@@ -168,6 +169,7 @@ return packer.startup(function(use)
         'undotree',
         'packer',
         'lspinfo',
+        'tsplayground',
         ''
       }
       vim.g.indent_blankline_buftype_exclude = {'terminal'}
@@ -644,13 +646,14 @@ return packer.startup(function(use)
     event = {'FileType qf', 'QuickFixCmdPost'},
     config = function()
       vim.g.qf_shorten_path = 3
-      vim.keymap.nmap({'cq', '<Plug>(qf_qf_toggle)', silent = true})
-      vim.keymap.nmap({'cl', '<Plug>(qf_loc_toggle)', silent = true})
-      vim.keymap.nmap({'cs', '<Plug>(qf_qf_switch)', silent = true})
+      vim.keymap.nmap({'<Leader>qq', '<Plug>(qf_qf_toggle)', silent = true})
+      vim.keymap.nmap({'<Leader>ql', '<Plug>(qf_loc_toggle)', silent = true})
+      vim.keymap.nmap({'<Leader>qs', '<Plug>(qf_qf_switch)', silent = true})
       vim.keymap.nmap({']q', '<Plug>(qf_qf_previous)', silent = true})
       vim.keymap.nmap({'[q', '<Plug>(qf_qf_next)', silent = true})
       vim.keymap.nmap({']l', '<Plug>(qf_loc_previous)', silent = true})
       vim.keymap.nmap({'[l', '<Plug>(qf_loc_next)', silent = true})
+      require'keychord'.cancel('<Leader>q')
     end
   }
 
