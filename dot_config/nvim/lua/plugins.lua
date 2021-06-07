@@ -249,6 +249,7 @@ return packer.startup(function(use)
   -- File manager
   use {
     'mcchrish/nnn.vim',
+    -- TODO: Use lua config instead
     config = function()
       local t = require'utils.misc'.t
       vim.keymap.nnoremap({'<Leader>n', t ':cd %:p:h | NnnPicker<CR>', silent = true})

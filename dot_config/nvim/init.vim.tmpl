@@ -58,13 +58,16 @@ if has('clipboard')
     vmap <c-p> "*pgv
     imap <C-p> <C-o>"*p
 endif
+
 command! PurgeUndoFiles lua require('utils.misc').purge_old_undos()
 
 {{ if (eq .chezmoi.os "linux") }}
     {{ if .is_wsl }}
-let s:clip = '/mnt/c/Windows/System32/clip.exe'
+" TODO: prefer win32yank as it supports utf8
+" TODO: clip.exe only when on c drive
 " Registers bug
 let g:loaded_clipboard_provider = 1
+let s:clip = '/mnt/c/Windows/System32/clip.exe'
     {{ else if .is_wayland }}
 let s:clip = 'wl-copy'
     {{ else if .is_x11 }}
