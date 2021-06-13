@@ -360,18 +360,32 @@ return packer.startup(function(use)
     {
       -- FIX: Doesn't play well with vim-illuminate
       'b0o/vim-shot-f',
+      disable = true,
       setup = function()
         vim.g.shot_f_highlight_graph = "guifg='#ff007c' ctermfg=155"
         vim.g.shot_f_highlight_blank = "guibg=NONE"
       end
     },
     {
+      'rhysd/clever-f.vim',
+      setup = function ()
+        vim.keymap.map({';', '<Plug>(clever-f-repeat-forward)', silent = true})
+        vim.keymap.map({',', '<Plug>(clever-f-repeat-back)', silent = true})
+        vim.keymap.nmap({'<Esc>', '<Plug>(clever-f-reset)', silent = true})
+
+        vim.g.clever_f_smart_case = 1
+        vim.g.clever_f_chars_match_any_signs = ';'
+        vim.g.clever_f_fix_key_direction = 1
+        vim.g.clever_f_mark_direct = 1
+
+      end
+    },
+    {
       'phaazon/hop.nvim',
-      keys = {'<Leader>]', '<Leader>['},
+      keys = {'<Leader>;'},
       config = function ()
         local hop = require'hop'
-        vim.keymap.nnoremap({'<Leader>]', hop.hint_words, silent = true})
-        vim.keymap.nnoremap({'<Leader>[', hop.hint_lines, silent = true})
+        vim.keymap.nnoremap({'<Leader>;', hop.hint_words, silent = true})
         hop.setup({keys = 'asdghklwertyuipzxcvbnmfj'})
       end
     }
