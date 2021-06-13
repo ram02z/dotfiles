@@ -200,7 +200,7 @@ function __prompt_git_status
         if set -q __prompt_dirty_state
             switch $__prompt_dirty_state
                 case 0
-                    set -g __prompt_dirty $prompt_clean_indicator
+                    set -g __prompt_dirty " "
                 case 1
                     set -g __prompt_dirty $prompt_dirty_indicator
                 case 2

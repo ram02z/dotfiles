@@ -11,10 +11,6 @@ if ! set -q prompt_vi_symbol
     set -g prompt_vi_symbol "❮"
 end
 
-# This should be set to be at least as long as prompt_dirty_indicator, due to a fish bug
-if ! set -q prompt_clean_indicator
-    set -g prompt_clean_indicator (string replace -r -a '.' ' ' $prompt_dirty_indicator)
-end
 
 if ! set -q prompt_lock_dir_symbol
     set -g prompt_lock_dir_symbol ""
