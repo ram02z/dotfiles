@@ -145,7 +145,7 @@ function __prompt_git_status
             set -x GIT_TERMINAL_PROMPT 0
             set -x GIT_SSH_COMMAND 'ssh -o BatchMode=yes'
             set -l ref (command git --no-optional-locks symbolic-ref --short HEAD 2>/dev/null)
-            command git fetch --quiet --no-tags --recurse-submodules=no $ref 2>/dev/null
+            command git fetch --quiet --no-tags --recurse-submodules=no origin $ref 2>/dev/null
             " &
         end
     end
