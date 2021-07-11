@@ -15,7 +15,7 @@
    light1:           #f8f8f2;
 
    background-color: @dark1;
-   border-color:     @dark2;
+   border-color:     @darkblue;
    text-color:       @dark3;
    dark-text-color:  @dark4;
    main-color:       @blue;
@@ -26,7 +26,7 @@
 
 window {
    background-color: @background-color;
-   width: 33%;
+   width: 40%;
    padding: 10px;
    fullscreen: false;
    border:  2px;
@@ -80,7 +80,7 @@ element normal.active {
 }
 
 element selected.normal {
-    background-color: @border-color;
+    background-color: @dark3;
     text-color:       @selected-color;
 }
 
@@ -90,7 +90,7 @@ element selected.urgent {
 }
 
 element selected.active {
-    background-color: @border-color;
+    background-color: @dark3;
     text-color:       @green;
 }
 
