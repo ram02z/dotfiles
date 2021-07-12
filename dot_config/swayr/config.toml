@@ -1,20 +1,20 @@
-# TODO: icons?
 [menu]
 executable = 'rofi'
 args = [
     '-dmenu',
+    '-show-icons',
     '-markup-rows',
     '-format p',
     '-p {prompt}',
 ]
 
 [format]
-window_format = '{urgency_start}<b>“{title}”</b>{urgency_end} — <i>{app_name}</i> <span alpha="20000">({id})</span>'
+window_format = "{urgency_start}<b>“{title}”</b>{urgency_end} — <i>{app_name}</i> <span alpha='20000'>({id})</span>\u0000icon\u001f{app_icon}"
 workspace_format = '<b>Workspace {name}</b>   <span alpha="20000">({id})</span>'
 html_escape = true
 urgency_start = '<span background="darkred" foreground="yellow">'
 urgency_end = '</span>'
-# icon_dirs = [
-#     '/usr/share/icons/hicolor/48x48/apps',
-#     '/usr/share/pixmaps',
-# ]
+icon_dirs = [
+    '/usr/share/icons/hicolor/48x48/apps',
+    '/usr/share/pixmaps',
+]
