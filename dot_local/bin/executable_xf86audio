@@ -1,4 +1,5 @@
 #!/bin/bash
+# TODO: remove xdotool references
 actions="toggle|prev|next|forw|back"
 
 # Check for correct usage
@@ -38,7 +39,7 @@ mpv)
 *)
   case $1 in
   toggle)
-   playerctl play-pause 
+   playerctl play-pause
     ;;
   prev)
     playerctl previous
