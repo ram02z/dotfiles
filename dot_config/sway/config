@@ -409,7 +409,8 @@ bindsym $mod+Shift+q exec fish -c sway-kill
 
 bindsym $mod+c exec rofi -show calc -modi calc -no-show-match -no-sort
 
-bindsym Print exec $HOME/.local/bin/sway-screenshot-dmenu
+bindsym $mod+Print exec $HOME/.local/bin/sway-screenshot-dmenu
+bindsym Print exec $HOME/.local/bin/grimshot copy screen
 
 #
 # Startup
