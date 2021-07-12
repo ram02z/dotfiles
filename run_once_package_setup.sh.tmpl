@@ -1,19 +1,22 @@
-{{- if and (eq .chezmoi.os "linux") -}}
 #!/bin/bash
-
+{{if not (eq .chezmoi.os "linux") -}}
+exit 1
+{{- end }}
 #
 # Installs packages once chezmoi setup is over
 #
 
 _isInstalled() {
     package="$1"
-    {{ if (eq .chezmoi.osRelease.idLike "debian") }}
-    check="$(sudo dpkg -s "${package}")"
-    {{ else if (eq .chezmoi.osRelease.idLike "arch") }}
+    {{ if (eq .chezmoi.osRelease.id "void")}}
+    check="$(sudo xbps-query "${package}")";
+    {{else if (eq .chezmoi.osRelease.idLike "arch") }}
     check="$(sudo paru -Qs "${package}")";
+    {{ else if (eq .chezmoi.osRelease.idLike "debian") }}
+    check="$(sudo dpkg -s "${package}")";
     {{ end }}
     if [ -n "${check}" ] ; then
-        echo 0; 
+        echo 0;
         return;
     fi;
     echo 1;
@@ -48,10 +51,12 @@ _installMany() {
 
     # Install all package added to array
     printf "Packages not installed:\n%s\n" "${toInstall[@]}";
-    {{ if (eq .chezmoi.osRelease.idLike "debian") }}
-    sudo apt install "${toInstall[@]}";
+    {{ if (eq .chezmoi.osRelease.id "void")}}
+    xbps-install "${toInstall[@]}";
     {{ else if (eq .chezmoi.osRelease.idLike "arch") }}
     paru -S "${toInstall[@]}";
+    {{ else if (eq .chezmoi.osRelease.idLike "debian") }}
+    sudo apt install "${toInstall[@]}";
     {{ end }}
 }
 
@@ -67,7 +72,7 @@ _addPPA() {
 }
 
 _exists() {
-    if [[ $? -ne 0 ]]; then 
+    if [[ $? -ne 0 ]]; then
         if ! command -v $1 >/dev/null 2>&1; then
             return 1;
         fi;
@@ -79,7 +84,7 @@ _exists() {
 
 _chsh() {
     if [[ $? -ne 0 ]]; then
-        if [[ "$(echo '$SHELL' | grep $1)" ]] ; then 
+        if [[ "$(echo '$SHELL' | grep $1)" ]] ; then
            return 1;
         else
             sudo chsh -s "$(command -v $1)" "USER"
@@ -88,38 +93,58 @@ _chsh() {
     return 0;
 }
 
-        
 
-{{ if (eq .chezmoi.osRelease.idLike "arch") }}
-# Assumes we are running sway 
 
+{{- if (eq .chezmoi.osRelease.id "void") }}
+packages=("fish-shell" "neovim" "python3-neovim"
+"nnn" "git" "delta" "base-devel" "jq" "fzf"
+"curl");
+# TODO: Missing packages
+# i3status-rust (rust)
+# swayr (rust)
+# greetd (rust)
+# rundird (zig)
+# rofi-wayland (c)
+# ripgrep (rust)
+# bottom (rust)
+# based-connect (c)
+# zoxide (rust)
+# bat (rust)
+# hyperfine (rust)
+# fd (rust)
+# exa (rust)
+# ydotool (c++)
+read -p "Add sway desktop packages?" -n 1 -r
+if [[ $REPLY =~ ^[Yy]$ ]]; then
+    packages+=("sway" "seatd" "polkit" "firefox" "foot" "NetworkManager"
+    "wdisplays" "waylock" "gtk3-nocsd" "powertop" "bluez" "pipewire"
+    "mps-youtube" "playerctl" "libnotify" "wl-clipboard" "copyq" "swayidle"
+    "rofi-calc");
+fi;
+{{ else if (eq .chezmoi.osRelease.idLike "arch") }}
+# Assumes we are running sway
 # Checks if paru has been installed
-if [[ "$(_exists 'paru')" -ne 0 ]] ; then
+{{ if not (lookPath "paru") }}
     sudo pacman -S --needed base-devel
     git clone https://aur.archlinux.org/paru.git ~
     cd paru
     makepkg -si
-fi;
+{{ end }}
 
-packages=("sway" "fish" "neovim-nightly-bin" "nnn" "starship", "git-delta-bin", "rustup");
+packages=("sway" "fish" "neovim-nightly-bin" "git-delta-bin");
 {{ else if (eq .chezmoi.osRelease.idLike "debian") }}
-{{ if (eq .chezmoi.osRelease.id "ubuntu") }}
-if [[ "$(_exists 'starship')" -ne 0 ]]; then
-    curl -fsSL https://starship.rs/install.sh | bash
-fi
+    {{ if (eq .chezmoi.osRelease.id "ubuntu") }}
 _installMany "software-properties-common" >/dev/null 2>&1
 _addPPA "neovim-ppa/unstable"
 _addPPA "fish-shell/release-3"
-{{ end }}
+    {{ end }}
 packages=("fish" "neovim" "python3-neovim" "nnn" "build-essential");
 {{ end }}
 _installMany "${packages[@]}";
 
-if [[ "$(_exists 'rustup')" -ne 0 ]]; then
+{{- if not (lookPath "rustup") }}
     curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
-fi
+{{ end }}
 
 # Set fish as default shell
 _chsh "fish" >/dev/null 2>&1
-
-{{ end }}
