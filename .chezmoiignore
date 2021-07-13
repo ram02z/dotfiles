@@ -5,6 +5,12 @@ TODO.md
 {{ if .is_wsl }}
 .config/alacritty/**
 .config/alacritty/
+.config/sway/**
+.config/sway/
+.config/swayr/**
+.config/swayr/
+.config/copyq/**
+.config/copyq/
 .config/i3/**
 .config/i3/
 .config/i3status-rust/**
