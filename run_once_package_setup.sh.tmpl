@@ -9,20 +9,15 @@ exit 1
 _isInstalled() {
     package="$1"
     {{ if (eq .chezmoi.osRelease.id "void")}}
-    check="$(sudo xbps-query "${package}")";
+    sudo xbps-query "${package}" &>/dev/null;
     {{/* else if (eq (get .chezmoi.osRelease "idLike") "arch") */}}
     {{ else if (eq .chezmoi.osRelease.id "arch") }}
-    check="$(sudo paru -Qs "${package}")";
+    sudo paru -Qs "${package}" &>/dev/null;
     {{ else if (eq .chezmoi.osRelease.id "ubuntu") }}
     {{/* else if (eq (get .chezmoi.osRelease "idLike") "debian") */}}
-    check="$(sudo dpkg -s "${package}")";
+    sudo dpkg -s "${package}" &>/dev/null;
     {{ end }}
-    if [ -n "${check}" ] ; then
-        echo 0;
-        return;
-    fi;
-    echo 1;
-    return;
+    return $?
 }
 
 _installMany() {
@@ -31,7 +26,8 @@ _installMany() {
 
     for pkg; do
         # If package is installed, skip it
-        if [[ $(_isInstalled "${pkg}") == 0 ]]; then
+        _isInstalled "${pkg}"
+        if [[ $? == 0 ]]; then
             echo "${pkg} is already installed.";
             continue;
         fi;
@@ -125,6 +121,7 @@ if [[ $REPLY =~ ^[Yy]$ ]]; then
     "mps-youtube" "playerctl" "libnotify" "wl-clipboard" "copyq" "swayidle"
     "rofi-calc");
 fi;
+printf "\n";
 {{/* else if (eq (get .chezmoi.osRelease "idLike") "arch") */}}
 {{ else if (eq .chezmoi.osRelease.id "arch") }}
 # Assumes we are running sway
@@ -142,10 +139,11 @@ packages=("sway" "fish" "neovim-nightly-bin" "git-delta-bin");
 _installMany "software-properties-common" >/dev/null 2>&1
 _addPPA "neovim-ppa/unstable"
 _addPPA "fish-shell/release-3"
-    {{ end }}
 packages=("fish" "neovim" "python3-neovim" "nnn" "build-essential");
+    {{ end }}
 {{ end }}
 _installMany "${packages[@]}";
+
 
 {{- if not (lookPath "rustup") }}
     curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
