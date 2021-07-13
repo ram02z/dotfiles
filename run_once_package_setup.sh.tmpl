@@ -10,9 +10,11 @@ _isInstalled() {
     package="$1"
     {{ if (eq .chezmoi.osRelease.id "void")}}
     check="$(sudo xbps-query "${package}")";
-    {{else if (eq .chezmoi.osRelease.idLike "arch") }}
+    {{/* else if (eq (get .chezmoi.osRelease "idLike") "arch") */}}
+    {{ else if (eq .chezmoi.osRelease.id "arch") }}
     check="$(sudo paru -Qs "${package}")";
-    {{ else if (eq .chezmoi.osRelease.idLike "debian") }}
+    {{ else if (eq .chezmoi.osRelease.id "ubuntu") }}
+    {{/* else if (eq (get .chezmoi.osRelease "idLike") "debian") */}}
     check="$(sudo dpkg -s "${package}")";
     {{ end }}
     if [ -n "${check}" ] ; then
@@ -53,9 +55,11 @@ _installMany() {
     printf "Packages not installed:\n%s\n" "${toInstall[@]}";
     {{ if (eq .chezmoi.osRelease.id "void")}}
     xbps-install "${toInstall[@]}";
-    {{ else if (eq .chezmoi.osRelease.idLike "arch") }}
+    {{/* else if (eq (get .chezmoi.osRelease "idLike") "arch") */}}
+    {{ else if (eq .chezmoi.osRelease.id "arch") }}
     paru -S "${toInstall[@]}";
-    {{ else if (eq .chezmoi.osRelease.idLike "debian") }}
+    {{/* else if (eq (get .chezmoi.osRelease "idLike") "debian") */}}
+    {{ else if (eq .chezmoi.osRelease.id "ubuntu") }}
     sudo apt install "${toInstall[@]}";
     {{ end }}
 }
@@ -121,7 +125,8 @@ if [[ $REPLY =~ ^[Yy]$ ]]; then
     "mps-youtube" "playerctl" "libnotify" "wl-clipboard" "copyq" "swayidle"
     "rofi-calc");
 fi;
-{{ else if (eq .chezmoi.osRelease.idLike "arch") }}
+{{/* else if (eq (get .chezmoi.osRelease "idLike") "arch") */}}
+{{ else if (eq .chezmoi.osRelease.id "arch") }}
 # Assumes we are running sway
 # Checks if paru has been installed
 {{ if not (lookPath "paru") }}
@@ -132,7 +137,7 @@ fi;
 {{ end }}
 
 packages=("sway" "fish" "neovim-nightly-bin" "git-delta-bin");
-{{ else if (eq .chezmoi.osRelease.idLike "debian") }}
+{{/* else if (eq (get .chezmoi.osRelease "idLike") "debian") */}}
     {{ if (eq .chezmoi.osRelease.id "ubuntu") }}
 _installMany "software-properties-common" >/dev/null 2>&1
 _addPPA "neovim-ppa/unstable"

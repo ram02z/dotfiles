@@ -1,6 +1,7 @@
 # TODO: add arch aliases
 
-{{- if eq .chezmoi.osRelease.idLike "debian" }}
+{{/* if (eq (get .chezmoi.osRelease "idLike") "debian") */}}
+{{ if (eq .chezmoi.osRelease.id "ubuntu") }}
 alias aup "sudo apt update && apt list --upgradable"
 alias aguu "sudo apt update && sudo apt upgrade"
 alias allpkgs 'dpkg --get-selections | grep -v deinstall'
@@ -9,7 +10,6 @@ alias agud "sudo apt update && sudo apt dist-upgrade"
 if type -q batcat
     alias bat "batcat"
 end
-{{ end -}}
-
+{{- end }}
 # Fish
 alias src "source ~/.config/fish/config.fish"

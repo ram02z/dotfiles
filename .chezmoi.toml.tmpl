@@ -1,20 +1,23 @@
-{{ $fullName := "Omar Zeghouani" }}
-{{ $personalEmail := "omarzeghouanii@gmail.com" }}
-{{ $isWsl := or (env "WSL_DISTRO_NAME") (env "WSLENV") | not | not }}
-{{  $isX11 := and (env "DISPLAY") (eq (env "XDG_SESSION_TYPE") "x11") | not | not }}
-{{ $isWayland :=  and (env "WAYLAND_DISPLAY") (eq (env "XDG_SESSION_TYPE") "wayland") | not | not }}
-
+{{ $fullName := "Omar Zeghouani" -}}
+{{ $email := promptString  "email" -}}
+{{ $isWsl := or (env "WSL_DISTRO_NAME") (env "WSLENV") | not | not -}}
+{{ $isX11 := and (env "DISPLAY") (eq (env "XDG_SESSION_TYPE") "x11") | not | not -}}
+{{ $isWayland :=  and (env "WAYLAND_DISPLAY") (eq (env "XDG_SESSION_TYPE") "wayland") | not | not -}}
+{{ $pager := or (lookPath "delta") "diff" }}
+{{ $editor := or (lookPath "nvim") "vi" }}
 [diff]
-    format = "git"
-    pager = "delta"
+  format = "git"
+  pager = "{{ $pager }}"
 
 [merge]
-    command = "nvim"
-    args = "-d"
+  command = "{{ $editor }}"
+  args = "-d"
 
 [data]
-    name = "{{ $fullName }}"
-    email = "{{ $personalEmail }}"
-    is_wsl = {{ $isWsl }}
-    is_x11 = {{ $isX11 }}
-    is_wayland = {{ $isWayland }}
+  name = "{{ $fullName }}"
+  email = "{{ $email }}"
+  pager = "{{ $pager }}"
+  editor = "{{ $editor }}"
+  is_wsl = {{ $isWsl }}
+  is_x11 = {{ $isX11 }}
+  is_wayland = {{ $isWayland }}
