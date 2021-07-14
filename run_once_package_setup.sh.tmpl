@@ -87,7 +87,7 @@ _chsh() {
         if [[ "$(echo '$SHELL' | grep $1)" ]] ; then
            return 1;
         else
-            sudo chsh -s "$(command -v $1)" "USER"
+            sudo -u $USER chsh -s "$(command -v $1)"
         fi;
     fi;
     return 0;
@@ -127,10 +127,10 @@ printf "\n";
 # Assumes we are running sway
 # Checks if paru has been installed
 {{ if not (lookPath "paru") }}
-    sudo pacman -S --needed base-devel
-    git clone https://aur.archlinux.org/paru.git ~
-    cd paru
-    makepkg -si
+sudo pacman -S --needed base-devel
+git clone https://aur.archlinux.org/paru.git ~
+cd paru
+makepkg -si
 {{ end }}
 
 packages=("sway" "fish" "neovim-nightly-bin" "git-delta-bin");
@@ -144,10 +144,9 @@ packages=("fish" "neovim" "python3-neovim" "nnn" "build-essential");
 {{ end }}
 _installMany "${packages[@]}";
 
-
 {{- if and (lookPath "curl") (not (lookPath "rustup")) }}
-    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh;
 {{ end }}
 
 # Set fish as default shell
-_chsh "fish" >/dev/null 2>&1
+_chsh "fish" &>/dev/null;
