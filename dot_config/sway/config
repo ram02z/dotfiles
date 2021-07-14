@@ -418,9 +418,9 @@ bindsym Print exec $HOME/.local/bin/grimshot copy screen
 
 exec foot --server
 
-exec env RUST_BACKTRACE=1 $HOME/.cargo/bin/swayrd > /tmp/swayrd.log 2>&1
-bindsym $mod+Tab exec $HOME/.cargo/bin/swayr switch-window >> /tmp/swayr.log 2>&1
-bindsym $alt+Tab exec $HOME/.cargo/bin/swayr switch-to-urgent-or-lru-window >> /tmp/swayr.log 2>&1
+exec_always $HOME/.cargo/bin/i3-focus-last server
+bindsym $mod+Tab exec $HOME/.cargo/bin/i3-focus-last menu
+bindsym $alt+Tab exec $HOME/.cargo/bin/i3-focus-last
 
 exec $HOME/.cargo/bin/autotiling-rs
 
