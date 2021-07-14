@@ -1,9 +1,14 @@
 [user]
 	email = {{ .email }}
 	name = {{ .name }}
-[core]
-    pager = {{ .pager }}
+{{ if (contains "delta" .pager) }}
+[pager]
+    diff = {{ .pager }}
+    log = {{ .pager }}
+    reflog = {{ .pager }}
+    show = {{ .pager }}
 [delta]
     syntax-theme = Dracula
+{{ end }}
 [push]
     default = simple
