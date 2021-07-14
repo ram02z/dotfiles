@@ -98,21 +98,15 @@ _chsh() {
 {{- if (eq .chezmoi.osRelease.id "void") }}
 packages=("fish-shell" "neovim" "python3-neovim"
 "nnn" "git" "delta" "base-devel" "jq" "fzf"
-"curl");
+"curl" "ripgrep" "bottom" "zoxide" "bat" "fd"
+"exa" "hyperfine");
 # TODO: Missing packages
 # i3status-rust (rust)
 # swayr (rust)
 # greetd (rust)
 # rundird (zig)
 # rofi-wayland (c)
-# ripgrep (rust)
-# bottom (rust)
 # based-connect (c)
-# zoxide (rust)
-# bat (rust)
-# hyperfine (rust)
-# fd (rust)
-# exa (rust)
 # ydotool (c++)
 read -p "Add sway desktop packages?" -n 1 -r
 if [[ $REPLY =~ ^[Yy]$ ]]; then

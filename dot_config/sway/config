@@ -25,7 +25,7 @@ set $menu rofi -show drun -drun-show-actions |xargs swaymsg exec --
 #
 # Default wallpaper (more resolutions are available in /usr/share/backgrounds/sway/)
 # output * bg /usr/share/backgrounds/sway/Sway_Wallpaper_Blue_1920x1080.png fill
-output * bg $HOME/.config/gdm3/d2pw.png fill
+output * bg $HOME/.local/backgrounds/dotachina.png fill
 
 output HDMI-A-1 {
     mode 2560x1440@143.912003Hz
