@@ -48,7 +48,8 @@ _installMany() {
     fi;
 
     # Install all package added to array
-    printf "Packages not installed:\n%s\n" "${notInstalled[@]}";
+    printf "Packages not installed:\n";
+    printf "%s\n" "${notInstalled[@]}";
     {{ if (eq .chezmoi.osRelease.id "void")}}
     sudo xbps-install -Sv "${notInstalled[@]}";
     {{/* else if (eq (get .chezmoi.osRelease "idLike") "arch") */}}
@@ -62,7 +63,7 @@ _installMany() {
 
 _addPPA() {
     grep -h "^deb.*$1" /etc/apt/sources.list.d/* >/dev/null 2>&1
-    if [[ $? -ne 0 ]]; then
+    if [[ $? != 0 ]]; then
         echo "Adding ppa:$1";
         sudo add-apt-repository -y ppa:$1;
         sudo apt update;
@@ -72,24 +73,18 @@ _addPPA() {
 }
 
 _exists() {
-    if [[ $? -ne 0 ]]; then
-        if ! command -v $1 >/dev/null 2>&1; then
-            return 1;
-        fi;
-    else
-        return 2;
+    if ! command -v $1 >/dev/null 2>&1; then
+        return 1;
     fi;
     return 0;
 }
 
 _chsh() {
-    if [[ $? -ne 0 ]]; then
-        if [[ "$(echo '$SHELL' | grep $1)" ]] ; then
-           return 1;
-        else
-            sudo -u $USER chsh -s "$(command -v $1)"
-        fi;
+    printf $SHELL | grep $1 &>/dev/null;
+    if [[ $? == 0 ]]; then
+       return 0;
     fi;
+    sudo -u $USER chsh -s "$(command -v $1)";
     return 0;
 }
 
@@ -143,4 +138,4 @@ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh;
 {{ end }}
 
 # Set fish as default shell
-_chsh "fish" &>/dev/null;
+_chsh "fish";
