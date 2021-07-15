@@ -5,14 +5,14 @@ set $base01 #3a3c4e
 set $base02 #626483
 set $base03 #4d4f68
 set $base04 #62d6e8
-set $base05 #f8f8f2 
+set $base05 #f8f8f2
 set $base06 #f1f2f8
 set $base07 #f7f7fb
 set $base08 #ea51b2
 set $base09 #b45bcf
 set $base0A #c9c9c5
-set $base0B #50fa7b 
+set $base0B #50fa7b
 set $base0C #a1efe4
 set $base0D #bd93f9
-set $base0E #44475a 
+set $base0E #44475a
 set $base0F #00f769

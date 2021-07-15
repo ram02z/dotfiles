@@ -17,7 +17,7 @@
   name = "{{ $fullName }}"
   email = "{{ $email }}"
   pager = "{{ $pager }}"
-  editor = "{{ $editor }}"
+  editor = "{{ (base $editor) }}"
   is_wsl = {{ $isWsl }}
   is_x11 = {{ $isX11 }}
   is_wayland = {{ $isWayland }}
