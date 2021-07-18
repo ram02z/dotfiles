@@ -2,69 +2,42 @@
 
 set -e
 
-# Borrowed from https://gist.github.com/pdonadeo/aaf5f3f164ef23c9db4ac8458137c2c8
-
-# FEATURES
-# - Shows the selected/default sink as active
-# - Automatically switches all running input sinks when switching the default sink
-
 # Dependencies
-# - pacmd
+# - pactl
 # - ripgrep (can be substituted with another search tool)
 # - rofi (can be substituted as long as additional arguments are tweaked)
 # - GNU coreutils
 
-if ! [ -x "${AUDIOCLI=$(command -v pacmd)}" ]; then
-    printf "AUDIOCLI not found.\n"
-    exit 1
-elif ! [ -x "${GREPTOOL=$(command -v rg)}" ]; then
-    printf "GREPTOOL not found.\n"
-    exit 2
-elif ! [ -x "${DMENU=$(command -v rofi)}" ]; then
-    printf "DMENU not found.\n"
-    exit 3
-fi
+move_sink_inputs() {
+    sink="$1"
+    [ -n "$sink" ] || return 1
 
-# Additional arguments
-DMENU+=" -dmenu -format i -i"
+    sink_inputs=$(pactl list sink-inputs) || return 1
 
-# Get the default sink index value
-SINK_VAL=$($AUDIOCLI list-sinks | $GREPTOOL "\* index:" | cut --complement -c 1-11)
-# Get the audio sink index values
-# Cuts 'Name: '
-SINK_VALUES=$($AUDIOCLI list-sinks | $GREPTOOL "index:" | cut --complement -c 1-11)
+    while read -r sink_input; do
+        index=$(echo "$sink_input" | rg -o "\d+$")
+        pactl move-sink-input "$index" "$sink" || return 1
+    done < <(echo "$sink_inputs" | rg "Sink Input")
+}
 
-# Get the position/index of the default sink
-# Cuts before colon delmitter
-SINK_POS=$(printf "%s" "$SINK_VALUES" | $GREPTOOL -n "$SINK_VAL" | cut -f1 -d':')
-SINK_INDEX=$((SINK_POS - 1))
+list_sinks() {
+    sinks=$(pactl list sinks short) || return 1
+    echo "$sinks" | sed '/RUNNING/d' | rg -o '^\S*.\S*' | sed -e "s/\t/\ /g"
+}
 
-# Get the audio sink descriptions
-# Cuts between quote delimitter
-SINK_DESCRIPTIONS=$($AUDIOCLI list-sinks | $GREPTOOL "device.description" | cut -f2 -d'"')
+select_sink() {
+    sink="$(list_sinks | rofi -dmenu -p "Select sink:")" || return 1
+    sink="$(echo "$sink" | cut -f 1 -d " ")"
+    [ -n "$sink" ] || return 1
 
-# Have the user pick a sink and return an index
-SEL_SINK_INDEX=$(printf "%s" "$SINK_DESCRIPTIONS" | $DMENU -a $SINK_INDEX -p "Select sink:")
+    pactl set-default-sink $sink || return 1
+    move_sink_inputs $sink || return 1
+}
 
-if [ -z "$SEL_SINK_INDEX" ]; then
-    printf "No selection was made.\n"
-    exit 4
-fi
+case "$1" in
+	list) list_sinks || exit 1;;
+    current);;
+	*) select_sink || exit 1;;
+esac
 
-# Gets sink value based on index
-SEL_SINK_VAL=$(printf "%s" "$SINK_VALUES" | sed "$((SEL_SINK_INDEX + 1))q;d")
-
-# Ends if no selection is made or selection is same as default
-if [ -n "$SEL_SINK_INDEX" ] && (( $SINK_VAL != $SEL_SINK_VAL )); then
-    # Set the default sink
-    $AUDIOCLI set-default-sink $SEL_SINK_VAL
-
-    # pacmd sets a different sink if the selected sink can't be set
-    NEW_SINK_VAL=$($AUDIOCLI list-sinks | $GREPTOOL "\* index:" | cut --complement -c 1-11)
-
-    # Change all the ouputs for the programs that are using the default sink
-    for sink_input in $($AUDIOCLI list-sink-inputs | $GREPTOOL "index:" | cut --complement -c 1-11)
-    do
-        $AUDIOCLI move-sink-input "$sink_input" "$NEW_SINK_VAL"
-    done
-fi
+exit 0
