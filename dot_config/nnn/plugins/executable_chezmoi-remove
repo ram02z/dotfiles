@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-# Description: Select files you want to add to chezmoi
+# Description: Select files you want to remove from chezmoi
 #
 # Dependencies: chezmoi
 #
