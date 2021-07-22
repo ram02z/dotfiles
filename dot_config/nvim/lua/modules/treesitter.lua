@@ -96,7 +96,3 @@ local ts_config = {
 
 tree_sitter.setup(ts_config)
 
--- Extra mappings
-vim.keymap.nnoremap({'<Leader>tp', '<cmd>TSPlaygroundToggle<CR>', silent = true})
-
-require'keychord'.cancel('<Leader>t')

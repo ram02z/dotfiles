@@ -89,6 +89,7 @@ packer.startup({function(use)
     'nvim-treesitter/nvim-treesitter',
     -- NOTE: maybe don't lazyload?
     -- with lazyload, if file is opened directly ts plugins won't work until :e!
+    -- might have something to do with BufReadPre event and after key idk
     -- event = 'BufRead',
     -- cmd = {'TSUpdate', 'TSInstall', 'TSUninstall'},
     -- module = 'nvim-treesitter',
@@ -98,27 +99,42 @@ packer.startup({function(use)
 
   use {
     'nvim-treesitter/playground',
-    after = 'nvim-treesitter'
+    -- after = 'nvim-treesitter'
+    cmd = {'TSPlaygroundToggle', 'TSHighlightCapturesUnderCursor'},
+    setup = function ()
+      vim.keymap.nnoremap({'<Leader>tp', '<cmd>TSPlaygroundToggle<CR>', silent = true})
+    end,
+    config = function ()
+      require'keychord'.cancel('<Leader>t')
+    end
   }
 
   use {
     'nvim-treesitter/nvim-treesitter-textobjects',
-    after = 'nvim-treesitter'
+    -- after = 'nvim-treesitter'
+    -- TODO: use 'keys' key instead
+    event = 'CursorHold'
   }
 
   use {
     'p00f/nvim-ts-rainbow',
-    after = 'nvim-treesitter'
+    -- after = 'nvim-treesitter'
+    event = 'BufReadPre'
   }
 
   use {
     'nvim-treesitter/nvim-treesitter-refactor',
-    after = 'nvim-treesitter'
+    event = 'CursorHold'
+    -- after = 'nvim-treesitter'
   }
 
   use {
     'mfussenegger/nvim-ts-hint-textobject',
-    after = 'nvim-treesitter',
+    -- after = 'nvim-treesitter'
+    keys = {
+      {'o', 'm'},
+      {'v', 'm'},
+    },
     config = function ()
       vim.keymap.onoremap({'m', require'tsht'.nodes, silent = true})
       vim.keymap.vnoremap({'m', [[:lua require'tsht'.nodes()<CR>]], silent = true})
