@@ -1,6 +1,3 @@
-if not packer_plugins['nvim-lspconfig'].loaded then
-  vim.cmd [[packadd nvim-lspconfig]]
-end
 local nvim_lsp = require'lspconfig'
 
 local on_attach = function(client, bufnr)

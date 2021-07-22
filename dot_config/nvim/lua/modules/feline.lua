@@ -81,7 +81,7 @@ local get_git_dir = function(path)
 
   local stdout, code = find_toplevel_job:sync()
   if code ~= 0 then
-    logError("Error in determining the git toplevel")
+    logError("Couldn't determine the git toplevel")
     return ''
   end
 

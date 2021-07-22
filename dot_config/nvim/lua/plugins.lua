@@ -23,9 +23,9 @@ packer.startup({function(use)
   -- Common dependancies
   use {
     'neovim/nvim-lspconfig',
-    opt = true,
+    after = 'nvim-lspinstall',
     -- BUG: commands don't work when module lazy loaded
-    -- module = {'lspconfig'},
+    module = 'lspconfig',
     -- cmd = {'LspInfo', 'LspStart', 'LspStop', 'LspRestart'}
   }
 
@@ -74,7 +74,7 @@ packer.startup({function(use)
 
   use {
     'L3MON4D3/LuaSnip',
-    module = 'compe',
+    event = 'InsertCharPre',
     config = function()
       local function char_count_same(c1, c2)
         local line = vim.api.nvim_get_current_line()
@@ -292,7 +292,7 @@ packer.startup({function(use)
   }
 
   -- Change directory to project root
-    use {
+  use {
     'airblade/vim-rooter',
     config = function()
       vim.g.rooter_cd_cmd = 'tcd'
@@ -300,7 +300,7 @@ packer.startup({function(use)
     end
   }
 
-  -- TODO: telescope plugin?
+  -- TODO: telescope plugin? #749
   use {
     'mhinz/vim-startify',
     cmd = {'SLoad', 'SSave', 'SDelete', 'SClose'},
@@ -452,6 +452,17 @@ packer.startup({function(use)
           require'telescope'.load_extension('fzf')
         end
       },
+      {
+        -- TODO: maybe remove this. I don't see it as very useful
+        -- if I can achieve a decent workflow with sessions
+        'nvim-telescope/telescope-project.nvim',
+        after = 'telescope.nvim',
+        config = function ()
+          require'telescope'.load_extension('project')
+          -- TODO: move to telescope config file
+          vim.keymap.nnoremap({'<Leader>pp', '<cmd>Telescope project<CR>', silent = true})
+        end
+      }
     },
     config = [[require'modules.telescope']]
   }

@@ -12,6 +12,11 @@ autocmd TermOpen * startinsert | setlocal nonu nornu signcolumn=no
 " :help 'formatoptions' for more information
 au OptionSet * setlocal formatoptions=cqnbj
 
+" Disable syntax highlight on large files
+augroup DisableSyn
+  autocmd!
+  autocmd BufEnter * if getfsize(@%) > 100000 | setlocal syntax=OFF | endif
+augroup END
 
 " using osc52
 augroup Yank

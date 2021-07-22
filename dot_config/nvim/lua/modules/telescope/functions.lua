@@ -1,42 +1,42 @@
 local M = {}
 
--- TODO: telescope.nvim #765
+-- Default config
 local opts = {
-  theme = "ivy",
-
-  sorting_strategy = "ascending",
-
-  preview_title = "",
-
-  layout_strategy = "bottom_pane",
+  layout_strategy = 'flex',
+  scroll_strategy = 'cycle',
   layout_config = {
-    height = 10,
+    center = {
+      preview_cutoff = 40
+    },
+    cursor = {
+      preview_cutoff = 40
+    },
+    height = 0.9,
+    horizontal = {
+      preview_cutoff = 120,
+      prompt_position = "bottom"
+    },
+    vertical = {
+      preview_cutoff = 40
+    },
+    width = 0.9,
   },
-
-  border = true,
-  borderchars = {
-    "z",
-    prompt = { "─", " ", " ", " ", "─", "─", " ", " " },
-    results = { " " },
-    preview = { "─", "│", "─", "│", "╭", "╮", "╯", "╰"},
-  }
+  borderchars = { "─", "│", "─", "│", "╭", "╮", "╯", "╰"},
 }
 
 M.project_files = function()
-  opts['cwd'] = vim.fn.expand('%:p:h')
-  local ok = pcall(require'telescope.builtin'.git_files, opts)
+  local ok = pcall(require'telescope.builtin'.git_files)
   if not ok then
-    require'telescope.builtin'.find_files(opts)
+    require'telescope.builtin'.find_files({cwd = vim.fn.expand('%:p:h')})
   end
 end
 
-M.grep_cwd = function()
-  require'telescope.builtin'.live_grep(opts)
+M.keymaps = function ()
+  require'telescope.builtin'.keymaps(opts)
 end
 
-M.grep_buffers = function()
-  opts['grep_open_files'] = true
-  require'telescope.builtin'.live_grep(opts)
+M.commands = function ()
+  require'telescope.builtin'.commands(opts)
 end
 
 return M

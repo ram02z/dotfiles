@@ -9,10 +9,22 @@ local actions = require("telescope.actions")
 
 local tscope_config = {
   defaults = {
-    layout_strategy = 'flex',
-    scroll_strategy = 'cycle',
+    -- TODO: better bottom pane (telescope.nvim #765)
+    sorting_strategy = "ascending",
+
+    preview_title = "",
+
+    layout_strategy = "bottom_pane",
     layout_config = {
-      width = 0.9
+      height = 10,
+    },
+
+    border = true,
+    borderchars = {
+      "z",
+      prompt = { "─", " ", " ", " ", "─", "─", " ", " " },
+      results = { " " },
+      preview = { "─", "│", "─", "│", "╭", "╮", "╯", "╰"},
     },
     file_ignore_patterns = {'.backup','.swap','.langservers','.session','.undo'},
     mappings = {
@@ -33,6 +45,9 @@ local tscope_config = {
       override_file_sorter = true,
       case_mode = 'smart_case',
     },
+    project = {
+      base_dirs = {U.os.home..'/Downloads'}
+    }
   },
 }
 
@@ -45,9 +60,9 @@ vim.keymap.nnoremap({'<Leader>pm', '<cmd>Telescope help_tags<CR>' , silent = tru
 -- Git project files (fall back to cwd)
 vim.keymap.nnoremap({'<Leader>pf', tscope.project_files, silent = true})
 -- Live grep cwd
-vim.keymap.nnoremap({'<Leader>pl', tscope.grep_cwd, silent = true})
+vim.keymap.nnoremap({'<Leader>pl', '<cmd>Telescope live_grep<CR>', silent = true})
 -- Live grep open buffers
-vim.keymap.nnoremap({'<Leader>po', tscope.grep_buffers, silent = true})
+vim.keymap.nnoremap({'<Leader>po', '<cmd>Telescope live_grep grep_open_files=true<CR>', silent = true})
 -- List git status
 vim.keymap.nnoremap({'<Leader>pgs', '<cmd>Telescope git_status<CR>', silent = true})
 -- Git branches
@@ -55,9 +70,9 @@ vim.keymap.nnoremap({'<Leader>pgb', '<cmd>Telescope git_branches<CR>', silent = 
 -- Treesitter picker
 vim.keymap.nnoremap({'<Leader>pt', '<cmd>Telescope treesitter<CR>', silent = true})
 -- Keymaps picker
-vim.keymap.nnoremap({'<Leader>pk', '<cmd>Telescope keymaps<CR>', silent = true})
+vim.keymap.nnoremap({'<Leader>pk', tscope.keymaps, silent = true})
 -- Commands picker
-vim.keymap.nnoremap({'<Leader>pc', '<cmd>Telescope commands<CR>', silent = true})
+vim.keymap.nnoremap({'<Leader>pc', tscope.commands, silent = true})
 -- File history picker
 vim.keymap.nnoremap({'<Leader>pr', '<cmd>Telescope oldfiles<CR>', silent = true})
 -- Autocommands picker
