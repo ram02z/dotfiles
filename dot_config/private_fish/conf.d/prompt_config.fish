@@ -1,6 +1,6 @@
 # Default appearance options. Override in config.fish if you want.
 if ! set -q prompt_dirty_indicator
-    set -g prompt_dirty_indicator "•"
+    set -g prompt_dirty_indicator "*"
 end
 
 if ! set -q prompt_symbol

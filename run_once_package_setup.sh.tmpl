@@ -96,19 +96,19 @@ packages=("fish-shell" "neovim" "python3-neovim"
 "curl" "ripgrep" "bottom" "zoxide" "bat" "fd"
 "exa" "hyperfine");
 # TODO: Missing packages
-# i3status-rust (rust)
 # swayr (rust)
 # greetd (rust)
-# rundird (zig)
 # rofi-wayland (c)
 # based-connect (c)
 # ydotool (c++)
+# NOTE: Replace packages
+# pam_rundir -> rundird
 read -p "Add sway desktop packages?" -n 1 -r
 if [[ $REPLY =~ ^[Yy]$ ]]; then
     packages+=("sway" "seatd" "polkit" "firefox" "foot" "NetworkManager"
     "wdisplays" "waylock" "gtk3-nocsd" "powertop" "bluez" "pipewire"
     "mps-youtube" "playerctl" "libnotify" "wl-clipboard" "CopyQ" "swayidle"
-    "rofi-calc");
+    "rofi-calc" "pam_rundir" "font-hack-ttf" "i3status-rust" "pythoni3-ipc");
 fi;
 printf "\n";
 {{/* else if (eq (get .chezmoi.osRelease "idLike") "arch") */}}
