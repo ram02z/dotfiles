@@ -5,15 +5,30 @@ local nvim_lsp = require'lspconfig'
 
 local on_attach = function(client, bufnr)
   -- Set autocommands conditional on server_capabilities
-  if client.resolved_capabilities.document_highlight then
-    vim.api.nvim_exec([[
-    augroup lsp_document_highlight
-    autocmd! * <buffer>
-    autocmd CursorHold <buffer> lua vim.lsp.buf.document_highlight()
-    autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
-    augroup END
-    ]], false)
+  -- TODO: add implementation, declaration and signature help
+  if client.resolved_capabilities.goto_definition then
+    vim.keymap.nmap({'<Leader>lgd', [[<cmd>lua vim.lsp.buf.definition()<CR>]], silent = true, buffer = true})
   end
+  if client.resolved_capabilities.hover then
+    vim.keymap.nmap({'<CR>', [[<cmd>lua vim.lsp.buf.hover()<CR>]], silent = true, buffer = true})
+  end
+  if client.resolved_capabilities.code_action then
+    vim.cmd [[autocmd CursorHold,CursorHoldI,InsertLeave <buffer> lua require'nvim-lightbulb'.update_lightbulb()]]
+    vim.keymap.nmap({'<Leader>la', [[<cmd>lua vim.lsp.buf.code_action()<CR>]], silent = true, buffer = true})
+  end
+  if client.resolved_capabilities.rename then
+    vim.keymap.nmap({'<Leader>lr', [[<cmd>lua require'modules.lsp.modules'.rename()<CR>]], silent = true, buffer = true})
+  end
+  if client.resolved_capabilities.find_references then
+    vim.keymap.nmap({'<Leader>*', [[<cmd>lua vim.lsp.buf.references()<CR>]], silent = true, buffer = true})
+  end
+
+  vim.keymap.nmap({']d', [[<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>]], silent = true, buffer = true})
+  vim.keymap.nmap({'[d', [[<cmd>lua vim.lsp.diagnostic.goto_next()<CR>]], silent = true, buffer = true})
+
+  require'keychord'.cancel('<Leader>l', true)
+
+  -- Additional plugins
 end
 
 -- config that activates keymaps and enables snippet support
@@ -32,6 +47,9 @@ local function make_config()
     capabilities = capabilities,
     -- map buffer local keybindings when the language server attaches
     on_attach = on_attach,
+    flags = {
+      debounce_text_changes = 250,
+    }
   }
 end
 
@@ -78,13 +96,8 @@ local function setup_servers()
 
     -- language specific config
     if server == "lua" then
-      if not packer_plugins['lua-dev.nvim'].loaded then
-        vim.cmd [[packadd lua-dev.nvim]]
-      end
       config = require'lua-dev'.setup({
-        library = {
-          plugins = { "nvim-treesitter", "plenary.nvim", "telescope.nvim" },
-        },
+        lspconfig = config
       })
     end
     nvim_lsp[server].setup(config)
@@ -98,3 +111,7 @@ require'lspinstall'.post_install_hook = function ()
   setup_servers() -- reload installed servers
   vim.cmd("bufdo e") -- this triggers the FileType autocmd that starts the server
 end
+
+-- TODO: remove when #107 gets merged
+vim.cmd [[command! LspPrintInstalled :echo lspinstall#installed_servers()]]
+

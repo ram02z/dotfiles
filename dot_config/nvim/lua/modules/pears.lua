@@ -1,7 +1,10 @@
 -- pears.nvim config
--- TODO: try out rules
 local pears = require'pears'
 local R = require'pears.rule'
+
+if not packer_plugins['nvim-compe'].loaded then
+  vim.cmd [[packadd nvim-compe]]
+end
 
 pears.setup(function(conf)
   -- Don't expand pair character if next character is alphanumeric/underscore/pair
@@ -44,6 +47,7 @@ pears.setup(function(conf)
   })
   conf.preset "tag_matching"
   conf.remove_pair_on_outer_backspace(false)
+  conf.disabled_filetypes {'TelescopePrompt', 'registers'}
   conf.on_enter(function(pear_handle)
     if vim.fn.pumvisible() == 1  and vim.fn.complete_info().selected ~= -1 then
       return vim.fn["compe#confirm"]("<CR>")

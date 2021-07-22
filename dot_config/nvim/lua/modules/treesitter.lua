@@ -8,9 +8,7 @@ local ts_config = {
   -- ensure_installed = 'maintained',
   highlight = {
     enable = true,
-    disable = { "html", "xml"},
     additional_vim_regex_highlighting = true,
-    language_tree = true,
   },
   incremental_selection = {
     enable = true,
@@ -18,7 +16,7 @@ local ts_config = {
       init_selection = "gnn",
       node_incremental = "grn",
       scope_incremental = "grc",
-      node_decremental = "grm",
+      node_decremental = "grm"
     },
   },
   -- Disabled until merge
@@ -28,6 +26,7 @@ local ts_config = {
     disable = { "html", "xml" },
   },
   refactor = {
+    highlight_definitions = {enable = true},
     smart_rename = {
       enable = true,
       keymaps = {
@@ -37,13 +36,27 @@ local ts_config = {
     navigation = {
       enable = true,
       keymaps = {
-          goto_definition = "gnd",
-          list_definitions = "gnD",
-          list_definitions_toc = "gO",
-          goto_next_usage = "[d",
-          goto_previous_usage = "]d",
+        -- goto_definition_lsp_fallback = "gnd",
+        list_definitions = "gnD",
+        list_definitions_toc = "gO",
+        goto_next_usage = "[r",
+        goto_previous_usage = "]r",
       },
     },
+  },
+  -- textobjects
+  textobjects = {
+    select = {
+      enable = true,
+      keymaps = {
+        ["ac"] = "@comment.outer",
+        ["ic"] = "@class.inner",
+        ["ab"] = "@block.outer",
+        ["ib"] = "@block.inner",
+        ["af"] = "@function.outer",
+        ["if"] = "@function.inner"
+      }
+    }
   },
   -- nvim-ts-rainbow
   rainbow = {
@@ -57,13 +70,33 @@ local ts_config = {
       "#DEA727",
       "#85E7FF",
     },
-    -- extended_mode = true,
-    -- max_file_lines = 200,
+    termcolors = {
+      'Blue',
+      'Green',
+      'Magenta',
+      'White',
+      'Red',
+      'Yellow',
+      'Cyan',
+    },
+    extended_mode = true,
+    max_file_lines = 2500,
   },
   -- vim-matchup
   matchup = {
     enable = true
-  }
+  },
+  -- Query linter
+  query_linter = {
+    enable = true,
+    use_virtual_text = true,
+    lint_events = {"BufWrite", "CursorHold"},
+  },
 }
 
 tree_sitter.setup(ts_config)
+
+-- Extra mappings
+vim.keymap.nnoremap({'<Leader>tp', '<cmd>TSPlaygroundToggle<CR>', silent = true})
+
+require'keychord'.cancel('<Leader>t')

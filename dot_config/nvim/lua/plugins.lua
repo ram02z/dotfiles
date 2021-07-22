@@ -7,27 +7,43 @@ if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
   execute('!git clone https://github.com/wbthomason/packer.nvim '.. install_path)
 end
 execute 'packadd packer.nvim'
+-- Load before filetype plugins
+execute 'packadd chezmoi.vim'
 
 local packer = require("packer")
 
-return packer.startup(function(use)
-  use {'wbthomason/packer.nvim', opt = true}
+vim.keymap.noremap({'<C-S>', packer.sync, silent = true})
+
+packer.startup({function(use)
+  use {
+    'wbthomason/packer.nvim',
+    opt = true
+  }
 
   -- Common dependancies
   use {
     'neovim/nvim-lspconfig',
-    event = {'BufReadPre', 'BufNewFile'}
+    opt = true,
+    -- BUG: commands don't work when module lazy loaded
+    -- module = {'lspconfig'},
+    -- cmd = {'LspInfo', 'LspStart', 'LspStop', 'LspRestart'}
   }
+
   use {
     'nvim-lua/plenary.nvim',
-    opt = true,
+    module = 'plenary',
     config = function()
       require'plenary.filetype'.add_file('extra')
     end
   }
+
   use {
-    'nvim-lua/popup.nvim',
-    opt = true
+    'nvim-lua/popup.nvim'
+  }
+
+  -- UI library
+  use {
+    'MunifTanjim/nui.nvim'
   }
 
   --
@@ -36,51 +52,105 @@ return packer.startup(function(use)
   use {
     'kabouzeid/nvim-lspinstall',
     event = {'BufReadPre', 'BufNewFile'},
-    cmd = {'LspInstall', 'LspUninstall'},
-    config = [[require'modules.lspinstall']],
-    requires = {'folke/lua-dev.nvim', opt = true}
+    cmd = {'LspInstall', 'LspUninstall', 'LspPrintInstalled'},
+    config = [[require'modules.lsp']],
+    requires = {'folke/lua-dev.nvim', module = 'lua-dev'}
   }
 
   use {
     'simrat39/symbols-outline.nvim',
     cmd = 'SymbolsOutline',
     setup = function ()
-      vim.keymap.nnoremap({'<Leader>so',':SymbolsOutline<CR>', silent = true})
+      vim.keymap.nnoremap({'<Leader>o','<cmd>SymbolsOutline<CR>', silent = true})
     end,
-    config = function ()
-      require'keychord'.cancel('<Leader>s')
-    end
   }
 
   use {
     'hrsh7th/nvim-compe',
-    event = 'BufReadPre',
+    event = 'InsertEnter',
+    -- disable = true,
     config = [[require'modules.compe']]
   }
 
   use {
-    'hrsh7th/vim-vsnip',
-    -- requires = {'hrsh7th/vim-vsnip-integ', disable = true},
-    after = 'nvim-compe'
+    'L3MON4D3/LuaSnip',
+    module = 'compe',
+    config = function()
+      local function char_count_same(c1, c2)
+        local line = vim.api.nvim_get_current_line()
+        local _, ct1 = string.gsub(line, c1, '')
+        local _, ct2 = string.gsub(line, c2, '')
+        return ct1 == ct2
+      end
+
+      local function even_count(c)
+        local line = vim.api.nvim_get_current_line()
+        local _, ct = string.gsub(line, c, '')
+        return ct % 2 == 0
+      end
+
+      local function neg(fn, ...)
+        return not fn(...)
+      end
+
+      local ls = require'luasnip'
+      local s = ls.s
+      local t = ls.t
+      local i = ls.i
+
+      ls.snippets = {
+        -- Pair snippet hack
+        all = {
+          s({trig="("}, { t({"("}), i(1), t({")"}), i(0) }, neg, char_count_same, '%(', '%)'),
+          s({trig="{"}, { t({"{"}), i(1), t({"}"}), i(0) }, neg, char_count_same, '%{', '%}'),
+          s({trig="["}, { t({"["}), i(1), t({"]"}), i(0) }, neg, char_count_same, '%[', '%]') ,
+          s({trig="<"}, { t({"<"}), i(1), t({">"}), i(0) }, neg, char_count_same, '<', '>'),
+          s({trig="'"}, { t({"'"}), i(1), t({"'"}), i(0) }, neg, even_count, '\''),
+          s({trig="\""}, { t({"\""}), i(1), t({"\""}), i(0) }, neg, even_count, '"'),
+          s({trig="[;"}, { t({"[","\t"}), i(1), t({"", "]"}), i(0) }),
+          s({trig="{;"}, { t({"{","\t"}), i(1), t({"", "}"}), i(0) }),
+          s({trig="{;,"}, { t({"{","\t"}), i(1), t({"", "},"}), i(0) }),
+          ls.parser.parse_snippet(
+          { trig = "date;", wordTrig = true },
+          os.date("%d-%m-%Y")
+          ),
+          ls.parser.parse_snippet(
+          { trig = "time;", wordTrig = true },
+          os.date("%H:%M")
+          ),
+          ls.parser.parse_snippet(
+          { trig = "datetime;", wordTrig = true },
+          os.date("%d-%m-%Y %H:%M")
+          ),
+        },
+      }
+    end
   }
 
   use {
-    'rafamadriz/friendly-snippets',
-    after = 'vim-vsnip'
+    'kosayoda/nvim-lightbulb',
+    module = 'nvim-lightbulb'
   }
-
 
   use {
     -- '~/Downloads/nvim-treesitter',
     'nvim-treesitter/nvim-treesitter',
-    event = 'BufRead',
-    cmd = 'TSUpdate',
-    module = 'telescope',
+    -- NOTE: maybe don't lazyload?
+    -- event = 'BufRead',
+    -- cmd = {'TSUpdate', 'TSInstall', 'TSUninstall'},
+    -- module = 'nvim-treesitter',
     config = [[require'modules.treesitter']],
     run = ':TSUpdate',
-    requires = {
-      {'nvim-treesitter/playground', cmd = 'TSPlaygroundToggle'}
-    }
+  }
+
+  use {
+    'nvim-treesitter/playground',
+    after = 'nvim-treesitter'
+  }
+
+  use {
+    'nvim-treesitter/nvim-treesitter-textobjects',
+    after = 'nvim-treesitter'
   }
 
   use {
@@ -88,16 +158,18 @@ return packer.startup(function(use)
     after = 'nvim-treesitter'
   }
 
-  -- #49
   use {
-    'romgrk/nvim-treesitter-context',
-    disable = true,
+    'nvim-treesitter/nvim-treesitter-refactor',
     after = 'nvim-treesitter'
   }
 
   use {
-    'nvim-treesitter/nvim-treesitter-refactor',
-    after = 'nvim-treesitter'
+    'mfussenegger/nvim-ts-hint-textobject',
+    after = 'nvim-treesitter',
+    config = function ()
+      vim.keymap.onoremap({'m', require'tsht'.nodes, silent = true})
+      vim.keymap.vnoremap({'m', [[:lua require'tsht'.nodes()<CR>]], silent = true})
+    end
   }
 
   --
@@ -107,58 +179,31 @@ return packer.startup(function(use)
   -- Icons
   use {
     'kyazdani42/nvim-web-devicons',
+    module = 'nvim-web-devicons'
   }
 
-  use {
-    'glepnir/dashboard-nvim',
-    setup = function()
-      vim.g.dashboard_custom_header = {'', '', '', '', '[ dashboard ]', '', '', '', ''}
-      vim.g.dashboard_default_executive = 'telescope'
-      vim.g.dashboard_custom_footer = {
-        '',
-        'neovim loaded ' .. #vim.tbl_keys(packer_plugins) .. ' plugins',
-        ''
-      }
-      vim.g.dashboard_custom_section = {
-        a = {
-          description = {"Recently closed files                                SPC p h"},
-          command = ":lua require('modules.telescope.functions').old_files()"
-        },
-        b = {
-          description = {"Packer plugins                                       SPC p p"},
-          command = ":lua require('telescope').extensions.packer.plugins(opts)"
-        },
-        c = {
-          description = {"Packer sync                                                 "},
-          command = "PackerSync"
-        },
-      }
-    end
-  }
-
-  -- Tabline
+  -- Buffer/Tabline
   use {
     'akinsho/nvim-bufferline.lua',
-    event = 'BufReadPre',
     requires = {'kyazdani42/nvim-web-devicons'},
     config = [[require'modules.bufferline']],
   }
 
+
   -- Statusline
   use {
-    'glepnir/galaxyline.nvim',
-    after = 'nvim-web-devicons',
-    config = [[require'modules.statusline']],
-    event = 'UIEnter'
+    'famiu/feline.nvim',
+    event = 'BufReadPre',
+    config = [[require'modules.feline']],
   }
 
   -- Indentation line
   use {
     'lukas-reineke/indent-blankline.nvim',
-    branch = 'lua',
-    event = 'BufRead',
-    after = {'dracula','nvim-treesitter'},
+    event = 'BufReadPost',
     config = function()
+      -- #59
+      vim.o.colorcolumn = '99999'
       vim.g.indent_blankline_char = '│'
       vim.g.indent_blankline_filetype_exclude = {
         'help',
@@ -169,6 +214,7 @@ return packer.startup(function(use)
         'undotree',
         'packer',
         'lspinfo',
+        'qf',
         'tsplayground',
         ''
       }
@@ -193,18 +239,30 @@ return packer.startup(function(use)
         'table'
       }
       -- Lazy load
-      vim.cmd('autocmd CursorMoved * IndentBlanklineRefresh')
+      vim.cmd [[autocmd CursorHold,CursorHoldI * IndentBlanklineRefresh]]
     end
   }
 
   -- Colorscheme
+  -- FIXME: Syntax files in the after directory aren't reloaded on PackerCompile
   use {
     'ram02z/vim',
     branch = 'nvim_plugs',
+    -- '~/Downloads/vim',
+    -- 'bloop132435/dracula.nvim',
     as = 'dracula',
-    opt = false,
     config = function()
       vim.cmd [[colorscheme dracula]]
+    end
+  }
+
+  use {
+    'folke/tokyonight.nvim',
+    disable = true,
+    config = function ()
+      vim.g.tokyonight_terminal_colors = false
+      vim.g.tokyonight_style = "night"
+      vim.cmd [[colorscheme tokyonight]]
     end
   }
 
@@ -216,7 +274,7 @@ return packer.startup(function(use)
   use {'editorconfig/editorconfig-vim'}
 
   -- Fix CursorHold performance
-  -- Remove if https://github.com/neovim/neovim/issues/12587 gets closed
+  -- REMOVE: if https://github.com/neovim/neovim/issues/12587 gets closed
   use {
     'antoinemadec/FixCursorHold.nvim',
     setup = function ()
@@ -224,57 +282,162 @@ return packer.startup(function(use)
     end
   }
 
-  -- Change directory to project root
+  -- OSC52 yank
   use {
+    'ojroques/vim-oscyank',
+    cmd = 'OSCYankReg',
+    setup = function ()
+      vim.g.oscyank_max_length = 1000000
+    end
+  }
+
+  -- Change directory to project root
+    use {
     'airblade/vim-rooter',
-    cmd = 'Rooter',
     config = function()
-      vim.g.rooter_manual_only = 1
+      vim.g.rooter_cd_cmd = 'tcd'
       vim.g.rooter_change_directory_for_non_project_files = 'current'
     end
   }
 
+  -- TODO: telescope plugin?
+  use {
+    'mhinz/vim-startify',
+    cmd = {'SLoad', 'SSave', 'SDelete', 'SClose'},
+    setup = function ()
+      vim.g.startify_change_to_dir = 0
+      vim.g.startify_disable_at_vimenter = true
+    end
+  }
+
+  use {
+    'junegunn/vim-easy-align',
+    keys = '<Plug>(EasyAlign)',
+    setup = function ()
+      vim.keymap.xmap({'ga', '<Plug>(EasyAlign)', silent = true})
+      vim.keymap.nmap({'ga', '<Plug>(EasyAlign)', silent = true})
+    end
+  }
+
+  -- Chezmoi template support
+  -- NOTE: needs to be loaded first
+  use {
+    'alker0/chezmoi.vim',
+    opt = true
+  }
+
+  -- Reload nvim
+  use {
+    'ram02z/nvim-reload',
+    cmd = 'Reload',
+    setup = function()
+      vim.keymap.nnoremap({'<Leader>r', ':Reload<CR>', silent = true})
+    end,
+    config = function()
+      local reload = require('nvim-reload')
+      reload.pre_reload_hook = function()
+        require('packer').compile()
+      end
+      reload.post_reload_hook = function()
+        require('feline').reset_highlights()
+      end
+    end
+  }
   -- Git integration
   use {
+    {
+      'TimUntersberger/neogit',
+      cmd = 'Neogit',
+      requires = {'sindrets/diffview.nvim', module = 'diffview'},
+      config = function()
+        require'neogit'.setup{
+          integrations = {
+            diffview = true
+          }
+        }
+      end
+    },
     {
       'rhysd/committia.vim',
       event = 'BufReadPost COMMIT_EDITMSG,MERGE_MSG'
     },
     {
-    'lewis6991/gitsigns.nvim',
-    event = {'BufRead','BufNewFile'},
-    config = [[require'modules.gitsigns']]
+      'lewis6991/gitsigns.nvim',
+      module = 'gitsigns',
+      event = {'BufRead','BufNewFile'},
+      config = [[require'modules.gitsigns']]
     }
   }
-  -- File manager
+
+  -- Zen-mode
   use {
-    'mcchrish/nnn.vim',
-    -- TODO: Use lua config instead
+    'folke/zen-mode.nvim',
+    cmd = 'ZenMode',
+    setup = function ()
+      vim.keymap.nnoremap({'<Leader>z', '<cmd>ZenMode<CR>', silent = true})
+    end,
     config = function()
-      local t = require'utils.misc'.t
-      vim.keymap.nnoremap({'<Leader>n', t ':cd %:p:h | NnnPicker<CR>', silent = true})
-      vim.keymap.nnoremap({'<Leader>N', ':Rooter | NnnPicker<CR>', silent = true})
-      vim.g['nnn#command'] = 'n'
-      vim.g['nnn#set_default_mappings'] = 0
-      -- Disable netrw
-      vim.g.loaded_netrwPlugin = 0
-      vim.g['nnn#replace_netrw'] = 1
-      vim.g['nnn#layout'] = {
-        ['window'] = {
-          ['width'] = 0.9,
-          ['height'] = 0.6,
-          ['highlight'] = 'Debug'
-        }
-      }
-      vim.g['nnn#action'] = {
-        ['<C-t>'] = 'tab split',
-        ['<C-x>'] = 'split',
-        ['<C-v>'] = 'vsplit'
+      require'zen-mode'.setup{
+        window = {
+          backdrop = 1,
+          width = 0.85
+        },
+        plugins = {
+          gitsigns = { enabled = true },
+          twilight = { enabled = true }
+        },
       }
     end
   }
 
+  -- Highlight active portion with zenmode
+  use {
+    'folke/twilight.nvim',
+    module = 'twilight'
+  }
+
+  -- Toggle terminal
+  use {
+    'akinsho/nvim-toggleterm.lua',
+    cmd = {'ToggleTerm', 'TermExec'},
+    keys = '<C-_>',
+    setup = function()
+      vim.cmd [[command! Ca TermExec cmd='chezmoi apply']]
+      vim.cmd [[cabbrev ca Ca]]
+    end,
+    config = function()
+      require'toggleterm'.setup{
+        shell = '/usr/bin/env fish',
+        open_mapping = [[<C-_>]]
+      }
+    end
+  }
+
+  -- File manager
+  use {
+    'mcchrish/nnn.vim',
+    cmd = 'NnnPicker',
+    setup = function ()
+      vim.keymap.noremap({'<Leader>n', '<cmd>NnnPicker<CR>', silent = true})
+      vim.keymap.noremap({'<Leader>N', require'utils.misc'.t(':NnnPicker %:p:h<CR>'), silent = true})
+    end,
+    config = function()
+      require'nnn'.setup{
+        set_default_mappings = false,
+        -- NOTE: might not work because we are using bash as shell
+        -- command = 'n',
+        layout = {
+          window = {
+            width = 0.9,
+            height = 0.6,
+            highlight = 'FloatBorder'
+          }
+        }
+      }
+    end
+  }
   -- Fuzzy finder
+  -- TODO: replace with snap unless it gets async
   use {
     'nvim-telescope/telescope.nvim',
     keys = {'n', '<Leader>p'},
@@ -286,103 +449,57 @@ return packer.startup(function(use)
         after = 'telescope.nvim',
         run = 'make',
         config = function()
-          require"telescope".load_extension("fzf")
+          require'telescope'.load_extension('fzf')
         end
       },
-      {
-        'nvim-telescope/telescope-frecency.nvim',
-        requires = 'tami5/sql.nvim',
-        after = 'telescope.nvim',
-        config = function()
-          require"telescope".load_extension("frecency")
-        end
-      },
-      {
-        'sudormrfbin/cheatsheet.nvim',
-        keys = {'n', '<Leader>?'}
-      },
-      {'nvim-telescope/telescope-packer.nvim'},
     },
     config = [[require'modules.telescope']]
   }
 
-  -- Registers picker
   use {
     'tversteeg/registers.nvim',
     keys = {
-      'n', '"',
-      'x', '"',
-      'i', '<C-R>'
+      {'n', '"'},
+      {'x', '"'},
+      {'i', '<C-R>'}
     }
   }
 
-  -- Zoxide wrapper
-  use {
-    'nanotee/zoxide.vim',
-    cmd = {'Z', 'Lz', 'Tz'}
-  }
-
-  -- Highlight word under cursor
-  -- TODO: Find a better plugin using matchit?
+  -- Matchit extension
   use {
     'andymass/vim-matchup',
-    event = 'CursorHold',
+    event = 'BufReadPost',
+    -- disable = true,
     setup = function ()
       vim.g.matchup_delim_noskips = 2
       vim.g.matchup_matchparen_pumvisible = 0
       vim.g.matchup_matchparen_singleton = 0
       vim.g.matchup_matchparen_nomode = 'ivV\\<c-v>'
       vim.g.matchup_surround_enabled = 1
-      --[[ vim.g.matchup_matchparen_deferred = 1
-      vim.g.matchup_matchparen_deferred_show_delay = 60 ]]
-      -- TODO: Remove if nvim-treesitter-context gets line number
       vim.g.matchup_matchparen_offscreen = {['method'] = 'popup'}
-    end,
-    config = function ()
-     vim.cmd [[hi! link MatchParen Comment]]
-     vim.cmd [[hi! link MatchParenCur Comment]]
-     vim.cmd [[hi! link MatchWord CursorLine]]
-     vim.cmd [[hi! link MatchWordCur CursorLine]]
-    end
-  }
-  use {
-    'RRethy/vim-illuminate',
-    event = 'CursorMoved',
-    disable = true,
-    config = function()
-      vim.g.Illuminate_delay = 500
-      vim.g.Illuminate_ftblacklist = { 'TelescopePrompt', 'dashboard', 'vimwiki', 'man', 'help', 'packer', 'nnn', 'lspinfo', '' }
     end
   }
 
   -- Motions
   use {
     {
-      -- FIX: Doesn't play well with vim-illuminate
-      'b0o/vim-shot-f',
-      disable = true,
-      setup = function()
-        vim.g.shot_f_highlight_graph = "guifg='#ff007c' ctermfg=155"
-        vim.g.shot_f_highlight_blank = "guibg=NONE"
-      end
-    },
-    {
       'rhysd/clever-f.vim',
       setup = function ()
         vim.keymap.map({';', '<Plug>(clever-f-repeat-forward)', silent = true})
         vim.keymap.map({',', '<Plug>(clever-f-repeat-back)', silent = true})
-        vim.keymap.nmap({'<Esc>', '<Plug>(clever-f-reset)', silent = true})
-
+        -- FIX: Issue #61
+        vim.keymap.nmap({'<Esc>', '<Plug>(clever-f-reset):noh<CR>', silent = true})
         vim.g.clever_f_smart_case = 1
         vim.g.clever_f_chars_match_any_signs = ';'
         vim.g.clever_f_fix_key_direction = 1
         vim.g.clever_f_mark_direct = 1
-
       end
     },
     {
       'phaazon/hop.nvim',
-      keys = {'<Leader>;'},
+      keys = {
+        {'n', '<Leader>;'}
+      },
       config = function ()
         local hop = require'hop'
         vim.keymap.nnoremap({'<Leader>;', hop.hint_words, silent = true})
@@ -393,37 +510,16 @@ return packer.startup(function(use)
 
   -- Wrap and unwrap arguments
   use {
-    'FooSoft/vim-argwrap',
-    setup = function ()
-      vim.keymap.nnoremap({'<Leader>j', ':ArgWrap<CR>', silent = true})
-    end,
-    cmd = 'ArgWrap'
-  }
-
-  use {
-    'AckslD/nvim-revJ.lua',
-    disable = true,
-    config = function()
-      require'revj'.setup{
-        brackets = {first = '([{<', last = ')]}>'}, -- brackets to consider surrounding arguments
-        new_line_before_last_bracket = true, -- add new line between last argument and last bracket (only if no last seperator)
-        add_seperator_for_last_parameter = true, -- if a seperator should be added if not present after last parameter
-        enable_default_keymaps = true,
-      }
-    end,
-    requires = {
-      'kana/vim-textobj-user',
-      requires = {'sgur/vim-textobj-parameter'},
-    },
+    'AndrewRadev/splitjoin.vim',
+    keys = { "gJ", "gS" },
   }
 
   use {
     'mizlan/iswap.nvim',
-    setup = function ()
-      vim.keymap.nnoremap({'gs', ':ISwap<CR>', silent = true})
-    end,
     cmd = 'ISwap',
-    after = 'nvim-treesitter'
+    setup = function ()
+      vim.keymap.nnoremap({'gs', '<cmd>ISwap<CR>', silent = true})
+    end
   }
 
   -- Comments
@@ -432,19 +528,19 @@ return packer.startup(function(use)
     setup = function ()
       -- Disable default binds
       vim.g.kommentary_create_default_mappings = false
-      vim.keymap.nmap({'gcc', '<Plug>kommentary_line_default', silent = true })
+      vim.keymap.nmap({'gcl', '<Plug>kommentary_line_default', silent = true })
       vim.keymap.nmap({'gc', '<Plug>kommentary_motion_default', silent = true })
       vim.keymap.imap({'<C-_>', '<C-o><Plug>kommentary_line_default', silent = true })
       vim.keymap.vmap({'gc', '<Plug>kommentary_visual_default', silent = true })
     end,
     keys = {
       {'i', '<C-o><Plug>kommentary_line_default'},
-      '<Plug>kommentary_line_default',
-      '<Plug>kommentary_visual_default',
-      '<Plug>kommentary_motion_default'
+      {'n', '<Plug>kommentary_line_default'},
+      {'n','<Plug>kommentary_motion_default'},
+      {'v', '<Plug>kommentary_visual_default'}
     },
     config = function()
-      require'keychord'.cancel('gcc')
+      require'keychord'.cancel('gc')
       local kommentary = require'kommentary.config'
 
       kommentary.configure_language("default", {
@@ -467,37 +563,16 @@ return packer.startup(function(use)
     end
   }
 
-  -- Autopair
-  use {
-    'steelsojka/pears.nvim',
-    event = 'BufReadPost',
-    config = [[require'modules.pears']]
-  }
   -- Manipulate pairs
   use {
     'machakann/vim-sandwich',
-    setup = function ()
+    event = 'BufReadPost',
+    config = function ()
+      vim.cmd [[runtime macros/sandwich/keymap/surround.vim]]
       vim.keymap.xmap({'is', '<Plug>(textobj-sandwich-query-i)', silent = true})
       vim.keymap.xmap({'as', '<Plug>(textobj-sandwich-query-a)', silent = true})
       vim.keymap.omap({'is', '<Plug>(textobj-sandwich-query-i)', silent = true})
       vim.keymap.omap({'as', '<Plug>(textobj-sandwich-query-a)', silent = true})
-    end,
-    keys = {
-      {'n', 'ys'},
-      {'n', 'yss'},
-      {'n', 'yS'},
-      {'n', 'cs'},
-      {'n', 'css'},
-      {'n', 'ds'},
-      {'n', 'dss'},
-      {'x', 'S'},
-      {'x', 'is'},
-      {'x', 'as'},
-      {'o', 'is'},
-      {'o', 'as'},
-    },
-    config = function ()
-      vim.cmd[[runtime macros/sandwich/keymap/surround.vim]]
     end
   }
 
@@ -560,7 +635,7 @@ return packer.startup(function(use)
   -- Multiple cursors
   use {
     'mg979/vim-visual-multi',
-    keys ={'<C-n>', '<C-Down>', '<C-Up>'}
+    keys = {'<C-n>', '<C-Down>', '<C-Up>'}
   }
 
   -- Text manipulation
@@ -574,7 +649,9 @@ return packer.startup(function(use)
       '<Plug>(textmanip-move-left)',
       '<Plug>(textmanip-move-right)',
       '<Plug>(textmanip-duplicate-down)',
-      '<Plug>(textmanip-duplicate-up)'
+      '<Plug>(textmanip-duplicate-up)',
+      '<Plug>(textmanip-blank-above)',
+      '<Plug>(textmanip-blank-below)'
     },
     setup = function ()
       vim.keymap.map({'<A-j>', '<Plug>(textmanip-move-down)', silent = true})
@@ -585,6 +662,28 @@ return packer.startup(function(use)
       vim.keymap.xmap({'<A-l>', '<Plug>(textmanip-move-right)', silent = true})
       vim.keymap.map({'<C-j>', '<Plug>(textmanip-duplicate-down)', silent = true})
       vim.keymap.map({'<C-k>', '<Plug>(textmanip-duplicate-up)', silent = true})
+      vim.keymap.map({'[<Space>', '<Plug>(textmanip-blank-above)', silent = true})
+      vim.keymap.map({']<Space>', '<Plug>(textmanip-blank-below)', silent = true})
+    end,
+    config = function ()
+      -- TODO: lua :)
+      vim.api.nvim_exec(
+      [[
+      let g:textmanip_hooks = {}
+      function! g:textmanip_hooks.finish(tm)
+      let tm = a:tm
+      let helper = textmanip#helper#get()
+      if tm.linewise
+        call helper.indent(tm)
+      else
+        " When blockwise move/duplicate, remove trailing white space.
+        " To use this feature without feeling counterintuitive,
+        " I recommend you to ':set virtualedit=block',
+        call helper.remove_trailing_WS(tm)
+      endif
+      endfunction
+      ]],
+      true)
     end
   }
 
@@ -602,20 +701,6 @@ return packer.startup(function(use)
     config = [[require'numb'.setup({show_cursorline = true})]]
   }
 
-  -- Reload config
-  use {
-    'famiu/nvim-reload',
-    keys = {'<Leader>r', '<Leader>R'},
-    config = function ()
-      if not packer_plugins['plenary.nvim'].loaded then
-        vim.cmd[[packadd plenary.nvim]]
-      end
-      local rld = require'nvim-reload'
-      vim.keymap.nnoremap({'<Leader>r', rld.Reload, silent = true})
-      vim.keymap.nnoremap({'<Leader>R', rld.Restart, silent = true})
-    end
-  }
-
   -- Undo tree
   use {
     'mbbill/undotree',
@@ -623,24 +708,19 @@ return packer.startup(function(use)
     setup = function ()
       vim.g.undotree_SplitWidth = 40
       vim.g.undotree_SetFocusWhenToggle = 1
-      vim.keymap.nnoremap({'<Leader>ut', ':UndotreeToggle<CR>', silent = true})
+      vim.g.undotree_DiffAutoOpen = 0
+      vim.keymap.nnoremap({'<Leader>ut', '<cmd>UndotreeToggle<CR>', silent = true})
     end,
     config = function()
       require'keychord'.cancel('<Leader>u')
     end
   }
 
-  -- Save undo file as filepath
-  use { 'pixelastic/vim-undodir-tree' }
-
   -- Show warning if undoing change from before
   use {
     'ram02z/undofile_warn.vim',
-    event = 'BufReadPre'
+    event = 'BufReadPost'
   }
-
-  -- Make directory if it doesn't exist
-  use {'pbrisbin/vim-mkdir'}
 
   -- Remove annoying search highlighting
   use {
@@ -651,28 +731,34 @@ return packer.startup(function(use)
   -- Remember last position in file
   use {
     'ethanholz/nvim-lastplace',
-    event = 'BufReadPre',
+    event = 'BufReadPost',
     config = [[require'nvim-lastplace'.setup()]]
   }
 
-  -- Quickfix settings
+  -- Quickfix helper
   use {
-    'romainl/vim-qf',
-    event = {'FileType qf', 'QuickFixCmdPost'},
-    config = function()
-      vim.g.qf_shorten_path = 3
-      vim.keymap.nmap({'<Leader>qq', '<Plug>(qf_qf_toggle)', silent = true})
-      vim.keymap.nmap({'<Leader>ql', '<Plug>(qf_loc_toggle)', silent = true})
-      vim.keymap.nmap({'<Leader>qs', '<Plug>(qf_qf_switch)', silent = true})
-      vim.keymap.nmap({']q', '<Plug>(qf_qf_previous)', silent = true})
-      vim.keymap.nmap({'[q', '<Plug>(qf_qf_next)', silent = true})
-      vim.keymap.nmap({']l', '<Plug>(qf_loc_previous)', silent = true})
-      vim.keymap.nmap({'[l', '<Plug>(qf_loc_next)', silent = true})
-      require'keychord'.cancel('<Leader>q')
+    'kevinhwang91/nvim-bqf',
+    event = {'FileType qf', 'QuickFixCmdPre'},
+    config = function ()
+      require'bqf'.setup()
     end
   }
 
   -- Profiling
-  use {'dstein64/vim-startuptime', cmd = 'StartupTime'}
+  use {
+    'dstein64/vim-startuptime',
+    cmd = 'StartupTime',
+  }
 
-end)
+end,
+config = {
+  profile = {
+    enable = true,
+  },
+  display = {
+    prompt_border = 'single',
+    open_fn = function()
+      return require('packer.util').float({ border = 'single' })
+    end
+  }
+}})

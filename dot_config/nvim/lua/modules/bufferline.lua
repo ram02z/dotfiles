@@ -5,31 +5,43 @@ local bline_conf = {
     numbers = 'ordinal',
     number_style = 'none',
     show_buffer_close_icons = false,
-    show_close_icon = false,
+    right_mouse_command = function(bufnum)
+      require'utils.buffer'.bufwipeout(bufnum)
+    end,
+    close_command = function(bufnum)
+      require'utils.buffer'.bufwipeout(bufnum)
+    end,
     always_show_bufferline = false,
     diagnostics = 'nvim_lsp',
     mappings = false,
     offsets = {
-      {filetype = "packer", text = "Packer", highlight = "Directory", text_align = "left"},
+      {filetype = "undotree", highlight = "StatusLine", text_align = "left"},
+      {filetype = "Outline", highlight = "StatusLine", text_align = "right"},
     },
+    custom_filter = function (bufno)
+      if vim.bo[bufno].filetype ~= "qf" then
+        return true
+      end
+    end,
   },
+  -- TODO: (lowprio) move to theme
   highlights = {
     fill = {
       guibg = {
         attribute = 'bg',
-        highlight = 'Pmenu'
+        highlight = 'StatusLine'
       }
     },
     background = {
       guibg = {
         attribute = 'bg',
-        highlight = 'Pmenu'
+        highlight = 'StatusLine'
       }
     },
     separator = {
       guibg = {
         attribute = 'bg',
-        highlight = 'Pmenu'
+        highlight = 'StatusLine'
       }
     },
     modified = {
@@ -41,7 +53,7 @@ local bline_conf = {
     indicator_selected = {
       guifg = {
         attribute = 'fg',
-        highlight = 'Special'
+        highlight = 'VertSplit'
       }
     },
     pick = {
@@ -68,7 +80,7 @@ local bline_conf = {
 bline.setup(bline_conf)
 
 -- Maps
-vim.keymap.nnoremap({'<Leader><Leader>', bline.pick_buffer, silent = true})
+vim.keymap.nnoremap({'<Leader>b', bline.pick_buffer, silent = true})
 vim.keymap.nnoremap({'<Leader>,', function() bline.cycle(-1) end, silent = true})
 vim.keymap.nnoremap({'<Leader>.', function() bline.cycle(1) end, silent = true})
 vim.keymap.nnoremap({'<Leader><lt>', function() bline.move(-1) end, silent = true})
