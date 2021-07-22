@@ -7,8 +7,8 @@ if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
   execute('!git clone https://github.com/wbthomason/packer.nvim '.. install_path)
 end
 execute 'packadd packer.nvim'
--- Load before filetype plugins
-execute 'packadd chezmoi.vim'
+-- NOTE: can fail on before installed
+pcall(execute, 'packadd chezmoi.vim')
 
 local packer = require("packer")
 
@@ -88,6 +88,7 @@ packer.startup({function(use)
     -- '~/Downloads/nvim-treesitter',
     'nvim-treesitter/nvim-treesitter',
     -- NOTE: maybe don't lazyload?
+    -- with lazyload, if file is opened directly ts plugins won't work until :e!
     -- event = 'BufRead',
     -- cmd = {'TSUpdate', 'TSInstall', 'TSUninstall'},
     -- module = 'nvim-treesitter',
