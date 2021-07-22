@@ -154,6 +154,7 @@ packer.startup({function(use)
   -- Buffer/Tabline
   use {
     'akinsho/nvim-bufferline.lua',
+    event = 'BufReadPre',
     requires = {'kyazdani42/nvim-web-devicons'},
     config = [[require'modules.bufferline']],
   }
@@ -464,6 +465,7 @@ packer.startup({function(use)
   use {
     {
       'rhysd/clever-f.vim',
+      event = 'BufReadPost',
       setup = function ()
         vim.keymap.map({';', '<Plug>(clever-f-repeat-forward)', silent = true})
         vim.keymap.map({',', '<Plug>(clever-f-repeat-back)', silent = true})
