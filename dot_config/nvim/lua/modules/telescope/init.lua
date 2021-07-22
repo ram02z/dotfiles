@@ -8,47 +8,47 @@ local telescope = require("telescope")
 local actions = require("telescope.actions")
 
 local tscope_config = {
-	defaults = {
-		-- TODO: better bottom pane (telescope.nvim #765)
-		sorting_strategy = "ascending",
+  defaults = {
+    -- TODO: better bottom pane (telescope.nvim #765)
+    sorting_strategy = "ascending",
 
-		preview_title = "",
+    preview_title = "",
 
-		layout_strategy = "bottom_pane",
-		layout_config = {
-			height = 10,
-		},
+    layout_strategy = "bottom_pane",
+    layout_config = {
+      height = 10,
+    },
 
-		border = true,
-		borderchars = {
-			"z",
-			prompt = { "─", " ", " ", " ", "─", "─", " ", " " },
-			results = { " " },
-			preview = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },
-		},
-		file_ignore_patterns = { ".backup", ".swap", ".langservers", ".session", ".undo" },
-		mappings = {
-			i = {
-				["<C-q>"] = actions.smart_send_to_qflist + actions.open_qflist,
-				["<C-Down>"] = require("telescope.actions").cycle_history_next,
-				["<C-Up>"] = require("telescope.actions").cycle_history_prev,
-			},
-			n = {
-				["<C-q>"] = actions.smart_add_to_qflist + actions.open_qflist,
-			},
-		},
-	},
-	extensions = {
-		fzf = {
-			fuzzy = true,
-			override_generic_sorter = true,
-			override_file_sorter = true,
-			case_mode = "smart_case",
-		},
-		project = {
-			base_dirs = { U.os.home .. "/Downloads" },
-		},
-	},
+    border = true,
+    borderchars = {
+      "z",
+      prompt = { "─", " ", " ", " ", "─", "─", " ", " " },
+      results = { " " },
+      preview = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },
+    },
+    file_ignore_patterns = { ".backup", ".swap", ".langservers", ".session", ".undo" },
+    mappings = {
+      i = {
+        ["<C-q>"] = actions.smart_send_to_qflist + actions.open_qflist,
+        ["<C-Down>"] = require("telescope.actions").cycle_history_next,
+        ["<C-Up>"] = require("telescope.actions").cycle_history_prev,
+      },
+      n = {
+        ["<C-q>"] = actions.smart_add_to_qflist + actions.open_qflist,
+      },
+    },
+  },
+  extensions = {
+    fzf = {
+      fuzzy = true,
+      override_generic_sorter = true,
+      override_file_sorter = true,
+      case_mode = "smart_case",
+    },
+    project = {
+      base_dirs = { U.os.home .. "/Downloads" },
+    },
+  },
 }
 
 telescope.setup(tscope_config)

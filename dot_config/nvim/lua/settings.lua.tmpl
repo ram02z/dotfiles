@@ -1,8 +1,8 @@
 local opt = setmetatable({}, {
-	__newindex = function(_, key, value)
-		vim.o[key] = value
-		vim.bo[key] = value
-	end,
+  __newindex = function(_, key, value)
+    vim.o[key] = value
+    vim.bo[key] = value
+  end,
 })
 
 vim.g.mapleader = " "
@@ -75,7 +75,7 @@ vim.g.clipyank = '{{ lookPath "xclip" }}'
 {{ else if (eq .chezmoi.os "windows") -}}
 vim.g.clipyank = '{{ lookPath "clip.exe" }}'
 {{ else if (eq .chezmoi.os "darwin") -}}
-vim.g.clipyank('{{ lookPath "pbcopy" }}')
+vim.g.clipyank = '{{ lookPath "pbcopy" }}'
 {{- end -}}
 
 -- vim: ft=lua
