@@ -1,15 +1,11 @@
-local opt =
-  setmetatable(
-  {},
-  {
-    __newindex = function(_, key, value)
-      vim.o[key] = value
-      vim.bo[key] = value
-    end
-  }
-)
+local opt = setmetatable({}, {
+	__newindex = function(_, key, value)
+		vim.o[key] = value
+		vim.bo[key] = value
+	end,
+})
 
-vim.g.mapleader = ' '
+vim.g.mapleader = " "
 
 opt.undolevels = 10000
 
@@ -17,7 +13,7 @@ opt.undolevels = 10000
 vim.o.undofile = false
 
 {{ if (eq .chezmoi.os "linux") -}}
-vim.o.fileformats = 'unix'
+vim.o.fileformats = "unix"
 
 vim.o.shell = '{{ or (lookPath "bash") (lookPath "sh")}}'
 {{- end }}
@@ -36,22 +32,22 @@ vim.o.ignorecase = true
 vim.o.infercase = true
 vim.o.smartcase = true
 
-vim.o.virtualedit = 'block'
+vim.o.virtualedit = "block"
 
-vim.o.mouse = 'a'
+vim.o.mouse = "a"
 
 vim.o.lazyredraw = true
 
-vim.o.whichwrap = '<,>,h,l,[,]'
+vim.o.whichwrap = "<,>,h,l,[,]"
 
 vim.o.viewoptions = ""
 
-vim.o.showbreak = '↳\\'
+vim.o.showbreak = "↳\\"
 
 vim.wo.wrap = true
 vim.wo.linebreak = true
 vim.wo.breakindent = true
-vim.wo.breakindentopt = 'sbr'
+vim.wo.breakindentopt = "sbr"
 
 vim.wo.foldenable = false
 
@@ -79,7 +75,7 @@ vim.g.clipyank = '{{ lookPath "xclip" }}'
 {{ else if (eq .chezmoi.os "windows") -}}
 vim.g.clipyank = '{{ lookPath "clip.exe" }}'
 {{ else if (eq .chezmoi.os "darwin") -}}
-vim.g.clipyank  '{{ lookPath "pbcopy" }}'
+vim.g.clipyank('{{ lookPath "pbcopy" }}')
 {{- end -}}
 
 -- vim: ft=lua
