@@ -397,8 +397,9 @@ for_window [floating] move position center
 set $mode_system System: (l) lock, (e) logout, (r) reboot, (s) shutdown
 mode "$mode_system" {
     bindsym e exit
-    bindsym r exec shutdown -r now, mode "default"
-    bindsym s exec shutdown -h now, mode "default"
+    # TODO: find a better way to do this without systemd
+    # bindsym r exec shutdown -r now, mode "default"
+    # bindsym s exec shutdown -h now, mode "default"
 
     # return to default mode
     bindsym Return mode "default"
@@ -426,6 +427,13 @@ bindsym Print exec $HOME/.local/bin/grimshot copy screen
 
 {{ if lookPath "foot" }}
 exec foot --server
+{{ end }}
+
+{{ if lookPath "pipewire" }}
+exec pipewire
+{{ end }}
+{{ if lookPath "pipewire-pulse" }}
+exec pipewire-pulse
 {{ end }}
 
 # TODO: maybe switch to swayr
