@@ -310,8 +310,8 @@ bar {
     mode dock
     height 18
     font pango:DejaVu Sans Mono, Symbols Nerd Font
-    {{ if lookPath "i3status-rust" }}
-    status_command i3status-rust $HOME/.config/i3status-rust/config.toml
+    {{ if lookPath "i3status-rs" }}
+    status_command i3status-rs $HOME/.config/i3status-rust/config.toml
     {{ end }}
     # status_command 'bash -c "$HOME/Downloads/i3status-rust/target/release/i3status-rs $HOME/.config/i3status-rust/conf.toml |& tee /tmp/debug13rs"'
     status_padding 0
