@@ -1,7 +1,3 @@
--- if not packer_plugins['plenary.nvim'].loaded then
---   vim.cmd [[packadd plenary.nvim]]
--- end
-
 local gitsigns = require("gitsigns")
 
 local gs_conf = {
@@ -46,5 +42,5 @@ local gs_conf = {
 
 gitsigns.setup(gs_conf)
 
-local cancel = require("keychord").cancel
+local cancel = require("utils.keychord").cancel
 cancel("<Leader>g")

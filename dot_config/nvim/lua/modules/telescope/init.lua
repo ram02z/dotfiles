@@ -54,7 +54,7 @@ local tscope_config = {
 telescope.setup(tscope_config)
 
 local tscope = require("modules.telescope.functions")
-local cancel = require("keychord").cancel
+local cancel = require("utils.keychord").cancel
 -- View help pages
 vim.keymap.nnoremap({ "<Leader>pm", "<cmd>Telescope help_tags<CR>", silent = true })
 -- Git project files (fall back to cwd)

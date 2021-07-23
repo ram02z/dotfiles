@@ -28,7 +28,7 @@ local on_attach = function(client, bufnr)
   vim.keymap.nmap({ "]d", [[<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>]], silent = true, buffer = true })
   vim.keymap.nmap({ "[d", [[<cmd>lua vim.lsp.diagnostic.goto_next()<CR>]], silent = true, buffer = true })
 
-  require("keychord").cancel("<Leader>l", true)
+  require("utils.keychord").cancel("<Leader>l", true)
 
   -- Additional plugins
 end

@@ -106,7 +106,7 @@ packer.startup({
         vim.keymap.nnoremap({ "<Leader>tp", "<cmd>TSPlaygroundToggle<CR>", silent = true })
       end,
       config = function()
-        require("keychord").cancel("<Leader>t")
+        require("utils.keychord").cancel("<Leader>t")
       end,
     })
 
@@ -522,7 +522,7 @@ packer.startup({
         { "v", "<Plug>kommentary_visual_default" },
       },
       config = function()
-        require("keychord").cancel("gc")
+        require("utils.keychord").cancel("gc")
         local kommentary = require("kommentary.config")
 
         kommentary.configure_language("default", {
@@ -695,7 +695,7 @@ packer.startup({
         vim.keymap.nnoremap({ "<Leader>ut", "<cmd>UndotreeToggle<CR>", silent = true })
       end,
       config = function()
-        require("keychord").cancel("<Leader>u")
+        require("utils.keychord").cancel("<Leader>u")
       end,
     })
 
