@@ -7,20 +7,20 @@
 
 . "$(dirname "$0")"/.nnn-plugin-helper
 
-if [ "$(cmd_exists fzf)" -eq "0" ]; then
-    sel=$(fzf)
-elif [ "$(cmd_exists sk)" -eq "0" ]; then
-    sel=$(sk)
-else
-    exit 1
-fi
+{{ if lookPath "fzf" }}
+sel=$(fzf)
+{{- else if lookPath "sk" }}
+sel=$(sk)
+{{- else }}
+exit 1
+{{- end }}
 
 if [ -n "$sel" ]; then
     if [ "$sel" = "." ] || { ! [ -d "$sel" ] && ! [ -f "$sel" ]; }; then
         exit 0
     fi
 
-        
+
     # Check if selected path returned
     # by fzf command is absolute
     case $sel in

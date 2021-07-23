@@ -9,8 +9,7 @@ block = "focused_window"
 max_width = 50
 show_marks = "visible"
 
-{{/* if (eq (get .chezmoi.osRelease "idLike") "debian") -*/}}
-{{ if (eq .chezmoi.osRelease.id "ubuntu") }}
+{{ if (eq (get .chezmoi.osRelease "idLike") "debian") -}}
 [[block]]
 block = "apt"
 interval = 1800

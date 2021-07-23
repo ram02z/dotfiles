@@ -8,7 +8,7 @@ set -x NNN_FCOLORS 'c1e2b72e006033f7c6d6abc4'
 set -x NNN_TRASH 2
 {{ if lookPath "mvg" -}}
 set -x NNN_OPTS "dcHxr"
-{{- else -}}
+{{- else }}
 set -x NNN_OPTS "dcHx"
 {{- end }}
 set -x NNN_FIFO '/tmp/nnn.fifo'
