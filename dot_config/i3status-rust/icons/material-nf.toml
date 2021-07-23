@@ -1,5 +1,9 @@
 # Material from NerdFont
 # https://www.nerdfonts.com/cheat-sheet
+#
+# Note: aviod using icons in the range 0xf500-0xfd46,
+# as they will cause the block to render backwards
+# until https://github.com/ryanoasis/nerd-fonts/issues/365 is fixed
 backlight_empty = "\ue38d" # nf-weather-moon_new
 backlight_full = "\ue39b" # nf-weather-moon_full
 backlight_1 = "\ue3d4" # nf-weather-moon_alt_waxing_gibbous_6
@@ -28,6 +32,8 @@ bluetooth = "\uf5ae" # nf-mdi-bluetooth
 calendar = "\uf5ec" # nf-mdi-calendar
 cogs = "\uf992" # nf-mdi-settings
 cpu = "\uf9c4" # nf-mdi-speedometer
+cpu_boost_on = "\ufa20"
+cpu_boost_off = "\ufa21"
 disk_drive = "\uf7c9" # nf-mdi-harddisk
 docker = "\uf308" # nf-linux-docker
 github = "\uf7a3" # nf-mdi-github_circle
@@ -46,7 +52,7 @@ music_play = "\uf909" # nf-mdi-play
 music_prev = "\uf9ad" # nf-mdi-skip_previous
 net_bridge = "\uf9a9" # nf-mdi-sitemap
 net_down = "\uf6d9" # nf-mdi-download
-net_loopback = "\ufbe9" # nf-mdi-loop
+net_loopback = "\uf56e" # nf-mdi-backup_restore
 net_modem = "\uf8f1" # nf-mdi-phone
 net_up = "\ufa51" # nf-mdi-upload
 net_vpn = "\ufa81" # nf-mdi-vpn
@@ -57,6 +63,10 @@ phone = "\uf8f1" # nf-mdi-phone
 phone_disconnected = "\ufb57" # nf-mdi-phone_minus
 ping = "\ufa1e" # nf-mdi-timer_sand
 pomodoro = "\ue001" # nf-pom-pomodoro_done
+pomodoro_break = "\uf0f4" # nf-fa-coffee
+pomododo_paused = "\uf04c" # nf-fa-pause
+pomodoro_started = "\uf04b" # nf-fa-play
+pomodoro_stopped = "\uf04d" # nf-fa-stop
 resolution = "\uf792" # nf-mdi-fullscreen
 tasks = "\ufac6" # nf-mdi-playlist_check
 thermometer = "\ufa0e" # nf-mdi-thermometer
@@ -64,7 +74,7 @@ time = "\uf64f" # nf-mdi-clock
 toggle_off = "\ufa21" # nf-mdi-toggle_switch_off
 toggle_on = "\ufa20" # nf-mdi-toggle_switch
 unknown = "\uf685" # nf-mdi-comment_question_outline | TODO: Make default?
-update = "\ufbae" # nf-mdi-update
+update = "\uf8d4" # nf-mdi-package_up
 uptime = "\uf652" # nf-mdi-clock_in
 volume_empty = "\ufa7e" # nf-mdi-volume_low
 volume_full = "\ufa7d" # nf-mdi-volume_high
