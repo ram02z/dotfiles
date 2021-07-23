@@ -16,24 +16,24 @@
 #
 # Shell: POSIX compliant
 # Author: Arun Prakash Jana
-
-. "$(dirname "$0")"/.nnn-plugin-helper
-
-if type fzf >/dev/null 2>&1; then
-    cmd="$FZF_DEFAULT_COMMAND"
-    if type fd >/dev/null 2>&1; then
-        [ -z "$cmd" ] && cmd="fd -t f 2>/dev/null"
-    else
-        [ -z "$cmd" ] && cmd="find . -type f 2>/dev/null"
-    fi
-    entry="$(eval "$cmd" | fzf -m --delimiter / --nth=-1 --tiebreak=begin --info=hidden)"
-    # To show only the file name
-    # entry=$(find . -type f 2>/dev/null | fzf --delimiter / --with-nth=-1 --tiebreak=begin --info=hidden)
-elif type sk >/dev/null 2>&1; then
-	entry=$(find . -type f 2>/dev/null | sk)
-else
-    exit 1
-fi
+{{ if lookPath "fzf" }}
+    {{- if env "FZF_DEFAULT_COMMAND" }}
+cmd={{ env "FZF_DEFAULT_COMMAND" | quote }}
+    {{- else }}
+        {{ if lookPath "fd" }}
+cmd="fd -t f 2>/dev/null"
+        {{- else }}
+cmd="find . -type f 2>/dev/null"
+        {{ end }}
+    {{- end }}
+entry="$(eval "$cmd" | fzf -m --delimiter / --nth=-1 --tiebreak=begin --info=hidden)"
+# To show only the file name
+# entry=$(find . -type f 2>/dev/null | fzf --delimiter / --with-nth=-1 --tiebreak=begin --info=hidden)
+{{- else if lookPath "sk" }}
+entry=$(find . -type f 2>/dev/null | sk)
+{{- else }}
+exit 1
+{{- end }}
 
 # Check for picker mode
 if [ "$3" ]; then

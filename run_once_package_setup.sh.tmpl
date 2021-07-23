@@ -10,11 +10,9 @@ _isInstalled() {
     package="$1"
     {{ if (eq .chezmoi.osRelease.id "void")}}
     sudo xbps-query "${package}" &>/dev/null;
-    {{/* else if (eq (get .chezmoi.osRelease "idLike") "arch") */}}
-    {{ else if (eq .chezmoi.osRelease.id "arch") }}
+    {{ else if (eq (get .chezmoi.osRelease "idLike") "arch") }}
     sudo paru -Qs "${package}" &>/dev/null;
-    {{ else if (eq .chezmoi.osRelease.id "ubuntu") }}
-    {{/* else if (eq (get .chezmoi.osRelease "idLike") "debian") */}}
+    {{ else if (eq (get .chezmoi.osRelease "idLike") "debian") }}
     sudo dpkg -s "${package}" &>/dev/null;
     {{ end }}
     return $?
@@ -52,11 +50,9 @@ _installMany() {
     printf "%s\n" "${notInstalled[@]}";
     {{ if (eq .chezmoi.osRelease.id "void")}}
     sudo xbps-install -Sv "${notInstalled[@]}";
-    {{/* else if (eq (get .chezmoi.osRelease "idLike") "arch") */}}
-    {{ else if (eq .chezmoi.osRelease.id "arch") }}
+    {{ else if (eq (get .chezmoi.osRelease "idLike") "arch") }}
     sudo paru -S "${notInstalled[@]}";
-    {{/* else if (eq (get .chezmoi.osRelease "idLike") "debian") */}}
-    {{ else if (eq .chezmoi.osRelease.id "ubuntu") }}
+    {{ else if (eq (get .chezmoi.osRelease "idLike") "debian") }}
     sudo apt install "${notInstalled[@]}";
     {{ end }}
 }
@@ -114,8 +110,7 @@ if [[ $REPLY =~ ^[Yy]$ ]]; then
     "dejavu-fonts-ttf");
 fi;
 printf "\n";
-{{/* else if (eq (get .chezmoi.osRelease "idLike") "arch") */}}
-{{ else if (eq .chezmoi.osRelease.id "arch") }}
+{{ else if (eq (get .chezmoi.osRelease "idLike") "arch") }}
 # Assumes we are running sway
 # Checks if paru has been installed
 {{ if not (lookPath "paru") }}
@@ -126,7 +121,7 @@ makepkg -si
 {{ end }}
 
 packages=("sway" "fish" "neovim-nightly-bin" "git-delta-bin");
-{{/* else if (eq (get .chezmoi.osRelease "idLike") "debian") */}}
+{{ else if (eq (get .chezmoi.osRelease "idLike") "debian") }}
     {{ if (eq .chezmoi.osRelease.id "ubuntu") }}
 _installMany "software-properties-common" >/dev/null 2>&1
 _addPPA "neovim-ppa/unstable"

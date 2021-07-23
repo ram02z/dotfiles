@@ -6,4 +6,4 @@ function fish_mode_prompt; end
 bind -m visual V beginning-of-line begin-selection end-of-line force-repaint
 
 # Source init scripts
-init_source zoxide
+# init_source zoxide
