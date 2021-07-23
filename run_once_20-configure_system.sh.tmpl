@@ -1,0 +1,23 @@
+{{ if (eq .chezmoi.os "linux") -}}
+#!/bin/bash
+{{ if (eq .chezmoi.osRelease.id "void")}}
+    {{ if and (not (eq (env "XDG_SESSION_DESKTOP") "sway"))
+    (not (env "XDG_RUNTIME_DIR")) }}
+# Setup pam_rundir
+sudo ln -s /etc/sv/seatd /var/service
+sudo usermod -a -G _seatd $USER
+# NOTE: maybe I should not edit this file automatically
+echo '-session optional pam_rundir.so' | sudo tee -a /etc/pam.d/system-login
+
+# Setup pipewire
+sudo ln -s /etc/sv/pipewire /var/service
+sudo ln -s /etc/sv/pipewire-pulse /var/service
+
+# Set up dbus
+sudo ln -s /etc/sv/dbus/ /var/service
+    {{ end }}
+{{ end }}
+{{ if not (contains "fish" (env "SHELL")) }}
+sudo -u $USER chsh -s "{{ or (lookPath "fish") (lookPath "bash") }}";
+{{- end }}
+{{- end }}
