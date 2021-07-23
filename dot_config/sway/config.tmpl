@@ -195,14 +195,20 @@ seat seat0 xcursor_theme "Simp1e-dark"
 #
 # bindsym XF86AudioMicMute exec amixer -D pulse sset Capture toggle | sed -En '/\[on\]/ s/.*\[([0-9]+)%\].*/\1/ p; /\[off\]/ s/.*/0/p' | head -1 > /tmp/wobpipe
 
+{{ if lookPath "volumectl" }}
 bindsym XF86AudioRaiseVolume exec volumectl raise
 bindsym XF86AudioLowerVolume exec volumectl lower
 bindsym XF86AudioMute exec volumectl mute
+{{ end }}
 
+{{ if lookPath "lightctl" }}
 bindsym XF86MonBrightnessUp exec lightctl raise
 bindsym XF86MonBrightnessDown exec lightctl lower
+{{ end }}
 
+{{ if lookPath "avizo-service" }}
 exec "avizo-service"
+{{ end }}
 
 #
 # Layout stuff:
@@ -304,7 +310,9 @@ bar {
     mode dock
     height 18
     font pango:DejaVu Sans Mono, Symbols Nerd Font
-    status_command $HOME/.cargo/bin/i3status-rs $HOME/.config/i3status-rust/config.toml
+    {{ if lookPath "i3status-rust" }}
+    status_command i3status-rust $HOME/.config/i3status-rust/config.toml
+    {{ end }}
     # status_command 'bash -c "$HOME/Downloads/i3status-rust/target/release/i3status-rs $HOME/.config/i3status-rust/conf.toml |& tee /tmp/debug13rs"'
     status_padding 0
 
@@ -389,8 +397,8 @@ for_window [floating] move position center
 set $mode_system System: (l) lock, (e) logout, (r) reboot, (s) shutdown
 mode "$mode_system" {
     bindsym e exit
-    bindsym r exec systemctl reboot, mode "default"
-    bindsym s exec systemctl poweroff -i, mode "default"
+    bindsym r exec shutdown -r now, mode "default"
+    bindsym s exec shutdown -h now, mode "default"
 
     # return to default mode
     bindsym Return mode "default"
@@ -416,24 +424,36 @@ bindsym Print exec $HOME/.local/bin/grimshot copy screen
 # Startup
 #
 
+{{ if lookPath "foot" }}
 exec foot --server
+{{ end }}
 
+# TODO: maybe switch to swayr
+# cargo install --git https://github.com/lbonn/i3-focus-last
 exec_always $HOME/.cargo/bin/i3-focus-last server
 bindsym $mod+Tab exec $HOME/.cargo/bin/i3-focus-last menu
 bindsym $alt+Tab exec $HOME/.cargo/bin/i3-focus-last
 
+# cargo install --git https://github.com/ammgws/autotiling-rs
 exec $HOME/.cargo/bin/autotiling-rs
 
-exec $HOME/.local/bin/swaywsr --config ~/.config/sway/wsr.toml
+# cargo install --git https://github.com/pedroscaff/swaywsr
+exec $HOME/.cargo/bin/swaywsr --config ~/.config/sway/wsr.toml
 
 # TODO: replace with my project
+{{ if lookPath "rofication-daemon" }}
 exec_always pkill -f rofication-daemon
 exec_always rofication-daemon
 bindsym $mod+n exec /usr/bin/rofication-gui
+{{ end }}
 
 exec $HOME/.local/bin/fullscreenbarworker
 
+{{ if lookPath "copyq" }}
 exec copyq --start-server
 bindsym $mod+v exec copyq toggle
+{{ end }}
 
 include /etc/sway/config.d/*
+
+# vim: ft=conf

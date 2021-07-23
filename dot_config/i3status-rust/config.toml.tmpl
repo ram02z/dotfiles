@@ -19,6 +19,7 @@ critical_updates_regex = "(linux |linux-lts|linux-zen)"
 on_click = "APT_CONFIG=/tmp/i3rs-apt/apt.conf apt list --upgradable | tail -n +2 | cut -f1 -d '/' | rofi -dmenu"
 {{- end }}
 
+{{ if lookPath "mpsyt" }}
 [[block]]
 block = "music"
 buttons = ["prev", "play", "next"]
@@ -30,6 +31,7 @@ separator = " "
 on_click = "~/.local/bin/i3-quickterm mpsyt"
 on_collapsed_click = "~/.local/bin/i3-quickterm mpsyt"
 interface_name_exclude = ["firefox"]
+{{ end }}
 
 [[block]]
 block = "cpu"
@@ -88,6 +90,7 @@ primary_only = true
 device_format = "{icon}{ap}"
 ap_format = "{strength}"
 
+{{ if lookPath "rofication-json" }}
 [[block]]
 block = "custom"
 command = ''' rofication-json '''
@@ -95,6 +98,7 @@ interval = 5
 on_click = "rofication-gui"
 hide_when_empty = true
 json = true
+{{ end }}
 
 [[block]]
 block = "battery"
@@ -107,3 +111,5 @@ interval = 1
 format = "%R"
 on_click = "~/.local/bin/rofi-calendar"
 icons_format = " "
+
+# vim: ft=toml
