@@ -104,10 +104,10 @@ packages=("fish-shell" "neovim" "python3-neovim"
 read -p "Add sway desktop packages?" -n 1 -r
 if [[ $REPLY =~ ^[Yy]$ ]]; then
     packages+=("sway" "seatd" "polkit" "firefox" "foot" "NetworkManager"
-    "wdisplays" "waylock" "gtk3-nocsd" "powertop" "bluez" "pipewire" "alsa-pipewire"
-    "mps-youtube" "playerctl" "libnotify" "wl-clipboard" "CopyQ" "swayidle"
-    "rofi-calc" "pam_rundir" "font-hack-ttf" "i3status-rust" "pythoni3-ipc"
-    "dejavu-fonts-ttf");
+    "wdisplays" "waylock" "gtk3-nocsd" "powertop" "bluez" "pipewire" "pulseaudio-utils"
+    "mps-youtube" "playomarerctl" "libnotify" "wl-clipboard" "CopyQ" "swayidle"
+    "rofi-calc" "pam_rundir" "font-hack-ttf" "i3status-rust" "python3-i3ipc"
+    "dejavu-fonts-ttf" "mesa-dri");
 fi;
 printf "\n";
 {{ else if (eq (get .chezmoi.osRelease "idLike") "arch") }}
