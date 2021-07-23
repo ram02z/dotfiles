@@ -303,7 +303,7 @@ bar {
     position top
     mode dock
     height 18
-    font pango:DejaVu Sans Mono
+    font pango:DejaVu Sans Mono, Symbols Nerd Font
     status_command $HOME/.cargo/bin/i3status-rs $HOME/.config/i3status-rust/config.toml
     # status_command 'bash -c "$HOME/Downloads/i3status-rust/target/release/i3status-rs $HOME/.config/i3status-rust/conf.toml |& tee /tmp/debug13rs"'
     status_padding 0
