@@ -7,13 +7,18 @@
 sudo ln -s /etc/sv/seatd /var/service
 sudo usermod -a -G _seatd $USER
 # NOTE: maybe I should not edit this file automatically
-echo '-session optional pam_rundir.so' | sudo tee -a /etc/pam.d/system-login
+printf '-session optional pam_rundir.so\n' | sudo tee -a /etc/pam.d/system-login
 
 # Set up dbus
 sudo ln -s /etc/sv/dbus /var/service
 
 # Set up NetworkManager
 sudo ln -s /etc/sv/NetworkManager /var/service
+
+# Set enviroment variables
+# TODO: is this the best method?
+printf 'MOZ_ENABLE_WAYLAND=1\nGDK_BACKEND=wayland\nQT_QPA_PLATFORM=wayland\n' |
+sudo tee -a /etc/environment
     {{ end }}
 {{ end }}
 {{ if not (contains "fish" (env "SHELL")) }}
