@@ -9,15 +9,14 @@ sudo usermod -a -G _seatd $USER
 # NOTE: maybe I should not edit this file automatically
 echo '-session optional pam_rundir.so' | sudo tee -a /etc/pam.d/system-login
 
-# Setup pipewire
-sudo ln -s /etc/sv/pipewire /var/service
-sudo ln -s /etc/sv/pipewire-pulse /var/service
-
 # Set up dbus
-sudo ln -s /etc/sv/dbus/ /var/service
+sudo ln -s /etc/sv/dbus /var/service
+
+# Set up NetworkManager
+sudo ln -s /etc/sv/NetworkManager /var/service
     {{ end }}
 {{ end }}
 {{ if not (contains "fish" (env "SHELL")) }}
-sudo -u $USER chsh -s "{{ or (lookPath "fish") (lookPath "bash") }}";
+sudo -u {{ or (env "USER") $USER }} chsh -s "{{ or (lookPath "fish") (lookPath "bash") }}";
 {{- end }}
 {{- end }}
