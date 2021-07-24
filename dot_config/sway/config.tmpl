@@ -397,9 +397,9 @@ for_window [floating] move position center
 set $mode_system System: (l) lock, (e) logout, (r) reboot, (s) shutdown
 mode "$mode_system" {
     bindsym e exit
-    # TODO: find a better way to do this without systemd
-    # bindsym r exec shutdown -r now, mode "default"
-    # bindsym s exec shutdown -h now, mode "default"
+    # NOTE: requires a custom rule in sudoers
+    bindsym r exec "sudo reboot", mode "default"
+    bindsym s exec "sudo poweroff", mode "default"
 
     # return to default mode
     bindsym Return mode "default"
