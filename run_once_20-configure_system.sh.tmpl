@@ -17,6 +17,6 @@ sudo ln -s /etc/sv/NetworkManager /var/service
     {{ end }}
 {{ end }}
 {{ if not (contains "fish" (env "SHELL")) }}
-sudo -u {{ or (env "USER") $USER }} chsh -s "{{ or (lookPath "fish") (lookPath "bash") }}";
+sudo -u {{ (env "USER") }} chsh -s "{{ or (lookPath "fish") (lookPath "bash") }}";
 {{- end }}
 {{- end }}
