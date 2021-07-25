@@ -309,7 +309,7 @@ bar {
     position top
     mode dock
     height 18
-    font pango:DejaVu Sans Mono, Symbols Nerd Font
+    font pango:Fira Code, Symbols Nerd Font
     {{ if lookPath "i3status-rs" }}
     status_command {{ lookPath "i3status-rs" }} $HOME/.config/i3status-rust/config.toml
     {{ else }}
@@ -332,6 +332,9 @@ bar {
     }
 }
 
+# TODO: switch to waybar
+# https://github.com/kmARC/dotfiles/tree/master/config/waybar
+# Use google's Roboto Condensed font
 # bar {
     # swaybar_command waybar
 # }
