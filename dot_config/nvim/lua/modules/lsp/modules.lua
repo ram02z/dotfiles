@@ -2,6 +2,7 @@ local Input = require("nui.input")
 local event = require("nui.utils.autocmd").event
 local logWarn = require("utils.misc").warn
 local logNote = require("utils.misc").note
+local Menu = require("nui.menu")
 
 local mod = {}
 -- TODO: add code action multi select
@@ -28,6 +29,7 @@ function mod.rename()
 
     params.newName = new_name
 
+    -- TODO: implement prepare rename request to check validity
     vim.lsp.buf_request(0, "textDocument/rename", params, function(_, _, result)
       if not result then
         return
@@ -82,4 +84,19 @@ function mod.rename()
   input:map("n", "<esc>", input.input_props.on_close, { noremap = true })
 end
 
+function mod.code_actions()
+  local context = { diagnostics = vim.lsp.diagnostic.get_line_diagnostics() }
+  local params = vim.lsp.util.make_range_params()
+  params.context = context
+  vim.lsp.buf_request(0, 'textDocument/codeAction', params, function(err, _, actions)
+    if actions == nil or vim.tbl_isempty(actions) then
+      logNote("No code actions on current line", "[CODE ACTIONS]")
+      return nil
+    end
+    -- TODO: implement menu
+    print("da!")
+  end)
+end
+
 return mod
+
