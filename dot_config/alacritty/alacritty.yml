@@ -1,7 +1,6 @@
-# https://github.com/gaplo917/Ligatured-Hack
 font:
     normal:
-      family: Hack
+      family: Iosevka
     size: 14.0
 
 background_opacity: 0.975
