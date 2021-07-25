@@ -195,15 +195,15 @@ seat seat0 xcursor_theme "Simp1e-dark"
 #
 # bindsym XF86AudioMicMute exec amixer -D pulse sset Capture toggle | sed -En '/\[on\]/ s/.*\[([0-9]+)%\].*/\1/ p; /\[off\]/ s/.*/0/p' | head -1 > /tmp/wobpipe
 
-{{ if lookPath "volumectl" }}
-bindsym XF86AudioRaiseVolume exec volumectl raise
-bindsym XF86AudioLowerVolume exec volumectl lower
-bindsym XF86AudioMute exec volumectl mute
+{{ if ($volumectl := (lookPath "volumectl")) }}
+bindsym XF86AudioRaiseVolume exec {{ $volumectl }} raise
+bindsym XF86AudioLowerVolume exec {{ $volumectl }} lower
+bindsym XF86AudioMute exec {{ $volumectl }} mute
 {{ end }}
 
-{{ if lookPath "lightctl" }}
-bindsym XF86MonBrightnessUp exec lightctl raise
-bindsym XF86MonBrightnessDown exec lightctl lower
+{{ if ($lightctl := (lookPath "lightctl")) }}
+bindsym XF86MonBrightnessUp exec {{ $lightctl }} raise
+bindsym XF86MonBrightnessDown exec {{ $lightctl }} lower
 {{ end }}
 
 {{ if lookPath "avizo-service" }}
@@ -250,7 +250,7 @@ exec "avizo-service"
     # I3-Quickterm
     set $mode_quickterm Quickterm: (s) shell, (u) upgrades, (m) mpsyt
     mode "$mode_quickterm" {
-        set $qt ~/.local/bin/i3-quickterm
+        set $qt $HOME/.local/bin/i3-quickterm
         set $rtn mode "default"
         bindsym s exec $qt shell; $rtn
         bindsym u exec $qt upgrades; $rtn
@@ -311,7 +311,9 @@ bar {
     height 18
     font pango:DejaVu Sans Mono, Symbols Nerd Font
     {{ if lookPath "i3status-rs" }}
-    status_command i3status-rs $HOME/.config/i3status-rust/config.toml
+    status_command {{ lookPath "i3status-rs" }} $HOME/.config/i3status-rust/config.toml
+    {{ else }}
+    status_command while date +'%Y-%m-%d %l:%M:%S %p'; do sleep 1; done
     {{ end }}
     # status_command 'bash -c "$HOME/Downloads/i3status-rust/target/release/i3status-rs $HOME/.config/i3status-rust/conf.toml |& tee /tmp/debug13rs"'
     status_padding 0
@@ -429,24 +431,30 @@ bindsym Print exec $HOME/.local/bin/grimshot copy screen
 exec foot --server
 {{ end }}
 
-{{ if lookPath "pipewire" }}
-exec pipewire
-{{ end }}
-{{ if lookPath "pipewire-pulse" }}
-exec pipewire-pulse
+{{ if ($pipewire := (lookPath "pipewire")) }}
+exec {{ $pipewire }}
+    {{ if ($pipewire_pulse := (lookPath "pipewire-pulse")) }}
+exec {{ $pipewire_pulse }}
+    {{ end }}
 {{ end }}
 
 # TODO: maybe switch to swayr
 # cargo install --git https://github.com/lbonn/i3-focus-last
-exec_always $HOME/.cargo/bin/i3-focus-last server
-bindsym $mod+Tab exec $HOME/.cargo/bin/i3-focus-last menu
-bindsym $alt+Tab exec $HOME/.cargo/bin/i3-focus-last
+{{ if ($i3_focus_last := (lookPath "i3-focus-last")) }}
+exec {{ $i3_focus_last }} server
+bindsym $mod+Tab exec {{ $i3_focus_last}} menu
+bindsym $alt+Tab exec {{ $i3_focus_last }}
+{{ end }}
 
 # cargo install --git https://github.com/ammgws/autotiling-rs
-exec $HOME/.cargo/bin/autotiling-rs
+{{ if ($autotiling := (lookPath "autotiling-rs")) }}
+exec {{ $autotiling }}
+{{ end }}
 
 # cargo install --git https://github.com/pedroscaff/swaywsr
-exec $HOME/.cargo/bin/swaywsr --config ~/.config/sway/wsr.toml
+{{ if ($swaywsr := (lookPath "swaywsr")) }}
+exec {{ $swaywsr }} --config .config/sway/wsr.toml
+{{ end }}
 
 # TODO: replace with my project
 {{ if lookPath "rofication-daemon" }}
@@ -457,9 +465,9 @@ bindsym $mod+n exec /usr/bin/rofication-gui
 
 exec $HOME/.local/bin/fullscreenbarworker
 
-{{ if lookPath "copyq" }}
-exec copyq --start-server
-bindsym $mod+v exec copyq toggle
+{{ if ($copyq := (lookPath "copyq")) }}
+exec {{ $copyq }} --start-server
+bindsym $mod+v exec {{ $copyq }} toggle
 {{ end }}
 
 include /etc/sway/config.d/*
