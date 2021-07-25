@@ -1,0 +1,81 @@
+local opt = setmetatable({}, {
+  __newindex = function(_, key, value)
+    vim.o[key] = value
+    vim.bo[key] = value
+  end,
+})
+
+vim.g.mapleader = " "
+
+opt.undolevels = 10000
+
+-- Overriden by vim-undodir-tree
+vim.o.undofile = false
+
+{{ if (eq .chezmoi.os "linux") -}}
+vim.o.fileformats = "unix"
+
+vim.o.shell = '{{ or (lookPath "bash") (lookPath "sh")}}'
+{{- end }}
+
+vim.o.backup = false
+vim.o.writebackup = true
+
+vim.o.confirm = true
+
+vim.o.termguicolors = true
+
+vim.o.hidden = true
+
+vim.o.hlsearch = true
+vim.o.ignorecase = true
+vim.o.infercase = true
+vim.o.smartcase = true
+
+vim.o.virtualedit = "block"
+
+vim.o.mouse = "a"
+
+vim.o.lazyredraw = true
+
+vim.o.whichwrap = "<,>,h,l,[,]"
+
+vim.o.viewoptions = ""
+
+vim.o.showbreak = "↳\\"
+
+vim.wo.wrap = true
+vim.wo.linebreak = true
+vim.wo.breakindent = true
+vim.wo.breakindentopt = "sbr"
+
+vim.wo.foldenable = false
+
+vim.wo.number = true
+vim.wo.relativenumber = true
+
+vim.wo.signcolumn = "yes:1"
+
+{{ if not .is_wsl -}}
+vim.g.dracula_colorterm = 0
+{{- end }}
+
+{{ if (eq .chezmoi.os "linux") -}}
+{{ if .is_wsl -}}
+{{ if lookPath "win32yank.exe" -}}
+vim.g.clipyank = '{{ lookPath "win32yank.exe" }} -i --crlf'
+{{ else -}}
+vim.g.clipyank = '{{ lookPath "clip.exe" }}'
+{{- end }}
+{{ else if .is_wayland -}}
+vim.g.clipyank = '{{ lookPath "wl-copy" }}'
+{{ else if .is_x11 -}}
+vim.g.clipyank = '{{ lookPath "xclip" }}'
+{{ end }}
+{{ else if (eq .chezmoi.os "windows") -}}
+vim.g.clipyank = '{{ lookPath "clip.exe" }}'
+{{ else if (eq .chezmoi.os "darwin") -}}
+vim.g.clipyank = '{{ lookPath "pbcopy" }}'
+{{- end }}
+
+-- vim: ft=lua

@@ -1,83 +1,83 @@
 -- Nvim-telescope config
-local telescope = require('telescope')
--- local previewers = require('telescope.previewers')
+-- if not packer_plugins['popup.nvim'].loaded then
+--   vim.cmd [[packadd plenary.nvim]]
+--   vim.cmd [[packadd popup.nvim]]
+-- end
+
+local telescope = require("telescope")
+local actions = require("telescope.actions")
 
 local tscope_config = {
   defaults = {
-    layout_strategy = 'flex',
-    scroll_strategy = 'cycle',
-    --[[ file_previewer = previewers.vim_buffer_cat.new,
-    grep_previewer = previewers.vim_buffer_vimgrep.new,
-    qflist_previewer = previewers.vim_buffer_qflist.new, ]]
-    layout_defaults = {
-      horizontal = {
-        mirror = false,
+    -- TODO: better bottom pane (telescope.nvim #765)
+    sorting_strategy = "ascending",
+
+    preview_title = "",
+
+    layout_strategy = "bottom_pane",
+    layout_config = {
+      height = 10,
+    },
+
+    border = true,
+    borderchars = {
+      "z",
+      prompt = { "─", " ", " ", " ", "─", "─", " ", " " },
+      results = { " " },
+      preview = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },
+    },
+    file_ignore_patterns = { ".backup", ".swap", ".langservers", ".session", ".undo" },
+    mappings = {
+      i = {
+        ["<C-q>"] = actions.smart_send_to_qflist + actions.open_qflist,
+        ["<C-Down>"] = require("telescope.actions").cycle_history_next,
+        ["<C-Up>"] = require("telescope.actions").cycle_history_prev,
       },
-      vertical = {
-        mirror = false,
+      n = {
+        ["<C-q>"] = actions.smart_add_to_qflist + actions.open_qflist,
       },
     },
   },
   extensions = {
     fzf = {
-      override_generic_sorter = false,
+      fuzzy = true,
+      override_generic_sorter = true,
       override_file_sorter = true,
       case_mode = "smart_case",
+    },
+    project = {
+      base_dirs = { U.os.home .. "/Downloads" },
     },
   },
 }
 
 telescope.setup(tscope_config)
-telescope.load_extension('fzf')
 
-local M = {}
-local cwd_opt = {
-  cwd = vim.fn.expand("%:p:h"),
-}
+local tscope = require("modules.telescope.functions")
+local cancel = require("utils.keychord").cancel
+-- View help pages
+vim.keymap.nnoremap({ "<Leader>pm", "<cmd>Telescope help_tags<CR>", silent = true })
+-- Git project files (fall back to cwd)
+vim.keymap.nnoremap({ "<Leader>pf", tscope.project_files, silent = true })
+-- Live grep cwd
+vim.keymap.nnoremap({ "<Leader>pl", "<cmd>Telescope live_grep<CR>", silent = true })
+-- Live grep open buffers
+vim.keymap.nnoremap({ "<Leader>po", "<cmd>Telescope live_grep grep_open_files=true<CR>", silent = true })
+-- List git status
+vim.keymap.nnoremap({ "<Leader>pgs", "<cmd>Telescope git_status<CR>", silent = true })
+-- Git branches
+vim.keymap.nnoremap({ "<Leader>pgb", "<cmd>Telescope git_branches<CR>", silent = true })
+-- Treesitter picker
+vim.keymap.nnoremap({ "<Leader>pt", "<cmd>Telescope treesitter<CR>", silent = true })
+-- Keymaps picker
+vim.keymap.nnoremap({ "<Leader>pk", tscope.keymaps, silent = true })
+-- Commands picker
+vim.keymap.nnoremap({ "<Leader>pc", tscope.commands, silent = true })
+-- File history picker
+vim.keymap.nnoremap({ "<Leader>pr", "<cmd>Telescope oldfiles<CR>", silent = true })
+-- Autocommands picker
+vim.keymap.nnoremap({ "<Leader>pa", "<cmd>Telescope autocommands<CR>", silent = true })
+-- View highlights
+vim.keymap.nnoremap({ "<Leader>ph", "<cmd>Telescope highlights<CR>", silent = true })
 
-M.project_files = function()
-  local ok = pcall(require'telescope.builtin'.git_files)
-  if not ok then
-    require'telescope.builtin'.find_files(cwd_opt)
-  end
-end
-
-M.git_commits = function()
-  pcall(require'telescope.builtin'.git_commits,cwd_opt)
-end
-
-M.grep_cwd = function()
-  require'telescope.builtin'.live_grep(cwd_opt)
-end
-
-M.grep_buffers = function()
-  require'telescope.builtin'.live_grep({
-    grep_open_files = true,
-  })
-end
-
-M.fz_buffer = function()
-  require'telescope.builtin'.current_buffer_fuzzy_find()
-end
-
-M.help_pages = function()
-  require'telescope.builtin'.help_tags()
-end
-
-M.key_binds = function()
-  require'telescope.builtin'.keymaps()
-end
-
-M.treesitter = function()
-  require'telescope.builtin'.treesitter()
-end
-
-M.old_files = function()
-  require'telescope.builtin'.oldfiles()
-end
-
-M.bmarks = function()
-  require'telescope.builtin'.marks()
-end
-
-return M
+cancel("<Leader>p")
