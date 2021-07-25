@@ -5,7 +5,7 @@
     (not (env "XDG_RUNTIME_DIR")) }}
 # Setup pam_rundir
 sudo ln -s /etc/sv/seatd /var/service
-sudo usermod -a -G _seatd $USER
+sudo usermod -a -G _seatd {{ (env "USER") }}
 # NOTE: maybe I should not edit this file automatically
 printf '-session optional pam_rundir.so\n' | sudo tee -a /etc/pam.d/system-login
 
@@ -13,6 +13,7 @@ printf '-session optional pam_rundir.so\n' | sudo tee -a /etc/pam.d/system-login
 sudo ln -s /etc/sv/dbus /var/service
 
 # Set up NetworkManager
+sudo usermod -a -G network {{ (env "USER") }}
 sudo ln -s /etc/sv/NetworkManager /var/service
 
 # Set enviroment variables
