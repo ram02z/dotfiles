@@ -1,5 +1,6 @@
 {{ $fullName := "Omar Zeghouani" -}}
 {{ $email := promptString  "email" -}}
+{{ $isLaptop := promptBool "laptop" }}
 {{ $isWsl := or (env "WSL_DISTRO_NAME") (env "WSLENV") | not | not -}}
 {{ $isX11 := and (env "DISPLAY") (eq (env "XDG_SESSION_TYPE") "x11") | not | not -}}
 {{ $isWayland :=  and (env "WAYLAND_DISPLAY") (eq (env "XDG_SESSION_TYPE") "wayland") | not | not -}}
@@ -21,3 +22,4 @@
   is_wsl = {{ $isWsl }}
   is_x11 = {{ $isX11 }}
   is_wayland = {{ $isWayland }}
+  is_laptop = {{ $isLaptop }}

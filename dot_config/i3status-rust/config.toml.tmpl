@@ -55,9 +55,11 @@ show_volume_when_muted = true
 max_vol = 150
 on_click = "fish -c '~/.local/bin/switch-audio-sink'"
 
+{{ if .is_laptop }}
 # NOTE: requires custom udev rule to change brightness
 [[block]]
 block = "backlight"
+{{ end }}
 
 [[block]]
 block = "weather"
@@ -107,10 +109,12 @@ hide_when_empty = true
 json = true
 {{ end }}
 
+{{ if .is_laptop }}
 [[block]]
 block = "battery"
 format = "{percentage}"
 on_click = "~/.local/bin/i3-quickterm battery"
+{{ end }}
 
 [[block]]
 block = "time"

@@ -79,12 +79,14 @@ packages=("fish-shell" "neovim" "python3-neovim"
 "nnn" "git" "delta" "base-devel" "jq" "fzf"
 "curl" "ripgrep" "bottom" "zoxide" "bat" "fd"
 "exa" "hyperfine" "rustup" "trash-cli" "meson" "openssl-devel");
+{{ if .is_laptop }}
+packages+=("tlp" "light");
+{{ end }}
 # TODO: Missing packages
 # neovim-nightly (c)
 # swayr or i3-focus-last & autotiling-rs (rust)
 # swaywsr (rust)
 # rofi-wayland and calc (c)
-# based-connect (c)
 # ydotool (c++)
 # tlp 1.4
 # NOTE: Replace packages

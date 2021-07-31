@@ -11,6 +11,14 @@ echo -ne '-session optional pam_rundir.so\n' | sudo tee -a /etc/pam.d/system-log
 
 # Set up dbus
 sudo ln -s /etc/sv/dbus /var/service
+
+# Set up iwd
+sudo ln -s /etc/sv/iwd /var/service
+
+{{ if .is_laptop }}
+# Set up tlp
+sudo ln -s /etc/sv/tlp /var/service
+{{ end }}
     {{ end }}
 {{ end }}
 {{ if not (contains "fish" (env "SHELL")) }}

@@ -2,7 +2,7 @@ README.md
 LICENSE
 TODO.md
 
-{{ if .is_wsl }}
+{{ if or (not (eq .chezmoi.os "linux")) (.is_wsl) }}
 .config/alacritty/**
 .config/alacritty/
 .config/sway/**
@@ -11,6 +11,8 @@ TODO.md
 .config/copyq/
 .config/i3/**
 .config/i3/
+.config/i3-focus-last/**
+.config/i3-focus-last/
 .config/i3status-rust/**
 .config/i3status-rust/
 .config/rofi/**
