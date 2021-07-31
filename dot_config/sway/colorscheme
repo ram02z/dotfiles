@@ -1,9 +1,9 @@
 ## Base16 Dracula
 
-set $base00 #282a36
+set $base00 #21222C
 set $base01 #3a3c4e
 set $base02 #626483
-set $base03 #4d4f68
+set $base03 #282A36
 set $base04 #62d6e8
 set $base05 #f8f8f2
 set $base06 #f1f2f8

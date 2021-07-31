@@ -4,9 +4,8 @@
 # - yschaeff
 
 # Dependencies:
-# - grim
+# - grimshot
 # - rofi
-# - swaymsg
 # - notify-send (optional)
 # - wf-recorder (optional)
 
@@ -16,12 +15,9 @@ set -e
 #MENU="dmenu -i"
 MENU="rofi -i -dmenu -a 0,1,2,3,4 -u 5,6,7,8,9"
 RECORDER=wf-recorder
-TARGET=$(xdg-user-dir PICTURES)/screenshots
-TARGET_VIDEOS=$(xdg-user-dir VIDEOS)/recordings
-NOTIFY=$(pidof mako || pidof dunst) || true
-FOCUSED=$(swaymsg -t get_tree | jq '.. | ((.nodes? + .floating_nodes?) // empty) | .[] | select(.focused and .pid) | .rect | "\(.x),\(.y) \(.width)x\(.height)"')
-OUTPUTS=$(swaymsg -t get_outputs | jq -r '.[] | select(.active) | .rect | "\(.x),\(.y) \(.width)x\(.height)"')
-WINDOWS=$(swaymsg -t get_tree | jq -r '.. | select(.pid? and .visible?) | .rect | "\(.x),\(.y) \(.width)x\(.height)"')
+TARGET=$HOME/Captures/screenshots
+TARGET_VIDEOS=$HOME/Captures/recordings
+NOTIFY=$(pidof mako || pidof dunst || pidof fnott) || true
 REC_PID=$(pidof $RECORDER) || true
 
 notify() {
@@ -41,59 +37,59 @@ if [ ! -z $REC_PID ]; then
     exit 0
 fi
 
-CHOICE=`$MENU -l 10 -p "Screenshot" << EOF
- Screenshot Fullscreen
- Screenshot Focused
- Screenshot Selected Window
- Screenshot Selected Output
- Screenshot Region
- Record Focused
- Record Selected Window
- Record Selected Output
- Record Region
+CHOICE=`$MENU -l 10 -p "Screenshot" -format d << EOF
+Screenshot Fullscreen
+Screenshot Focused Window
+Screenshot Focused Output
+Screenshot Selected Region
+Screenshot Selected Window
+Record Focused
+Record Selected Window
+Record Selected Output
+Record Region
 EOF`
 mkdir -p $TARGET
 mkdir -p $TARGET_VIDEOS
 FILENAME="$TARGET/$(date +'%Y-%m-%d_%Hh%Mm%Ss_screenshot.png')"
 RECORDING="$TARGET_VIDEOS/$(date +'%Y-%m-%d_%Hh%Mm%Ss_recording.mp4')"
-case $(echo $CHOICE | cut -c 5- | tr '[:upper:]' '[:lower:]') in
-    "screenshot fullscreen")
-        grim "$FILENAME"
+case $(printf $CHOICE) in
+    1)
+        grimshot save screen "$FILENAME"
         REC=0 ;;
-    "screenshot region")
-        slurp | grim -g - "$FILENAME"
+    2)
+        grimshot save active "$FILENAME"
         REC=0 ;;
-    "screenshot selected output")
-        echo "$OUTPUTS" | slurp | grim -g - "$FILENAME"
+    3)
+        grimshot save output "$FILENAME"
         REC=0 ;;
-    "screenshot selected window")
-        echo "$WINDOWS" | slurp | grim -g - "$FILENAME"
+    4)
+        grimshot save area "$FILENAME"
         REC=0 ;;
-    "screenshot focused")
-        grim -g "$(eval echo $FOCUSED)" "$FILENAME"
+    5)
+        grimshot save window "$FILENAME"
         REC=0 ;;
-    "record selected output")
+    6)
         $RECORDER -g "$(echo "$OUTPUTS"|slurp)" -f "$RECORDING"
         REC=1 ;;
-    "record selected window")
+    7)
         $RECORDER -g "$(echo "$WINDOWS"|slurp)" -f "$RECORDING"
         REC=1 ;;
-    "record region")
+    8)
         $RECORDER -g "$(slurp)" -f "$RECORDING"
         REC=1 ;;
-    "record focused")
+    9)
         $RECORDER -g "$(eval echo $FOCUSED)" -f "$RECORDING"
         REC=1 ;;
     *)
-        grim -g "$(eval echo $CHOICE)" "$FILENAME" ;;
+        exit 1 ;;
 esac
 case $REC in
     0)
         notify-send "Screenshot" "File saved as $FILENAME\nand copied to clipboard" -t 6000 -i $FILENAME
-        wl-copy < $FILENAME
+        wl-copy -t image/png < $FILENAME
         ;;
     1)
         notify-send "Recording" "Recording stopped: $RECORDING" -t 6000
-        wl-copy < $RECORDING
+        wl-copy $RECORDING
         ;;
 esac

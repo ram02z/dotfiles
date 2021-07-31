@@ -6,10 +6,9 @@
     "pos": "center",
     "shells": {
         "shell": "{$SHELL}",
-        "mpsyt": "{$SHELL} -c mpsyt",
         "btm_simple": "{$SHELL} -c 'btm -b'",
         "battery": "{$SHELL} -c 'battop'",
         "weather": "{$SHELL} -c 'curl \"wttr.in/?1n\"'"
-        
+
     }
 }

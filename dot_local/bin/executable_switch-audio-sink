@@ -22,6 +22,7 @@ move_sink_inputs() {
 
 list_sinks() {
     sinks=$(pactl list sinks short) || return 1
+    # FIXME: if the sink isn't playing, it will still show
     echo "$sinks" | sed '/RUNNING/d' | rg -o '^\S*.\S*' | sed -e "s/\t/\ /g"
 }
 

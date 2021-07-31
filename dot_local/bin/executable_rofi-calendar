@@ -20,9 +20,12 @@ get_current_date() {
 print_month() {
   mnt=$1
   yr=$2
-  ccal --color=always --$WEEK_START $mnt $yr \
-    | tail -n +3 \
-    | head -n -1
+  cal --color=always --$WEEK_START $mnt $yr \
+      | sed -e 's/\x1b\[[7;]*m/\<b\>\<u\>/g' \
+      -e 's/\x1b\[[27;]*m/\<\/u\>\<\/b\>/g' \
+      -e '/^ *$/d' \
+      | tail -n +2
+        echo $PREV_MONTH_TEXT$'\n'$NEXT_MONTH_TEXT
 }
 ###### Functions ######
 
@@ -49,7 +52,7 @@ fi
 
 # open rofi and read the selected row
 # (add the following option to rofi command with proper config file, if needed)
-header=$(date "$DATEFTM") 
+header=$(date "$DATEFTM")
 selected="$(echo $month_page \
 | rofi \
     -dmenu \
@@ -58,5 +61,6 @@ selected="$(echo $month_page \
     -lines $(echo $month_page | wc -l) \
     -theme-str '#window {anchor: '"$anchor"'; location: northeast; width: 14em;}' \
     -selected-row $current_row \
+    -markup-rows \
     -click-to-exit \
     -p "$header")"

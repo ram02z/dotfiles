@@ -11,15 +11,6 @@ echo -ne '-session optional pam_rundir.so\n' | sudo tee -a /etc/pam.d/system-log
 
 # Set up dbus
 sudo ln -s /etc/sv/dbus /var/service
-
-# Set up NetworkManager
-sudo usermod -a -G network {{ (env "USER") }}
-sudo ln -s /etc/sv/NetworkManager /var/service
-
-# Set enviroment variables
-# TODO: is this the best method?
-echo -ne 'MOZ_ENABLE_WAYLAND=1\nGDK_BACKEND=wayland\nQT_QPA_PLATFORM=wayland\n' |
-sudo tee -a /etc/environment
     {{ end }}
 {{ end }}
 {{ if not (contains "fish" (env "SHELL")) }}
