@@ -92,20 +92,20 @@ ls.snippets = {
     ls.parser.parse_snippet({ trig = "datetime;", wordTrig = true }, os.date("%d-%m-%Y %H:%M")),
   },
   lua = {
-    s({trig="if", wordTrig=true}, {
-      t({"if "}),
+    s({ trig = "if", wordTrig = true }, {
+      t({ "if " }),
       i(1),
-      t({" then", "\t"}),
+      t({ " then", "\t" }),
       i(0),
-      t({"", "end"})
+      t({ "", "end" }),
     }),
-    s({trig="el", wordTrig=true}, {
-      t({"else", "\t"}),
+    s({ trig = "el", wordTrig = true }, {
+      t({ "else", "\t" }),
       i(0),
     }),
-    s({trig="eli", wordTrig=true}, {
-      t({"elseif", "\t"}),
+    s({ trig = "eli", wordTrig = true }, {
+      t({ "elseif", "\t" }),
       i(0),
-    })
+    }),
   },
 }

@@ -8,8 +8,8 @@ end
 -- TODO: not sure how to make it adapt to luasnip
 M.check_next_col = function()
   local lnum, col_no = unpack(vim.api.nvim_win_get_cursor(0))
-  local line = unpack(vim.api.nvim_buf_get_lines(0, lnum-1, lnum, false))
-  local next_col = line:sub(col_no+1, col_no+1)
+  local line = unpack(vim.api.nvim_buf_get_lines(0, lnum - 1, lnum, false))
+  local next_col = line:sub(col_no + 1, col_no + 1)
   return #line == 2 and next_col == " "
 end
 

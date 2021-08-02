@@ -20,9 +20,7 @@ local on_attach = function(client, bufnr)
     })
   end
   if client.resolved_capabilities.code_action then
-    vim.cmd(
-    [[autocmd CursorHold,CursorHoldI,InsertLeave <buffer> lua require'nvim-lightbulb'.update_lightbulb()]]
-    )
+    vim.cmd([[autocmd CursorHold,CursorHoldI,InsertLeave <buffer> lua require'nvim-lightbulb'.update_lightbulb()]])
     -- vim.keymap.nmap({ "<Leader>la", [[<cmd>lua vim.lsp.buf.code_action()<CR>]], silent = true, buffer = true })
     vim.keymap.nmap({
       "<Leader>la",

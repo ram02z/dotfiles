@@ -1,7 +1,7 @@
 return {
-	extension = {
-		["scm"] = "query",
-		["fish"] = "fish",
-		["tmpl"] = "chezmoitmpl",
-	},
+  extension = {
+    ["scm"] = "query",
+    ["fish"] = "fish",
+    ["tmpl"] = "chezmoitmpl",
+  },
 }

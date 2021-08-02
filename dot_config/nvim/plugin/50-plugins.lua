@@ -112,7 +112,7 @@ packer.startup({
 
     use({
       "p00f/nvim-ts-rainbow",
-      wants = "nvim-treesitter"
+      wants = "nvim-treesitter",
       -- event = "BufReadPre",
     })
 
@@ -155,7 +155,7 @@ packer.startup({
     -- Statusline
     use({
       "famiu/feline.nvim",
-      event = {"BufNewFile", "BufReadPre"},
+      event = { "BufNewFile", "BufReadPre" },
       config = [[require'modules.feline']],
     })
 
@@ -268,14 +268,14 @@ packer.startup({
       "vhyrro/neorg",
       branch = "unstable",
       ft = "norg",
-      wants = {"nvim-compe", "nvim-treesitter"},
-      config = function ()
-        require("neorg").setup {
+      wants = { "nvim-compe", "nvim-treesitter" },
+      config = function()
+        require("neorg").setup({
           load = {
             ["core.defaults"] = {},
           },
-        }
-      end
+        })
+      end,
     })
 
     -- TODO: telescope plugin? #749
@@ -412,7 +412,7 @@ packer.startup({
               highlight = "FloatBorder",
             },
           },
-          replace_netrw = 1
+          replace_netrw = 1,
         })
         vim.keymap.noremap({ "<Leader>N", "<cmd>NnnPicker<CR>", silent = true })
         vim.keymap.noremap({
@@ -501,13 +501,13 @@ packer.startup({
       -- FIXME: keys don't load instantly (seems to be a vim plugin issue)
       -- experienced the same with vim-sandwich
       event = "CursorHold",
-      setup = function ()
+      setup = function()
         vim.g.splitjoin_split_mapping = "sj"
         vim.g.splitjoin_join_mapping = "sk"
       end,
-      config = function ()
+      config = function()
         require("utils.keychord").cancel("s")
-      end
+      end,
     })
 
     use({
@@ -722,7 +722,7 @@ packer.startup({
     -- Remove annoying search highlighting
     use({
       "romainl/vim-cool",
-      event = {"InsertEnter", "CmdlineEnter"},
+      event = { "InsertEnter", "CmdlineEnter" },
     })
 
     -- Remember last position in file
