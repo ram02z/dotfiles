@@ -1,6 +1,9 @@
 name: Formating
 
-on: [push, pull_request_target]
+on:
+  push:
+    paths:
+      - '**.lua'
 
 jobs:
   postprocessing:
