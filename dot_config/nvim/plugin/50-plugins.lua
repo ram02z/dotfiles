@@ -155,7 +155,7 @@ packer.startup({
     -- Statusline
     use({
       "famiu/feline.nvim",
-      event = "BufReadPre",
+      event = {"BufNewFile", "BufReadPre"},
       config = [[require'modules.feline']],
     })
 
