@@ -11,4 +11,6 @@ end
 
 disable_default_plugins()
 
--- Loading moved to top level plugins folder
+-- NOTE: can fail on before installations
+pcall(vim.api.nvim_command, "packadd chezmoi.vim")
+-- Rest of startup moved to top level plugins folder

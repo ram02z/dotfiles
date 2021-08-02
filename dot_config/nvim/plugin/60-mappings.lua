@@ -31,3 +31,4 @@ vim.cmd([[command! PurgeUndoFiles call luaeval('require"utils.misc".purge_old_un
 -- Toggle list
 K.nnoremap({ "<Leader>]", require("utils.misc").toggle_qf, silent = true })
 K.nnoremap({ "<Leader>[", require("utils.misc").toggle_loc, silent = true })
+

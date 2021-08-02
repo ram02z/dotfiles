@@ -8,7 +8,6 @@ local ts_config = {
   -- ensure_installed = 'maintained',
   highlight = {
     enable = true,
-    additional_vim_regex_highlighting = true,
   },
   incremental_selection = {
     enable = true,

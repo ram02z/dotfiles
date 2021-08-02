@@ -4,13 +4,13 @@ M.t = function(str)
   return vim.api.nvim_replace_termcodes(str, true, true, true)
 end
 
-M.check_back_space = function()
-  local col = vim.fn.col(".") - 1
-  if col == 0 or vim.fn.getline("."):sub(col, col):match("%s") then
-    return true
-  else
-    return false
-  end
+-- Checks if next column is whitespace
+-- TODO: not sure how to make it adapt to luasnip
+M.check_next_col = function()
+  local lnum, col_no = unpack(vim.api.nvim_win_get_cursor(0))
+  local line = unpack(vim.api.nvim_buf_get_lines(0, lnum-1, lnum, false))
+  local next_col = line:sub(col_no+1, col_no+1)
+  return #line == 2 and next_col == " "
 end
 
 -- Usage for current buffer

@@ -1,3 +1,5 @@
+-- TODO: use treesitter to for pairs
+-- use tabout.nvim for inspiration
 local function char_count_same(c1, c2)
   local line = vim.api.nvim_get_current_line()
   local _, ct1 = string.gsub(line, c1, "")
@@ -21,19 +23,89 @@ local t = ls.t
 local i = ls.i
 
 ls.snippets = {
-  -- Pair snippet hack
   all = {
-    s({ trig = "(", wordTrig = false }, { t({ "(" }), i(1), t({ ")" }), i(0) }, neg, char_count_same, "%(", "%)"),
-    s({ trig = "{", wordTrig = false }, { t({ "{" }), i(1), t({ "}" }), i(0) }, neg, char_count_same, "%{", "%}"),
-    s({ trig = "[", wordTrig = false }, { t({ "[" }), i(1), t({ "]" }), i(0) }, neg, char_count_same, "%[", "%]"),
-    s({ trig = "<", wordTrig = false }, { t({ "<" }), i(1), t({ ">" }), i(0) }, neg, char_count_same, "<", ">"),
-    s({ trig = "'", wordTrig = false }, { t({ "'" }), i(1), t({ "'" }), i(0) }, neg, even_count, "'"),
-    s({ trig = '"', wordTrig = false }, { t({ '"' }), i(1), t({ '"' }), i(0) }, neg, even_count, '"'),
-    s({ trig = "[;", wordTrig = false }, { t({ "[", "\t" }), i(1), t({ "", "]" }), i(0) }),
-    s({ trig = "{;", wordTrig = false }, { t({ "{", "\t" }), i(1), t({ "", "}" }), i(0) }),
-    s({ trig = "{;,", wordTrig = false }, { t({ "{", "\t" }), i(1), t({ "", "}," }), i(0) }),
+    -- Expands to ()
+    s({ trig = "(", wordTrig = false }, {
+      t({ "(" }),
+      i(1),
+      t({ ")" }),
+      i(0),
+    }, neg, char_count_same, "%(", "%)"),
+    -- Expands to {}
+    s({ trig = "{", wordTrig = false }, {
+      t({ "{" }),
+      i(1),
+      t({ "}" }),
+      i(0),
+    }, neg, char_count_same, "%{", "%}"),
+    -- Expands to []
+    s({ trig = "[", wordTrig = false }, {
+      t({ "[" }),
+      i(1),
+      t({ "]" }),
+      i(0),
+    }, neg, char_count_same, "%[", "%]"),
+    -- Expands to <>
+    s({ trig = "<", wordTrig = false }, {
+      t({ "<" }),
+      i(1),
+      t({ ">" }),
+      i(0),
+    }, neg, char_count_same, "<", ">"),
+    -- Expands to ''
+    s({ trig = "'", wordTrig = false }, {
+      t({ "'" }),
+      i(1),
+      t({ "'" }),
+      i(0),
+    }, neg, even_count, "'"),
+    -- Expands to ""
+    s({ trig = '"', wordTrig = false }, {
+      t({ '"' }),
+      i(1),
+      t({ '"' }),
+      i(0),
+    }, neg, even_count, '"'),
+    -- Expands to [\t\n]
+    s({ trig = "[;", wordTrig = false }, {
+      t({ "[", "\t" }),
+      i(1),
+      t({ "", "]" }),
+      i(0),
+    }),
+    -- Expands to {\t\n}
+    s({ trig = "{;", wordTrig = false }, {
+      t({ "{", "\t" }),
+      i(1),
+      t({ "", "}" }),
+      i(0),
+    }),
+    -- Expands to {\t\n},
+    s({ trig = "{;,", wordTrig = false }, {
+      t({ "{", "\t" }),
+      i(1),
+      t({ "", "}," }),
+      i(0),
+    }),
     ls.parser.parse_snippet({ trig = "date;", wordTrig = true }, os.date("%d-%m-%Y")),
     ls.parser.parse_snippet({ trig = "time;", wordTrig = true }, os.date("%H:%M")),
     ls.parser.parse_snippet({ trig = "datetime;", wordTrig = true }, os.date("%d-%m-%Y %H:%M")),
+  },
+  lua = {
+    s({trig="if", wordTrig=true}, {
+      t({"if "}),
+      i(1),
+      t({" then", "\t"}),
+      i(0),
+      t({"", "end"})
+    }),
+    s({trig="el", wordTrig=true}, {
+      t({"else", "\t"}),
+      i(0),
+    }),
+    s({trig="eli", wordTrig=true}, {
+      t({"elseif", "\t"}),
+      i(0),
+    })
   },
 }

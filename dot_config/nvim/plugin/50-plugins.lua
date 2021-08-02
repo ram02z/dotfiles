@@ -8,7 +8,7 @@ if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
 end
 execute("packadd packer.nvim")
 -- NOTE: can fail on before installed
-pcall(execute, "packadd chezmoi.vim")
+-- pcall(execute, "packadd chezmoi.vim")
 
 local packer = require("packer")
 
@@ -24,15 +24,12 @@ packer.startup({
     -- Common dependancies
     use({
       "neovim/nvim-lspconfig",
-      after = "nvim-lspinstall",
-      -- BUG: commands don't work when module lazy loaded
-      module = "lspconfig",
-      -- cmd = {'LspInfo', 'LspStart', 'LspStop', 'LspRestart'}
+      module_pattern = "lspconfig.*",
     })
 
     use({
       "nvim-lua/plenary.nvim",
-      module = "plenary",
+      module_pattern = "plenary.*",
       config = function()
         require("plenary.filetype").add_file("extra")
       end,
@@ -76,7 +73,7 @@ packer.startup({
     use({
       "L3MON4D3/LuaSnip",
       event = "InsertCharPre",
-      module = "compe",
+      module_pattern = "luasnip.*",
       config = [[require'modules.snippets']],
     })
 
@@ -91,16 +88,14 @@ packer.startup({
       -- NOTE: maybe don't lazyload?
       -- with lazyload, if file is opened directly ts plugins won't work until :e!
       -- might have something to do with BufReadPre event and after key idk
-      -- event = 'BufRead',
       -- cmd = {'TSUpdate', 'TSInstall', 'TSUninstall'},
-      -- module = 'nvim-treesitter',
+      -- module_pattern = 'nvim-treesitter.*',
       config = [[require'modules.treesitter']],
       run = ":TSUpdate",
     })
 
     use({
       "nvim-treesitter/playground",
-      -- after = 'nvim-treesitter'
       cmd = { "TSPlaygroundToggle", "TSHighlightCapturesUnderCursor" },
       setup = function()
         vim.keymap.nnoremap({ "<Leader>tp", "<cmd>TSPlaygroundToggle<CR>", silent = true })
@@ -112,26 +107,24 @@ packer.startup({
 
     use({
       "nvim-treesitter/nvim-treesitter-textobjects",
-      -- after = 'nvim-treesitter'
+      -- wants = 'nvim-treesitter',
       -- TODO: use 'keys' key instead
       event = "CursorHold",
     })
 
     use({
       "p00f/nvim-ts-rainbow",
-      -- after = 'nvim-treesitter'
-      event = "BufReadPre",
+      wants = "nvim-treesitter"
+      -- event = "BufReadPre",
     })
 
     use({
       "nvim-treesitter/nvim-treesitter-refactor",
-      event = "CursorHold",
-      -- after = 'nvim-treesitter'
+      wants = "nvim-treesitter"
     })
 
     use({
       "mfussenegger/nvim-ts-hint-textobject",
-      -- after = 'nvim-treesitter'
       keys = {
         { "o", "m" },
         { "v", "m" },
@@ -241,12 +234,13 @@ packer.startup({
     --
 
     -- Load my editor defaults
-    use({ "editorconfig/editorconfig-vim" })
+    use({ "gpanders/editorconfig.nvim" })
 
     -- Fix CursorHold performance
     -- REMOVE: if https://github.com/neovim/neovim/issues/12587 gets closed
     use({
       "antoinemadec/FixCursorHold.nvim",
+      -- disable = true,
       setup = function()
         vim.g.cursorhold_updatetime = 50
       end,
@@ -268,6 +262,21 @@ packer.startup({
         vim.g.rooter_cd_cmd = "tcd"
         vim.g.rooter_change_directory_for_non_project_files = "current"
       end,
+    })
+
+    -- TODO: actually set this up
+    use({
+      "vhyrro/neorg",
+      branch = "unstable",
+      ft = "norg",
+      wants = {"nvim-compe", "nvim-treesitter"},
+      config = function ()
+        require("neorg").setup {
+          load = {
+            ["core.defaults"] = {},
+          },
+        }
+      end
     })
 
     -- TODO: telescope plugin? #749
@@ -297,6 +306,7 @@ packer.startup({
     })
 
     -- Reload nvim
+    -- TODO: do I really need this?
     use({
       "ram02z/nvim-reload",
       cmd = "Reload",
@@ -313,6 +323,7 @@ packer.startup({
         end
       end,
     })
+
     -- Git integration
     use({
       {
@@ -386,16 +397,15 @@ packer.startup({
     -- File manager
     use({
       "mcchrish/nnn.vim",
-      cmd = "NnnPicker",
-      setup = function()
-        vim.keymap.noremap({ "<Leader>n", "<cmd>NnnPicker<CR>", silent = true })
-        vim.keymap.noremap({ "<Leader>N", require("utils.misc").t(":NnnPicker %:p:h<CR>"), silent = true })
-      end,
       config = function()
         require("nnn").setup({
           set_default_mappings = false,
           -- NOTE: might not work because we are using bash as shell
           -- command = 'n',
+          action = {
+            ["<c-t>"] = "tab split",
+            ["<c-v>"] = "vsplit",
+          },
           layout = {
             window = {
               width = 0.9,
@@ -403,6 +413,13 @@ packer.startup({
               highlight = "FloatBorder",
             },
           },
+          replace_netrw = 1
+        })
+        vim.keymap.noremap({ "<Leader>N", "<cmd>NnnPicker<CR>", silent = true })
+        vim.keymap.noremap({
+          "<Leader>n",
+          require("utils.misc").t(":NnnPicker %:p:h<CR>"),
+          silent = true,
         })
       end,
     })
@@ -420,17 +437,6 @@ packer.startup({
           run = "make",
           config = function()
             require("telescope").load_extension("fzf")
-          end,
-        },
-        {
-          -- TODO: maybe remove this. I don't see it as very useful
-          -- if I can achieve a decent workflow with sessions
-          "nvim-telescope/telescope-project.nvim",
-          after = "telescope.nvim",
-          config = function()
-            require("telescope").load_extension("project")
-            -- TODO: move to telescope config file
-            vim.keymap.nnoremap({ "<Leader>pp", "<cmd>Telescope project<CR>", silent = true })
           end,
         },
       },
@@ -493,7 +499,16 @@ packer.startup({
     -- Wrap and unwrap arguments
     use({
       "AndrewRadev/splitjoin.vim",
-      keys = { "gJ", "gS" },
+      -- FIXME: keys don't load instantly (seems to be a vim plugin issue)
+      -- experienced the same with vim-sandwich
+      event = "CursorHold",
+      setup = function ()
+        vim.g.splitjoin_split_mapping = "sj"
+        vim.g.splitjoin_join_mapping = "sk"
+      end,
+      config = function ()
+        require("utils.keychord").cancel("s")
+      end
     })
 
     use({
@@ -651,20 +666,20 @@ packer.startup({
         -- TODO: lua :)
         vim.api.nvim_exec(
           [[
-      let g:textmanip_hooks = {}
-      function! g:textmanip_hooks.finish(tm)
-      let tm = a:tm
-      let helper = textmanip#helper#get()
-      if tm.linewise
-        call helper.indent(tm)
-      else
-        " When blockwise move/duplicate, remove trailing white space.
-        " To use this feature without feeling counterintuitive,
-        " I recommend you to ':set virtualedit=block',
-        call helper.remove_trailing_WS(tm)
-      endif
-      endfunction
-      ]],
+          let g:textmanip_hooks = {}
+          function! g:textmanip_hooks.finish(tm)
+            let tm = a:tm
+            let helper = textmanip#helper#get()
+            if tm.linewise
+              call helper.indent(tm)
+            else
+              " When blockwise move/duplicate, remove trailing white space.
+              " To use this feature without feeling counterintuitive,
+              " I recommend you to ':set virtualedit=block',
+              call helper.remove_trailing_WS(tm)
+            endif
+          endfunction
+          ]],
           true
         )
       end,
@@ -708,7 +723,7 @@ packer.startup({
     -- Remove annoying search highlighting
     use({
       "romainl/vim-cool",
-      event = "InsertEnter",
+      event = {"InsertEnter", "CmdlineEnter"},
     })
 
     -- Remember last position in file

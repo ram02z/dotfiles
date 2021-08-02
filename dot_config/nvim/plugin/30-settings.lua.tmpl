@@ -13,8 +13,6 @@ opt.undolevels = 10000
 vim.o.undofile = false
 
 {{ if (eq .chezmoi.os "linux") -}}
-vim.o.fileformats = "unix"
-
 vim.o.shell = '{{ or (lookPath "bash") (lookPath "sh")}}'
 {{- end }}
 
@@ -59,6 +57,8 @@ vim.wo.signcolumn = "yes:1"
 {{ if not .is_wsl -}}
 vim.g.dracula_colorterm = 0
 {{- end }}
+-- Ensure c syntax is use for header files
+vim.g.c_syntax_for_h = 1
 
 {{ if (eq .chezmoi.os "linux") -}}
 {{ if .is_wsl -}}

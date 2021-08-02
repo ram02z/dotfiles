@@ -5,11 +5,18 @@ root = true
 
 # All files
 [*]
-charset=utf-8
-indent_size=4
-indent_style=space
-insert_final_newline=true
-trim_trailing_whitespace=true
+charset = utf-8
+indent_size = 4
+indent_style = space
+insert_final_newline = true
+trim_trailing_whitespace = true
+{{- if (eq .chezmoi.os "linux") }}
+end_of_line = lf
+{{- else if (eq .chezmoi.os "darwin") }}
+end_of_line = cr
+{{- else if (eq .chezmoi.os "windows") }}
+end_of_line = crlf
+{{- end }}
 
 # Batch Files
 [*.{cmd,bat}]
@@ -37,6 +44,7 @@ indent_size = 2
 
 # Markdown Files
 [*.md]
+max_line_length = 80
 trim_trailing_whitespace = false
 
 # Web Files
@@ -47,6 +55,7 @@ indent_size = 2
 [*.{vim,lua}]
 indent_style=space
 indent_size=2
+max_line_length = 120
 
 # Golang
 [*.go]

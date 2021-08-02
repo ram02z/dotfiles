@@ -21,7 +21,7 @@ augroup END
 " using osc52
 augroup Yank
   autocmd!
-  autocmd TextYankPost * if v:event.operator is 'y' && v:event.regname is ''
+  autocmd TextYankPost * if v:event.operator is 'y' && v:event.regname is '' && b:visual_multi isnot 1
         \| call luaeval('vim.highlight.on_yank()')
         \| OSCYankReg "
         \| endif
@@ -35,7 +35,7 @@ if has('persistent_undo')
   " Short-circuit undo read/write as noted in `:help wundo`
   augroup vim_undodir_tree
     autocmd!
-    autocmd BufRead,BufNewFile,BufEnter */tmp/*,COMMIT_EDITMSG,MERGE_MSG let b:skip_undofile = 1
+    autocmd BufRead,BufEnter */tmp/*,COMMIT_EDITMSG,MERGE_MSG let b:skip_undofile = 1
     autocmd BufWritePost * call undo#write()
     autocmd BufReadPost * call undo#read()
   augroup END
@@ -43,8 +43,17 @@ endif
 
 " From utils.vim
 autocmd BufWritePre * call utils#mkdir()
+
 autocmd BufEnter *.txt call utils#helpvsplit()
+
 augroup windows
   autocmd!
   autocmd FileType * call utils#handle_win()
 augroup END
+
+augroup colorcolumn
+  autocmd!
+  autocmd OptionSet textwidth call utils#setccol()
+  autocmd BufEnter * call utils#setccol()
+augroup end
+

@@ -15,7 +15,7 @@ endfunction
 
 
 " Creates a directory if it doesn't exist
-function utils#mkdir()
+function! utils#mkdir()
   let dir = expand('%:p:h')
 
   if dir =~ '://'
@@ -45,6 +45,14 @@ function! utils#handle_win()
   let l:sidebar = ['undotree', 'Outline', 'qf']
   if index(l:sidebar, &filetype) >= 0
     setlocal winhighlight=Normal:TabLineFill
+  endif
+endfunction
+
+function! utils#setccol()
+  if &textwidth != 0
+    let &l:colorcolumn=&l:textwidth+1
+  else
+    setlocal colorcolumn=999999
   endif
 endfunction
 
