@@ -21,7 +21,7 @@ augroup END
 " using osc52
 augroup Yank
   autocmd!
-  autocmd TextYankPost * if v:event.operator is 'y' && v:event.regname is '' && b:visual_multi isnot 1
+  autocmd TextYankPost * if v:event.operator is 'y' && v:event.regname is '' && !exists('b:visual_multi')
         \| call luaeval('vim.highlight.on_yank()')
         \| OSCYankReg "
         \| endif

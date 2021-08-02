@@ -88,8 +88,6 @@ packer.startup({
       -- NOTE: maybe don't lazyload?
       -- with lazyload, if file is opened directly ts plugins won't work until :e!
       -- might have something to do with BufReadPre event and after key idk
-      -- cmd = {'TSUpdate', 'TSInstall', 'TSUninstall'},
-      -- module_pattern = 'nvim-treesitter.*',
       config = [[require'modules.treesitter']],
       run = ":TSUpdate",
     })
@@ -120,7 +118,8 @@ packer.startup({
 
     use({
       "nvim-treesitter/nvim-treesitter-refactor",
-      wants = "nvim-treesitter"
+      event = "CursorHold",
+      -- wants = "nvim-treesitter"
     })
 
     use({
