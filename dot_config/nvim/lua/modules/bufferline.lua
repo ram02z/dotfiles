@@ -2,7 +2,7 @@ local bline = require("bufferline")
 
 local bline_conf = {
   options = {
-    numbers = "ordinal",
+    numbers = 'ordinal',
     number_style = "none",
     show_buffer_close_icons = false,
     right_mouse_command = function(bufnum)

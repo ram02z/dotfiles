@@ -3,7 +3,7 @@ name: Formating
 on:
   push:
     paths:
-      - '**.lua'
+      - 'dot_config/nvim/**.lua'
 
 jobs:
   postprocessing:
