@@ -1,6 +1,4 @@
 README.md
-LICENSE
-TODO.md
 
 {{ if or (not (eq .chezmoi.os "linux")) (.is_wsl) }}
 .config/alacritty/**
