@@ -5,8 +5,16 @@ local on_attach = function(client, bufnr)
   -- TODO: add implementation, declaration and signature help
   if client.resolved_capabilities.goto_definition then
     vim.keymap.nmap({
-      "<Leader>lgd",
+      "<Leader>ld",
       [[<cmd>lua vim.lsp.buf.definition()<CR>]],
+      silent = true,
+      buffer = true,
+    })
+  end
+  if client.resolved_capabilities.declaration then
+    vim.keymap.nmap({
+      "<Leader>lD",
+      [[<cmd>lua vim.lsp.buf.declaration()<CR>]],
       silent = true,
       buffer = true,
     })

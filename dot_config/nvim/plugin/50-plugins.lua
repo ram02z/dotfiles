@@ -124,10 +124,7 @@ packer.startup({
 
     use({
       "mfussenegger/nvim-ts-hint-textobject",
-      keys = {
-        { "o", "m" },
-        { "v", "m" },
-      },
+      event = "CursorHold",
       config = function()
         vim.keymap.onoremap({ "m", require("tsht").nodes, silent = true })
         vim.keymap.vnoremap({ "m", [[:lua require'tsht'.nodes()<CR>]], silent = true })
@@ -164,44 +161,44 @@ packer.startup({
       "lukas-reineke/indent-blankline.nvim",
       event = "BufReadPost",
       config = function()
-        -- #59
-        vim.o.colorcolumn = "99999"
-        vim.g.indent_blankline_char = "│"
-        vim.g.indent_blankline_filetype_exclude = {
-          "help",
-          "vimwiki",
-          "man",
-          "dashboard",
-          "TelescopePrompt",
-          "undotree",
-          "packer",
-          "lspinfo",
-          "qf",
-          "tsplayground",
-          "",
-        }
-        vim.g.indent_blankline_buftype_exclude = { "terminal" }
-        vim.g.indent_blankline_show_first_indent_level = false
-        vim.g.indent_blankline_show_current_context = true
-        vim.g.indent_blankline_context_patterns = {
-          "class",
-          "function",
-          "method",
-          "^if",
-          "while",
-          "for",
-          "with",
-          "func_literal",
-          "block",
-          "try",
-          "except",
-          "argument_list",
-          "object",
-          "dictionary",
-          "table",
-        }
-        -- Lazy load
-        vim.cmd([[autocmd CursorHold,CursorHoldI * IndentBlanklineRefresh]])
+        require("indent_blankline").init()
+        require("indent_blankline").setup({
+          char = "│",
+          buftype_exclude = { "terminal" },
+          filetype_exclude = {
+            "help",
+            "vimwiki",
+            "man",
+            "dashboard",
+            "TelescopePrompt",
+            "undotree",
+            "packer",
+            "lspinfo",
+            "qf",
+            "tsplayground",
+            "",
+          },
+          show_first_indent_level = false,
+          show_current_context = true,
+          context_patterns = {
+            "class",
+            "function",
+            "method",
+            "^if",
+            "while",
+            "for",
+            "with",
+            "func_literal",
+            "block",
+            "try",
+            "except",
+            "argument_list",
+            "object",
+            "dictionary",
+            "table",
+          },
+        })
+        vim.cmd([[autocmd CursorHold, CursorHoldI * IndentBlanklineRefresh]])
       end,
     })
 
@@ -239,6 +236,7 @@ packer.startup({
     -- REMOVE: if https://github.com/neovim/neovim/issues/12587 gets closed
     use({
       "antoinemadec/FixCursorHold.nvim",
+      event = { "CursorMoved", "CursorMovedI" },
       -- disable = true,
       setup = function()
         vim.g.cursorhold_updatetime = 50
