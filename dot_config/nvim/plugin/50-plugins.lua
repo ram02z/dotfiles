@@ -161,7 +161,6 @@ packer.startup({
       "lukas-reineke/indent-blankline.nvim",
       event = "BufReadPost",
       config = function()
-        require("indent_blankline").init()
         require("indent_blankline").setup({
           char = "│",
           buftype_exclude = { "terminal" },
@@ -198,7 +197,6 @@ packer.startup({
             "table",
           },
         })
-        vim.cmd([[autocmd CursorHold, CursorHoldI * IndentBlanklineRefresh]])
       end,
     })
 
