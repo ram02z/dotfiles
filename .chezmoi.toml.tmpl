@@ -3,7 +3,7 @@
 {{ $isLaptop := promptBool "laptop" }}
 {{ $isWsl := or (env "WSL_DISTRO_NAME") (env "WSLENV") | not | not -}}
 {{ $isWayland := and (eq .chezmoi.os "linux") (promptBool "wayland") }}
-{{ $isX11 := not $isWayland }}
+{{ $isX11 := and (not $isWsl) (not $isWayland) }}
 {{ $pager := or (lookPath "delta") "less -FRSX" }}
 {{ $editor := or (lookPath "nvim") "vi" }}
 [diff]
