@@ -4,11 +4,6 @@ name = "dracula"
 [icons]
 name = "material-nf"
 
-[[block]]
-block = "focused_window"
-max_width = 50
-show_marks = "visible"
-
 {{ if (eq (get .chezmoi.osRelease "idLike") "debian") -}}
 [[block]]
 block = "apt"
@@ -19,7 +14,6 @@ critical_updates_regex = "(linux |linux-lts|linux-zen)"
 on_click = "APT_CONFIG=/tmp/i3rs-apt/apt.conf apt list --upgradable | tail -n +2 | cut -f1 -d '/' | rofi -dmenu"
 {{- end }}
 
-{{ if lookPath "mpsyt" }}
 [[block]]
 block = "music"
 buttons = ["prev", "play", "next"]
@@ -28,9 +22,16 @@ marquee_interval = 1
 marquee_speed = 0.25
 dynamic_width = true
 separator = " "
-on_click = "~/.local/bin/i3-quickterm mpsyt"
-on_collapsed_click = "~/.local/bin/i3-quickterm mpsyt"
 interface_name_exclude = ["firefox"]
+
+{{ if ($kdeconnect := (lookPath "kdeconnect-cli")) -}}
+# TODO: investigate why it can't connect to kde daemon
+# [[block]]
+# block = "kdeconnect"
+# [block.format]
+# full = "{name:5} {bat_icon}{bat_charge:3} {notif_icon}{notif_count}"
+# short = "{bat_icon}{bat_charge} {notif_icon}{notif_count}"
+# TODO: add onclick launch rofi menu with notifications
 {{ end }}
 
 [[block]]
@@ -54,11 +55,17 @@ show_volume_when_muted = true
 max_vol = 150
 on_click = "fish -c '~/.local/bin/switch-audio-sink'"
 
+{{ if .is_laptop }}
+# NOTE: requires custom udev rule to change brightness
+[[block]]
+block = "backlight"
+{{ end }}
+
 [[block]]
 block = "weather"
 format = "{temp}"
 autolocate = true
-service = { name = "openweathermap", api_key = "8865f0dc0c6c3b4f0fc601fd063f5be1", place = "Harrow", units = "metric" }
+service = { name = "openweathermap", api_key = "8865f0dc0c6c3b4f0fc601fd063f5be1", place = "London", units = "metric" }
 on_click = "~/.local/bin/i3-quickterm weather"
 
 # Airpods
@@ -78,17 +85,19 @@ format_unavailable = ""
 hide_disconnected = true
 # on_click = "i3-nagbar -m $(based-connect -b 60:AB:D2:42:04:74) -type warning"
 
-# [[block]]
-# block = "net"
-# format = "{signal_strength}"
-# on_click = "gnome-control-center network"
-
 [[block]]
-block = "networkmanager"
-on_click = "~/.local/bin/networkmanager-dmenu"
-primary_only = true
-device_format = "{icon}{ap}"
-ap_format = "{strength}"
+block = "net"
+format = "{signal_strength:1}"
+{{ if ($iwgtk := (lookPath "iwgtk")) -}}
+on_click = "{{ $iwgtk }}"
+{{- end }}
+
+# [[block]]
+# block = "networkmanager"
+# on_click = "~/.local/bin/networkmanager-dmenu"
+# primary_only = true
+# device_format = "{icon}{ap}"
+# ap_format = "{strength}"
 
 {{ if lookPath "rofication-json" }}
 [[block]]
@@ -100,10 +109,12 @@ hide_when_empty = true
 json = true
 {{ end }}
 
+{{ if .is_laptop }}
 [[block]]
 block = "battery"
 format = "{percentage}"
 on_click = "~/.local/bin/i3-quickterm battery"
+{{ end }}
 
 [[block]]
 block = "time"

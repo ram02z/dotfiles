@@ -1,8 +1,9 @@
 {{ $fullName := "Omar Zeghouani" -}}
 {{ $email := promptString  "email" -}}
+{{ $isLaptop := promptBool "laptop" }}
 {{ $isWsl := or (env "WSL_DISTRO_NAME") (env "WSLENV") | not | not -}}
-{{ $isX11 := and (env "DISPLAY") (eq (env "XDG_SESSION_TYPE") "x11") | not | not -}}
-{{ $isWayland :=  and (env "WAYLAND_DISPLAY") (eq (env "XDG_SESSION_TYPE") "wayland") | not | not -}}
+{{ $isWayland := and (eq .chezmoi.os "linux") (promptBool "wayland") }}
+{{ $isX11 := and (not $isWsl) (not $isWayland) }}
 {{ $pager := or (lookPath "delta") "less -FRSX" }}
 {{ $editor := or (lookPath "nvim") "vi" }}
 [diff]
@@ -13,6 +14,12 @@
   command = "{{ $editor }}"
   args = "-d"
 
+{{ if ($keyring := (lookPath "rbw")) }}
+[secret]
+  command = "{{ $keyring }}"
+{{ end }}
+
+
 [data]
   name = "{{ $fullName }}"
   email = "{{ $email }}"
@@ -21,3 +28,4 @@
   is_wsl = {{ $isWsl }}
   is_x11 = {{ $isX11 }}
   is_wayland = {{ $isWayland }}
+  is_laptop = {{ $isLaptop }}

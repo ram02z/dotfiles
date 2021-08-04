@@ -2,8 +2,12 @@
 function fish_mode_prompt; end
 # fish_vi_key_bindings default
 
-# Visual line
-bind -m visual V beginning-of-line begin-selection end-of-line force-repaint
+# TODO: bind Y, utilising osc52 script
+
+# Install fisher
+if not functions -q fisher
+    curl -sL git.io/fisher | source
+end
 
 # Source init scripts
 # init_source zoxide

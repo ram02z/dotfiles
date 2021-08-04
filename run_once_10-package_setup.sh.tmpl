@@ -78,24 +78,27 @@ _exists() {
 packages=("fish-shell" "neovim" "python3-neovim"
 "nnn" "git" "delta" "base-devel" "jq" "fzf"
 "curl" "ripgrep" "bottom" "zoxide" "bat" "fd"
-"exa" "hyperfine" "rustup" "trash-cli");
+"exa" "hyperfine" "rustup" "trash-cli" "meson" "openssl-devel");
+{{ if .is_laptop }}
+packages+=("tlp" "light");
+{{ end }}
 # TODO: Missing packages
 # neovim-nightly (c)
 # swayr or i3-focus-last & autotiling-rs (rust)
-# greetd (rust)
+# swaywsr (rust)
 # rofi-wayland and calc (c)
-# based-connect (c)
-# ydotool (c++)
-# auto-cpufreq (python)
+# tlp 1.4
+# rbw
 # NOTE: Replace packages
 # pam_rundir -> rundird
 read -p "Add sway desktop packages?" -n 1 -r
 if [[ $REPLY =~ ^[Yy]$ ]]; then
-    packages+=("sway" "seatd" "polkit" "firefox" "foot" "NetworkManager"
-    "wdisplays" "waylock" "gtk3-nocsd" "powertop" "bluez" "pipewire" "pulseaudio-utils"
-    "mps-youtube" "playerctl" "libnotify" "wl-clipboard" "CopyQ" "swayidle"
+    packages+=("sway" "seatd" "polkit" "firefox" "foot" "libappindicator"
+    "wdisplays" "waylock" "bluez" "pipewire" "pulseaudio-utils"
+    "mpv" "libnotify" "wl-clipboard" "CopyQ" "swayidle" "xtools"
     "pam_rundir" "font-iosevka" "i3status-rust" "python3-i3ipc"
-    "dejavu-fonts-ttf" "font-firacode" "mesa-dri");
+    "font-firacode" "mesa-dri" "iwd" "wev" "slurp" "grim" "mako"
+    "kdeconnect" "iwgtk" "playerctl" "wtype" "pinentry");
 fi;
 printf "\n";
 {{ else if (eq (get .chezmoi.osRelease "idLike") "arch") }}

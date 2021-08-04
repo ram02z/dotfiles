@@ -1,30 +1,28 @@
 README.md
-LICENSE
-TODO.md
 
-{{ if .is_wsl }}
+{{ if or (not (eq .chezmoi.os "linux")) (.is_wsl) }}
 .config/alacritty/**
 .config/alacritty/
 .config/sway/**
 .config/sway/
-.config/swayr/**
-.config/swayr/
 .config/copyq/**
 .config/copyq/
 .config/i3/**
 .config/i3/
+.config/i3-focus-last/**
+.config/i3-focus-last/
 .config/i3status-rust/**
 .config/i3status-rust/
-.config/mps-youtube/**
-.config/mps-youtube/
 .config/rofi/**
 .config/rofi/
 .config/gtk-3.0/**
 .config/gtk-3.0/
 .config/foot/**
 .config/foot/
-.config/networkmanager-dmenu/**
-.config/networkmanager-dmenu/
+.config/waylock/**
+.config/waylock/
+.config/mako/**
+.config/mako/
 .local/**
 .local/
 .icons/**

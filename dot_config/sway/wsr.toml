@@ -1,0 +1,11 @@
+[icons]
+firefox = ""
+foot = ""
+
+[general]
+default_icon = ""
+separator = " "
+
+[options]
+no_names = true
+remove_duplicates = true
