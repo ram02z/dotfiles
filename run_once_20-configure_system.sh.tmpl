@@ -15,6 +15,9 @@ sudo ln -s /etc/sv/dbus /var/service
 # Set up iwd
 sudo ln -s /etc/sv/iwd /var/service
 
+# Set up ssh
+sudo ln -s /etc/sv/sshd /var/service
+
 {{ if .is_laptop }}
 # Set up tlp
 sudo ln -s /etc/sv/tlp /var/service

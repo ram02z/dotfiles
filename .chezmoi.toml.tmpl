@@ -14,6 +14,12 @@
   command = "{{ $editor }}"
   args = "-d"
 
+{{ if ($keyring := (lookPath "rbw")) }}
+[secret]
+  command = "{{ $keyring }}"
+{{ end }}
+
+
 [data]
   name = "{{ $fullName }}"
   email = "{{ $email }}"

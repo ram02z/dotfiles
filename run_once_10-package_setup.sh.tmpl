@@ -87,8 +87,8 @@ packages+=("tlp" "light");
 # swayr or i3-focus-last & autotiling-rs (rust)
 # swaywsr (rust)
 # rofi-wayland and calc (c)
-# ydotool (c++)
 # tlp 1.4
+# rbw
 # NOTE: Replace packages
 # pam_rundir -> rundird
 read -p "Add sway desktop packages?" -n 1 -r
@@ -98,7 +98,7 @@ if [[ $REPLY =~ ^[Yy]$ ]]; then
     "mpv" "libnotify" "wl-clipboard" "CopyQ" "swayidle" "xtools"
     "pam_rundir" "font-iosevka" "i3status-rust" "python3-i3ipc"
     "font-firacode" "mesa-dri" "iwd" "wev" "slurp" "grim" "mako"
-    "kdeconnect" "iwgtk");
+    "kdeconnect" "iwgtk" "playerctl" "wtype" "pinentry");
 fi;
 printf "\n";
 {{ else if (eq (get .chezmoi.osRelease "idLike") "arch") }}

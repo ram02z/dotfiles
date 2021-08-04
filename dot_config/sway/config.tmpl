@@ -21,7 +21,6 @@ set $term footclient
 # on the original workspace that the command was run on.
 set $menu rofi -show drun -drun-show-actions |xargs swaymsg exec --
 
-
 {{ if and (eq .chezmoi.osRelease.id "void") (lookPath "dbus-daemon") }}
 # Setup dbus
 exec dbus-daemon --session --address=unix:path=$XDG_RUNTIME_DIR/bus
@@ -36,7 +35,6 @@ output * bg $HOME/.local/share/backgrounds/dotachina.png fill
 output HDMI-A-1 {
     mode 2560x1440@143.912003Hz
 }
-
 xwayland disable
 #
 # Example configuration:
@@ -46,19 +44,20 @@ xwayland disable
 # You can get the names of your outputs by running: swaymsg -t get_outputs
 
 ### Idle configuration
-#
-# Example configuration:
-#
+{{ $playerctl := (lookPath "playerctl") }}
 exec swayidle -w \
-         timeout 300 'setsid -f waylock' \
-         timeout 600 'swaymsg "output * dpms off"' \
-         resume 'swaymsg "output * dpms on"' \
-         before-sleep 'swaylock -f -c 000000'
-#
-# This will lock your screen after 300 seconds of inactivity, then turn off
-# your displays after another 300 seconds, and turn your screens back on when
-# resumed. It will also lock your screen before your computer goes to sleep.
+        {{ if lookPath "light" -}}
+        timeout 100 'light -T 0.5' \
+            resume 'light -T 2.0' \
+        {{ end -}}
+        {{ if $playerctl -}}
+        timeout 200 'playerctl pause' \
+        {{- end }}
+        timeout 200 'setsid -f waylock' \
+        timeout 400 'swaymsg "output * dpms off"' \
+            resume 'swaymsg "output * dpms on"'
 
+#
 ### Input configuration
 #
 input * {
@@ -364,7 +363,11 @@ mode "$mode_system" {
     # NOTE: requires a custom rule in sudoers
     bindsym r exec "sudo reboot", mode "default"
     bindsym s exec "sudo poweroff", mode "default"
+    {{ if $playerctl -}}
+    bindsym l exec "playerctl pause; setsid -f waylock", mode "default"
+    {{ else -}}
     bindsym l exec "setsid -f waylock", mode "default"
+    {{- end }}
 
     # return to default mode
     bindsym Return mode "default"
@@ -385,6 +388,10 @@ bindsym $mod+c exec rofi -plugin-path /usr/lib/rofi -show calc -modi calc -no-sh
 
 bindsym $mod+Print exec $HOME/.local/bin/sway-screenshot-dmenu
 bindsym Print exec $HOME/.local/bin/grimshot copy screen
+
+{{ if ($rofi_rbw := lookPath "rofi-rbw") }}
+bindsym $mod+b exec {{ $rofi_rbw }} --clipboarder wl-copy --typer wtype
+{{ end }}
 
 #
 # Startup
@@ -430,6 +437,7 @@ exec {{ $swaywsr }} --config $HOME/.config/sway/wsr.toml
 {{ end }}
 
 # TODO: replace with my project
+# or mako :)
 {{ if lookPath "rofication-daemon" }}
 exec_always pkill -f rofication-daemon
 exec_always rofication-daemon
