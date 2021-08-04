@@ -1,3 +1,0 @@
-{{- if (lookPath "rbw") -}}
-{{- secret "get" (cat .email "SSH public key")  }}
-{{- end -}}
