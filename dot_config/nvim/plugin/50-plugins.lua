@@ -473,7 +473,7 @@ packer.startup({
           -- FIX: Issue #61
           vim.keymap.nmap({ "<Esc>", "<Plug>(clever-f-reset):noh<CR>", silent = true })
           vim.g.clever_f_smart_case = 1
-          vim.g.clever_f_chars_match_any_signs = ";"
+          vim.g.clever_f_chars_match_any_signs = "#"
           vim.g.clever_f_fix_key_direction = 1
           vim.g.clever_f_mark_direct = 1
         end,
@@ -522,11 +522,9 @@ packer.startup({
         vim.g.kommentary_create_default_mappings = false
         vim.keymap.nmap({ "gcl", "<Plug>kommentary_line_default", silent = true })
         vim.keymap.nmap({ "gc", "<Plug>kommentary_motion_default", silent = true })
-        vim.keymap.imap({ "<C-_>", "<C-o><Plug>kommentary_line_default", silent = true })
         vim.keymap.vmap({ "gc", "<Plug>kommentary_visual_default", silent = true })
       end,
       keys = {
-        { "i", "<C-o><Plug>kommentary_line_default" },
         { "n", "<Plug>kommentary_line_default" },
         { "n", "<Plug>kommentary_motion_default" },
         { "v", "<Plug>kommentary_visual_default" },
