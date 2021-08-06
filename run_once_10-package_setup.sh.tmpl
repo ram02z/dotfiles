@@ -76,7 +76,7 @@ _exists() {
 
 {{- if (eq .chezmoi.osRelease.id "void") }}
 packages=("fish-shell" "neovim" "python3-neovim"
-"nnn" "git" "delta" "base-devel" "jq" "fzf"
+"nnn" "git" "delta" "base-devel" "jq" "fzf" "gnupg"
 "curl" "ripgrep" "bottom" "zoxide" "bat" "fd"
 "exa" "hyperfine" "rustup" "trash-cli" "meson" "openssl-devel");
 {{ if .is_laptop }}
