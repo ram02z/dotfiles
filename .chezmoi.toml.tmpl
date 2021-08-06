@@ -1,11 +1,13 @@
-{{ $fullName := "Omar Zeghouani" -}}
-{{ $email := promptString  "email" -}}
-{{ $isLaptop := promptBool "laptop" }}
-{{ $isWsl := or (env "WSL_DISTRO_NAME") (env "WSLENV") | not | not -}}
-{{ $isWayland := and (eq .chezmoi.os "linux") (promptBool "wayland") }}
-{{ $isX11 := and (not $isWsl) (not $isWayland) }}
-{{ $pager := or (lookPath "delta") "less -FRSX" }}
-{{ $editor := or (lookPath "nvim") "vi" }}
+{{- $fullName := "Omar Zeghouani" -}}
+{{- $email := promptString  "email" -}}
+{{- $gpgKey := secret "get" (cat $email "GPG short ID") -}}
+{{- $pager := or (lookPath "delta") "less -FRSX" -}}
+{{- $editor := or (lookPath "nvim") "vi" -}}
+{{- $isLaptop := promptBool "laptop" }}
+{{- $isWsl := or (env "WSL_DISTRO_NAME") (env "WSLENV") | not | not -}}
+{{- $isWayland := and (eq .chezmoi.os "linux") (promptBool "wayland") -}}
+{{- $isX11 := and (not $isWsl) (not $isWayland) -}}
+
 [diff]
   format = "git"
   pager = "{{ $pager }}"
@@ -14,18 +16,18 @@
   command = "{{ $editor }}"
   args = "-d"
 
-{{ if ($keyring := (lookPath "rbw")) }}
+{{ if ($keyring := (lookPath "rbw")) -}}
 [secret]
   command = "{{ $keyring }}"
-{{ end }}
-
+{{- end }}
 
 [data]
   name = "{{ $fullName }}"
   email = "{{ $email }}"
+  gpg_key = "{{ $gpgKey | trim }}"
   pager = "{{ $pager }}"
   editor = "{{ (base $editor) }}"
+  is_laptop = {{ $isLaptop }}
   is_wsl = {{ $isWsl }}
   is_x11 = {{ $isX11 }}
   is_wayland = {{ $isWayland }}
-  is_laptop = {{ $isLaptop }}
