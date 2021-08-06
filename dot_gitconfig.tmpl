@@ -7,7 +7,7 @@
 [gpg]
     program = gpg
 [user]
-	signingkey = {{ secret "get" (cat .email "GPG public short") }}
+    signingkey = {{ secret "get" (cat .email "GPG short ID") }}
 {{- end }}
 [push]
     default = simple
