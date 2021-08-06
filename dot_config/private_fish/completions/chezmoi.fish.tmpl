@@ -1,3 +1,4 @@
+{{- if not (stat "/usr/share/fish/vendor_completions.d/chezmoi.fish") -}}
 # fish completion for chezmoi                              -*- shell-script -*-
 
 function __chezmoi_debug
@@ -161,3 +162,4 @@ complete -c chezmoi -n 'set --query __chezmoi_comp_do_file_comp'
 # The call to __chezmoi_prepare_completions will setup both __chezmoi_comp_results and __chezmoi_comp_do_file_comp.
 # It provides the program's completion choices.
 complete -c chezmoi -n '__chezmoi_prepare_completions' -f -a '$__chezmoi_comp_results'
+{{- end -}}

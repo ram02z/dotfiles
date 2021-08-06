@@ -1,0 +1,45 @@
+{{- if not (stat "/usr/share/fish/vendor_completions.d/fd.fish") -}}
+complete -c fd -n "__fish_use_subcommand" -s d -l max-depth -d 'Set maximum search depth (default: none)'
+complete -c fd -n "__fish_use_subcommand" -l maxdepth
+complete -c fd -n "__fish_use_subcommand" -l min-depth
+complete -c fd -n "__fish_use_subcommand" -l exact-depth
+complete -c fd -n "__fish_use_subcommand" -s t -l type -d 'Filter by type: file (f), directory (d), symlink (l),
+executable (x), empty (e), socket (s), pipe (p)' -r -f -a "f file d directory l symlink x executable e empty s socket p pipe"
+complete -c fd -n "__fish_use_subcommand" -s e -l extension -d 'Filter by file extension'
+complete -c fd -n "__fish_use_subcommand" -s x -l exec -d 'Execute a command for each search result'
+complete -c fd -n "__fish_use_subcommand" -s X -l exec-batch -d 'Execute a command with all search results at once'
+complete -c fd -n "__fish_use_subcommand" -s E -l exclude -d 'Exclude entries that match the given glob pattern'
+complete -c fd -n "__fish_use_subcommand" -l ignore-file
+complete -c fd -n "__fish_use_subcommand" -s c -l color -d 'When to use colors: never, *auto*, always' -r -f -a "never auto always"
+complete -c fd -n "__fish_use_subcommand" -s j -l threads
+complete -c fd -n "__fish_use_subcommand" -s S -l size -d 'Limit results based on the size of files.'
+complete -c fd -n "__fish_use_subcommand" -l max-buffer-time
+complete -c fd -n "__fish_use_subcommand" -l changed-within -d 'Filter by file modification time (newer than)'
+complete -c fd -n "__fish_use_subcommand" -l changed-before -d 'Filter by file modification time (older than)'
+complete -c fd -n "__fish_use_subcommand" -l max-results
+complete -c fd -n "__fish_use_subcommand" -l base-directory
+complete -c fd -n "__fish_use_subcommand" -l path-separator
+complete -c fd -n "__fish_use_subcommand" -l search-path
+complete -c fd -n "__fish_use_subcommand" -s o -l owner -d 'Filter by owning user and/or group'
+complete -c fd -n "__fish_use_subcommand" -s H -l hidden -d 'Search hidden files and directories'
+complete -c fd -n "__fish_use_subcommand" -s I -l no-ignore -d 'Do not respect .(git|fd)ignore files'
+complete -c fd -n "__fish_use_subcommand" -l no-ignore-vcs
+complete -c fd -n "__fish_use_subcommand" -l no-global-ignore-file
+complete -c fd -n "__fish_use_subcommand" -s u -l unrestricted
+complete -c fd -n "__fish_use_subcommand" -s s -l case-sensitive -d 'Case-sensitive search (default: smart case)'
+complete -c fd -n "__fish_use_subcommand" -s i -l ignore-case -d 'Case-insensitive search (default: smart case)'
+complete -c fd -n "__fish_use_subcommand" -s g -l glob -d 'Glob-based search (default: regular expression)'
+complete -c fd -n "__fish_use_subcommand" -l regex
+complete -c fd -n "__fish_use_subcommand" -s F -l fixed-strings
+complete -c fd -n "__fish_use_subcommand" -s a -l absolute-path -d 'Show absolute instead of relative paths'
+complete -c fd -n "__fish_use_subcommand" -s l -l list-details -d 'Use a long listing format with file metadata'
+complete -c fd -n "__fish_use_subcommand" -s L -l follow -d 'Follow symbolic links'
+complete -c fd -n "__fish_use_subcommand" -s p -l full-path -d 'Search full path (default: file-/dirname only)'
+complete -c fd -n "__fish_use_subcommand" -s 0 -l print0 -d 'Separate results by the null character'
+complete -c fd -n "__fish_use_subcommand" -l prune
+complete -c fd -n "__fish_use_subcommand" -s 1
+complete -c fd -n "__fish_use_subcommand" -l show-errors
+complete -c fd -n "__fish_use_subcommand" -l one-file-system
+complete -c fd -n "__fish_use_subcommand" -s h -l help -d 'Prints help information'
+complete -c fd -n "__fish_use_subcommand" -s V -l version -d 'Prints version information'
+{{- end -}}

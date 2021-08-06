@@ -1,3 +1,4 @@
+{{- if not (stat "/usr/share/fish/vendor_completions.d/nnn.fish") -}}
 if test -n "$XDG_CONFIG_HOME"
     set sessions_dir $XDG_CONFIG_HOME/.config/nnn/sessions
 else
@@ -37,3 +38,4 @@ complete -c nnn -s V    -d 'show program version and exit'
 complete -c nnn -s w    -d 'hardware cursor mode'
 complete -c nnn -s x    -d 'notis, sel to system clipboard'
 complete -c nnn -s h    -d 'show program help'
+{{- end -}}

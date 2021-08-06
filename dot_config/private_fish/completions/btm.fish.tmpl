@@ -1,3 +1,4 @@
+{{- if not (stat "/usr/share/fish/vendor_completions.d/btm.fish") -}}
 complete -c btm -n "__fish_use_subcommand" -s C -l config -d 'Sets the location of the config file.'
 complete -c btm -n "__fish_use_subcommand" -l color -d 'Use a color scheme, use --help for supported values.' -r -f -a "default default-light gruvbox gruvbox-light"
 complete -c btm -n "__fish_use_subcommand" -s t -l default_time_value -d 'Default time value for graphs in ms.'
@@ -27,3 +28,4 @@ complete -c btm -n "__fish_use_subcommand" -l use_old_network_legend -d 'DEPRECA
 complete -c btm -n "__fish_use_subcommand" -s W -l whole_word -d 'Enables whole-word matching by default.'
 complete -c btm -n "__fish_use_subcommand" -s h -l help -d 'Prints help information.  Use --help for more info.'
 complete -c btm -n "__fish_use_subcommand" -s V -l version -d 'Prints version information.'
+{{- end -}}
