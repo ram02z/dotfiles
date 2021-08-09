@@ -1,28 +1,48 @@
-README.md
+README
 
-{{ if or (not (eq .chezmoi.os "linux")) (.is_wsl) }}
+{{ if not (lookPath "alacritty") }}
 .config/alacritty/**
 .config/alacritty/
+{{ end }}
+{{ if not (lookPath "sway") }}
 .config/sway/**
 .config/sway/
+{{ end }}
+{{ if not (lookPath "copyq") }}
 .config/copyq/**
 .config/copyq/
+{{ end }}
+{{ if or (not (lookPath "i3")) (not (lookPath "i3-quickterm")) }}
 .config/i3/**
 .config/i3/
+{{ end }}
+{{ if not (lookPath "i3-focus-last") }}
 .config/i3-focus-last/**
 .config/i3-focus-last/
+{{ end }}
+{{ if not (lookPath "i3status-rs") }}
 .config/i3status-rust/**
 .config/i3status-rust/
+{{ end }}
+{{ if not (lookPath "rofi") }}
 .config/rofi/**
 .config/rofi/
-.config/gtk-3.0/**
-.config/gtk-3.0/
+{{ end }}
+{{ if not (lookPath "foot") }}
 .config/foot/**
 .config/foot/
+{{ end }}
+{{ if not (lookPath "waylock") }}
 .config/waylock/**
 .config/waylock/
+{{ end }}
+{{ if not (lookPath "mako") }}
 .config/mako/**
 .config/mako/
+{{ end }}
+{{ if and (not .is_x11) (not .is_wayland) }}
+.config/gtk-3.0/**
+.config/gtk-3.0/
 .local/**
 .local/
 .icons/**
