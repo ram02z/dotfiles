@@ -1,1 +1,1 @@
-{"email":"{{.email}}","base_url":null,"identity_url":null,"lock_timeout":900,"pinentry":"pinentry"}
+{ "email":"{{.email}}", "base_url":null, "identity_url":null, "lock_timeout":3600, {{ if lookPath "pinentry-tty" -}} "pinentry":"pinentry-tty" {{- end }} }
