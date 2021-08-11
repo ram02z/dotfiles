@@ -4,16 +4,6 @@ name = "dracula"
 [icons]
 name = "material-nf"
 
-{{ if (eq (get .chezmoi.osRelease "idLike") "debian") -}}
-[[block]]
-block = "apt"
-interval = 1800
-format_singular="{count:1}"
-format = "{count:1}"
-critical_updates_regex = "(linux |linux-lts|linux-zen)"
-on_click = "APT_CONFIG=/tmp/i3rs-apt/apt.conf apt list --upgradable | tail -n +2 | cut -f1 -d '/' | rofi -dmenu"
-{{- end }}
-
 [[block]]
 block = "music"
 buttons = ["prev", "play", "next"]
@@ -23,6 +13,22 @@ marquee_speed = 0.25
 dynamic_width = true
 separator = " "
 interface_name_exclude = ["firefox"]
+
+{{ if (eq (get .chezmoi.osRelease "idLike") "debian") -}}
+[[block]]
+block = "apt"
+interval = 1800
+format_singular="{count:1}"
+format = "{count:1}"
+critical_updates_regex = "(linux |linux-lts|linux-zen)"
+on_click = "APT_CONFIG=/tmp/i3rs-apt/apt.conf apt list --upgradable | tail -n +2 | cut -f1 -d '/' | rofi -dmenu"
+{{ else if (eq .chezmoi.osRelease.id "void") -}}
+[[block]]
+block = "custom"
+command = "xbps-install -Mun | tee /tmp/xbps-updates | grep '' -c"
+interval = 3600
+on_click = "cat /tmp/xbps-updates | rofi -dmenu"
+{{- end }}
 
 {{ if ($kdeconnect := (lookPath "kdeconnect-cli")) -}}
 # TODO: investigate why it can't connect to kde daemon
