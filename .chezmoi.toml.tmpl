@@ -3,10 +3,10 @@
 {{- $gpgKey := secret "get" (cat $email "GPG short ID") -}}
 {{- $pager := or (lookPath "delta") "less -FRSX" -}}
 {{- $editor := or (lookPath "nvim") "vi" -}}
-{{- $isLaptop := promptBool "laptop" }}
 {{- $isWsl := or (env "WSL_DISTRO_NAME") (env "WSLENV") | not | not -}}
-{{- $isWayland := and (eq .chezmoi.os "linux") (promptBool "wayland") -}}
+{{- $isWayland := and (and (eq .chezmoi.os "linux") (not $isWsl)) (promptBool "wayland") -}}
 {{- $isX11 := and (not $isWsl) (not $isWayland) -}}
+{{- $isLaptop := and (and (eq .chezmoi.os "linux") (not $isWsl)) (promptBool "laptop") }}
 
 [diff]
   format = "git"
