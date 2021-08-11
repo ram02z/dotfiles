@@ -7,7 +7,9 @@ end
 -- Checks if prev col doesn't exist
 M.invalid_prev_col = function()
   local lnum, col_no = unpack(vim.api.nvim_win_get_cursor(0))
-  if col_no == 0 then return true end
+  if col_no == 0 then
+    return true
+  end
   local line = unpack(vim.api.nvim_buf_get_lines(0, lnum - 1, lnum, false))
   for i = col_no, 1, -1 do
     local prev_col = line:sub(i, i)

@@ -41,7 +41,7 @@ packer.startup({
     use({
       "neovim/nvim-lspconfig",
       module_pattern = "lspconfig.*",
-      event = {"BufReadPost", "BufNewFile"},
+      event = { "BufReadPost", "BufNewFile" },
       config = [[require'modules.lsp']],
     })
 
@@ -244,8 +244,8 @@ packer.startup({
     -- Change directory to project root
     use({
       "ram02z/rooter.nvim",
-      event = {"BufReadPost", "BufNewFile"},
-      config = function ()
+      event = { "BufReadPost", "BufNewFile" },
+      config = function()
         require("rooter").setup({
           manual = false,
           echo = true,
@@ -255,7 +255,7 @@ packer.startup({
             "go.mod",
           },
           cd_command = "lcd",
-          non_project_files = 'current',
+          non_project_files = "current",
           filetypes_exclude = {
             "help",
             "vimwiki",
@@ -272,7 +272,7 @@ packer.startup({
 
           -- the start path to pass to nvim_lsp.util.root_pattern(patterns...)
           start_path = function()
-            return vim.fn.expand [[%:p:h]]
+            return vim.fn.expand([[%:p:h]])
           end,
         })
       end,
