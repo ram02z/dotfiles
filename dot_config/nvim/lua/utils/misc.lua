@@ -4,13 +4,17 @@ M.t = function(str)
   return vim.api.nvim_replace_termcodes(str, true, true, true)
 end
 
--- Checks if next column is whitespace
--- TODO: not sure how to make it adapt to luasnip
-M.check_next_col = function()
+-- Checks if prev col doesn't exist
+M.invalid_prev_col = function()
   local lnum, col_no = unpack(vim.api.nvim_win_get_cursor(0))
+  if col_no == 0 then return true end
   local line = unpack(vim.api.nvim_buf_get_lines(0, lnum - 1, lnum, false))
-  local next_col = line:sub(col_no + 1, col_no + 1)
-  return #line == 2 and next_col == " "
+  for i = col_no, 1, -1 do
+    local prev_col = line:sub(i, i)
+    if prev_col ~= " " then
+      return false
+    end
+  end
 end
 
 -- Usage for current buffer

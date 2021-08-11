@@ -6,7 +6,7 @@
 {{- $isWsl := or (env "WSL_DISTRO_NAME") (env "WSLENV") | not | not -}}
 {{- $isWayland := and (and (eq .chezmoi.os "linux") (not $isWsl)) (promptBool "wayland") -}}
 {{- $isX11 := and (not $isWsl) (not $isWayland) -}}
-{{- $isLaptop := and (and (eq .chezmoi.os "linux") (not $isWsl)) (promptBool "laptop") }}
+{{- $isLaptop := and (and (eq .chezmoi.os "linux") (not $isWsl)) (promptBool "laptop") -}}
 
 [diff]
   format = "git"

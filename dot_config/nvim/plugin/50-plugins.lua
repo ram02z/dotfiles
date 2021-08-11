@@ -23,20 +23,11 @@ packer.startup({
 
     -- Common dependancies
     use({
-      "neovim/nvim-lspconfig",
-      module_pattern = "lspconfig.*",
-    })
-
-    use({
       "nvim-lua/plenary.nvim",
       module_pattern = "plenary.*",
       config = function()
         require("plenary.filetype").add_file("extra")
       end,
-    })
-
-    use({
-      "nvim-lua/popup.nvim",
     })
 
     -- UI library
@@ -48,11 +39,10 @@ packer.startup({
     -- LSP, treesitter and completion
     --
     use({
-      "kabouzeid/nvim-lspinstall",
-      event = { "BufReadPre", "BufNewFile" },
-      cmd = { "LspInstall", "LspUninstall", "LspPrintInstalled" },
+      "neovim/nvim-lspconfig",
+      module_pattern = "lspconfig.*",
+      event = {"BufReadPost", "BufNewFile"},
       config = [[require'modules.lsp']],
-      requires = { "folke/lua-dev.nvim", module = "lua-dev" },
     })
 
     use({
@@ -97,6 +87,7 @@ packer.startup({
       cmd = { "TSPlaygroundToggle", "TSHighlightCapturesUnderCursor" },
       setup = function()
         vim.keymap.nnoremap({ "<Leader>tp", "<cmd>TSPlaygroundToggle<CR>", silent = true })
+        vim.keymap.nnoremap({ "<Leader>th", "<cmd>TSHighlightCapturesUnderCursor<CR>", silent = true })
       end,
       config = function()
         require("utils.keychord").cancel("<Leader>t")
@@ -168,7 +159,7 @@ packer.startup({
             "help",
             "vimwiki",
             "man",
-            "dashboard",
+            "quickfix",
             "TelescopePrompt",
             "undotree",
             "packer",
@@ -252,10 +243,38 @@ packer.startup({
 
     -- Change directory to project root
     use({
-      "airblade/vim-rooter",
-      config = function()
-        vim.g.rooter_cd_cmd = "tcd"
-        vim.g.rooter_change_directory_for_non_project_files = "current"
+      "ram02z/rooter.nvim",
+      event = {"BufReadPost", "BufNewFile"},
+      config = function ()
+        require("rooter").setup({
+          manual = false,
+          echo = true,
+          patterns = {
+            ".git",
+            "Cargo.toml",
+            "go.mod",
+          },
+          cd_command = "lcd",
+          non_project_files = 'current',
+          filetypes_exclude = {
+            "help",
+            "vimwiki",
+            "man",
+            "quickfix",
+            "TelescopePrompt",
+            "undotree",
+            "packer",
+            "lspinfo",
+            "qf",
+            "tsplayground",
+            "",
+          },
+
+          -- the start path to pass to nvim_lsp.util.root_pattern(patterns...)
+          start_path = function()
+            return vim.fn.expand [[%:p:h]]
+          end,
+        })
       end,
     })
 

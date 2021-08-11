@@ -23,7 +23,7 @@ local compe_conf = {
     },
     buffer = {
       kind = "",
-      ignored_filetypes = { "lua", "c", "cpp" },
+      ignored_filetypes = { "c", "cpp", "rust", "go" },
     },
     nvim_lsp = true,
     luasnip = {
