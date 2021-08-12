@@ -195,7 +195,6 @@ packer.startup({
     -- FIXME: Syntax files in the after directory aren't reloaded on PackerCompile
     use({
       "ram02z/vim",
-      branch = "nvim_plugs",
       -- '~/Downloads/vim',
       -- 'bloop132435/dracula.nvim',
       as = "dracula",
