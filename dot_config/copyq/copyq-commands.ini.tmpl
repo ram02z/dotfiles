@@ -1,4 +1,5 @@
 [Commands]
+{{ if and (.is_wayland) (lookPath "wtype") -}}
 1\Command="copyq:\npaste = function() {\n    var x = execute(\n        'wtype',\n        '-M', 'ctrl', '-M','shift', '-k', 'v')\n    if (!x)\n        throw 'Failed to run wtype'\n    if (x.stderr)\n        throw 'Failed to run wtype: ' + str(x.stderr)\n}"
 1\HideWindow=true
 1\Icon=\xf15b
@@ -6,6 +7,7 @@
 1\Input=text/plain
 1\Name=Paste
 1\Shortcut=p
+{{- end }}
 2\Command=copyq: plugins.itempinned.pin()
 2\Icon=\xf08d
 2\InMenu=true

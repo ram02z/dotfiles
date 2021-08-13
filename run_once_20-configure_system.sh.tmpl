@@ -14,6 +14,7 @@ sudo ln -s /etc/sv/dbus /var/service
 
 # Set up iwd
 sudo ln -s /etc/sv/iwd /var/service
+sudo ln -s /etc/sv/ead /var/service
 
 # Set up ssh
 sudo ln -s /etc/sv/sshd /var/service
@@ -26,5 +27,8 @@ sudo ln -s /etc/sv/tlp /var/service
 {{ end }}
 {{ if not (contains "fish" (env "SHELL")) }}
 sudo -u {{ (env "USER") }} chsh -s "{{ or (lookPath "fish") (lookPath "bash") }}";
+{{- end }}
+{{ if and (lookPath "gpg") (lookPath "rbw") (not (stat (list (env "HOME") "/.gnupg/pubring.kbx" | join ""))) -}}
+rbw get {{ quote (cat .email "GPG private key" ) }} | gpg --import
 {{- end }}
 {{- end }}
