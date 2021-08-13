@@ -1,9 +1,11 @@
 [icons]
 firefox = ""
 foot = ""
+copyq = ""
+iwgtk = ""
 
 [general]
-default_icon = ""
+default_icon = ""
 separator = " "
 
 [options]

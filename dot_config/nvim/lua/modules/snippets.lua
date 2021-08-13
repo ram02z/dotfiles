@@ -22,13 +22,6 @@ local s = ls.s
 local t = ls.t
 local i = ls.i
 
--- Every unspecified option will be set to the default.
-ls.config.set_config({
-  history = true,
-  updateevents = "TextChanged,TextChangedI",
-  enable_autosnippets = false,
-})
-
 ls.snippets = {
   all = {
     -- Expands to ()
