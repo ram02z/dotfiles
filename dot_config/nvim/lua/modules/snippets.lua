@@ -73,6 +73,13 @@ ls.snippets = {
       t({ "", "]" }),
       i(0),
     }),
+    -- Expands to (\t\n)
+    s({ trig = "(;", wordTrig = false }, {
+      t({ "(", "\t" }),
+      i(1),
+      t({ "", ")" }),
+      i(0),
+    }),
     -- Expands to {\t\n}
     s({ trig = "{;", wordTrig = false }, {
       t({ "{", "\t" }),

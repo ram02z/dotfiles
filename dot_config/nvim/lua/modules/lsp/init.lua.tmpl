@@ -1,3 +1,31 @@
+-- Inspired by whynothugo's lsp config
+{{ $servers := 0 }}
+-- Define enabled servers
+local servers = {
+{{ if lookPath "rust-analyzer" -}}
+rust_analyzer = {},
+{{- $servers = add1 $servers -}}
+{{- end }}
+{{ if lookPath "gopls" -}}
+gopls = {
+  settings = {
+    gopls = {
+      staticcheck = true,
+    },
+  },
+},
+{{- $servers = add1 $servers -}}
+{{- end }}
+{{ if lookPath "ccls" -}}
+ccls = {},
+{{- $servers = add1 $servers -}}
+{{- end }}
+}
+
+{{ if gt $servers 0 -}}
+local lspconfig = require("lspconfig")
+
+-- TODO: use lsp_status for capabilites
 local on_attach = function(client, bufnr)
   -- Set autocommands conditional on server_capabilities
   -- TODO: add implementation, declaration and signature help
@@ -26,14 +54,15 @@ local on_attach = function(client, bufnr)
     })
   end
   if client.resolved_capabilities.code_action then
+    vim.fn.sign_define('LightBulbSign', { text = "", texthl = "String", linehl="", numhl="" })
     vim.cmd([[autocmd CursorHold,CursorHoldI,InsertLeave <buffer> lua require'nvim-lightbulb'.update_lightbulb()]])
-    -- vim.keymap.nmap({ "<Leader>la", [[<cmd>lua vim.lsp.buf.code_action()<CR>]], silent = true, buffer = true })
-    vim.keymap.nmap({
-      "<Leader>la",
-      [[<cmd>lua require'modules.lsp.modules'.code_actions()<CR>]],
-      silent = true,
-      buffer = true,
-    })
+    vim.keymap.nmap({ "<Leader>la", [[<cmd>lua vim.lsp.buf.code_action()<CR>]], silent = true, buffer = true })
+    -- vim.keymap.nmap({
+    --   "<Leader>la",
+    --   [[<cmd>lua require'modules.lsp.modules'.code_actions()<CR>]],
+    --   silent = true,
+    --   buffer = true,
+    -- })
   end
   if client.resolved_capabilities.rename then
     vim.keymap.nmap({
@@ -128,13 +157,19 @@ vim.lsp.protocol.CompletionItemKind = {
   "  TypeParameter", -- = 25;
 }
 
-{{ if lookPath "rust-analyzer" -}}
-require("lspconfig").rust_analyzer.setup(make_config())
-{{- end }}
-{{ if lookPath "gopls" -}}
-require("lspconfig").gopls.setup(make_config())
-{{- end }}
-{{ if lookPath "ccls" -}}
-require("lspconfig").ccls.setup(make_config())
-{{- end }}
+-- Change diagnostic symbols in the sign column
+local signs = { Error = " ", Warning = " ", Hint = " ", Information = " " }
 
+for type, icon in pairs(signs) do
+  local hl = "LspDiagnosticsSign" .. type
+  vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "" })
+end
+
+
+-- Register all the LSP servers.
+local common_config = make_config()
+for server, config in pairs(servers) do
+  -- Merge per-LSP configs with the common settings, and use that:
+  lspconfig[server].setup(vim.tbl_extend("keep", config, common_config))
+end
+{{- end }}
