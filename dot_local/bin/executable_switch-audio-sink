@@ -2,6 +2,8 @@
 
 set -e
 
+# Only shows suspended non-default sinks
+
 # Dependencies
 # - pactl
 # - ripgrep (can be substituted with another search tool)
@@ -20,14 +22,22 @@ move_sink_inputs() {
     done < <(echo "$sink_inputs" | rg "Sink Input")
 }
 
+get_default_sink() {
+    pactl info | sed -En 's/Default Sink: (.*)/\1/p'
+}
+
 list_sinks() {
     sinks=$(pactl list sinks short) || return 1
-    # FIXME: if the sink isn't playing, it will still show
-    echo "$sinks" | sed '/RUNNING/d' | rg -o '^\S*.\S*' | sed -e "s/\t/\ /g"
+    sinks=$(echo "$sinks" | rg -o '^\S*.\S*' | sed -e "s/\t/\ /g")
+    if [ "$1" = "suspended" ]; then
+        def=$(get_default_sink)
+        sinks=$(echo "$sinks" | sed "/$def/d")
+    fi
+    echo -n "$sinks"
 }
 
 select_sink() {
-    sink="$(list_sinks | rofi -dmenu -p "Select sink:")" || return 1
+    sink="$(list_sinks "suspended" | rofi -dmenu -p "Select sink:")" || return 1
     sink="$(echo "$sink" | cut -f 1 -d " ")"
     [ -n "$sink" ] || return 1
 
@@ -36,8 +46,8 @@ select_sink() {
 }
 
 case "$1" in
-	list) list_sinks || exit 1;;
-    current);;
+	list) list_sinks $2 || exit 1;;
+    current) get_default_sink || exit 1;;
 	*) select_sink || exit 1;;
 esac
 

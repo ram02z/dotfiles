@@ -78,7 +78,8 @@ _exists() {
 packages=("fish-shell" "neovim" "python3-neovim"
 "nnn" "git" "delta" "base-devel" "jq" "fzf" "gnupg"
 "curl" "ripgrep" "bottom" "zoxide" "bat" "fd"
-"exa" "hyperfine" "rustup" "trash-cli" "meson" "openssl-devel");
+"exa" "hyperfine" "rustup" "trash-cli" "meson"
+"openssl-devel" "pinentry-tty" "fuzzypkg" "xtools");
 {{ if .is_laptop }}
 packages+=("tlp" "light");
 {{ end }}
@@ -95,10 +96,10 @@ read -p "Add sway desktop packages?" -n 1 -r
 if [[ $REPLY =~ ^[Yy]$ ]]; then
     packages+=("sway" "seatd" "polkit" "firefox" "foot" "libappindicator"
     "wdisplays" "waylock" "bluez" "pipewire" "pulseaudio-utils"
-    "mpv" "libnotify" "wl-clipboard" "CopyQ" "swayidle" "xtools"
+    "mpv" "libnotify" "wl-clipboard" "CopyQ" "swayidle" "wtype"
     "pam_rundir" "font-iosevka" "i3status-rust" "python3-i3ipc"
     "font-firacode" "mesa-dri" "iwd" "wev" "slurp" "grim" "mako"
-    "kdeconnect" "iwgtk" "playerctl" "wtype" "pinentry");
+    "kdeconnect" "iwgtk" "playerctl");
 fi;
 printf "\n";
 {{ else if (eq (get .chezmoi.osRelease "idLike") "arch") }}

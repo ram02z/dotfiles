@@ -1,9 +1,10 @@
 status is-interactive || exit
 
 # Git Aliases from https://bitsofco.de/git-aliases-for-lazy-developers/
-{{ if lookPath "git" }}
+{{ if lookPath "git" -}}
 abbr --add gs "git status"
 abbr --add gf "git fetch"
+abbr --add gm "git merge"
 abbr --add gd "git diff"
 abbr --add ga "git add"
 abbr --add gaa "git add -A"
@@ -11,22 +12,24 @@ abbr --add gcam "git commit -am"
 abbr --add gca "git commit -a"
 abbr --add gcaa "git commit -a --amend"
 abbr --add gp "git push"
-abbr --add gl "git pull"
-abbr --add gr "git restore"
+abbr --add gu "git pull"
+abbr --add grb "git rebase"
+abbr --add grs "git restore"
 abbr --add gsb "git switch"
-# Pushing/pulling to origin remote
 abbr --add gpo "git push origin" # + branch name
-abbr --add glo "git pull origin" # + branch name
-# Pushing/pulling to origin remote, master branch
+abbr --add gl "git log --stat"
 abbr --add gpom "git push origin master"
-abbr --add glom "git pull origin master"
 abbr --add gb "git branch" # + branch name
 abbr --add gc "git checkout" # + branch name
 abbr --add gcb "git checkout -b" # + branch name
 {{- end }}
 # C utils
-{{ if lookPath "valgrind" }}
+{{ if lookPath "valgrind" -}}
 abbr --add vgmc "valgrind --tool=memcheck --leak-check=yes --show-reachable=yes"
+{{- end }}
+
+{{ if lookPath "sudoedit" -}}
+abbr --add se "sudoedit"
 {{- end }}
 
 # Chezmoi

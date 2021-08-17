@@ -21,10 +21,11 @@ set $term footclient
 # on the original workspace that the command was run on.
 set $menu rofi -show drun -drun-show-actions |xargs swaymsg exec --
 
-{{ if and (eq .chezmoi.osRelease.id "void") (lookPath "dbus-daemon") }}
-# Setup dbus
-exec dbus-daemon --session --address=unix:path=$XDG_RUNTIME_DIR/bus
-{{ end }}
+# NOTE: just use `dbus-run-session` instead
+# {{ if and (eq .chezmoi.osRelease.id "void") (lookPath "dbus-daemon") }}
+# # Setup dbus
+# exec dbus-daemon --session --address=unix:path=$XDG_RUNTIME_DIR/bus
+# {{ end }}
 
 ### Output configuration
 #

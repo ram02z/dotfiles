@@ -13,9 +13,7 @@ local compe = require("compe")
 local compe_conf = {
   enabled = true,
   autocomplete = false,
-  documentation = {
-    border = "single",
-  },
+  documentation = true,
 
   source = {
     path = {
