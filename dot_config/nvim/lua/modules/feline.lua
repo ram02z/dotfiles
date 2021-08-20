@@ -312,7 +312,7 @@ table.insert(components.right.active, {
     end
 
     local baseName = require("utils.misc").baseName
-    local git_basename = baseName(vim.b.gitsigns_status_dict['root'])
+    local git_basename = baseName(vim.b.gitsigns_status_dict["root"])
     Cached_git_dirs[cwd] = git_basename
 
     return git_basename

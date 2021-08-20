@@ -48,37 +48,37 @@ packer.startup({
         vim.keymap.nnoremap({ "<Leader>s", "<cmd>SymbolsOutline<CR>", silent = true })
         vim.g.symbols_outline = {
           auto_preview = false,
-          keymaps ={
+          keymaps = {
             preview_symbol = "p",
           },
           symbols = {
-            File = {icon = "", hl = "TSURI"},
-            Module = {icon = "", hl = "TSNamespace"},
-            Namespace = {icon = "", hl = "TSNamespace"},
-            Package = {icon = "", hl = "TSNamespace"},
-            Class = {icon = "", hl = "TSType"},
-            Method = {icon = "", hl = "TSMethod"},
-            Property = {icon = "", hl = "TSMethod"},
-            Field = {icon = "", hl = "TSField"},
-            Constructor = {icon = "", hl = "TSConstructor"},
-            Enum = {icon = "", hl = "TSType"},
-            Interface = {icon = "", hl = "TSType"},
-            Function = {icon = "", hl = "TSFunction"},
-            Variable = {icon = "", hl = "TSConstant"},
-            Constant = {icon = "", hl = "TSConstant"},
-            String = {icon = "", hl = "TSString"},
-            Number = {icon = "", hl = "TSNumber"},
-            Boolean = {icon = "", hl = "TSBoolean"},
-            Array = {icon = "", hl = "TSConstant"},
-            Object = {icon = "", hl = "TSType"},
-            Key = {icon = "", hl = "TSType"},
-            Null = {icon = "NULL", hl = "TSType"},
-            EnumMember = {icon = "", hl = "TSField"},
-            Struct = {icon = "", hl = "TSType"},
-            Event = {icon = "", hl = "TSType"},
-            Operator = {icon = "", hl = "TSOperator"},
-            TypeParameter = {icon = "", hl = "TSParameter"}
-          }
+            File = { icon = "", hl = "TSURI" },
+            Module = { icon = "", hl = "TSNamespace" },
+            Namespace = { icon = "", hl = "TSNamespace" },
+            Package = { icon = "", hl = "TSNamespace" },
+            Class = { icon = "", hl = "TSType" },
+            Method = { icon = "", hl = "TSMethod" },
+            Property = { icon = "", hl = "TSMethod" },
+            Field = { icon = "", hl = "TSField" },
+            Constructor = { icon = "", hl = "TSConstructor" },
+            Enum = { icon = "", hl = "TSType" },
+            Interface = { icon = "", hl = "TSType" },
+            Function = { icon = "", hl = "TSFunction" },
+            Variable = { icon = "", hl = "TSConstant" },
+            Constant = { icon = "", hl = "TSConstant" },
+            String = { icon = "", hl = "TSString" },
+            Number = { icon = "", hl = "TSNumber" },
+            Boolean = { icon = "", hl = "TSBoolean" },
+            Array = { icon = "", hl = "TSConstant" },
+            Object = { icon = "", hl = "TSType" },
+            Key = { icon = "", hl = "TSType" },
+            Null = { icon = "NULL", hl = "TSType" },
+            EnumMember = { icon = "", hl = "TSField" },
+            Struct = { icon = "", hl = "TSType" },
+            Event = { icon = "", hl = "TSType" },
+            Operator = { icon = "", hl = "TSOperator" },
+            TypeParameter = { icon = "", hl = "TSParameter" },
+          },
         }
       end,
     })
@@ -94,53 +94,52 @@ packer.startup({
       -- event = "InsertEnter",
       disable = true,
       config = function()
-        local luasnip = require'luasnip'
-        local cmp = require'cmp'
-        cmp.setup {
+        local luasnip = require("luasnip")
+        local cmp = require("cmp")
+        cmp.setup({
           completion = {
             autocomplete = {},
           },
           mapping = {
-            ['<C-p>'] = cmp.mapping.prev_item(),
-            ['<C-n>'] = cmp.mapping.next_item(),
-            ['<C-d>'] = cmp.mapping.scroll(-4),
-            ['<C-f>'] = cmp.mapping.scroll(4),
-            ['<C-Space>'] = cmp.mapping.mode({ 'i' }, function(core, fallback)
-              local types = require('cmp.types')
+            ["<C-p>"] = cmp.mapping.prev_item(),
+            ["<C-n>"] = cmp.mapping.next_item(),
+            ["<C-d>"] = cmp.mapping.scroll(-4),
+            ["<C-f>"] = cmp.mapping.scroll(4),
+            ["<C-Space>"] = cmp.mapping.mode({ "i" }, function(core, fallback)
+              local types = require("cmp.types")
               if vim.fn.pumvisible() == 1 then
                 core.reset()
               else
                 core.complete(core.get_context({ reason = types.cmp.ContextReason.Manual }))
               end
             end),
-            ['<CR>'] = cmp.mapping.confirm({
+            ["<CR>"] = cmp.mapping.confirm({
               behavior = cmp.ConfirmBehavior.Replace,
               select = false,
             }),
-            ['<Tab>'] = cmp.mapping.mode({ 'i', 's' }, function(core, fallback)
+            ["<Tab>"] = cmp.mapping.mode({ "i", "s" }, function(core, fallback)
               if vim.fn.pumvisible() == 1 then
-                vim.fn.feedkeys(vim.api.nvim_replace_termcodes('<C-n>', true, true, true), 'n')
+                vim.fn.feedkeys(vim.api.nvim_replace_termcodes("<C-n>", true, true, true), "n")
               elseif luasnip.expand_or_jumpable() then
-                vim.fn.feedkeys(vim.api.nvim_replace_termcodes('<Plug>luasnip-expand-or-jump', true, true, true), '')
+                vim.fn.feedkeys(vim.api.nvim_replace_termcodes("<Plug>luasnip-expand-or-jump", true, true, true), "")
               else
                 fallback()
               end
             end),
-            ['<S-Tab>'] = cmp.mapping.mode({ 'i', 's' }, function(core, fallback)
+            ["<S-Tab>"] = cmp.mapping.mode({ "i", "s" }, function(core, fallback)
               if vim.fn.pumvisible() == 1 then
-                vim.fn.feedkeys(vim.api.nvim_replace_termcodes('<C-p>', true, true, true), 'n')
+                vim.fn.feedkeys(vim.api.nvim_replace_termcodes("<C-p>", true, true, true), "n")
               elseif luasnip.jumpable(-1) then
-                vim.fn.feedkeys(vim.api.nvim_replace_termcodes('<Plug>luasnip-jump-prev', true, true, true), '')
+                vim.fn.feedkeys(vim.api.nvim_replace_termcodes("<Plug>luasnip-jump-prev", true, true, true), "")
               else
                 fallback()
               end
-            end)
+            end),
           },
           sources = {},
-        }
-      end
+        })
+      end,
     })
-
 
     use({
       "L3MON4D3/LuaSnip",
@@ -585,7 +584,7 @@ packer.startup({
       config = function()
         vim.g.splitjoin_split_mapping = "sj"
         vim.g.splitjoin_join_mapping = "sk"
-      end
+      end,
     })
 
     use({

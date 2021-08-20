@@ -10,12 +10,12 @@ local r = require("luasnip.extras").rep
 -- TODO: use treesitter to for pairs
 -- use tabout.nvim for inspiration
 local function char_count_same(c1, c2)
-	local line = vim.api.nvim_get_current_line()
-	-- '%'-escape chars to force explicit match (gsub accepts patterns).
-	-- second return value is number of substitutions.
-	local _, ct1 = string.gsub(line, '%'..c1, '')
-	local _, ct2 = string.gsub(line, '%'..c2, '')
-	return ct1 == ct2
+  local line = vim.api.nvim_get_current_line()
+  -- '%'-escape chars to force explicit match (gsub accepts patterns).
+  -- second return value is number of substitutions.
+  local _, ct1 = string.gsub(line, "%" .. c1, "")
+  local _, ct2 = string.gsub(line, "%" .. c2, "")
+  return ct1 == ct2
 end
 
 local function even_count(c)
@@ -31,21 +31,22 @@ end
 -- args is a table, where 1 is the text in Placeholder 1, 2 the text in
 -- placeholder 2,...
 local function copy(args)
-	return args[1]
+  return args[1]
 end
 
 -- This makes creation of pair-type snippets easier.
 local function pair(pair_begin, pair_end, expand_func, ...)
-	-- triggerd by opening part of pair, wordTrig=false to trigger anywhere.
-	-- ... is used to pass any args following the expand_func to it.
-	return s({trig = pair_begin, wordTrig=false},{
-			t({pair_begin}), i(1), t({pair_end})
-		},
-		expand_func, ..., pair_begin, pair_end)
+  -- triggerd by opening part of pair, wordTrig=false to trigger anywhere.
+  -- ... is used to pass any args following the expand_func to it.
+  return s({ trig = pair_begin, wordTrig = false }, {
+    t({ pair_begin }),
+    i(1),
+    t({ pair_end }),
+  }, expand_func, ..., pair_begin, pair_end)
 end
 
 ls.config.set_config({
-	history = true,
+  history = true,
 })
 
 ls.snippets = {
@@ -153,7 +154,7 @@ ls.snippets = {
       t({ "", "}" }),
       i(0),
     }),
-    s("eli" , {
+    s("eli", {
       t({ "else if " }),
       i(1),
       t({ " {", "\t" }),
@@ -162,7 +163,7 @@ ls.snippets = {
       i(0),
     }),
     s("iferr", {
-      t({ "if "}),
+      t({ "if " }),
       i(1, "err"),
       t({ " != nil {", "\t" }),
       i(2),
@@ -176,7 +177,7 @@ ls.snippets = {
       i(2, "0"),
       t({ "; " }),
       r(1),
-      i(3 ," < count"),
+      i(3, " < count"),
       t("; "),
       r(1),
       i(4, "++"),
@@ -211,5 +212,5 @@ ls.snippets = {
       t({ ")" }),
       i(0),
     }),
-  }
+  },
 }
