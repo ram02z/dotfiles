@@ -10,7 +10,7 @@ autocmd TermOpen * startinsert | setlocal nonu nornu signcolumn=no
 
 " Force formatoptions
 " :help 'formatoptions' for more information
-autocmd! OptionSet * setlocal formatoptions=cqnbj
+autocmd! OptionSet * setlocal formatoptions=tcqnbj
 
 " Void linux templates
 autocmd! BufRead,BufNewFile srcpkgs/*/template set ft=sh
