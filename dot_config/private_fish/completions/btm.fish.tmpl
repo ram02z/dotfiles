@@ -1,4 +1,4 @@
-{{- if not (stat "/usr/share/fish/vendor_completions.d/btm.fish") -}}
+{{- if and (lookPath "btm") (not (stat "/usr/share/fish/vendor_completions.d/btm.fish")) -}}
 complete -c btm -n "__fish_use_subcommand" -s C -l config -d 'Sets the location of the config file.'
 complete -c btm -n "__fish_use_subcommand" -l color -d 'Use a color scheme, use --help for supported values.' -r -f -a "default default-light gruvbox gruvbox-light"
 complete -c btm -n "__fish_use_subcommand" -s t -l default_time_value -d 'Default time value for graphs in ms.'

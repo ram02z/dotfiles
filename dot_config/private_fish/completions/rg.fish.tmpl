@@ -1,4 +1,4 @@
-{{- if not (stat "/usr/share/fish/vendor_completions.d/rg.fish") -}}
+{{- if and (lookPath "rg") (not (stat "/usr/share/fish/vendor_completions.d/rg.fish")) -}}
 complete -c rg -n "__fish_use_subcommand" -s A -l after-context -d 'Show NUM lines after each match.'
 complete -c rg -n "__fish_use_subcommand" -s B -l before-context -d 'Show NUM lines before each match.'
 complete -c rg -n "__fish_use_subcommand" -l color -d 'Controls when to use color.' -r -f -a "never auto always ansi"

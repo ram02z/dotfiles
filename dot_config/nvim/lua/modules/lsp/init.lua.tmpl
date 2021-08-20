@@ -1,3 +1,4 @@
+-- vim: ft=lua
 -- Inspired by whynothugo's lsp config
 {{ $servers := 0 }}
 -- Define enabled servers
@@ -16,7 +17,9 @@ gopls = {
 },
 {{- $servers = add1 $servers -}}
 {{- end }}
-{{ if lookPath "ccls" -}}
+{{ if lookPath "clangd" -}}
+clangd = {},
+{{ else if lookPath "ccls" -}}
 ccls = {},
 {{- $servers = add1 $servers -}}
 {{- end }}
@@ -30,73 +33,84 @@ local on_attach = function(client, bufnr)
   -- Set autocommands conditional on server_capabilities
   -- TODO: add implementation, declaration and signature help
   if client.resolved_capabilities.goto_definition then
-    vim.keymap.nmap({
+    vim.keymap.nnoremap({
       "<Leader>ld",
-      [[<cmd>lua vim.lsp.buf.definition()<CR>]],
-      silent = true,
+      vim.lsp.buf.definition,
       buffer = true,
     })
   end
   if client.resolved_capabilities.declaration then
-    vim.keymap.nmap({
+    vim.keymap.nnoremap({
       "<Leader>lD",
-      [[<cmd>lua vim.lsp.buf.declaration()<CR>]],
-      silent = true,
+      vim.lsp.buf.declaration,
       buffer = true,
     })
   end
   if client.resolved_capabilities.hover then
-    vim.keymap.nmap({
+    vim.fn.sign_define('LightBulbSign', { text = "", texthl = "String", linehl="", numhl="" })
+    vim.cmd([[autocmd CursorHold,CursorHoldI,InsertLeave <buffer> lua require"nvim-lightbulb".update_lightbulb()]])
+    vim.keymap.nnoremap({
       "<CR>",
-      [[<cmd>lua vim.lsp.buf.hover()<CR>]],
-      silent = true,
+      vim.lsp.buf.hover,
       buffer = true,
     })
   end
   if client.resolved_capabilities.code_action then
-    vim.fn.sign_define('LightBulbSign', { text = "", texthl = "String", linehl="", numhl="" })
-    vim.cmd([[autocmd CursorHold,CursorHoldI,InsertLeave <buffer> lua require'nvim-lightbulb'.update_lightbulb()]])
-    vim.keymap.nmap({ "<Leader>la", [[<cmd>lua vim.lsp.buf.code_action()<CR>]], silent = true, buffer = true })
-    -- vim.keymap.nmap({
-    --   "<Leader>la",
-    --   [[<cmd>lua require'modules.lsp.modules'.code_actions()<CR>]],
-    --   silent = true,
-    --   buffer = true,
-    -- })
+    vim.keymap.nnoremap({
+      "<Leader>la",
+      [[<cmd>Telescope lsp_code_actions theme=get_cursor<CR>]],
+      buffer = true,
+    })
+    vim.keymap.vnoremap({
+      "<Leader>la",
+      [[<cmd>Telescope lsp_range_code_actions theme=get_cursor<CR><Esc>]],
+      buffer = true,
+    })
+  end
+  if client.resolved_capabilities.signature_help then
+    vim.keymap.nnoremap({
+      "<Leader><CR>",
+      vim.lsp.buf.signature_help,
+      buffer = true,
+    })
   end
   if client.resolved_capabilities.rename then
-    vim.keymap.nmap({
+    vim.keymap.nnoremap({
       "<Leader>lr",
-      [[<cmd>lua require'modules.lsp.modules'.rename()<CR>]],
-      silent = true,
+      vim.lsp.buf.rename,
       buffer = true,
     })
   end
   if client.resolved_capabilities.find_references then
-    vim.keymap.nmap({
+    vim.keymap.nnoremap({
       "<Leader>*",
-      [[<cmd>lua vim.lsp.buf.references()<CR>]],
-      silent = true,
+      vim.lsp.buf.references,
       buffer = true,
     })
   end
+  -- if client.resolved_capabilities.code_lens then
+  --   vim.api.nvim_command [[autocmd CursorHold,CursorHoldI,InsertLeave <buffer> lua vim.lsp.codelens.refresh()]]
+  --   vim.keymap.nmap({
+  --     "<Leader>lc",
+  --     vim.lsp.codelens.run,
+  --     silent = true,
+  --     buffer = true,
+  --   })
+  -- end
 
-  vim.keymap.nmap({
+  vim.keymap.nnoremap({
     "]d",
-    [[<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>]],
-    silent = true,
+    vim.lsp.diagnostic.goto_prev,
     buffer = true,
   })
-  vim.keymap.nmap({
+  vim.keymap.nnoremap({
     "[d",
-    [[<cmd>lua vim.lsp.diagnostic.goto_next()<CR>]],
-    silent = true,
+    vim.lsp.diagnostic.goto_next,
     buffer = true,
   })
-  vim.keymap.nmap({
+  vim.keymap.nnoremap({
     "<Leader>ll",
-    [[<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>]],
-    silent = true,
+    vim.lsp.diagnostic.set_loclist,
     buffer = true,
   })
 
@@ -109,6 +123,12 @@ end
 local make_config = function()
   local capabilities = vim.lsp.protocol.make_client_capabilities()
   capabilities.textDocument.completion.completionItem.snippetSupport = true
+  capabilities.textDocument.completion.completionItem.preselectSupport = true
+  capabilities.textDocument.completion.completionItem.insertReplaceSupport = true
+  capabilities.textDocument.completion.completionItem.labelDetailsSupport = true
+  capabilities.textDocument.completion.completionItem.deprecatedSupport = true
+  capabilities.textDocument.completion.completionItem.commitCharactersSupport = true
+  capabilities.textDocument.completion.completionItem.tagSupport = { valueSet = { 1 } }
   capabilities.textDocument.completion.completionItem.resolveSupport = {
     properties = {
       "documentation",

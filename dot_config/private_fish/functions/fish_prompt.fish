@@ -260,12 +260,7 @@ function fish_mode_prompt
 end
 
 function __prompt_pwd --on-variable PWD
-    {{ if .is_wsl }}
-    # inform Windows Terminal about $PWD
-    printf '\e]9;9;%s\e\\' (wslpath -m $PWD)
-    {{ else }}
     update_cwd_osc
-    {{ end }}
     set prompt_git_repo (command git rev-parse --show-toplevel 2>/dev/null)
     set -q __prompt_pwd || set -g __prompt_pwd
 

@@ -1,4 +1,4 @@
-{{- if not (stat "/usr/share/fish/vendor_completions.d/bat.fish") -}}
+{{- if and (lookPath "bat") (not (stat "/usr/share/fish/vendor_completions.d/bat.fish")) -}}
 # Fish Shell Completions
 # Place or symlink to $XDG_CONFIG_HOME/fish/completions/bat.fish ($XDG_CONFIG_HOME is usually set to ~/.config)
 

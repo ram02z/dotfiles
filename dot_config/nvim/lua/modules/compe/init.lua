@@ -43,7 +43,7 @@ vim.keymap.imap({
   silent = true,
   expr = true,
 })
-vim.keymap.snoremap({
+vim.keymap.smap({
   "<TAB>",
   [[luaeval('require("modules.compe.functions").next_complete()')]],
   silent = true,
@@ -56,7 +56,7 @@ vim.keymap.imap({
   silent = true,
   expr = true,
 })
-vim.keymap.snoremap({
+vim.keymap.smap({
   "<S-TAB>",
   [[luaeval('require("modules.compe.functions").prev_complete()')]],
   silent = true,

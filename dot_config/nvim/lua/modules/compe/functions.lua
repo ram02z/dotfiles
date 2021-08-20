@@ -22,7 +22,7 @@ M.prev_complete = function()
   elseif luasnip.jumpable(-1) then
     return utils.t("<Plug>luasnip-jump-prev")
   else
-    return utils.t("<C-h>")
+    return utils.t("<C-d>")
   end
 end
 

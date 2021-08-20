@@ -1,8 +1,14 @@
 local K = vim.keymap
 
 -- Yank
-K.nmap({ "Y", "y$" })
-K.nmap({ "yil", "0y$" })
+-- NOTE: #13268 got merged
+-- K.nmap({ "Y", "y$" })
+K.nnoremap({ "yil", "0y$" })
+-- Absolute left and right
+K.nnoremap({ "H", "g^" })
+K.nnoremap({ "L", "g$" })
+K.xnoremap({ "H", "g^" })
+K.xnoremap({ "L", "g$" })
 
 -- PageUp/PageDown
 K.map({ "<PageUp>", "<C-b>", silent = true })
@@ -11,7 +17,7 @@ K.imap({ "<PageUp>", "<C-O><C-b>", silent = true })
 K.imap({ "<PageDown>", "<C-O><C-f>", silent = true })
 
 -- Toggle line numbers
-K.nnoremap({ "<Leader>d", "<cmd>:set nu! rnu! <CR>", silent = true })
+K.nnoremap({ "<Leader>d", "<cmd>set nu! rnu! <CR>", silent = true })
 
 -- Leave terminal mode
 K.tnoremap({ "<C-]>", "<C-\\><C-n>", silent = true })

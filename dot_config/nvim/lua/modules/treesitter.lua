@@ -24,39 +24,25 @@ local ts_config = {
     enable = false,
     disable = { "html", "xml" },
   },
-  refactor = {
-    highlight_definitions = { enable = true },
-    smart_rename = {
-      enable = true,
-      keymaps = {
-        smart_rename = "grr",
-      },
-    },
-    navigation = {
-      enable = true,
-      keymaps = {
-        -- goto_definition_lsp_fallback = "gnd",
-        list_definitions = "gnD",
-        list_definitions_toc = "gO",
-        goto_next_usage = "[r",
-        goto_previous_usage = "]r",
-      },
-    },
-  },
-  -- textobjects
-  textobjects = {
-    select = {
-      enable = true,
-      keymaps = {
-        ["ac"] = "@comment.outer",
-        ["ic"] = "@class.inner",
-        ["ab"] = "@block.outer",
-        ["ib"] = "@block.inner",
-        ["af"] = "@function.outer",
-        ["if"] = "@function.inner",
-      },
-    },
-  },
+  -- refactor = {
+  --   highlight_definitions = { enable = true },
+  --   smart_rename = {
+  --     enable = true,
+  --     keymaps = {
+  --       smart_rename = "grr",
+  --     },
+  --   },
+  --   navigation = {
+  --     enable = true,
+  --     keymaps = {
+  --       -- goto_definition_lsp_fallback = "gnd",
+  --       list_definitions = "gnD",
+  --       list_definitions_toc = "gO",
+  --       goto_next_usage = "[r",
+  --       goto_previous_usage = "]r",
+  --     },
+  --   },
+  -- },
   -- nvim-ts-rainbow
   rainbow = {
     enable = true,
@@ -79,7 +65,7 @@ local ts_config = {
       "Cyan",
     },
     extended_mode = true,
-    max_file_lines = 2500,
+    max_file_lines = 2000,
   },
   -- vim-matchup
   matchup = {

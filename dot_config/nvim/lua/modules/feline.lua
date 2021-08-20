@@ -62,6 +62,7 @@ local no_buffers = function()
   return #vim.fn.getbufinfo({ buflisted = 1 })
 end
 
+-- REMOVE: this function is uselss because I use gitsigns
 local get_git_dir = function(path)
   local Job = require("plenary.job")
   local baseName = require("utils.misc").baseName
@@ -148,7 +149,6 @@ table.insert(components.left.active, {
     return val
   end,
   right_sep = " ",
-  icon = "",
 })
 
 table.insert(components.left.active, {
@@ -168,7 +168,7 @@ table.insert(components.left.active, {
     end
 
     if file_name == "" then
-      file_name = "[unnamed]"
+      file_name = "[No Name]"
     end
 
     return file_name
@@ -211,7 +211,7 @@ table.insert(components.left.active, {
 table.insert(components.left.active, {
   provider = "diagnostic_errors",
   enabled = function()
-    return lsp.diagnostics_exist("Error") and has_width_gt(40)
+    return no_buffers() == 1 and lsp.diagnostics_exist("Error") and has_width_gt(40)
   end,
   hl = { fg = "red" },
 })
@@ -219,7 +219,7 @@ table.insert(components.left.active, {
 table.insert(components.left.active, {
   provider = "diagnostic_warnings",
   enabled = function()
-    return lsp.diagnostics_exist("Warning") and has_width_gt(40)
+    return no_buffers() == 1 and lsp.diagnostics_exist("Warning") and has_width_gt(40)
   end,
   hl = { fg = "orange" },
 })
@@ -227,7 +227,7 @@ table.insert(components.left.active, {
 table.insert(components.left.active, {
   provider = "diagnostic_hints",
   enabled = function()
-    return lsp.diagnostics_exist("Hint") and has_width_gt(40)
+    return no_buffers() == 1 and lsp.diagnostics_exist("Hint") and has_width_gt(40)
   end,
   hl = { fg = "cyan" },
 })
@@ -235,7 +235,7 @@ table.insert(components.left.active, {
 table.insert(components.left.active, {
   provider = "diagnostic_info",
   enabled = function()
-    return lsp.diagnostics_exist("Information") and has_width_gt(40)
+    return no_buffers() == 1 and lsp.diagnostics_exist("Information") and has_width_gt(40)
   end,
   hl = { fg = "cyan" },
 })
@@ -294,7 +294,6 @@ table.insert(components.right.active, {
   icon = "  ",
 })
 
--- Minimises calls to get_git_dir fn
 table.insert(components.right.active, {
   provider = function()
     local cwd = vim.loop.cwd()
@@ -312,14 +311,11 @@ table.insert(components.right.active, {
       end
     end
 
-    local git_dir = get_git_dir(cwd)
-    if not git_dir then
-      return ""
-    end
+    local baseName = require("utils.misc").baseName
+    local git_basename = baseName(vim.b.gitsigns_status_dict['root'])
+    Cached_git_dirs[cwd] = git_basename
 
-    Cached_git_dirs[git_dir] = cwd
-
-    return git_dir
+    return git_basename
   end,
   enabled = function()
     if vim.b.gitsigns_status_dict and has_width_gt(50) then
@@ -376,8 +372,11 @@ table.insert(components.right.active, {
 --
 table.insert(components.left.inactive, {
   provider = function()
+    if vim.bo.buftype == "nowrite" or vim.bo.buftype == "nofile" then
+      return "  "
+    end
     local mode = vi_mode_utils.get_vim_mode()
-    if #mode > 1 then
+    if #mode > 0 then
       return " " .. mode:sub(1, 1) .. " "
     end
     return " \\ "
@@ -392,7 +391,6 @@ table.insert(components.left.inactive, {
     return val
   end,
   right_sep = " ",
-  icon = "",
 })
 
 table.insert(components.left.inactive, {

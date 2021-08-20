@@ -10,13 +10,10 @@ autocmd TermOpen * startinsert | setlocal nonu nornu signcolumn=no
 
 " Force formatoptions
 " :help 'formatoptions' for more information
-au OptionSet * setlocal formatoptions=cqnbj
+autocmd! OptionSet * setlocal formatoptions=cqnbj
 
-" Disable syntax highlight on large files
-augroup DisableSyn
-  autocmd!
-  autocmd BufEnter * if getfsize(@%) > 100000 | setlocal syntax=OFF | endif
-augroup END
+" Void linux templates
+autocmd! BufRead,BufNewFile srcpkgs/*/template set ft=sh
 
 " using osc52
 augroup Yank

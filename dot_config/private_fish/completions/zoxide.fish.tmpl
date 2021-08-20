@@ -1,4 +1,4 @@
-{{- if not (stat "/usr/share/fish/vendor_completions.d/zoxide.fish") -}}
+{{- if and (lookPath "zoxide") (not (stat "/usr/share/fish/vendor_completions.d/zoxide.fish")) -}}
 complete -c zoxide -n "__fish_use_subcommand" -s h -l help -d 'Prints help information'
 complete -c zoxide -n "__fish_use_subcommand" -s V -l version -d 'Prints version information'
 complete -c zoxide -n "__fish_use_subcommand" -f -a "add" -d 'Add a new directory or increment its rank'

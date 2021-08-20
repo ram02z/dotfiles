@@ -1,4 +1,4 @@
-{{- if not (stat "/usr/share/fish/vendor_completions.d/fd.fish") -}}
+{{- if and (lookPath "fd") (not (stat "/usr/share/fish/vendor_completions.d/fd.fish")) -}}
 complete -c fd -n "__fish_use_subcommand" -s d -l max-depth -d 'Set maximum search depth (default: none)'
 complete -c fd -n "__fish_use_subcommand" -l maxdepth
 complete -c fd -n "__fish_use_subcommand" -l min-depth

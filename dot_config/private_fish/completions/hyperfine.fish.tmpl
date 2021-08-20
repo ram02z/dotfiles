@@ -1,4 +1,4 @@
-{{- if not (stat "/usr/share/fish/vendor_completions.d/hyperfine.fish") -}}
+{{- if and (lookPath "hyperfine") (not (stat "/usr/share/fish/vendor_completions.d/hyperfine.fish")) -}}
 complete -c hyperfine -n "__fish_use_subcommand" -s w -l warmup -d 'Perform NUM warmup runs before the actual benchmark. This can be used to fill (disk) caches for I/O-heavy programs.'
 complete -c hyperfine -n "__fish_use_subcommand" -s m -l min-runs -d 'Perform at least NUM runs for each command (default: 10).'
 complete -c hyperfine -n "__fish_use_subcommand" -s M -l max-runs -d 'Perform at most NUM runs for each command. By default, there is no limit.'

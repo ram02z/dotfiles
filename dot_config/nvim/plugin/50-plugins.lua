@@ -1,7 +1,7 @@
 -- Install packer
 local execute = vim.api.nvim_command
 
-local install_path = vim.fn.stdpath("data") .. "/site/pack/packer/start/packer.nvim"
+local install_path = vim.fn.stdpath("data") .. "/site/pack/packer/opt/packer.nvim"
 
 if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
   execute("!git clone https://github.com/wbthomason/packer.nvim " .. install_path)
@@ -30,41 +30,129 @@ packer.startup({
       end,
     })
 
-    -- UI library
-    use({
-      "MunifTanjim/nui.nvim",
-    })
-
     --
     -- LSP, treesitter and completion
     --
     use({
       "neovim/nvim-lspconfig",
       module_pattern = "lspconfig.*",
-      event = { "BufReadPost", "BufNewFile" },
+      event = { "BufReadPre", "BufNewFile" },
       config = [[require'modules.lsp']],
     })
 
     use({
       "simrat39/symbols-outline.nvim",
+      -- "~/Downloads/symbols-outline.nvim",
       cmd = "SymbolsOutline",
       setup = function()
-        vim.keymap.nnoremap({ "<Leader>o", "<cmd>SymbolsOutline<CR>", silent = true })
+        vim.keymap.nnoremap({ "<Leader>s", "<cmd>SymbolsOutline<CR>", silent = true })
+        vim.g.symbols_outline = {
+          auto_preview = false,
+          keymaps ={
+            preview_symbol = "p",
+          },
+          symbols = {
+            File = {icon = "", hl = "TSURI"},
+            Module = {icon = "", hl = "TSNamespace"},
+            Namespace = {icon = "", hl = "TSNamespace"},
+            Package = {icon = "", hl = "TSNamespace"},
+            Class = {icon = "", hl = "TSType"},
+            Method = {icon = "", hl = "TSMethod"},
+            Property = {icon = "", hl = "TSMethod"},
+            Field = {icon = "", hl = "TSField"},
+            Constructor = {icon = "", hl = "TSConstructor"},
+            Enum = {icon = "", hl = "TSType"},
+            Interface = {icon = "", hl = "TSType"},
+            Function = {icon = "", hl = "TSFunction"},
+            Variable = {icon = "", hl = "TSConstant"},
+            Constant = {icon = "", hl = "TSConstant"},
+            String = {icon = "", hl = "TSString"},
+            Number = {icon = "", hl = "TSNumber"},
+            Boolean = {icon = "", hl = "TSBoolean"},
+            Array = {icon = "", hl = "TSConstant"},
+            Object = {icon = "", hl = "TSType"},
+            Key = {icon = "", hl = "TSType"},
+            Null = {icon = "NULL", hl = "TSType"},
+            EnumMember = {icon = "", hl = "TSField"},
+            Struct = {icon = "", hl = "TSType"},
+            Event = {icon = "", hl = "TSType"},
+            Operator = {icon = "", hl = "TSOperator"},
+            TypeParameter = {icon = "", hl = "TSParameter"}
+          }
+        }
       end,
     })
 
     use({
       "hrsh7th/nvim-compe",
       event = "InsertEnter",
-      -- disable = true,
       config = [[require'modules.compe']],
     })
+
+    use({
+      "hrsh7th/nvim-cmp",
+      -- event = "InsertEnter",
+      disable = true,
+      config = function()
+        local luasnip = require'luasnip'
+        local cmp = require'cmp'
+        cmp.setup {
+          completion = {
+            autocomplete = {},
+          },
+          mapping = {
+            ['<C-p>'] = cmp.mapping.prev_item(),
+            ['<C-n>'] = cmp.mapping.next_item(),
+            ['<C-d>'] = cmp.mapping.scroll(-4),
+            ['<C-f>'] = cmp.mapping.scroll(4),
+            ['<C-Space>'] = cmp.mapping.mode({ 'i' }, function(core, fallback)
+              local types = require('cmp.types')
+              if vim.fn.pumvisible() == 1 then
+                core.reset()
+              else
+                core.complete(core.get_context({ reason = types.cmp.ContextReason.Manual }))
+              end
+            end),
+            ['<CR>'] = cmp.mapping.confirm({
+              behavior = cmp.ConfirmBehavior.Replace,
+              select = false,
+            }),
+            ['<Tab>'] = cmp.mapping.mode({ 'i', 's' }, function(core, fallback)
+              if vim.fn.pumvisible() == 1 then
+                vim.fn.feedkeys(vim.api.nvim_replace_termcodes('<C-n>', true, true, true), 'n')
+              elseif luasnip.expand_or_jumpable() then
+                vim.fn.feedkeys(vim.api.nvim_replace_termcodes('<Plug>luasnip-expand-or-jump', true, true, true), '')
+              else
+                fallback()
+              end
+            end),
+            ['<S-Tab>'] = cmp.mapping.mode({ 'i', 's' }, function(core, fallback)
+              if vim.fn.pumvisible() == 1 then
+                vim.fn.feedkeys(vim.api.nvim_replace_termcodes('<C-p>', true, true, true), 'n')
+              elseif luasnip.jumpable(-1) then
+                vim.fn.feedkeys(vim.api.nvim_replace_termcodes('<Plug>luasnip-jump-prev', true, true, true), '')
+              else
+                fallback()
+              end
+            end)
+          },
+          sources = {},
+        }
+      end
+    })
+
 
     use({
       "L3MON4D3/LuaSnip",
       event = "InsertCharPre",
       module_pattern = "luasnip.*",
       config = [[require'modules.snippets']],
+    })
+
+    use({
+      "ms-jpq/coq_nvim",
+      disable = true,
+      branch = "coq",
     })
 
     use({
@@ -95,27 +183,22 @@ packer.startup({
     })
 
     use({
-      "nvim-treesitter/nvim-treesitter-textobjects",
-      -- wants = 'nvim-treesitter',
-      -- TODO: use 'keys' key instead
-      event = "CursorHold",
-    })
-
-    use({
       "p00f/nvim-ts-rainbow",
-      wants = "nvim-treesitter",
-      -- event = "BufReadPre",
+      -- wants = "nvim-treesitter",
+      event = "BufReadPre",
     })
 
+    -- FIXME: this causes slow down in big files
     use({
       "nvim-treesitter/nvim-treesitter-refactor",
+      disable = true,
       event = "CursorHold",
       -- wants = "nvim-treesitter"
     })
 
     use({
       "mfussenegger/nvim-ts-hint-textobject",
-      event = "CursorHold",
+      event = "BufReadPost",
       config = function()
         vim.keymap.onoremap({ "m", require("tsht").nodes, silent = true })
         vim.keymap.vnoremap({ "m", [[:lua require'tsht'.nodes()<CR>]], silent = true })
@@ -142,8 +225,9 @@ packer.startup({
 
     -- Statusline
     use({
-      "famiu/feline.nvim",
+      "ram02z/feline.nvim",
       event = { "BufNewFile", "BufReadPre" },
+      -- event = "FileType nix",
       config = [[require'modules.feline']],
     })
 
@@ -196,7 +280,7 @@ packer.startup({
     use({
       "ram02z/vim",
       -- '~/Downloads/vim',
-      -- 'bloop132435/dracula.nvim',
+      branch = "perf",
       as = "dracula",
       config = function()
         vim.cmd([[colorscheme dracula]])
@@ -224,8 +308,7 @@ packer.startup({
     -- REMOVE: if https://github.com/neovim/neovim/issues/12587 gets closed
     use({
       "antoinemadec/FixCursorHold.nvim",
-      event = { "CursorMoved", "CursorMovedI" },
-      -- disable = true,
+      event = "BufReadPost",
       setup = function()
         vim.g.cursorhold_updatetime = 50
       end,
@@ -318,23 +401,9 @@ packer.startup({
       opt = true,
     })
 
-    -- Reload nvim
-    -- TODO: do I really need this?
     use({
-      "ram02z/nvim-reload",
-      cmd = "Reload",
-      setup = function()
-        vim.keymap.nnoremap({ "<Leader>r", ":Reload<CR>", silent = true })
-      end,
-      config = function()
-        local reload = require("nvim-reload")
-        reload.pre_reload_hook = function()
-          require("packer").compile()
-        end
-        reload.post_reload_hook = function()
-          require("feline").reset_highlights()
-        end
-      end,
+      "sindrets/diffview.nvim",
+      module_pattern = "diffview.*",
     })
 
     -- Git integration
@@ -342,7 +411,6 @@ packer.startup({
       {
         "TimUntersberger/neogit",
         cmd = "Neogit",
-        requires = { "sindrets/diffview.nvim", module = "diffview" },
         config = function()
           require("neogit").setup({
             integrations = {
@@ -468,8 +536,8 @@ packer.startup({
     -- Matchit extension
     use({
       "andymass/vim-matchup",
-      event = "BufReadPost",
       -- disable = true,
+      event = "BufReadPost",
       setup = function()
         vim.g.matchup_delim_noskips = 2
         vim.g.matchup_matchparen_pumvisible = 0
@@ -489,7 +557,7 @@ packer.startup({
           vim.keymap.map({ ";", "<Plug>(clever-f-repeat-forward)", silent = true })
           vim.keymap.map({ ",", "<Plug>(clever-f-repeat-back)", silent = true })
           -- FIX: Issue #61
-          vim.keymap.nmap({ "<Esc>", "<Plug>(clever-f-reset):noh<CR>", silent = true })
+          vim.keymap.nmap({ "<Esc>", "<Plug>(clever-f-reset)<cmd>noh<CR>", silent = true })
           vim.g.clever_f_smart_case = 1
           vim.g.clever_f_chars_match_any_signs = "#"
           vim.g.clever_f_fix_key_direction = 1
@@ -514,14 +582,10 @@ packer.startup({
       "AndrewRadev/splitjoin.vim",
       -- FIXME: keys don't load instantly (seems to be a vim plugin issue)
       -- experienced the same with vim-sandwich
-      event = "CursorHold",
-      setup = function()
+      config = function()
         vim.g.splitjoin_split_mapping = "sj"
         vim.g.splitjoin_join_mapping = "sk"
-      end,
-      config = function()
-        require("utils.keychord").cancel("s")
-      end,
+      end
     })
 
     use({
@@ -749,7 +813,11 @@ packer.startup({
       "kevinhwang91/nvim-bqf",
       event = { "FileType qf", "QuickFixCmdPre" },
       config = function()
-        require("bqf").setup()
+        require("bqf").setup({
+          preview = {
+            auto_preview = false,
+          },
+        })
       end,
     })
 
