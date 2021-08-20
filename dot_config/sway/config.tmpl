@@ -21,11 +21,10 @@ set $term footclient
 # on the original workspace that the command was run on.
 set $menu rofi -show drun -drun-show-actions |xargs swaymsg exec --
 
-# NOTE: just use `dbus-run-session` instead
-# {{ if and (eq .chezmoi.osRelease.id "void") (lookPath "dbus-daemon") }}
-# # Setup dbus
-# exec dbus-daemon --session --address=unix:path=$XDG_RUNTIME_DIR/bus
-# {{ end }}
+{{ if and (eq .chezmoi.osRelease.id "void") (lookPath "dbus-daemon") }}
+# Setup dbus
+exec dbus-daemon --session --address=unix:path=$XDG_RUNTIME_DIR/bus
+{{ end }}
 
 ### Output configuration
 #
@@ -375,7 +374,6 @@ mode "$mode_system" {
     bindsym Escape mode "default"
 }
 bindsym $mod+Shift+e mode "$mode_system"
-}
 
 #
 # Utility binds
@@ -452,6 +450,12 @@ exec {{ $copyq }} --start-server
 bindsym $mod+v exec {{ $copyq }} toggle
 {{ end }}
 
+{{ if and (.is_laptop) ($tlp := (lookPath "tlp"))}}
+# NOTE: may cause a crash due to setting gpu to low
+exec {{ $tlp }} init start
+exec chpst -b {{ $tlp }} pause
+{{ end }}
+
 #
 # Status Bar:
 #
@@ -483,6 +487,6 @@ bar {
     }
 }
 
-include /etc/sway/config.d/*
+# include /etc/sway/config.d/*
 
 # vim: ft=conf

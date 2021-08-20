@@ -5,6 +5,7 @@ function swy --wraps sway --description "Exports wayland variables and executes 
         set -x GDK_BACKEND wayland
         set -x QT_QPA_PLATFORM wayland-egl
         set -x XDG_CURRENT_DESKTOP sway
-        exec dbus-run-session sway
+        # exec dbus-run-session sway
+        exec sway
     end
 end
