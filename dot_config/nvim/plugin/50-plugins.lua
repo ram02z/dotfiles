@@ -49,7 +49,7 @@ packer.startup({
         vim.g.symbols_outline = {
           auto_preview = false,
           keymaps = {
-            preview_symbol = "p",
+            toggle_preview = "p",
           },
           symbols = {
             File = { icon = "", hl = "TSURI" },
@@ -258,6 +258,8 @@ packer.startup({
             "function",
             "method",
             "^if",
+            "switch",
+            "begin",
             "while",
             "for",
             "with",

@@ -19,7 +19,7 @@ set $term footclient
 # Your preferred application launcher
 # Note: pass the final command to swaymsg so that the resulting window can be opened
 # on the original workspace that the command was run on.
-set $menu rofi -show drun -drun-show-actions |xargs swaymsg exec --
+set $menu pkill rofi || rofi -show drun -drun-show-actions |xargs swaymsg exec --
 
 {{ if and (eq .chezmoi.osRelease.id "void") (lookPath "dbus-daemon") }}
 # Setup dbus
@@ -383,13 +383,13 @@ bindsym $mod+p exec fish -c sway-prop
 
 bindsym $mod+Shift+q exec fish -c sway-kill
 
-bindsym $mod+c exec rofi -plugin-path /usr/lib/rofi -show calc -modi calc -no-show-match -no-sort
+bindsym $mod+c exec pkill rofi || rofi -plugin-path /usr/lib/rofi -show calc -modi calc -no-show-match -no-sort
 
 bindsym $mod+Print exec $HOME/.local/bin/sway-screenshot-dmenu
 bindsym Print exec $HOME/.local/bin/grimshot copy screen
 
 {{ if ($rofi_rbw := lookPath "rofi-rbw") }}
-bindsym $mod+b exec {{ $rofi_rbw }} --clipboarder wl-copy --typer wtype
+bindsym $mod+b exec pkill rofi || {{ $rofi_rbw }} --clipboarder wl-copy --typer wtype
 {{ end }}
 
 #
@@ -448,6 +448,10 @@ exec $HOME/.local/bin/fullscreenbarworker
 {{ if ($copyq := (lookPath "copyq")) }}
 exec {{ $copyq }} --start-server
 bindsym $mod+v exec {{ $copyq }} toggle
+{{ end }}
+
+{{ if ($matrix := (lookPath "quaternion")) }}
+exec {{ $matrix }} --hide-mainwindow
 {{ end }}
 
 {{ if and (.is_laptop) ($tlp := (lookPath "tlp"))}}

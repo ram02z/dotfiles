@@ -27,7 +27,7 @@ on_click = "APT_CONFIG=/tmp/i3rs-apt/apt.conf apt list --upgradable | tail -n +2
 block = "custom"
 command = "xbps-install -Mun | tee /tmp/xbps-updates | grep '' -c"
 interval = 3600
-on_click = "cat /tmp/xbps-updates | rofi -dmenu"
+on_click = "pkill rofi || cat /tmp/xbps-updates | rofi -dmenu"
 {{- end }}
 
 {{ if ($kdeconnect := (lookPath "kdeconnect-cli")) -}}
@@ -59,7 +59,7 @@ critical_mem = 95
 block = "sound"
 show_volume_when_muted = true
 max_vol = 150
-on_click = "fish -c '~/.local/bin/switch-audio-sink'"
+on_click = "pkill rofi || ~/.local/bin/switch-audio-sink"
 
 {{ if .is_laptop }}
 # NOTE: requires custom udev rule to change brightness
@@ -95,7 +95,7 @@ hide_disconnected = true
 block = "net"
 format = "{signal_strength:3}"
 {{ if ($iwgtk := (lookPath "iwgtk")) -}}
-on_click = "{{ $iwgtk }}"
+on_click = "pkill iwgtk || {{ $iwgtk }}"
 {{- end }}
 
 # [[block]]
@@ -126,7 +126,7 @@ on_click = "~/.local/bin/i3-quickterm battery"
 block = "time"
 interval = 1
 format = "%R"
-on_click = "~/.local/bin/rofi-calendar"
+on_click = "pkill rofi || ~/.local/bin/rofi-calendar"
 icons_format = " "
 
 # vim: ft=toml

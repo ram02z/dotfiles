@@ -3,6 +3,7 @@ firefox = ""
 foot = ""
 copyq = ""
 iwgtk = ""
+"com.github.quaternion" = ""
 
 [general]
 default_icon = ""
