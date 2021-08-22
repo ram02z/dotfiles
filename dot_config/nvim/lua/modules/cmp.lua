@@ -61,9 +61,9 @@ cmp.setup({
   formatting = {
     format = function(_, vim_item)
       local codicons = require("codicons")
-      local symbols  = require("codicons.extensions.completion_item_kind").symbols
-      local icon     = codicons.get(symbols[vim_item.kind].icon)
-      vim_item.kind  = string.format("%s %s", vim_item.kind, icon)
+      local symbols = require("codicons.extensions.completion_item_kind").symbols
+      local icon = codicons.get(symbols[vim_item.kind].icon)
+      vim_item.kind = string.format("%s %s", vim_item.kind, icon)
       return vim_item
     end,
   },
@@ -74,4 +74,3 @@ cmp.setup({
     { name = "buffer" },
   },
 })
-
