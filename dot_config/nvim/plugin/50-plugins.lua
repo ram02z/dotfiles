@@ -86,19 +86,31 @@ packer.startup({
     use({
       "hrsh7th/nvim-compe",
       event = "InsertEnter",
+      disable = true,
       config = [[require'modules.compe']],
     })
 
     use({
+      "hrsh7th/cmp-buffer",
+      module = "cmp_buffer",
+    })
+
+    use({
       "hrsh7th/nvim-cmp",
-      -- event = "InsertEnter",
-      disable = true,
+      event = "InsertEnter",
+      -- disable = true,
       config = function()
-        local luasnip = require("luasnip")
         local cmp = require("cmp")
+        local fn = vim.fn
+        cmp.register_source('buffer', require'cmp_buffer'.new())
         cmp.setup({
           completion = {
             autocomplete = {},
+          },
+          snippet = {
+            expand = function(args)
+              require("luasnip").lsp_expand(args.body)
+            end
           },
           mapping = {
             ["<C-p>"] = cmp.mapping.prev_item(),
@@ -107,7 +119,7 @@ packer.startup({
             ["<C-f>"] = cmp.mapping.scroll(4),
             ["<C-Space>"] = cmp.mapping.mode({ "i" }, function(core, fallback)
               local types = require("cmp.types")
-              if vim.fn.pumvisible() == 1 then
+              if fn.pumvisible() == 1 then
                 core.reset()
               else
                 core.complete(core.get_context({ reason = types.cmp.ContextReason.Manual }))
@@ -117,26 +129,28 @@ packer.startup({
               behavior = cmp.ConfirmBehavior.Replace,
               select = false,
             }),
-            ["<Tab>"] = cmp.mapping.mode({ "i", "s" }, function(core, fallback)
-              if vim.fn.pumvisible() == 1 then
-                vim.fn.feedkeys(vim.api.nvim_replace_termcodes("<C-n>", true, true, true), "n")
-              elseif luasnip.expand_or_jumpable() then
-                vim.fn.feedkeys(vim.api.nvim_replace_termcodes("<Plug>luasnip-expand-or-jump", true, true, true), "")
+            ["<Tab>"] = cmp.mapping.mode({ "i", "s" }, function(_, fallback)
+              if fn.pumvisible() == 1 then
+                fn.feedkeys(vim.api.nvim_replace_termcodes("<C-n>", true, true, true), "n")
+              elseif require("luasnip").expand_or_jumpable() then
+                fn.feedkeys(vim.api.nvim_replace_termcodes("<Plug>luasnip-expand-or-jump", true, true, true), "")
               else
                 fallback()
               end
             end),
-            ["<S-Tab>"] = cmp.mapping.mode({ "i", "s" }, function(core, fallback)
-              if vim.fn.pumvisible() == 1 then
-                vim.fn.feedkeys(vim.api.nvim_replace_termcodes("<C-p>", true, true, true), "n")
-              elseif luasnip.jumpable(-1) then
+            ["<S-Tab>"] = cmp.mapping.mode({ "i", "s" }, function(_, fallback)
+              if fn.pumvisible() == 1 then
+                fn.feedkeys(vim.api.nvim_replace_termcodes("<C-p>", true, true, true), "n")
+              elseif require("luasnip").jumpable(-1) then
                 vim.fn.feedkeys(vim.api.nvim_replace_termcodes("<Plug>luasnip-jump-prev", true, true, true), "")
               else
                 fallback()
               end
             end),
           },
-          sources = {},
+          sources = {
+            { name = 'buffer' }
+          },
         })
       end,
     })
@@ -216,7 +230,7 @@ packer.startup({
 
     -- Buffer/Tabline
     use({
-      "akinsho/nvim-bufferline.lua",
+      "akinsho/bufferline.nvim",
       event = "BufReadPre",
       requires = { "kyazdani42/nvim-web-devicons" },
       config = [[require'modules.bufferline']],
@@ -461,7 +475,7 @@ packer.startup({
 
     -- Toggle terminal
     use({
-      "akinsho/nvim-toggleterm.lua",
+      "akinsho/toggleterm.nvim",
       cmd = { "ToggleTerm", "TermExec" },
       keys = "<C-_>",
       setup = function()

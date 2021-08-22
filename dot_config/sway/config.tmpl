@@ -454,12 +454,6 @@ bindsym $mod+v exec {{ $copyq }} toggle
 exec {{ $matrix }} --hide-mainwindow
 {{ end }}
 
-{{ if and (.is_laptop) ($tlp := (lookPath "tlp"))}}
-# NOTE: may cause a crash due to setting gpu to low
-exec {{ $tlp }} init start
-exec chpst -b {{ $tlp }} pause
-{{ end }}
-
 #
 # Status Bar:
 #
@@ -491,6 +485,6 @@ bar {
     }
 }
 
-# include /etc/sway/config.d/*
+include /etc/sway/config.d/*
 
 # vim: ft=conf

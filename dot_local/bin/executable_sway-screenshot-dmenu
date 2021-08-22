@@ -69,16 +69,16 @@ case $(printf $CHOICE) in
         grimshot save window "$FILENAME"
         REC=0 ;;
     6)
-        $RECORDER -g "$(echo "$OUTPUTS"|slurp)" -f "$RECORDING"
+        $RECORDER -g "$(eval echo $FOCUSED)" -f "$RECORDING"
         REC=1 ;;
     7)
         $RECORDER -g "$(echo "$WINDOWS"|slurp)" -f "$RECORDING"
         REC=1 ;;
     8)
-        $RECORDER -g "$(slurp)" -f "$RECORDING"
+        $RECORDER -g "$(echo "$OUTPUTS"|slurp)" -f "$RECORDING"
         REC=1 ;;
     9)
-        $RECORDER -g "$(eval echo $FOCUSED)" -f "$RECORDING"
+        $RECORDER -g "$(slurp)" -f "$RECORDING"
         REC=1 ;;
     *)
         exit 1 ;;

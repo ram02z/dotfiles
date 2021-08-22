@@ -18,6 +18,11 @@ sudo ln -s /etc/sv/ead /var/service
 
 # Set up ssh
 sudo ln -s /etc/sv/sshd /var/service
+
+{{ if .is_laptop }}
+# Set up tlp
+sudo ln -s /etc/sv/tlp /var/service
+{{ end }}
     {{ end }}
 {{ end }}
 {{ if not (contains "fish" (env "SHELL")) }}

@@ -1,6 +1,8 @@
 {{- $fullName := "Omar Zeghouani" -}}
 {{- $email := promptString  "email" -}}
 {{- $gpgKey := secret "get" (cat $email "GPG short ID") -}}
+{{- $sshPublicKey := secret "get" (cat $email "SSH public key") -}}
+{{- $sshPrivateKey := secret "get" (cat $email "SSH private key") -}}
 {{- $pager := or (lookPath "delta") "less -FRSX" -}}
 {{- $editor := or (lookPath "nvim") "vi" -}}
 {{- $isWsl := or (env "WSL_DISTRO_NAME") (env "WSLENV") | not | not -}}
@@ -10,23 +12,23 @@
 
 [diff]
   format = "git"
-  pager = "{{ $pager }}"
+  pager = {{ $pager | quote }}
 
 [merge]
-  command = "{{ $editor }}"
+  command = {{ $editor | quote }}
   args = "-d"
 
-{{ if ($keyring := (lookPath "rbw")) -}}
 [secret]
-  command = "{{ $keyring }}"
-{{- end }}
+  command = {{ lookPath "rbw" | quote }}
 
 [data]
-  name = "{{ $fullName }}"
-  email = "{{ $email }}"
-  gpg_key = "{{ $gpgKey | trim }}"
-  pager = "{{ $pager }}"
-  editor = "{{ (base $editor) }}"
+  name = {{ $fullName | quote }}
+  email = {{ $email | quote }}
+  gpg_key = {{ $gpgKey | trim | quote }}
+  ssh_public_key = {{ $sshPublicKey | trim | quote }}
+  ssh_private_key = {{ $sshPrivateKey | quote }}
+  pager = {{ (base $pager) | quote }}
+  editor = {{ (base $editor) | quote }}
   is_laptop = {{ $isLaptop }}
   is_wsl = {{ $isWsl }}
   is_x11 = {{ $isX11 }}
