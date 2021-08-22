@@ -2,11 +2,11 @@ local gitsigns = require("gitsigns")
 
 local gs_conf = {
   signs = {
-    add = { hl = "GitSignsAdd", text = "│", numhl = "GitSignsAddNr", linehl = "GitSignsAddLn" },
-    change = { hl = "GitSignsChange", text = "│", numhl = "GitSignsChangeNr", linehl = "GitSignsChangeLn" },
-    delete = { hl = "GitSignsDelete", text = "_", numhl = "GitSignsDeleteNr", linehl = "GitSignsDeleteLn" },
-    topdelete = { hl = "GitSignsDelete", text = "‾", numhl = "GitSignsDeleteNr", linehl = "GitSignsDeleteLn" },
-    changedelete = { hl = "GitSignsChange", text = "~", numhl = "GitSignsChangeNr", linehl = "GitSignsChangeLn" },
+    add = { hl = "DiffAdd", text = "│", numhl = "GitSignsAddNr", linehl = "GitSignsAddLn" },
+    change = { hl = "DiffChange", text = "│", numhl = "GitSignsChangeNr", linehl = "GitSignsChangeLn" },
+    delete = { hl = "DiffDelete", text = "_", numhl = "GitSignsDeleteNr", linehl = "GitSignsDeleteLn" },
+    topdelete = { hl = "DiffDelete", text = "‾", numhl = "GitSignsDeleteNr", linehl = "GitSignsDeleteLn" },
+    changedelete = { hl = "DiffChange", text = "~", numhl = "GitSignsChangeNr", linehl = "GitSignsChangeLn" },
   },
   numhl = false,
   linehl = false,
@@ -24,6 +24,7 @@ local gs_conf = {
     ["n <leader>gR"] = '<cmd>lua require"gitsigns".reset_buffer()<CR>',
     ["n <leader>gp"] = '<cmd>lua require"gitsigns".preview_hunk()<CR>',
     ["n <leader>gb"] = '<cmd>lua require"gitsigns".blame_line(true)<CR>',
+    ["n <leader>gt"] = '<cmd>Gitsigns toggle_current_line_blame<CR>',
 
     -- Text objects
     ["o gh"] = ':<C-U>lua require"gitsigns.actions".select_hunk()<CR>',
@@ -31,11 +32,15 @@ local gs_conf = {
   },
   watch_index = {
     interval = 1000,
+    follow_files = true,
   },
   current_line_blame = false,
+  current_line_blame_delay = 0,
+  current_line_blame_position = 'eol',
   sign_priority = 6,
   update_debounce = 100,
   status_formatter = nil, -- Use default
+  word_diff = false,
   use_internal_diff = true, -- If luajit is present
 }
 

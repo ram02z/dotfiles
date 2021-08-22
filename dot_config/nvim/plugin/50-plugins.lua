@@ -201,9 +201,12 @@ packer.startup({
     -- Statusline
     use({
       "ram02z/feline.nvim",
+      branch = "icon",
+      -- "~/Downloads/feline.nvim",
       event = { "BufNewFile", "BufReadPre" },
       -- event = "FileType nix",
       config = [[require'modules.feline']],
+      -- config = [[require'feline'.setup()]]
     })
 
     -- Indentation line
@@ -280,6 +283,9 @@ packer.startup({
 
     -- Load my editor defaults
     use({ "gpanders/editorconfig.nvim" })
+
+    -- Lua profiler
+    use({ "norcalli/profiler.nvim", opt = true })
 
     -- Fix CursorHold performance
     -- REMOVE: if https://github.com/neovim/neovim/issues/12587 gets closed
@@ -746,7 +752,7 @@ packer.startup({
     -- Smooth scrolling
     use({
       "karb94/neoscroll.nvim",
-      event = "WinScrolled",
+      event = "BufReadPost",
       config = [[require'neoscroll'.setup()]],
     })
 

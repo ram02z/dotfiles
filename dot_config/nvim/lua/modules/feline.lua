@@ -1,4 +1,3 @@
-local lsp = require("feline.providers.lsp")
 local vi_mode_utils = require("feline.providers.vi_mode")
 
 local properties = {
@@ -60,34 +59,6 @@ end
 -- Returns number of buffers
 local no_buffers = function()
   return #vim.fn.getbufinfo({ buflisted = 1 })
-end
-
--- REMOVE: this function is uselss because I use gitsigns
-local get_git_dir = function(path)
-  local Job = require("plenary.job")
-  local baseName = require("utils.misc").baseName
-  local logError = require("utils.misc").error
-
-  -- If path nil or '.' get the absolute path to current directory
-  if not path or path == "." then
-    path = vim.loop.cwd()
-  end
-
-  local find_toplevel_job = Job:new({
-    "git",
-    "rev-parse",
-    "--show-toplevel",
-    cwd = path,
-  })
-
-  local stdout, code = find_toplevel_job:sync()
-  if code ~= 0 then
-    logError("Couldn't determine the git toplevel")
-    return ""
-  end
-
-  stdout = table.concat(stdout, "")
-  return baseName(stdout)
 end
 
 -- Dracula-esque colors
@@ -211,7 +182,7 @@ table.insert(components.left.active, {
 table.insert(components.left.active, {
   provider = "diagnostic_errors",
   enabled = function()
-    return no_buffers() == 1 and lsp.diagnostics_exist("Error") and has_width_gt(40)
+    return no_buffers() == 1 and has_width_gt(40)
   end,
   hl = { fg = "red" },
 })
@@ -219,7 +190,7 @@ table.insert(components.left.active, {
 table.insert(components.left.active, {
   provider = "diagnostic_warnings",
   enabled = function()
-    return no_buffers() == 1 and lsp.diagnostics_exist("Warning") and has_width_gt(40)
+    return no_buffers() == 1 and has_width_gt(40)
   end,
   hl = { fg = "orange" },
 })
@@ -227,7 +198,7 @@ table.insert(components.left.active, {
 table.insert(components.left.active, {
   provider = "diagnostic_hints",
   enabled = function()
-    return no_buffers() == 1 and lsp.diagnostics_exist("Hint") and has_width_gt(40)
+    return no_buffers() == 1 and has_width_gt(40)
   end,
   hl = { fg = "cyan" },
 })
@@ -235,7 +206,7 @@ table.insert(components.left.active, {
 table.insert(components.left.active, {
   provider = "diagnostic_info",
   enabled = function()
-    return no_buffers() == 1 and lsp.diagnostics_exist("Information") and has_width_gt(40)
+    return no_buffers() == 1 and has_width_gt(40)
   end,
   hl = { fg = "cyan" },
 })

@@ -55,45 +55,6 @@ M.is_comment = function(buf, line)
   return is_comment
 end
 
--- NOTE: just use vim.inspect
--- From https://gist.github.com/ripter/4270799
--- M.tprint = function(tbl, indent)
---   indent = indent or 0
---   for k, v in pairs(tbl) do
---     local formatting = string.rep("  ", indent) .. k .. ": "
---     if type(v) == "table" then
---       print(formatting)
---       M.tprint(v, indent+1)
---     elseif type(v) == 'boolean' then
---       print(formatting .. tostring(v))
---     else
---       print(formatting .. v)
---     end
---   end
--- end
-
--- nvim_echo wrappers
-function M.log(body, head, hl)
-  hl = hl or "MsgArea"
-  head = head or "[LOG]"
-  vim.api.nvim_echo({ { head, hl }, { " " }, { body } }, true, {})
-end
-
-function M.note(body, head)
-  head = head or "[NOTE]"
-  M.log(body, head, "Todo")
-end
-
-function M.warn(body, head)
-  head = head or "[WARNING]"
-  M.log(body, head, "WarningMsg")
-end
-
-function M.error(body, head)
-  head = head or "[ERROR]"
-  M.log(body, head, "Error")
-end
-
 -- Returns path seperator based on OS
 M.pathSep = function()
   local os = string.lower(U.os.name)
@@ -124,7 +85,9 @@ end
 M.purge_old_undos = function()
   local ok = pcall(require, "plenary")
   if not ok then
-    M.warn("Plenary is not installed", "[PURGEUNDOS]")
+    vim.notify(
+      "plenary is not installed",
+      vim.log.levels.ERROR, {title = "[PURGEUNDOS]"})
     return
   end
 
@@ -132,7 +95,9 @@ M.purge_old_undos = function()
 
   local dir = vim.api.nvim_get_option("undodir")
   if dir == "" then
-    print("undodir not set")
+    vim.notify(
+      "undodir not set",
+      vim.log.levels.WARN, {title = "[PURGEUNDOS]"})
     return
   end
 
@@ -153,12 +118,16 @@ M.purge_old_undos = function()
         end
         parent:rm()
       end
-      M.note("Removed " .. file, "[PURGEUNDOS]")
+      vim.notify(
+        "removed " .. file,
+        vim.log.levels.WARN, {title = "[PURGEUNDOS]"})
       flag = i
     end
   end
   if flag == 0 then
-    M.note("undodir is clean", "[PURGEUNDOS]")
+    vim.notify(
+      "undodir is clean",
+      vim.log.levels.DEBUG, {title = "[PURGEUNDOS]"})
   end
 end
 
