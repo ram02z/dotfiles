@@ -96,63 +96,25 @@ packer.startup({
     })
 
     use({
+      "hrsh7th/cmp-path",
+      module = "cmp_path",
+    })
+
+    use({
+      "hrsh7th/cmp-nvim-lsp",
+      module = "cmp_nvim_lsp",
+    })
+
+    use({
+      "saadparwaiz1/cmp_luasnip",
+      module = "cmp_luasnip",
+    })
+
+    use({
       "hrsh7th/nvim-cmp",
       event = "InsertEnter",
       -- disable = true,
-      config = function()
-        local cmp = require("cmp")
-        local fn = vim.fn
-        cmp.register_source("buffer", require("cmp_buffer").new())
-        cmp.setup({
-          completion = {
-            autocomplete = {},
-          },
-          snippet = {
-            expand = function(args)
-              require("luasnip").lsp_expand(args.body)
-            end,
-          },
-          mapping = {
-            ["<C-p>"] = cmp.mapping.prev_item(),
-            ["<C-n>"] = cmp.mapping.next_item(),
-            ["<C-d>"] = cmp.mapping.scroll(-4),
-            ["<C-f>"] = cmp.mapping.scroll(4),
-            ["<C-Space>"] = cmp.mapping.mode({ "i" }, function(core, fallback)
-              local types = require("cmp.types")
-              if fn.pumvisible() == 1 then
-                core.reset()
-              else
-                core.complete(core.get_context({ reason = types.cmp.ContextReason.Manual }))
-              end
-            end),
-            ["<CR>"] = cmp.mapping.confirm({
-              behavior = cmp.ConfirmBehavior.Replace,
-              select = false,
-            }),
-            ["<Tab>"] = cmp.mapping.mode({ "i", "s" }, function(_, fallback)
-              if fn.pumvisible() == 1 then
-                fn.feedkeys(vim.api.nvim_replace_termcodes("<C-n>", true, true, true), "n")
-              elseif require("luasnip").expand_or_jumpable() then
-                fn.feedkeys(vim.api.nvim_replace_termcodes("<Plug>luasnip-expand-or-jump", true, true, true), "")
-              else
-                fallback()
-              end
-            end),
-            ["<S-Tab>"] = cmp.mapping.mode({ "i", "s" }, function(_, fallback)
-              if fn.pumvisible() == 1 then
-                fn.feedkeys(vim.api.nvim_replace_termcodes("<C-p>", true, true, true), "n")
-              elseif require("luasnip").jumpable(-1) then
-                vim.fn.feedkeys(vim.api.nvim_replace_termcodes("<Plug>luasnip-jump-prev", true, true, true), "")
-              else
-                fallback()
-              end
-            end),
-          },
-          sources = {
-            { name = "buffer" },
-          },
-        })
-      end,
+      config = [[require'modules.cmp']],
     })
 
     use({
@@ -336,6 +298,12 @@ packer.startup({
       setup = function()
         vim.g.oscyank_max_length = 1000000
       end,
+    })
+
+    -- Wrapper around codicons
+    use({
+      "mortepau/codicons.nvim",
+      module = "codicons",
     })
 
     -- Change directory to project root
