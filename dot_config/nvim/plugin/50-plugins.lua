@@ -102,7 +102,7 @@ packer.startup({
       config = function()
         local cmp = require("cmp")
         local fn = vim.fn
-        cmp.register_source('buffer', require'cmp_buffer'.new())
+        cmp.register_source("buffer", require("cmp_buffer").new())
         cmp.setup({
           completion = {
             autocomplete = {},
@@ -110,7 +110,7 @@ packer.startup({
           snippet = {
             expand = function(args)
               require("luasnip").lsp_expand(args.body)
-            end
+            end,
           },
           mapping = {
             ["<C-p>"] = cmp.mapping.prev_item(),
@@ -149,7 +149,7 @@ packer.startup({
             end),
           },
           sources = {
-            { name = 'buffer' }
+            { name = "buffer" },
           },
         })
       end,
