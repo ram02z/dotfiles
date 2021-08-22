@@ -24,7 +24,7 @@ local gs_conf = {
     ["n <leader>gR"] = '<cmd>lua require"gitsigns".reset_buffer()<CR>',
     ["n <leader>gp"] = '<cmd>lua require"gitsigns".preview_hunk()<CR>',
     ["n <leader>gb"] = '<cmd>lua require"gitsigns".blame_line(true)<CR>',
-    ["n <leader>gt"] = '<cmd>Gitsigns toggle_current_line_blame<CR>',
+    ["n <leader>gt"] = "<cmd>Gitsigns toggle_current_line_blame<CR>",
 
     -- Text objects
     ["o gh"] = ':<C-U>lua require"gitsigns.actions".select_hunk()<CR>',
@@ -36,7 +36,7 @@ local gs_conf = {
   },
   current_line_blame = false,
   current_line_blame_delay = 0,
-  current_line_blame_position = 'eol',
+  current_line_blame_position = "eol",
   sign_priority = 6,
   update_debounce = 100,
   status_formatter = nil, -- Use default

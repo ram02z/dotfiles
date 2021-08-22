@@ -85,9 +85,7 @@ end
 M.purge_old_undos = function()
   local ok = pcall(require, "plenary")
   if not ok then
-    vim.notify(
-      "plenary is not installed",
-      vim.log.levels.ERROR, {title = "[PURGEUNDOS]"})
+    vim.notify("plenary is not installed", vim.log.levels.ERROR, { title = "[PURGEUNDOS]" })
     return
   end
 
@@ -95,9 +93,7 @@ M.purge_old_undos = function()
 
   local dir = vim.api.nvim_get_option("undodir")
   if dir == "" then
-    vim.notify(
-      "undodir not set",
-      vim.log.levels.WARN, {title = "[PURGEUNDOS]"})
+    vim.notify("undodir not set", vim.log.levels.WARN, { title = "[PURGEUNDOS]" })
     return
   end
 
@@ -118,16 +114,12 @@ M.purge_old_undos = function()
         end
         parent:rm()
       end
-      vim.notify(
-        "removed " .. file,
-        vim.log.levels.WARN, {title = "[PURGEUNDOS]"})
+      vim.notify("removed " .. file, vim.log.levels.WARN, { title = "[PURGEUNDOS]" })
       flag = i
     end
   end
   if flag == 0 then
-    vim.notify(
-      "undodir is clean",
-      vim.log.levels.DEBUG, {title = "[PURGEUNDOS]"})
+    vim.notify("undodir is clean", vim.log.levels.DEBUG, { title = "[PURGEUNDOS]" })
   end
 end
 
