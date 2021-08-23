@@ -11,12 +11,12 @@
 {{- end }}
 [push]
     default = simple
-{{ if (contains "delta" .pager) -}}
+{{ if (contains "delta" .git_pager) -}}
 [pager]
-    diff = {{ .pager }}
-    log = {{ .pager }}
-    reflog = {{ .pager }}
-    show = {{ .pager }}
+    diff = {{ .git_pager }}
+    log = {{ .git_pager }}
+    reflog = {{ .git_pager }}
+    show = {{ .git_pager }}
 [delta]
     syntax-theme = Dracula
 {{- end }}

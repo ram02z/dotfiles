@@ -3,7 +3,7 @@
 {{- $gpgKey := secret "get" (cat $email "GPG short ID") -}}
 {{- $sshPublicKey := secret "get" (cat $email "SSH public key") -}}
 {{- $sshPrivateKey := secret "get" (cat $email "SSH private key") -}}
-{{- $pager := or (lookPath "delta") "less -FRSX" -}}
+{{- $gitPager := or (lookPath "delta") "less -FRSX" -}}
 {{- $editor := or (lookPath "nvim") "vi" -}}
 {{- $isWsl := or (env "WSL_DISTRO_NAME") (env "WSLENV") | not | not -}}
 {{- $isWayland := and (and (eq .chezmoi.os "linux") (not $isWsl)) (promptBool "wayland") -}}
@@ -12,10 +12,10 @@
 
 [diff]
   format = "git"
-  pager = {{ $pager | quote }}
+  pager = {{ $gitPager | quote }}
 
 [merge]
-  command = {{ $editor | quote }}
+  command = {{ (base $editor) | quote }}
   args = "-d"
 
 [secret]
@@ -27,7 +27,7 @@
   gpg_key = {{ $gpgKey | trim | quote }}
   ssh_public_key = {{ $sshPublicKey | trim | quote }}
   ssh_private_key = {{ $sshPrivateKey | quote }}
-  pager = {{ (base $pager) | quote }}
+  git_pager = {{ $gitPager | quote }}
   editor = {{ (base $editor) | quote }}
   is_laptop = {{ $isLaptop }}
   is_wsl = {{ $isWsl }}

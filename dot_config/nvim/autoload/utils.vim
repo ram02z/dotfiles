@@ -32,6 +32,8 @@ endfunction
 " Doesn't do anything if buffer width is too large
 function! utils#helpvsplit()
   if &buftype == 'help'
+    " Allow <Esc> to close the window
+    noremap <buffer> <Esc> <cmd>helpclose<cr>
     let l:bufwidth = s:BufferWidth()
     if &columns > l:bufwidth*2
       wincmd H
@@ -40,7 +42,7 @@ function! utils#helpvsplit()
   endif
 endfunction
 
-" Used to set darked winhighlight for specific filetypes
+" Used to set darker winhighlight for specific filetypes
 function! utils#handle_win()
   let l:sidebar = ['undotree', 'Outline', 'qf']
   if index(l:sidebar, &filetype) >= 0
@@ -49,7 +51,7 @@ function! utils#handle_win()
 endfunction
 
 function! utils#setccol()
-  if &textwidth != 0
+  if (&buftype == '' || &buftype == 'acwrite') && &textwidth != 0
     let &l:colorcolumn=&l:textwidth+1
   else
     setlocal colorcolumn=999999

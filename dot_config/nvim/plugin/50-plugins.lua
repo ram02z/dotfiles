@@ -47,6 +47,7 @@ packer.startup({
       setup = function()
         vim.keymap.nnoremap({ "<Leader>s", "<cmd>SymbolsOutline<CR>", silent = true })
         vim.g.symbols_outline = {
+          highlight_hovered_item = false,
           auto_preview = false,
           keymaps = {
             toggle_preview = "p",
@@ -113,6 +114,7 @@ packer.startup({
     use({
       "hrsh7th/nvim-cmp",
       event = "InsertEnter",
+      module = "cmp",
       -- disable = true,
       config = [[require'modules.cmp']],
     })
@@ -630,10 +632,6 @@ packer.startup({
       event = "BufReadPost",
       config = function()
         vim.cmd([[runtime macros/sandwich/keymap/surround.vim]])
-        vim.keymap.xmap({ "is", "<Plug>(textobj-sandwich-query-i)", silent = true })
-        vim.keymap.xmap({ "as", "<Plug>(textobj-sandwich-query-a)", silent = true })
-        vim.keymap.omap({ "is", "<Plug>(textobj-sandwich-query-i)", silent = true })
-        vim.keymap.omap({ "as", "<Plug>(textobj-sandwich-query-a)", silent = true })
       end,
     })
 
