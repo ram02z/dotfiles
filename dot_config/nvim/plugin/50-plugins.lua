@@ -455,7 +455,7 @@ packer.startup({
             color = { "DraculaSubtle", "#666666" },
           },
         })
-      end
+      end,
     })
 
     -- Toggle terminal

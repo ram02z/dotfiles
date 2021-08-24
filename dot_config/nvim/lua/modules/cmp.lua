@@ -46,7 +46,10 @@ cmp.setup({
       else
         fn.feedkeys(utils.t("<Tab>"), "n")
       end
-    end, { 'i', 's' }),
+    end, {
+      "i",
+      "s",
+    }),
     ["<S-Tab>"] = cmp.mapping(function()
       if fn.pumvisible() == 1 then
         fn.feedkeys(utils.t("<C-p>"), "n")
@@ -55,7 +58,10 @@ cmp.setup({
       else
         fn.feedkeys(utils.t("<C-d>"), "n")
       end
-    end, { 'i', 's' }),
+    end, {
+      "i",
+      "s",
+    }),
   },
   formatting = {
     format = function(_, vim_item)
