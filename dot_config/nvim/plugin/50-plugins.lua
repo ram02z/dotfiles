@@ -260,8 +260,8 @@ packer.startup({
     -- Colorscheme
     -- FIXME: Syntax files in the after directory aren't reloaded on PackerCompile
     use({
-      "ram02z/vim",
       -- '~/Downloads/vim',
+      "ram02z/vim",
       branch = "perf",
       as = "dracula",
       config = function()
@@ -392,6 +392,7 @@ packer.startup({
       opt = true,
     })
 
+    -- Required for neogit
     use({
       "sindrets/diffview.nvim",
       module_pattern = "diffview.*",
@@ -447,6 +448,14 @@ packer.startup({
     use({
       "folke/twilight.nvim",
       module = "twilight",
+      config = function()
+        require("twilight").setup({
+          dimming = {
+            alpha = 1,
+            color = { "DraculaSubtle", "#666666" },
+          },
+        })
+      end
     })
 
     -- Toggle terminal
@@ -515,6 +524,7 @@ packer.startup({
       config = [[require'modules.telescope']],
     })
 
+    -- Register picker
     use({
       "tversteeg/registers.nvim",
       keys = {
@@ -522,6 +532,18 @@ packer.startup({
         { "x", '"' },
         { "i", "<C-R>" },
       },
+    })
+    -- Helper for resizing splits
+    use({
+      "simeji/winresizer",
+      keys = {
+        { "n", "<Leader>r" },
+      },
+      setup = function()
+        vim.g.winresizer_start_key = "<Leader>r"
+        vim.g.winresizer_vert_resize = 5
+        vim.g.winresizer_horiz_resize = 5
+      end,
     })
 
     -- Matchit extension
@@ -579,11 +601,13 @@ packer.startup({
       end,
     })
 
+    -- Swap delimiter seperated items
     use({
       "mizlan/iswap.nvim",
       cmd = "ISwap",
       setup = function()
         vim.keymap.nnoremap({ "gs", "<cmd>ISwap<CR>", silent = true })
+        vim.keymap.nnoremap({ "gS", "<cmd>ISwapWith<CR>", silent = true })
       end,
     })
 

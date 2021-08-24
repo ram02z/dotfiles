@@ -21,23 +21,22 @@ cmp.setup({
     end,
   },
   mapping = {
-    ["<C-p>"] = cmp.mapping.prev_item(),
-    ["<C-n>"] = cmp.mapping.next_item(),
-    ["<C-d>"] = cmp.mapping.scroll(-4),
-    ["<C-f>"] = cmp.mapping.scroll(4),
-    ["<C-Space>"] = cmp.mapping.mode({ "i" }, function(core, fallback)
-      local types = require("cmp.types")
+    ["<C-p>"] = cmp.mapping.select_prev_item(),
+    ["<C-n>"] = cmp.mapping.select_next_item(),
+    ["<C-d>"] = cmp.mapping.scroll_docs(-4),
+    ["<C-f>"] = cmp.mapping.scroll_docs(4),
+    ["<C-Space>"] = function()
       if fn.pumvisible() == 1 then
-        core.reset()
+        cmp.close()
       else
-        core.complete(core.get_context({ reason = types.cmp.ContextReason.Manual }))
+        cmp.complete()
       end
-    end),
+    end,
     ["<CR>"] = cmp.mapping.confirm({
       behavior = cmp.ConfirmBehavior.Replace,
       select = false,
     }),
-    ["<Tab>"] = cmp.mapping.mode({ "i", "s" }, function(_, _)
+    ["<Tab>"] = cmp.mapping(function()
       if fn.pumvisible() == 1 then
         fn.feedkeys(utils.t("<C-n>"), "n")
       elseif utils.invalid_prev_col() then
@@ -47,8 +46,8 @@ cmp.setup({
       else
         fn.feedkeys(utils.t("<Tab>"), "n")
       end
-    end),
-    ["<S-Tab>"] = cmp.mapping.mode({ "i", "s" }, function(_, _)
+    end, { 'i', 's' }),
+    ["<S-Tab>"] = cmp.mapping(function()
       if fn.pumvisible() == 1 then
         fn.feedkeys(utils.t("<C-p>"), "n")
       elseif require("luasnip").jumpable(-1) then
@@ -56,7 +55,7 @@ cmp.setup({
       else
         fn.feedkeys(utils.t("<C-d>"), "n")
       end
-    end),
+    end, { 'i', 's' }),
   },
   formatting = {
     format = function(_, vim_item)
@@ -70,7 +69,7 @@ cmp.setup({
   sources = {
     { name = "path" },
     { name = "nvim_lsp" },
-    { name = "luasnip" },
     { name = "buffer" },
+    { name = "luasnip" },
   },
 })

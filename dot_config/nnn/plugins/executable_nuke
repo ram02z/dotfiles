@@ -450,7 +450,7 @@ handle_mime() {
             exit 0;;
 
         ## Text
-        text/* | */xml)
+        text/* | */xml | */octet-stream)
             if ! [ -r "${FPATH}" ] || ! [ -w "${FPATH}" ]; then
                 if type sudoedit >/dev/null 2>&1; then
                     sudoedit "${FPATH}"

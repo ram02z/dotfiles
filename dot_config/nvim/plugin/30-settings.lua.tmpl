@@ -58,9 +58,6 @@ vim.wo.relativenumber = true
 
 vim.wo.signcolumn = "yes:1"
 
-{{ if not .is_wsl -}}
-vim.g.dracula_colorterm = 0
-{{- end }}
 -- Ensure c syntax is use for header files
 vim.g.c_syntax_for_h = 1
 

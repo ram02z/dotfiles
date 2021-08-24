@@ -41,7 +41,7 @@ local gs_conf = {
   update_debounce = 100,
   status_formatter = nil, -- Use default
   word_diff = false,
-  use_internal_diff = true, -- If luajit is present
+  use_internal_diff = true, -- If vim.diff or luajit is present
 }
 
 gitsigns.setup(gs_conf)
