@@ -240,8 +240,8 @@ packer.startup({
     use({
       "winston0410/range-highlight.nvim",
       event = "CmdlineEnter",
-      requires = {"winston0410/cmd-parser.nvim"},
-      config = [[require'range-highlight'.setup{}]]
+      requires = { "winston0410/cmd-parser.nvim" },
+      config = [[require'range-highlight'.setup{}]],
     })
 
     -- Colorscheme
