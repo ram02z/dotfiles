@@ -298,13 +298,8 @@ packer.startup({
 
     -- Change directory to project root
     use({
-      "airblade/vim-rooter",
-      -- disable = true,
-      event = { "BufRead", "BufNewFile" },
-      setup = function()
-        vim.g.rooter_change_directory_for_non_project_files = "current"
-        vim.g.rooter_cd_cmd = "lcd"
-      end,
+      "ram02z/rooter.nvim",
+      event = "BufReadPre",
     })
 
     -- TODO: actually set this up
