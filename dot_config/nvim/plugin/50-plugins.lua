@@ -194,6 +194,7 @@ packer.startup({
     -- Indentation line
     use({
       "lukas-reineke/indent-blankline.nvim",
+      disable = true,
       event = "BufReadPost",
       config = function()
         require("indent_blankline").setup({
@@ -237,13 +238,6 @@ packer.startup({
       end,
     })
 
-    use({
-      "winston0410/range-highlight.nvim",
-      event = "CmdlineEnter",
-      requires = { "winston0410/cmd-parser.nvim" },
-      config = [[require'range-highlight'.setup{}]],
-    })
-
     -- Colorscheme
     -- FIXME: Syntax files in the after directory aren't reloaded on PackerCompile
     use({
@@ -280,6 +274,7 @@ packer.startup({
     -- REMOVE: if https://github.com/neovim/neovim/issues/12587 gets closed
     use({
       "antoinemadec/FixCursorHold.nvim",
+      disable = true,
       event = "BufReadPost",
       setup = function()
         vim.g.cursorhold_updatetime = 50
@@ -304,6 +299,7 @@ packer.startup({
     -- Change directory to project root
     use({
       "airblade/vim-rooter",
+      -- disable = true,
       event = { "BufRead", "BufNewFile" },
       setup = function()
         vim.g.rooter_change_directory_for_non_project_files = "current"
@@ -375,41 +371,6 @@ packer.startup({
         event = { "BufRead", "BufNewFile" },
         config = [[require'modules.gitsigns']],
       },
-    })
-
-    -- Zen-mode
-    use({
-      "folke/zen-mode.nvim",
-      cmd = "ZenMode",
-      setup = function()
-        vim.keymap.nnoremap({ "<Leader>z", "<cmd>ZenMode<CR>", silent = true })
-      end,
-      config = function()
-        require("zen-mode").setup({
-          window = {
-            backdrop = 1,
-            width = 0.85,
-          },
-          plugins = {
-            gitsigns = { enabled = true },
-            twilight = { enabled = true },
-          },
-        })
-      end,
-    })
-
-    -- Highlight active portion with zenmode
-    use({
-      "folke/twilight.nvim",
-      module = "twilight",
-      config = function()
-        require("twilight").setup({
-          dimming = {
-            alpha = 1,
-            color = { "DraculaSubtle", "#666666" },
-          },
-        })
-      end,
     })
 
     -- Toggle terminal
@@ -503,7 +464,6 @@ packer.startup({
     -- Matchit extension
     use({
       "andymass/vim-matchup",
-      -- disable = true,
       event = "BufReadPost",
       setup = function()
         vim.g.matchup_delim_noskips = 2

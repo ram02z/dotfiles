@@ -51,6 +51,6 @@ augroup END
 augroup colorcolumn
   autocmd!
   autocmd OptionSet textwidth call utils#setccol()
-  autocmd BufEnter * call utils#setccol()
+  " autocmd BufEnter * call utils#setccol()
 augroup END
 
