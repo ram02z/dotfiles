@@ -42,8 +42,10 @@ local function pair(pair_begin, pair_end, ...)
 end
 
 local function partial(func, ...)
-	local args = {...}
-	return function() return func(unpack(args)) end
+  local args = { ... }
+  return function()
+    return func(unpack(args))
+  end
 end
 
 ls.config.set_config({
