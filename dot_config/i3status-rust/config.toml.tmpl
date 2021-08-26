@@ -26,8 +26,8 @@ on_click = "APT_CONFIG=/tmp/i3rs-apt/apt.conf apt list --upgradable | tail -n +2
 [[block]]
 block = "custom"
 command = "xbps-install -Mun | tee /tmp/xbps-updates | grep '' -c"
-interval = 3600
-on_click = "pkill rofi || cat /tmp/xbps-updates | rofi -dmenu"
+interval = "once"
+on_click = "cat /tmp/xbps-updates | rofi -dmenu"
 {{- end }}
 
 {{ if ($kdeconnect := (lookPath "kdeconnect-cli")) -}}

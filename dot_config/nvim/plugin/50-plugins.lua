@@ -237,6 +237,13 @@ packer.startup({
       end,
     })
 
+    use({
+      "winston0410/range-highlight.nvim",
+      event = "CmdlineEnter",
+      requires = {"winston0410/cmd-parser.nvim"},
+      config = [[require'range-highlight'.setup{}]]
+    })
+
     -- Colorscheme
     -- FIXME: Syntax files in the after directory aren't reloaded on PackerCompile
     use({
