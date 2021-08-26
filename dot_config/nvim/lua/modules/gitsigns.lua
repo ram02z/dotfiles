@@ -35,8 +35,9 @@ local gs_conf = {
     follow_files = true,
   },
   current_line_blame = false,
-  current_line_blame_delay = 0,
-  current_line_blame_position = "eol",
+  current_line_blame_opts = {
+    delay = 0,
+  },
   sign_priority = 6,
   update_debounce = 100,
   status_formatter = nil, -- Use default

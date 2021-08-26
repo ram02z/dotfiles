@@ -296,38 +296,11 @@ packer.startup({
 
     -- Change directory to project root
     use({
-      "ram02z/rooter.nvim",
-      event = { "BufReadPost", "BufNewFile" },
-      config = function()
-        require("rooter").setup({
-          manual = false,
-          echo = true,
-          patterns = {
-            ".git",
-            "Cargo.toml",
-            "go.mod",
-          },
-          cd_command = "lcd",
-          non_project_files = "current",
-          filetypes_exclude = {
-            "help",
-            "vimwiki",
-            "man",
-            "quickfix",
-            "TelescopePrompt",
-            "undotree",
-            "packer",
-            "lspinfo",
-            "qf",
-            "tsplayground",
-            "",
-          },
-
-          -- the start path to pass to nvim_lsp.util.root_pattern(patterns...)
-          start_path = function()
-            return vim.fn.expand([[%:p:h]])
-          end,
-        })
+      "airblade/vim-rooter",
+      event = { "BufRead", "BufNewFile" },
+      setup = function()
+        vim.g.rooter_change_directory_for_non_project_files = "current"
+        vim.g.rooter_cd_cmd = "lcd"
       end,
     })
 
@@ -372,24 +345,11 @@ packer.startup({
       opt = true,
     })
 
-    -- Required for neogit
-    use({
-      "sindrets/diffview.nvim",
-      module_pattern = "diffview.*",
-    })
-
     -- Git integration
     use({
       {
-        "TimUntersberger/neogit",
-        cmd = "Neogit",
-        config = function()
-          require("neogit").setup({
-            integrations = {
-              diffview = true,
-            },
-          })
-        end,
+        "sindrets/diffview.nvim",
+        cmd = "DiffviewOpen",
       },
       {
         "rhysd/committia.vim",
@@ -541,33 +501,53 @@ packer.startup({
       end,
     })
 
-    -- Motions
+    -- Extends f/t motions
     use({
-      {
-        "rhysd/clever-f.vim",
-        event = "BufReadPost",
-        setup = function()
-          vim.keymap.map({ ";", "<Plug>(clever-f-repeat-forward)", silent = true })
-          vim.keymap.map({ ",", "<Plug>(clever-f-repeat-back)", silent = true })
-          -- FIX: Issue #61
-          vim.keymap.nmap({ "<Esc>", "<Plug>(clever-f-reset)<cmd>noh<CR>", silent = true })
-          vim.g.clever_f_smart_case = 1
-          vim.g.clever_f_chars_match_any_signs = "#"
-          vim.g.clever_f_fix_key_direction = 1
-          vim.g.clever_f_mark_direct = 1
-        end,
+      "rhysd/clever-f.vim",
+      event = "BufReadPost",
+      setup = function()
+        vim.g.clever_f_smart_case = 1
+        vim.g.clever_f_chars_match_any_signs = "#"
+        vim.g.clever_f_fix_key_direction = 1
+        vim.g.clever_f_mark_direct = 1
+      end,
+      config = function()
+        vim.keymap.map({ ";", "<Plug>(clever-f-repeat-forward)", silent = true })
+        vim.keymap.map({ ",", "<Plug>(clever-f-repeat-back)", silent = true })
+        -- FIX: Issue #61
+        vim.keymap.nmap({ "<Esc>", "<Plug>(clever-f-reset)<cmd>noh<CR>", silent = true })
+      end,
+    })
+
+    -- Jump anywhere on screen
+    use({
+      "phaazon/hop.nvim",
+      keys = {
+        { "n", "<Leader>;" },
       },
-      {
-        "phaazon/hop.nvim",
-        keys = {
-          { "n", "<Leader>;" },
-        },
-        config = function()
-          local hop = require("hop")
-          vim.keymap.nnoremap({ "<Leader>;", hop.hint_words, silent = true })
-          hop.setup({ keys = "asdghklwertyuipzxcvbnmfj" })
-        end,
+      config = function()
+        local hop = require("hop")
+        vim.keymap.nnoremap({ "<Leader>;", hop.hint_words, silent = true })
+        hop.setup({ keys = "asdghklwertyuipzxcvbnmfj" })
+      end,
+    })
+
+    -- Extends * motions
+    use({
+      "haya14busa/vim-asterisk",
+      keys = {
+        "<Plug>(asterisk-*)",
+        "<Plug>(asterisk-#)",
+        "<Plug>(asterisk-g*)",
+        "<Plug>(askerisk-g#)",
       },
+      setup = function()
+        vim.keymap.map({ "*", "<Plug>(asterisk-*)", silent = true })
+        vim.keymap.map({ "#", "<Plug>(asterisk-#)", silent = true })
+        vim.keymap.map({ "g*", "<Plug>(asterisk-g*)", silent = true })
+        vim.keymap.map({ "g#", "<Plug>(asterisk-g#)", silent = true })
+        vim.g["asterisk#keeppos"] = 1
+      end
     })
 
     -- Wrap and unwrap arguments
