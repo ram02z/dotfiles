@@ -65,14 +65,25 @@ local bline_conf = {
     pick_selected = {
       guibg = {
         attribute = "bg",
-        highlight = "Normal",
+        highlight = "TabLineSel",
       },
     },
     modified_selected = {
       guifg = "#C6C7D1",
+      guibg = {
+        attribute = "bg",
+        highlight = "TabLineSel",
+      },
     },
-    modified_visible = {
-      guifg = "#ADAEBE",
+    modified = {
+      guifg = {
+        attribute = "bg",
+        highlight = "Visual",
+      },
+      guibg = {
+        attribute = "bg",
+        highlight = "StatusLine",
+      },
     },
   },
 }

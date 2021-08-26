@@ -53,8 +53,6 @@ endfunction
 function! utils#setccol()
   if (&buftype == '' || &buftype == 'acwrite') && &textwidth != 0
     let &l:colorcolumn=&l:textwidth+1
-  else
-    setlocal colorcolumn=999999
   endif
 endfunction
 
