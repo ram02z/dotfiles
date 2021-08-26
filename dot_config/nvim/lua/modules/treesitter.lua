@@ -79,6 +79,6 @@ local ts_config = {
   },
 }
 
-require 'nvim-treesitter.install'.compilers = { "clang", "gcc" }
+require("nvim-treesitter.install").compilers = { "clang", "gcc" }
 
 tree_sitter.setup(ts_config)
