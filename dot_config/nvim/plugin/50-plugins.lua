@@ -547,7 +547,7 @@ packer.startup({
         vim.keymap.map({ "g*", "<Plug>(asterisk-g*)", silent = true })
         vim.keymap.map({ "g#", "<Plug>(asterisk-g#)", silent = true })
         vim.g["asterisk#keeppos"] = 1
-      end
+      end,
     })
 
     -- Wrap and unwrap arguments
