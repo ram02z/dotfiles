@@ -7,9 +7,7 @@ vim.o.pumheight = 5
 local cmp = require("cmp")
 local fn = vim.fn
 local utils = require("utils.misc")
-cmp.register_source("path", require("cmp_path").new())
-cmp.register_source("luasnip", require("cmp_luasnip").new())
-cmp.register_source("buffer", require("cmp_buffer").new())
+
 cmp.setup({
   completion = {
     autocomplete = {},

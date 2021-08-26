@@ -92,29 +92,15 @@ packer.startup({
     })
 
     use({
-      "hrsh7th/cmp-buffer",
-      module = "cmp_buffer",
-    })
-
-    use({
-      "hrsh7th/cmp-path",
-      module = "cmp_path",
-    })
-
-    use({
-      "hrsh7th/cmp-nvim-lsp",
-      module = "cmp_nvim_lsp",
-    })
-
-    use({
-      "saadparwaiz1/cmp_luasnip",
-      module = "cmp_luasnip",
-    })
-
-    use({
       "hrsh7th/nvim-cmp",
       event = "InsertEnter",
       module = "cmp",
+      requires = {
+        {"saadparwaiz1/cmp_luasnip", after = "nvim-cmp"},
+        {"hrsh7th/cmp-nvim-lsp", after = "nvim-cmp"},
+        {"hrsh7th/cmp-path", after = "nvim-cmp"},
+        {"hrsh7th/cmp-buffer", after = "nvim-cmp"},
+      },
       -- disable = true,
       config = [[require'modules.cmp']],
     })
@@ -124,12 +110,6 @@ packer.startup({
       event = "InsertCharPre",
       module_pattern = "luasnip.*",
       config = [[require'modules.snippets']],
-    })
-
-    use({
-      "ms-jpq/coq_nvim",
-      disable = true,
-      branch = "coq",
     })
 
     use({
