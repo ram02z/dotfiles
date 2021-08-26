@@ -308,14 +308,21 @@ packer.startup({
     use({
       "vhyrro/neorg",
       branch = "unstable",
-      ft = "norg",
-      wants = { "nvim-compe", "nvim-treesitter" },
+      after = "nvim-treesitter",
       config = function()
         require("neorg").setup({
           load = {
-            ["core.defaults"] = {},
-          },
-        })
+            ["core.defaults"] = {}, -- Load all the default modules
+            ["core.norg.concealer"] = {}, -- Allows for use of icons
+            ["core.norg.dirman"] = { -- Manage your directories with Neorg
+            config = {
+              workspaces = {
+                my_workspace = "~/neorg"
+              }
+            }
+          }
+        },
+      })
       end,
     })
 
