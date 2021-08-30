@@ -2,8 +2,9 @@ local bline = require("bufferline")
 
 local bline_conf = {
   options = {
-    numbers = "ordinal",
-    number_style = "none",
+    numbers = function(opts)
+      return string.format("%s.", opts.ordinal)
+    end,
     show_buffer_close_icons = false,
     right_mouse_command = function(bufnum)
       require("utils.buffer").bufwipeout(bufnum)
@@ -13,7 +14,6 @@ local bline_conf = {
     end,
     always_show_bufferline = false,
     diagnostics = "nvim_lsp",
-    mappings = false,
     offsets = {
       { filetype = "undotree", highlight = "StatusLine", text_align = "left" },
       { filetype = "Outline", highlight = "StatusLine", text_align = "right" },

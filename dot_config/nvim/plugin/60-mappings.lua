@@ -31,9 +31,7 @@ K.nnoremap({ "<Leader>q", require("utils.buffer").bufwipeout, silent = true })
 -- Window switcher
 K.nnoremap({ "<Leader>w", require("utils.window").pick, silent = true })
 
--- TODO: change to native lua if that ever gets merged
-vim.cmd([[command! PurgeUndoFiles call luaeval('require"utils.misc".purge_old_undos()')]])
-
--- Toggle list
+-- Toggle lists
 K.nnoremap({ "<Leader>]", require("utils.misc").toggle_qf, silent = true })
 K.nnoremap({ "<Leader>[", require("utils.misc").toggle_loc, silent = true })
+

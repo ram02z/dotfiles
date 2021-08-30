@@ -182,8 +182,7 @@ packer.startup({
 
     -- Statusline
     use({
-      "ram02z/feline.nvim",
-      branch = "icon",
+      "famiu/feline.nvim",
       -- "~/Downloads/feline.nvim",
       event = { "BufNewFile", "BufReadPre" },
       -- event = "FileType nix",
@@ -269,6 +268,9 @@ packer.startup({
 
     -- Lua profiler
     use({ "norcalli/profiler.nvim", opt = true })
+
+    -- See https://github.com/neovim/neovim/pull/15436
+    use({ "lewis6991/impatient.nvim" })
 
     -- Fix CursorHold performance
     -- REMOVE: if https://github.com/neovim/neovim/issues/12587 gets closed

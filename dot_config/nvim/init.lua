@@ -15,6 +15,13 @@ end
 
 disable_default_plugins()
 
+-- TODO: remove when https://github.com/neovim/neovim/pull/15436 is merged
+pcall(require, "impatient")
+
 -- NOTE: can fail on before installations
 pcall(vim.api.nvim_command, "packadd chezmoi.vim")
 -- Rest of startup moved to top level plugins folder
+
+-- Commands
+-- TODO: change to native lua if that ever gets merged
+vim.cmd([[command! PurgeUndoFiles call luaeval('require"utils.misc".purge_old_undos()')]])

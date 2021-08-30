@@ -10,7 +10,7 @@ local utils = require("utils.misc")
 
 cmp.setup({
   completion = {
-    autocomplete = {},
+    autocomplete = false,
     completeopt = "menu,menuone,noinsert",
   },
   snippet = {
