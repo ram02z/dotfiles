@@ -40,6 +40,10 @@ README.md
 .config/mako/**
 .config/mako/
 {{ end }}
+{{ if not (lookPath "ncspot") }}
+.config/ncspot/**
+.config/ncspot/
+{{ end }}
 {{ if and (not .is_x11) (not .is_wayland) }}
 .config/gtk-3.0/**
 .config/gtk-3.0/
