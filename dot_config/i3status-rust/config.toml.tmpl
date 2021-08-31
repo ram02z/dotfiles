@@ -8,11 +8,13 @@ name = "material-nf"
 block = "music"
 buttons = ["prev", "play", "next"]
 marquee = false
-marquee_interval = 1
-marquee_speed = 0.25
 dynamic_width = true
 separator = " "
 interface_name_exclude = ["firefox"]
+{{ if lookPath "ncspot" -}}
+on_click = "~/.local/bin/i3-quickterm spotify"
+on_collapsed_click = "~/.local/bin/i3-quickterm spotify"
+{{- end }}
 
 {{ if (eq (get .chezmoi.osRelease "idLike") "debian") -}}
 [[block]]
