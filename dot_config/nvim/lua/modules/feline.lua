@@ -265,26 +265,24 @@ table.insert(components.right.active, {
   icon = "  ",
 })
 
+local cached_git_dirs = {}
+
 table.insert(components.right.active, {
   provider = function()
     local cwd = vim.loop.cwd()
 
-    if Cached_git_dirs == nil then
-      Cached_git_dirs = {}
-    end
-
-    if not vim.tbl_isempty(Cached_git_dirs) then
-      local keys = vim.tbl_keys(Cached_git_dirs)
+    if not vim.tbl_isempty(cached_git_dirs) then
+      local keys = vim.tbl_keys(cached_git_dirs)
       for i = 1, #keys do
-        if Cached_git_dirs[keys[i]] == cwd then
-          return keys[i]
+        if keys[i] == cwd then
+          return cached_git_dirs[keys[i]]
         end
       end
     end
 
     local baseName = require("utils.misc").baseName
     local git_basename = baseName(vim.b.gitsigns_status_dict["root"])
-    Cached_git_dirs[cwd] = git_basename
+    cached_git_dirs[cwd] = git_basename
 
     return git_basename
   end,

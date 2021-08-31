@@ -336,6 +336,11 @@ packer.startup({
       end,
     })
 
+    -- Repeat support
+    use({
+      "tpope/vim-repeat",
+    })
+
     use({
       "junegunn/vim-easy-align",
       keys = "<Plug>(EasyAlign)",
