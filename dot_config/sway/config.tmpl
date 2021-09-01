@@ -53,6 +53,7 @@ exec swayidle -w \
         {{ if $playerctl -}}
         timeout 200 'playerctl pause' \
         {{- end }}
+        timeout 200 'rbw lock' \
         timeout 200 'setsid -f waylock' \
         timeout 400 'swaymsg "output * dpms off"' \
             resume 'swaymsg "output * dpms on"'
