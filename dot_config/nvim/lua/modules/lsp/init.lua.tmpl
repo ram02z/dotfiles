@@ -97,15 +97,18 @@ local on_attach = function(client, bufnr)
   --     buffer = true,
   --   })
   -- end
-
   vim.keymap.nnoremap({
     "]d",
-    vim.lsp.diagnostic.goto_prev,
+    function()
+      vim.lsp.diagnostic.goto_next({enable_popup=false})
+    end,
     buffer = true,
   })
   vim.keymap.nnoremap({
     "[d",
-    vim.lsp.diagnostic.goto_next,
+    function()
+      vim.lsp.diagnostic.goto_next({enable_popup=false})
+    end,
     buffer = true,
   })
   vim.keymap.nnoremap({
@@ -113,6 +116,12 @@ local on_attach = function(client, bufnr)
     vim.lsp.diagnostic.set_loclist,
     buffer = true,
   })
+  vim.keymap.nnoremap({
+    "<Leader>lt",
+    require("modules.lsp.utils").toggle_virtual_diagnostics,
+    buffer = true,
+  })
+  vim.cmd([[autocmd CursorHold,CursorHoldI,InsertLeave <buffer> lua require"modules.lsp.utils".update_virtual_diagnostics()]])
 
   require("utils.keychord").cancel("<Leader>l", true)
 
@@ -145,6 +154,15 @@ local make_config = function()
     autostart = true,
     flags = {
       debounce_text_changes = 250,
+    },
+    handlers = {
+      ['textDocument/publishDiagnostics'] = vim.lsp.with(
+      vim.lsp.diagnostic.on_publish_diagnostics, {
+        virtual_text = false,
+        underline = true,
+        signs = true,
+        update_in_insert = false,
+      }),
     },
   }
 end
@@ -185,7 +203,6 @@ for type, icon in pairs(signs) do
   local hl = "LspDiagnosticsSign" .. type
   vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "" })
 end
-
 
 -- Register all the LSP servers.
 local common_config = make_config()

@@ -16,9 +16,6 @@ K.map({ "<PageDown>", "<C-f>", silent = true })
 K.imap({ "<PageUp>", "<C-O><C-b>", silent = true })
 K.imap({ "<PageDown>", "<C-O><C-f>", silent = true })
 
--- Toggle line numbers
-K.nnoremap({ "<Leader>d", "<cmd>set nu! rnu! <CR>", silent = true })
-
 -- Leave terminal mode
 K.tnoremap({ "<C-]>", "<C-\\><C-n>", silent = true })
 

@@ -272,17 +272,6 @@ packer.startup({
     -- See https://github.com/neovim/neovim/pull/15436
     use({ "lewis6991/impatient.nvim" })
 
-    -- Fix CursorHold performance
-    -- REMOVE: if https://github.com/neovim/neovim/issues/12587 gets closed
-    use({
-      "antoinemadec/FixCursorHold.nvim",
-      disable = true,
-      event = "BufReadPost",
-      setup = function()
-        vim.g.cursorhold_updatetime = 50
-      end,
-    })
-
     -- OSC52 yank
     use({
       "ojroques/vim-oscyank",
@@ -361,7 +350,22 @@ packer.startup({
     use({
       {
         "sindrets/diffview.nvim",
-        cmd = "DiffviewOpen",
+        cmd = {
+          "DiffviewOpen",
+          "DiffviewFileHistory",
+          "DiffviewClose",
+          "DiffviewFocusFiles",
+          "DiffviewToggleFiles",
+          "DiffviewRefresh",
+        },
+        setup = function()
+          vim.keymap.nnoremap({ "<Leader>do", "<cmd>DiffviewOpen<CR>", silent = true })
+          vim.keymap.nnoremap({ "<Leader>dc", "<cmd>DiffviewClose<CR>", silent = true })
+          vim.keymap.nnoremap({ "<Leader>dh", "<cmd>DiffviewFileHistory<CR>", silent = true })
+        end,
+        config = function()
+          require("utils.keychord").cancel("<Leader>d")
+        end,
       },
       {
         "rhysd/committia.vim",
