@@ -22,12 +22,16 @@ function M.update_virtual_diagnostics(opts, bufnr, line_nr, client_id)
   -- Remove previous highlights
   M.clear_virtual_diagnostics(bufnr)
 
-  if not config.show_virtual_text then return end
+  if not config.show_virtual_text then
+    return
+  end
 
   line_nr = line_nr or (vim.api.nvim_win_get_cursor(0)[1] - 1)
 
   local line_diagnostics = vim.lsp.diagnostic.get_line_diagnostics(bufnr, line_nr, opts, client_id)
-  if vim.tbl_isempty(line_diagnostics) then return end
+  if vim.tbl_isempty(line_diagnostics) then
+    return
+  end
 
   local diagnostic_message = ""
   for i, diagnostic in ipairs(line_diagnostics) do
