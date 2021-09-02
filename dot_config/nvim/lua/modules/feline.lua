@@ -133,9 +133,9 @@ table.insert(components.left.active, {
 
 table.insert(components.left.active, {
   provider = function()
-    local file_name = vim.fn.fnamemodify(vim.fn.expand("%"), ":~:.")
-    if #file_name > 30 and not has_width_gt(60) then
-      file_name = vim.fn.expand("%:t")
+    local file_name = "%f"
+    if not has_width_gt(50) then
+      file_name = "%t"
     end
 
     if file_name == "" then
@@ -287,9 +287,7 @@ table.insert(components.right.active, {
     return git_basename
   end,
   enabled = function()
-    if vim.b.gitsigns_status_dict and has_width_gt(50) then
-      return true
-    end
+    return vim.b.gitsigns_status_dict and has_width_gt(50)
   end,
   hl = {
     fg = "cyan",

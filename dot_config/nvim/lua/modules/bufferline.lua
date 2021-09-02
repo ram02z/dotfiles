@@ -91,7 +91,6 @@ local bline_conf = {
 bline.setup(bline_conf)
 
 -- Maps
-vim.keymap.nnoremap({ "<Leader>b", bline.pick_buffer, silent = true })
 vim.keymap.nnoremap({
   "<Leader>,",
   function()

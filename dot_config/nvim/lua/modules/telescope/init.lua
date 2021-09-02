@@ -34,6 +34,18 @@ local tscope_config = {
       },
     },
   },
+  pickers = {
+    buffers = {
+      mappings = {
+        i = {
+          ["<C-d>"] = actions.delete_buffer,
+        },
+        n = {
+          ["<C-d>"] = actions.delete_buffer,
+        },
+      },
+    },
+  },
   extensions = {
     fzf = {
       fuzzy = true,
@@ -57,6 +69,8 @@ vim.keymap.nnoremap({ "<Leader>pm", "<cmd>Telescope help_tags<CR>", silent = tru
 vim.keymap.nnoremap({ "<Leader>pf", tscope.project_files, silent = true })
 -- Live grep cwd
 vim.keymap.nnoremap({ "<Leader>pl", "<cmd>Telescope live_grep<CR>", silent = true })
+-- Buffer picker
+vim.keymap.nnoremap({ "<Leader>pb", "<cmd>Telescope buffers<CR>", silent = true })
 -- Live grep open buffers
 vim.keymap.nnoremap({ "<Leader>po", "<cmd>Telescope live_grep grep_open_files=true<CR>", silent = true })
 -- List git status
