@@ -42,8 +42,8 @@ function M.update_hover_diagnostics(opts, bufnr, line_nr, client_id)
 
   if config.view == "floating" then
     FLOATING_DIAGNOSTICS_NR = vim.lsp.diagnostic.show_line_diagnostics({
-      focusable=false,
-      show_header=false,
+      focusable = false,
+      show_header = false,
     })
     return
   end
