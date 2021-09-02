@@ -406,6 +406,7 @@ packer.startup({
           -- command = 'n',
           action = {
             ["<c-t>"] = "tab split",
+            ["<c-s>"] = "split",
             ["<c-v>"] = "vsplit",
           },
           layout = {

@@ -118,10 +118,10 @@ local on_attach = function(client, bufnr)
   })
   vim.keymap.nnoremap({
     "<Leader>lt",
-    require("modules.lsp.utils").toggle_virtual_diagnostics,
+    require("modules.lsp.utils").toggle_hover_diagnostics,
     buffer = true,
   })
-  vim.cmd([[autocmd CursorHold,CursorHoldI,InsertLeave <buffer> lua require"modules.lsp.utils".update_virtual_diagnostics()]])
+  vim.cmd([[autocmd CursorHold,InsertEnter,InsertLeave <buffer> lua require"modules.lsp.utils".update_hover_diagnostics()]])
 
   require("utils.keychord").cancel("<Leader>l", true)
 
