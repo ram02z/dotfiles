@@ -47,8 +47,6 @@ local on_attach = function(client, bufnr)
     })
   end
   if client.resolved_capabilities.hover then
-    vim.fn.sign_define('LightBulbSign', { text = "", texthl = "String", linehl="", numhl="" })
-    vim.cmd([[autocmd CursorHold,CursorHoldI,InsertLeave <buffer> lua require"nvim-lightbulb".update_lightbulb()]])
     vim.keymap.nnoremap({
       "<CR>",
       vim.lsp.buf.hover,
@@ -56,6 +54,8 @@ local on_attach = function(client, bufnr)
     })
   end
   if client.resolved_capabilities.code_action then
+    vim.fn.sign_define('LightBulbSign', { text = "", texthl = "String", linehl="", numhl="" })
+    vim.cmd([[autocmd CursorHold,CursorHoldI,InsertLeave <buffer> lua require"nvim-lightbulb".update_lightbulb()]])
     vim.keymap.nnoremap({
       "<Leader>la",
       [[<cmd>Telescope lsp_code_actions theme=get_cursor<CR>]],
@@ -119,6 +119,11 @@ local on_attach = function(client, bufnr)
   vim.keymap.nnoremap({
     "<Leader>lt",
     require("modules.lsp.utils").toggle_hover_diagnostics,
+    buffer = true,
+  })
+  vim.keymap.nnoremap({
+    "<Leader>lv",
+    require("modules.lsp.utils").toggle_hover_view,
     buffer = true,
   })
   vim.cmd([[autocmd CursorHold,InsertEnter,InsertLeave <buffer> lua require"modules.lsp.utils".update_hover_diagnostics()]])

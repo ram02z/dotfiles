@@ -5,11 +5,22 @@ local FLOATING_DIAGNOSTICS_NR = nil
 
 local config = {
   show_diagnostic = true,
-  view = "floating", -- floating/virtual
+  view = "virtual", -- floating/virtual
   modes = { "n" }, -- vim modes
 }
 
-function M.toggle_hover_diagnostics()
+function M.toggle_hover_view(bufnr)
+  bufnr = bufnr or 0
+  M.clear_hover_diagnostics(bufnr)
+  if config.view == "virtual" then
+    config.view = "floating"
+  else
+    config.view = "virtual"
+  end
+end
+
+function M.toggle_hover_diagnostics(bufnr)
+  bufnr = bufnr or 0
   config.show_diagnostic = not config.show_diagnostic
   M.clear_hover_diagnostics(bufnr)
 end

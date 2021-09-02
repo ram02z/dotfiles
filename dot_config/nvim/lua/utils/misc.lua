@@ -81,6 +81,7 @@ end
 
 -- Expects undo files to be directories
 -- TODO: check if files are undo files
+-- TODO: check if file is corrupted or empty
 -- TODO: handle swap files maybe?
 M.purge_old_undos = function()
   local ok = pcall(require, "plenary")
