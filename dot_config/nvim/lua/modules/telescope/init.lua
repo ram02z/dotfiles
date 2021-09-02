@@ -89,5 +89,7 @@ vim.keymap.nnoremap({ "<Leader>pr", "<cmd>Telescope oldfiles<CR>", silent = true
 vim.keymap.nnoremap({ "<Leader>pa", "<cmd>Telescope autocommands<CR>", silent = true })
 -- View highlights
 vim.keymap.nnoremap({ "<Leader>ph", "<cmd>Telescope highlights<CR>", silent = true })
+-- Resume picker
+vim.keymap.nnoremap({ "<Leader>p<CR>", "<cmd>Telescope resume<CR>", silent = true })
 
 cancel("<Leader>p")

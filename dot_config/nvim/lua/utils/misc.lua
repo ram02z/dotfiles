@@ -17,6 +17,7 @@ M.invalid_prev_col = function()
       return false
     end
   end
+  return true
 end
 
 -- Usage for current buffer
@@ -80,47 +81,64 @@ M.baseName = function(path, sep)
 end
 
 -- Expects undo files to be directories
--- TODO: check if files are undo files
--- TODO: check if file is corrupted or empty
+-- FIXME: clean up this awful code
+-- TODO: check if file is corrupted
 -- TODO: handle swap files maybe?
 M.purge_old_undos = function()
+  local undodir = vim.api.nvim_get_option("undodir")
+  if undodir == "" then
+    vim.notify("undodir not set", vim.log.levels.WARN, {
+      title = "[purgeundos]",
+    })
+    return
+  end
+
   local ok = pcall(require, "plenary")
   if not ok then
-    vim.notify("plenary is not installed", vim.log.levels.ERROR, { title = "[purgeundos]" })
+    vim.notify("plenary is not installed", vim.log.levels.ERROR, {
+      title = "[purgeundos]",
+    })
     return
   end
 
-  local scan = require("plenary.scandir")
-
-  local dir = vim.api.nvim_get_option("undodir")
-  if dir == "" then
-    vim.notify("undodir not set", vim.log.levels.WARN, { title = "[purgeundos]" })
-    return
-  end
-
-  local files = scan.scan_dir(dir, { hidden = true })
+  local S = require("plenary.scandir")
+  local files = S.scan_dir(undodir, { hidden = true })
 
   local P = require("plenary.path")
-  local flag = 0
-  for i, file in ipairs(files) do
-    local rel_path = string.gsub(file, dir, "")
-    if P:new(rel_path):is_file() == nil then
-      P:new(file):rm()
+  local flag
+  for i, file_path in ipairs(files) do
+    local file = P:new(file_path)
+    local rel_file = P:new(file_path)
+    rel_file:make_relative(undodir)
+    if rel_file:is_file() == nil or file:_stat().size == 0 then
+      file:rm()
 
-      local parent = P:new(M.dirName(file))
-      if parent:is_dir() then
-        local dirs = scan.scan_dir(parent, { add_dirs = true, hidden = true })
-        for x = #dirs, 1, -1 do
-          P:new(dirs[x]):rm()
+      local parents = file:parents()
+      local depth = 0
+      local parent
+      for _, parent_path in ipairs(parents) do
+        if parent_path:find(undodir) then
+          parent = P:new(parent_path)
+          if parent:is_dir() then
+            parent_files = S.scan_dir(parent_path, { hidden = true })
+            if #parent_files == 0 then
+              parent:rmdir()
+              depth = depth + 1
+            end
+          end
         end
-        parent:rm()
       end
-      vim.notify("removed " .. file, vim.log.levels.WARN, { title = "[purgeundos]" })
+
+      vim.notify(string.format("removed %s (and %d empty dirs)", file_path, depth), vim.log.levels.WARN, {
+        title = "[purgeundos]",
+      })
       flag = i
     end
   end
-  if flag == 0 then
-    vim.notify("undodir is clean", vim.log.levels.DEBUG, { title = "[purgeundos]" })
+  if flag == nil then
+    vim.notify("undodir is clean", vim.log.levels.DEBUG, {
+      title = "[purgeundos]",
+    })
   end
 end
 
