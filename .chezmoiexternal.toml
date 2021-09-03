@@ -1,11 +1,22 @@
 {{ if or (.is_x11) (.is_wayland) -}}
 [".local/share/fonts/Symbols-1000-em Nerd Font Complete.ttf"]
   type = "file"
-  url  = "https://github.com/ryanoasis/nerd-fonts/raw/master/src/glyphs/Symbols-1000-em Nerd Font Complete.ttf"
+  url = "https://github.com/ryanoasis/nerd-fonts/raw/master/src/glyphs/Symbols-1000-em Nerd Font Complete.ttf"
 [".local/share/fonts/codicon.ttf"]
   type = "file"
-  url  = "https://github.com/microsoft/vscode-codicons/raw/main/dist/codicon.ttf"
+  url = "https://github.com/microsoft/vscode-codicons/raw/main/dist/codicon.ttf"
 [".local/share/backgrounds/dotachina.png"]
   type = "file"
   url = "https://github.com/ram02z/backgrounds/raw/master/dotachina.png"
+[".icons/Simp1e-dark"]
+  type = "archive"
+  url = "https://github.com/ram02z/Simp1e-dark/archive/master.tar.gz"
+  exact = true
+  stripComponents = 1
+{{ if (.is_wayland) -}}
+[".local/bin/grimshot"]
+  type = "file"
+  url  = "https://github.com/swaywm/sway/raw/master/contrib/grimshot"
+  executable = true
+{{- end }}
 {{- end}}
