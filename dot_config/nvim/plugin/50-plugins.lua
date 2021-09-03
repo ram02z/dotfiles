@@ -768,6 +768,7 @@ packer.startup({
         require("bqf").setup({
           preview = {
             auto_preview = false,
+            delay_syntax = 0,
           },
         })
       end,

@@ -45,8 +45,19 @@ vim.o.viewoptions = ""
 
 vim.o.showbreak = "↳\\"
 vim.o.list = true
-vim.o.listchars = "tab: ──,space:·,nbsp:␣,trail:•,eol:↲,precedes:«,extends:»"
-vim.o.fillchars = "vert:▏,diff:╱"
+vim.opt.listchars = {
+  space = "⋅",
+  eol = "↲",
+  tab = "──",
+  trail = "•",
+  extends = "»",
+  precedes = "«",
+  nbsp = "␣"
+}
+vim.opt.fillchars = {
+  vert = "▏",
+  diff = "╱",
+}
 
 vim.wo.wrap = true
 vim.wo.linebreak = true
@@ -81,4 +92,4 @@ vim.g.clipyank = '{{ lookPath "clip.exe" }}'
 vim.g.clipyank = '{{ lookPath "pbcopy" }}'
 {{- end }}
 
--- vim: ft=lua
+-- vim: ft=lua sw=2

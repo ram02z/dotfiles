@@ -19,6 +19,9 @@ cmp.setup({
     end,
   },
   -- preselect = cmp.PreselectMode.None,
+  -- experimental = {
+  --   ghost_text = true,
+  -- },
   mapping = {
     ["<C-p>"] = cmp.mapping.select_prev_item(),
     ["<C-n>"] = cmp.mapping.select_next_item(),
