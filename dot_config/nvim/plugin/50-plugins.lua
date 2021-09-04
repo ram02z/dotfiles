@@ -433,7 +433,12 @@ packer.startup({
     -- TODO: replace with snap unless it gets async
     use({
       "nvim-telescope/telescope.nvim",
-      keys = { "n", "<Leader>p" },
+      keys = {
+        { "n", "<Leader>p" },
+        { "i", "<C-r>" },
+        { "n", '"' },
+        { "x", '"' },
+      },
       cmd = "Telescope",
       module = "telescope",
       requires = {
