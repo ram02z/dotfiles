@@ -56,22 +56,19 @@ _installMany() {
     {{ end }}
 }
 
-_addPPA() {
-    grep -h "^deb.*$1" /etc/apt/sources.list.d/* >/dev/null 2>&1
+# params: repo name, repo url, repo version, public key url
+_addAptRepo() {
+    find /etc/apt/sources.list.d/ -type f | grep $1 >/dev/null 2>&1
     if [[ $? != 0 ]]; then
-        echo "Adding ppa:$1";
-        sudo add-apt-repository -y ppa:$1;
-        sudo apt update;
+        echo "Adding key from $4";
+        # TODO: apt-key is depriciated
+        curl -fsSL $4 | sudo apt-key add -
+        echo "Adding repo: $1"
+        echo "deb" $2 $3 "main" | sudo tee "/etc/apt/sources.list.d/$1.list"
+        sudo apt update >/dev/null 2>&1
         return 0;
     fi;
     return 1;
-}
-
-_exists() {
-    if ! command -v $1 >/dev/null 2>&1; then
-        return 1;
-    fi;
-    return 0;
 }
 
 {{- if (eq .chezmoi.osRelease.id "void") }}
@@ -108,19 +105,22 @@ printf "\n";
 # Checks if paru has been installed
 {{ if not (lookPath "paru") }}
 sudo pacman -S --needed base-devel
-git clone https://aur.archlinux.org/paru.git ~
+git clone https://aur.archlinux.org/paru.git /tmp/
 cd paru
 makepkg -si
+rm -rf /tmp/paru
 {{ end }}
-
 packages=("sway" "fish" "neovim-nightly-bin" "git-delta-bin");
 {{ else if (eq (get .chezmoi.osRelease "idLike") "debian") }}
+{{ $versionCodename := or (get .chezmoi.osRelease "versionCodename") "all" }}
     {{ if (eq .chezmoi.osRelease.id "ubuntu") }}
 _installMany "software-properties-common" >/dev/null 2>&1
-_addPPA "neovim-ppa/unstable"
-_addPPA "fish-shell/release-3"
-packages=("fish" "neovim" "python3-neovim" "nnn" "build-essential");
+_addAptRepo "neovim-nightly" "http://ppa.launchpad.net/neovim-ppa/unstable/ubuntu" {{ $versionCodename | quote }} "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x9dbb0be9366964f134855e2255f96fcf8231b6dd"
+_addAptRepo "fish-shell-3" "http://ppa.launchpad.net/fish-shell/release-3/ubuntu" {{ $versionCodename | quote }} "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x59fda1ce1b84b3fad89366c027557f056dc33ca5"
     {{ end }}
+# Add apt.cli.rs repo
+_addAptRepo "rust-cli-tools" "https://apt.0xe.me" "all" "https://apt.cli.rs/pubkey.asc"
+packages=("fish" "neovim" "python3-neovim" "nnn" "build-essential" "bat-musl" "fd-musl" "hyperfine-musl" "ripgrep");
 {{ end }}
 _installMany "${packages[@]}";
 

@@ -26,8 +26,8 @@ local tscope_config = {
     mappings = {
       i = {
         ["<C-q>"] = actions.smart_send_to_qflist + actions.open_qflist,
-        ["<C-Down>"] = require("telescope.actions").cycle_history_next,
-        ["<C-Up>"] = require("telescope.actions").cycle_history_prev,
+        ["<C-Down>"] = actions.cycle_history_next,
+        ["<C-Up>"] = actions.cycle_history_prev,
       },
       n = {
         ["<C-q>"] = actions.smart_add_to_qflist + actions.open_qflist,
@@ -52,9 +52,6 @@ local tscope_config = {
       override_generic_sorter = true,
       override_file_sorter = true,
       case_mode = "smart_case",
-    },
-    project = {
-      base_dirs = { U.os.home .. "/Downloads" },
     },
   },
 }
