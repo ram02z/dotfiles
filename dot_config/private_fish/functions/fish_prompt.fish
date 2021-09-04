@@ -82,25 +82,20 @@ function __prompt_git_status
     end
 
     # Fetch git commit ahead/behind synchronously
-    # TODO: make async (right now its 2-3x slower)
     if test -z $__prompt_behind
         if ! set -q __prompt_check_behind_pid
             # Compose shell command to run in background
-            # TODO: make position var async
-            set -l position (command git --no-optional-locks symbolic-ref --short HEAD 2>/dev/null)
-            set -l check_cmd "command git rev-list $position..origin/$position --ignore-submodules 2>/dev/null | count"
-            set -l fetch_cmd
-            # Fetch in background
-            # Ignores ssh git repos
+            set -l check_cmd "command git rev-list $__prompt_git_static..origin/$__prompt_git_static --ignore-submodules 2>/dev/null | count"
+
+            # Run git fetch in background
+            # Ignores ssh git repos unless ssh key is active
+            # Avoids fetching if already behind
             if test "$prompt_bg_fetch" = "true"
-                set fetch_cmd "
-                set -x GIT_TERMINAL_PROMPT 0
-                set -x GIT_SSH_COMMAND 'ssh -o BatchMode=yes'
-                set -l ref (command git --no-optional-locks symbolic-ref --short HEAD 2>/dev/null)
-                command git fetch --quiet --no-tags --recurse-submodules=no origin $ref 2>/dev/null
+                set -a check_cmd " ||
+                GIT_TERMINAL_PROMPT=0 GIT_SSH_COMMAND='ssh -o BatchMode=yes' git fetch --quiet --no-tags --recurse-submodules=no origin $__prompt_git_static 2>/dev/null
                 "
             end
-            set -l cmd "$fetch_cmd; exit ($check_cmd)"
+            set -l cmd "exit ($check_cmd)"
 
             begin
                 # Defer execution of event handlers by fish for the remainder of lexical scope.
@@ -114,6 +109,7 @@ function __prompt_git_status
                 set -g __prompt_check_behind_pid $pid
 
                 # Use exit code to convey dirty status to parent process.
+                # Limited to 255
                 function __prompt_on_finish_$pid --inherit-variable pid --on-process-exit $pid
                     functions -e __prompt_on_finish_$pid
 
