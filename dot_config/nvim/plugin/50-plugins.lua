@@ -272,6 +272,9 @@ packer.startup({
     -- See https://github.com/neovim/neovim/pull/15436
     use({ "lewis6991/impatient.nvim" })
 
+    -- Automatically set `paste`
+    use({ "ConradIrwin/vim-bracketed-paste" })
+
     -- OSC52 yank
     use({
       "ojroques/vim-oscyank",
@@ -446,15 +449,6 @@ packer.startup({
       config = [[require'modules.telescope']],
     })
 
-    -- Register picker
-    use({
-      "tversteeg/registers.nvim",
-      keys = {
-        { "n", '"' },
-        { "x", '"' },
-        { "i", "<C-R>" },
-      },
-    })
     -- Helper for resizing splits
     use({
       "simeji/winresizer",

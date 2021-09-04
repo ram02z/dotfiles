@@ -61,6 +61,7 @@ local tscope_config = {
 
 telescope.setup(tscope_config)
 
+
 local tscope = require("modules.telescope.functions")
 local cancel = require("utils.keychord").cancel
 -- View help pages
@@ -93,3 +94,20 @@ vim.keymap.nnoremap({ "<Leader>ph", "<cmd>Telescope highlights<CR>", silent = tr
 vim.keymap.nnoremap({ "<Leader>p<CR>", "<cmd>Telescope resume<CR>", silent = true })
 
 cancel("<Leader>p")
+
+-- Register pickers
+vim.keymap.inoremap({
+  "<C-r>",
+  "<cmd>Telescope registers theme=get_cursor layout_config={height=14}<CR>",
+  silent = true,
+})
+vim.keymap.xnoremap({
+  "\"",
+  "<cmd>Telescope registers theme=get_cursor layout_config={height=14}<CR><Esc>",
+  silent = true,
+})
+vim.keymap.nnoremap({
+  "\"",
+  "<cmd>Telescope registers theme=get_cursor layout_config={height=14}<CR>",
+  silent = true,
+})

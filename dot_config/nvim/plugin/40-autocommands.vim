@@ -20,7 +20,7 @@ augroup Yank
   autocmd!
   autocmd TextYankPost * if v:event.operator is 'y' && v:event.regname is '' && !exists('b:visual_multi')
         \| call luaeval('vim.highlight.on_yank()')
-        \| OSCYankReg "
+        \| execute 'OSCYankReg "'
         \| endif
 augroup END
 

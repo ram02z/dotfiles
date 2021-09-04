@@ -9,5 +9,8 @@ if not functions -q fisher
     curl -sL git.io/fisher | source
 end
 
+# Disable question mark glob
+set -U fish_features qmark-noglob
+
 # Source init scripts
 # init_source zoxide
