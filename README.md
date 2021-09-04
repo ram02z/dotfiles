@@ -6,7 +6,7 @@
 
 
 #### Setup
-Run `chezmoi init ram02z`
+Run `chezmoi init ram02z --ssh`
 
 #### Tested on:
 - Ubuntu WSL2
