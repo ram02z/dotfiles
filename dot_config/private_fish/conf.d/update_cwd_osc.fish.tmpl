@@ -3,9 +3,9 @@ function update_cwd_osc --on-variable PWD --description 'Notify terminals when $
         return
     end
 
-    {{ if .is_wsl -}}
+{{ if .is_wsl -}}
     printf '\e]9;9;%s\e\\' (wslpath -m $PWD)
-    {{ else -}}
+{{ else -}}
     printf \e\]7\;file://%s%s\e\\ $hostname (string escape --style=url $PWD)
-    {{- end }}
+{{- end }}
 end

@@ -257,47 +257,40 @@ function fish_mode_prompt
 end
 
 function __prompt_pwd --on-variable PWD
-    update_cwd_osc
-    set prompt_git_repo (command git rev-parse --show-toplevel 2>/dev/null)
+    set -g prompt_git_repo (command git rev-parse --show-toplevel 2>/dev/null)
     set -q __prompt_pwd || set -g __prompt_pwd
 
     if test -z "$prompt_git_repo"
         set -l realhome ~
         set  __prompt_pwd (string replace -r '^'"$realhome"'($|/)' '~$1' $PWD)
     else
-        set root (printf "%s" $prompt_git_repo | string replace --all --regex -- "^.*/" "")
-        set __prompt_pwd (string replace $prompt_git_repo $root $PWD)
+        set -l vcs_root (string replace --all --regex "^.*/" "" $prompt_git_repo)
+        set __prompt_pwd (string replace $prompt_git_repo $vcs_root $PWD)
     end
 
     if test "$prompt_dir_depth" -ne 0
-        set -l folders (string split / $__prompt_pwd)
+        set -l folders (string split -n / $__prompt_pwd)
         if test (count $folders) -gt "$prompt_dir_depth"
-            if set -q root
-                set __prompt_pwd (
-                string replace -- "$root" /:/ $__prompt_pwd |
-                string replace --regex --all -- "(\.?[^/]{1})[^/]*/" \$1/ |
-                string replace -- /:/ "$root" |
-                string replace --regex -- '([^/]+)$' "\x1b[1m\$1\x1b[22m" |
-                string replace --regex --all -- '(?!^/$)/' "\x1b[2m/\x1b[22m"
-                )
-            else
-                set __prompt_pwd (string join / $folders[(math 0 - $prompt_dir_depth)..-1])
-                # TODO: find a better way to prepend "/" when it makes sense
-                if test -d "/"$__prompt_pwd
-                    set --prepend __prompt_pwd "/"
-                end
+            if test -z "$vcs_root"
+                set vcs_root $folders[1]
             end
+            set __prompt_pwd (
+            string replace -- "$vcs_root" /:/ $__prompt_pwd |
+            string replace --regex --all -- "(\.?[^/]{1})[^/]*/" \$1/ |
+            string replace -- /:/ "$vcs_root"
+            )
         end
     end
+    # Dim path seperators
+    set __prompt_pwd (
+    string replace --regex -- '([^/]+)$' "\x1b[1m\$1\x1b[22m" "$__prompt_pwd" |
+    string replace --regex --all -- '(?!^/$)/' "\x1b[2m/\x1b[22m"
+    )
 end
 
 function fish_prompt
     set -l last_pipestatus $pipestatus
     set --query __prompt_pwd || __prompt_pwd
-
-    if test -n "$prompt_skip_newline"
-        echo ''
-    end
 
     set_color --bold $prompt_cwd_color
     echo -sn $__prompt_pwd
@@ -345,5 +338,5 @@ function fish_prompt
     set_color normal
 
     # line cursor
-    printf '\e[6 q'
+    echo -en '\e[6 q'
 end

@@ -11,11 +11,9 @@ if ! set -q prompt_vi_symbol
     set -g prompt_vi_symbol "❮"
 end
 
-
 if ! set -q prompt_lock_dir_symbol
     set -g prompt_lock_dir_symbol ""
 end
-
 
 if ! set -q prompt_branch_symbol
     set -g prompt_branch_symbol ""

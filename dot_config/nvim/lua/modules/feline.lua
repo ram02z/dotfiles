@@ -134,7 +134,7 @@ table.insert(components.left.active, {
 table.insert(components.left.active, {
   provider = function()
     local file_name = "%f"
-    if not has_width_gt(50) then
+    if not has_width_gt(55) then
       file_name = "%t"
     end
 
