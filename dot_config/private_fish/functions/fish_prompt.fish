@@ -89,7 +89,18 @@ function __prompt_git_status
             # TODO: make position var async
             set -l position (command git --no-optional-locks symbolic-ref --short HEAD 2>/dev/null)
             set -l check_cmd "command git rev-list $position..origin/$position --ignore-submodules 2>/dev/null | count"
-            set -l cmd "exit ($check_cmd)"
+            set -l fetch_cmd
+            # Fetch in background
+            # Ignores ssh git repos
+            if test "$prompt_bg_fetch" = "true"
+                set fetch_cmd "
+                set -x GIT_TERMINAL_PROMPT 0
+                set -x GIT_SSH_COMMAND 'ssh -o BatchMode=yes'
+                set -l ref (command git --no-optional-locks symbolic-ref --short HEAD 2>/dev/null)
+                command git fetch --quiet --no-tags --recurse-submodules=no origin $ref 2>/dev/null
+                "
+            end
+            set -l cmd "$fetch_cmd; exit ($check_cmd)"
 
             begin
                 # Defer execution of event handlers by fish for the remainder of lexical scope.
@@ -138,16 +149,6 @@ function __prompt_git_status
             set -e __prompt_behind_state
         end
 
-        # Fetch in background
-        # Ignores ssh git repos
-        if test "$prompt_bg_fetch" = "true"
-            fish --private --command "
-            set -x GIT_TERMINAL_PROMPT 0
-            set -x GIT_SSH_COMMAND 'ssh -o BatchMode=yes'
-            set -l ref (command git --no-optional-locks symbolic-ref --short HEAD 2>/dev/null)
-            command git fetch --quiet --no-tags --recurse-submodules=no origin $ref 2>/dev/null
-            " &
-        end
     end
 
     # Fetch dirty status asynchronously.
