@@ -281,11 +281,6 @@ function __prompt_pwd --on-variable PWD
             )
         end
     end
-    # Dim path seperators
-    set __prompt_pwd (
-    string replace --regex -- '([^/]+)$' "\x1b[1m\$1\x1b[22m" "$__prompt_pwd" |
-    string replace --regex --all -- '(?!^/$)/' "\x1b[2m/\x1b[22m"
-    )
 end
 
 function fish_prompt
