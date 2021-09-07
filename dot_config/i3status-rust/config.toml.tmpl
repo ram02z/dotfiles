@@ -44,7 +44,7 @@ on_click = "cat /tmp/xbps-updates | rofi -dmenu"
 
 [[block]]
 block = "cpu"
-interval = 1
+interval = 5
 format = "{utilization:3}"
 on_click = "~/.local/bin/i3-quickterm btm_simple"
 
@@ -53,7 +53,7 @@ block = "memory"
 format_mem = "{mem_used_percents:2}"
 format_swap = "{mem_used;M}"
 clickable = true
-interval = 5
+interval = 10
 warning_mem = 80
 critical_mem = 95
 
@@ -73,30 +73,32 @@ block = "backlight"
 [[block]]
 block = "weather"
 format = "{temp:2}"
+interval = 3600
 autolocate = true
 service = { name = "openweathermap", api_key = "8865f0dc0c6c3b4f0fc601fd063f5be1", place = "London", units = "metric" }
 on_click = "~/.local/bin/i3-quickterm weather"
 
 # Airpods
-[[block]]
-block = "bluetooth"
-label = " Pods"
-mac = "14:60:CB:C7:B4:2A"
-format_unavailable = ""
-hide_disconnected = true
+# [[block]]
+# block = "bluetooth"
+# label = " Pods"
+# mac = "14:60:CB:C7:B4:2A"
+# format_unavailable = ""
+# hide_disconnected = true
 
 # Bose QC35s
-[[block]]
-block = "bluetooth"
-label = " QC35"
-mac = "60:AB:D2:42:04:74"
-format_unavailable = ""
-hide_disconnected = true
+# [[block]]
+# block = "bluetooth"
+# label = " QC35"
+# mac = "60:AB:D2:42:04:74"
+# format_unavailable = ""
+# hide_disconnected = true
 # on_click = "i3-nagbar -m $(based-connect -b 60:AB:D2:42:04:74) -type warning"
 
 [[block]]
 block = "net"
 format = "{signal_strength:3}"
+interval = 5
 {{ if ($iwgtk := (lookPath "iwgtk")) -}}
 on_click = "pkill iwgtk || {{ $iwgtk }}"
 {{- end }}
@@ -127,7 +129,7 @@ on_click = "~/.local/bin/i3-quickterm battery"
 
 [[block]]
 block = "time"
-interval = 1
+interval = 5
 format = "%R"
 on_click = "pkill rofi || ~/.local/bin/rofi-calendar"
 icons_format = " "

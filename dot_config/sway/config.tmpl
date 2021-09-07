@@ -106,7 +106,7 @@ seat seat0 xcursor_theme "Simp1e-dark" 16
     # Reload the configuration file
     bindsym $mod+Shift+c reload
 
-    # Launch firefox in wayland
+    # Launch firefox
     bindsym $mod+Shift+Return exec firefox
 
     # Exit sway (logs you out of your Wayland session)
@@ -455,6 +455,10 @@ bindsym $mod+v exec {{ $copyq }} toggle
 exec {{ $matrix }} --hide-mainwindow
 {{ end }}
 
+{{ if ($poweralertd := (lookPath "poweralertd")) }}
+exec {{ $poweralertd }}
+{{ end }}
+
 #
 # Status Bar:
 #
@@ -467,7 +471,7 @@ bar {
     {{ if ($i3status := (lookPath "i3status-rs")) }}
     status_command {{ $i3status }} $HOME/.config/i3status-rust/config.toml
     {{ else }}
-    status_command while date +'%Y-%m-%d %l:%M:%S %p'; do sleep 1; done
+    status_command while date +'%Y-%m-%d %l:%M %p'; do sleep 60; done
     {{ end }}
     # status_command 'bash -c "$HOME/Downloads/i3status-rust/target/release/i3status-rs $HOME/.config/i3status-rust/conf.toml |& tee /tmp/debug13rs"'
     status_padding 0
@@ -487,5 +491,3 @@ bar {
 }
 
 include /etc/sway/config.d/*
-
-# vim: ft=conf
