@@ -85,6 +85,12 @@ local bline_conf = {
         highlight = "StatusLine",
       },
     },
+    modified_visible = {
+      guifg = {
+        attribute = "bg",
+        highlight = "Visual",
+      },
+    },
   },
 }
 
@@ -123,7 +129,7 @@ for i = 1, 9 do
   vim.keymap.nnoremap({
     "<Leader>" .. tostring(i),
     function()
-      bline.go_to_buffer(i)
+      bline.go_to_buffer(i, true)
     end,
     silent = true,
   })

@@ -16,37 +16,23 @@ local float_width = 6
 local config = {
   -- The characters available for hinting windows.
   chars = {
-    "a",
-    "b",
-    "c",
-    "d",
+    "w",
+    "2",
+    "3",
     "e",
-    "f",
-    "g",
-    "h",
-    "i",
-    "j",
-    "k",
-    "l",
-    "m",
-    "n",
-    "o",
-    "p",
-    "q",
     "r",
     "s",
-    "t",
-    "u",
-    "v",
-    "w",
-    "x",
-    "y",
-    "z",
+    "d",
+    "f",
+    "1",
+    "q",
+    "a",
+    "4",
   },
 
   -- A group to use for overwriting the Normal highlight group in the floating
   -- window. This can be used to change the background color.
-  normal_hl = "Search",
+  normal_hl = "BlackOnPink",
 
   -- The highlight group to apply to the line that contains the hint characters.
   -- This is used to make them stand out more.
@@ -69,7 +55,7 @@ local function window_keys(windows)
     -- We use the window number (not the ID) as these are more consistent. This
     -- in turn should result in a more consistent choice of window keys.
     local win_nr = api.nvim_win_get_number(win)
-    local key = chars[(win_nr % #chars) + 1]
+    local key = chars[(win_nr % #chars)]
 
     if mapping[key] then
       key = key .. chars[((win_nr + 1) % #chars) + 1]
@@ -131,9 +117,15 @@ local function open_floats(mapping)
   return floats
 end
 
--- Configures the plugin by merging the given settings into the default ones.
-function M.setup(user_config)
-  config = vim.tbl_extend("force", config, user_config)
+-- Get the char based on window number
+function M.get_char(win_nr)
+  win_nr = win_nr or api.nvim_win_get_number(0)
+
+  if win_nr > #config.chars then
+    return
+  end
+
+  return config.chars[win_nr]
 end
 
 -- Picks a window to jump to, and makes it the active window.

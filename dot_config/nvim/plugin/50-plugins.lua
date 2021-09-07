@@ -46,7 +46,9 @@ packer.startup({
       cmd = "SymbolsOutline",
       setup = function()
         vim.keymap.nnoremap({ "<Leader>s", "<cmd>SymbolsOutline<CR>", silent = true })
-        vim.g.symbols_outline = {
+      end,
+      config = function()
+         require("symbols-outline").setup({
           highlight_hovered_item = false,
           auto_preview = false,
           keymaps = {
@@ -79,8 +81,8 @@ packer.startup({
             Event = { icon = "", hl = "TSType" },
             Operator = { icon = "", hl = "TSOperator" },
             TypeParameter = { icon = "", hl = "TSParameter" },
-          },
-        }
+          }
+        })
       end,
     })
 
@@ -182,8 +184,8 @@ packer.startup({
 
     -- Statusline
     use({
-      -- "famiu/feline.nvim",
-      "~/Downloads/feline.nvim",
+      "famiu/feline.nvim",
+      -- "~/Downloads/feline.nvim",
       event = { "BufNewFile", "BufReadPre" },
       -- event = "FileType nix",
       config = [[require'modules.feline']],
@@ -367,6 +369,9 @@ packer.startup({
           vim.keymap.nnoremap({ "<Leader>dh", "<cmd>DiffviewFileHistory<CR>", silent = true })
         end,
         config = function()
+          require("diffview").setup({
+            enhanced_diff_hl = true,
+          })
           require("utils.keychord").cancel("<Leader>d")
         end,
       },

@@ -8,18 +8,14 @@ local properties = {
   },
 }
 
+-- Initialize the components table
 local components = {
-  left = {
-    active = {},
-    inactive = {},
+  active = {
+    {}, -- left
+    {}, -- right
   },
-  mid = {
-    active = {},
-    inactive = {},
-  },
-  right = {
-    active = {},
-    inactive = {},
+  inactive = {
+    {},
   },
 }
 
@@ -103,27 +99,25 @@ local vi_mode_colors = {
 --
 -- Left active components
 --
-table.insert(components.left.active, {
+table.insert(components.active[1], {
   provider = function()
     local mode = vi_mode_utils.get_vim_mode()
-    if #mode > 1 then
+    if #mode > 0 then
       return " " .. mode:sub(1, 1) .. " "
     end
     return " // "
   end,
   hl = function()
-    local val = {}
-
-    val.name = vi_mode_utils.get_mode_highlight_name()
-    val.bg = vi_mode_utils.get_mode_color()
-    val.fg = colors.black
-
-    return val
+    return {
+      name = vi_mode_utils.get_mode_highlight_name(),
+      bg = vi_mode_utils.get_mode_color(),
+      fg = colors.black,
+    }
   end,
   right_sep = " ",
 })
 
-table.insert(components.left.active, {
+table.insert(components.active[1], {
   provider = "",
   hl = { fg = "red" },
   right_sep = " ",
@@ -132,7 +126,7 @@ table.insert(components.left.active, {
   end,
 })
 
-table.insert(components.left.active, {
+table.insert(components.active[1], {
   provider = function()
     local file_name = "%f"
     if not has_width_gt(55) then
@@ -162,7 +156,7 @@ table.insert(components.left.active, {
   end,
 })
 
-table.insert(components.left.active, {
+table.insert(components.active[1], {
   provider = "file_type",
   hl = { fg = "light_gray" },
   enabled = function()
@@ -171,7 +165,7 @@ table.insert(components.left.active, {
   right_sep = " ",
 })
 
-table.insert(components.left.active, {
+table.insert(components.active[1], {
   provider = "file_size",
   hl = { fg = "light_gray" },
   enabled = function()
@@ -180,7 +174,7 @@ table.insert(components.left.active, {
   -- right_sep = ' '
 })
 
-table.insert(components.left.active, {
+table.insert(components.active[1], {
   provider = "diagnostic_errors",
   enabled = function()
     return no_buffers() == 1 and has_width_gt(40)
@@ -188,7 +182,7 @@ table.insert(components.left.active, {
   hl = { fg = "red" },
 })
 
-table.insert(components.left.active, {
+table.insert(components.active[1], {
   provider = "diagnostic_warnings",
   enabled = function()
     return no_buffers() == 1 and has_width_gt(40)
@@ -196,7 +190,7 @@ table.insert(components.left.active, {
   hl = { fg = "orange" },
 })
 
-table.insert(components.left.active, {
+table.insert(components.active[1], {
   provider = "diagnostic_hints",
   enabled = function()
     return no_buffers() == 1 and has_width_gt(40)
@@ -204,7 +198,7 @@ table.insert(components.left.active, {
   hl = { fg = "cyan" },
 })
 
-table.insert(components.left.active, {
+table.insert(components.active[1], {
   provider = "diagnostic_info",
   enabled = function()
     return no_buffers() == 1 and has_width_gt(40)
@@ -215,7 +209,7 @@ table.insert(components.left.active, {
 --
 -- Right active components
 --
-table.insert(components.right.active, {
+table.insert(components.active[2], {
   provider = "git_diff_added",
   enabled = function()
     return has_width_gt(30)
@@ -226,7 +220,7 @@ table.insert(components.right.active, {
   icon = " +",
 })
 
-table.insert(components.right.active, {
+table.insert(components.active[2], {
   provider = "git_diff_changed",
   enabled = function()
     return has_width_gt(30)
@@ -237,7 +231,7 @@ table.insert(components.right.active, {
   icon = " ~",
 })
 
-table.insert(components.right.active, {
+table.insert(components.active[2], {
   provider = "git_diff_removed",
   enabled = function()
     return has_width_gt(30)
@@ -258,7 +252,7 @@ table.insert(components.right.active, {
   end,
 })
 
-table.insert(components.right.active, {
+table.insert(components.active[2], {
   provider = "git_branch",
   hl = {
     fg = "pink",
@@ -268,7 +262,7 @@ table.insert(components.right.active, {
 
 local cached_git_dirs = {}
 
-table.insert(components.right.active, {
+table.insert(components.active[2], {
   provider = function()
     local cwd = vim.loop.cwd()
 
@@ -306,7 +300,7 @@ table.insert(components.right.active, {
   end,
 })
 
-table.insert(components.right.active, {
+table.insert(components.active[2], {
   provider = "position",
   enabled = function()
     return has_width_gt(25)
@@ -318,7 +312,7 @@ table.insert(components.right.active, {
   right_sep = " ",
 })
 
-table.insert(components.right.active, {
+table.insert(components.active[2], {
   provider = "scroll_bar",
   hl = {
     fg = "light_gray",
@@ -338,8 +332,14 @@ table.insert(components.right.active, {
 --
 -- Inactive components
 --
-table.insert(components.left.inactive, {
+-- local get_char = require("utils.window").get_char
+-- TODO: add window character if the window is not active
+table.insert(components.inactive[1], {
   provider = function()
+    -- FIXME: n needs to be passed by the provider I think
+    -- if vim.api.nvim_win_get_buf(n) ~= vim.api.nvim_get_current_buf() then
+    --   return " ? "
+    -- end
     if vim.bo.buftype == "nowrite" or vim.bo.buftype == "nofile" then
       return "  "
     end
@@ -361,8 +361,7 @@ table.insert(components.left.inactive, {
   right_sep = " ",
 })
 
-table.insert(components.left.inactive, {
-  -- FIXME: floating windows don't omit filetype
+table.insert(components.inactive[1], {
   provider = "file_type",
   hl = { fg = "light_gray" },
 })

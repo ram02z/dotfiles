@@ -16,7 +16,7 @@ end
 disable_default_plugins()
 
 -- TODO: remove when https://github.com/neovim/neovim/pull/15436 is merged
-pcall(require, "impatient")
+require("impatient")
 
 -- NOTE: can fail on before installations
 pcall(vim.api.nvim_command, "packadd chezmoi.vim")
