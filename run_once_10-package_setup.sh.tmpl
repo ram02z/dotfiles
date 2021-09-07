@@ -120,7 +120,7 @@ _addAptRepo "fish-shell-3" "http://ppa.launchpad.net/fish-shell/release-3/ubuntu
     {{ end }}
 # Add apt.cli.rs repo
 _addAptRepo "rust-cli-tools" "https://apt.0xe.me" "all" "https://apt.cli.rs/pubkey.asc"
-packages=("fish" "neovim" "python3-neovim" "nnn" "build-essential" "bat-musl" "fd-musl" "hyperfine-musl" "ripgrep");
+packages=("fish" "neovim" "python3-neovim" "nnn" "build-essential" "bat-musl" "fd-musl" "hyperfine-musl" "ripgrep" "git-delta-musl");
 {{ end }}
 _installMany "${packages[@]}";
 
