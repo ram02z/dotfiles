@@ -48,7 +48,7 @@ packer.startup({
         vim.keymap.nnoremap({ "<Leader>s", "<cmd>SymbolsOutline<CR>", silent = true })
       end,
       config = function()
-         require("symbols-outline").setup({
+        require("symbols-outline").setup({
           highlight_hovered_item = false,
           auto_preview = false,
           keymaps = {
@@ -81,7 +81,7 @@ packer.startup({
             Event = { icon = "", hl = "TSType" },
             Operator = { icon = "", hl = "TSOperator" },
             TypeParameter = { icon = "", hl = "TSParameter" },
-          }
+          },
         })
       end,
     })
