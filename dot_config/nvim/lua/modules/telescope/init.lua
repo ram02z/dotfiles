@@ -90,4 +90,3 @@ vim.keymap.nnoremap({ "<Leader>ph", "<cmd>Telescope highlights<CR>", silent = tr
 vim.keymap.nnoremap({ "<Leader>p<CR>", "<cmd>Telescope resume<CR>", silent = true })
 
 cancel("<Leader>p")
-

@@ -21,8 +21,7 @@ M.bufwipeout = function(bufnr, opts)
 
   bufnr = bufnr or vim.api.nvim_get_current_buf()
   -- force deletion of terminal buffers to avoid the prompt
-  if (opts and opts.force == true) or
-    vim.api.nvim_buf_get_option(bufnr, "buftype") == "terminal" then
+  if (opts and opts.force == true) or vim.api.nvim_buf_get_option(bufnr, "buftype") == "terminal" then
     vim.api.nvim_buf_delete(bufnr, { force = true })
   else
     vim.api.nvim_buf_delete(bufnr, {})
