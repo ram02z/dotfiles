@@ -7,10 +7,10 @@ local bline_conf = {
     end,
     show_buffer_close_icons = false,
     right_mouse_command = function(bufnum)
-      require("utils.buffer").bufwipeout(bufnum)
+      require("utils.buffer").bufwipeout(bufnum, { force = false })
     end,
     close_command = function(bufnum)
-      require("utils.buffer").bufwipeout(bufnum)
+      require("utils.buffer").bufwipeout(bufnum, { force = true })
     end,
     always_show_bufferline = false,
     diagnostics = "nvim_lsp",

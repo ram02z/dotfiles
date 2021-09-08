@@ -91,19 +91,3 @@ vim.keymap.nnoremap({ "<Leader>p<CR>", "<cmd>Telescope resume<CR>", silent = tru
 
 cancel("<Leader>p")
 
--- Register pickers
-vim.keymap.inoremap({
-  "<C-r>",
-  "<cmd>Telescope registers theme=get_cursor layout_config={height=14}<CR>",
-  silent = true,
-})
-vim.keymap.xnoremap({
-  '"',
-  "<cmd>Telescope registers theme=get_cursor layout_config={height=14}<CR><Esc>",
-  silent = true,
-})
-vim.keymap.nnoremap({
-  '"',
-  "<cmd>Telescope registers theme=get_cursor layout_config={height=14}<CR>",
-  silent = true,
-})

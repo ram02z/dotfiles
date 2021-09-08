@@ -182,8 +182,8 @@ packer.startup({
 
     -- Statusline
     use({
-      "famiu/feline.nvim",
-      -- "~/Downloads/feline.nvim",
+      -- "famiu/feline.nvim",
+      "~/Downloads/feline.nvim",
       event = { "BufNewFile", "BufReadPre" },
       -- event = "FileType nix",
       config = [[require'modules.feline']],
@@ -435,9 +435,6 @@ packer.startup({
       "nvim-telescope/telescope.nvim",
       keys = {
         { "n", "<Leader>p" },
-        { "i", "<C-r>" },
-        { "n", '"' },
-        { "x", '"' },
       },
       cmd = "Telescope",
       module = "telescope",
@@ -451,6 +448,24 @@ packer.startup({
           end,
         },
       },
+      setup = function()
+        -- Register pickers
+        vim.keymap.inoremap({
+          "<C-r>",
+          "<cmd>Telescope registers theme=get_cursor layout_config={height=14}<CR>",
+          silent = true,
+        })
+        vim.keymap.xnoremap({
+          '"',
+          "<cmd>Telescope registers theme=get_cursor layout_config={height=14}<CR><Esc>",
+          silent = true,
+        })
+        vim.keymap.nnoremap({
+          '"',
+          "<cmd>Telescope registers theme=get_cursor layout_config={height=14}<CR>",
+          silent = true,
+        })
+      end,
       config = [[require'modules.telescope']],
     })
 
@@ -604,7 +619,9 @@ packer.startup({
       "DarwinSenior/nvim-colorizer.lua",
       event = "BufReadPre",
       config = function()
-        require("colorizer").setup(_, {
+        require("colorizer").setup(
+        {"*"},
+        {
           RGB = false,
           RRGGBB = true,
           RRGGBBAA = true,
