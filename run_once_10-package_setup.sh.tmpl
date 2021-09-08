@@ -90,16 +90,14 @@ packages+=("tlp" "light");
 # ncspot (rust)
 # NOTE: Replace packages
 # pam_rundir -> rundird
-read -p "Add sway desktop packages?" -n 1 -r
-if [[ $REPLY =~ ^[Yy]$ ]]; then
-    packages+=("sway" "seatd" "polkit" "firefox" "foot" "libappindicator"
+{{ if .is_wayland -}}
+packages+=("sway" "seatd" "polkit" "firefox" "foot" "libappindicator"
     "wdisplays" "waylock" "bluez" "pipewire" "pulseaudio-utils"
     "mpv" "libnotify" "wl-clipboard" "CopyQ" "swayidle" "wtype"
     "pam_rundir" "font-iosevka" "i3status-rust" "python3-i3ipc"
     "font-firacode" "mesa-dri" "iwd" "wev" "slurp" "grim" "mako"
     "kdeconnect" "iwgtk" "playerctl");
-fi;
-printf "\n";
+{{- end }}
 {{ else if (eq (get .chezmoi.osRelease "idLike") "arch") }}
 # Assumes we are running sway
 # Checks if paru has been installed
@@ -114,13 +112,19 @@ packages=("sway" "fish" "neovim-nightly-bin" "git-delta-bin");
 {{ else if (eq (get .chezmoi.osRelease "idLike") "debian") }}
 {{ $versionCodename := or (get .chezmoi.osRelease "versionCodename") "all" }}
     {{ if (eq .chezmoi.osRelease.id "ubuntu") }}
-_installMany "software-properties-common" >/dev/null 2>&1
+    {{ if not (stat (joinPath "/etc/apt/sources.list.d/" "neovim-nightly.list")) -}}
 _addAptRepo "neovim-nightly" "http://ppa.launchpad.net/neovim-ppa/unstable/ubuntu" {{ $versionCodename | quote }} "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x9dbb0be9366964f134855e2255f96fcf8231b6dd"
+{{- end }}
+{{ if not (stat (joinPath "/etc/apt/sources.list.d/" "fish-shell-3.list")) -}}
 _addAptRepo "fish-shell-3" "http://ppa.launchpad.net/fish-shell/release-3/ubuntu" {{ $versionCodename | quote }} "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x59fda1ce1b84b3fad89366c027557f056dc33ca5"
+{{- end }}
     {{ end }}
+{{ if not (stat (joinPath "/etc/apt/sources.list.d/" "rust-cli-tools.list")) -}}
 # Add apt.cli.rs repo
 _addAptRepo "rust-cli-tools" "https://apt.0xe.me" "all" "https://apt.cli.rs/pubkey.asc"
-packages=("fish" "neovim" "python3-neovim" "nnn" "build-essential" "bat-musl" "fd-musl" "hyperfine-musl" "ripgrep" "git-delta-musl");
+{{ end }}
+packages=("fish" "neovim" "python3-neovim" "nnn" "build-essential" "bat-musl"
+    "fd-musl" "hyperfine-musl" "ripgrep" "git-delta-musl");
 {{ end }}
 _installMany "${packages[@]}";
 
