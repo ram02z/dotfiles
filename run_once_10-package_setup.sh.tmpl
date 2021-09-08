@@ -95,8 +95,8 @@ packages+=("sway" "seatd" "polkit" "firefox" "foot" "libappindicator"
     "wdisplays" "waylock" "bluez" "pipewire" "pulseaudio-utils"
     "mpv" "libnotify" "wl-clipboard" "CopyQ" "swayidle" "wtype"
     "pam_rundir" "font-iosevka" "i3status-rust" "python3-i3ipc"
-    "font-firacode" "mesa-dri" "iwd" "wev" "slurp" "grim" "mako"
-    "kdeconnect" "iwgtk" "playerctl");
+    "mesa-dri" "iwd" "wev" "slurp" "grim" "mako" "kdeconnect"
+    "iwgtk" "playerctl" "noto-fonts-emoji");
 {{- end }}
 {{ else if (eq (get .chezmoi.osRelease "idLike") "arch") }}
 # Assumes we are running sway

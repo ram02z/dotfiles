@@ -47,6 +47,8 @@ README.md
 {{ if and (not .is_x11) (not .is_wayland) }}
 .config/gtk-3.0/**
 .config/gtk-3.0/
+.config/fontconfig/**
+.config/fontconfig/
 .local/**
 .local/
 .icons/**
