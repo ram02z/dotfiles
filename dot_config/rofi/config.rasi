@@ -1,7 +1,11 @@
+/*
+vim:ft=css
+*/
 configuration {
-    theme: "dracula";
     font: "iosevka 15";
     show-icons: true;
     matching: "fuzzy";
     case-sensitive: false;
 }
+
+@theme "dracula"

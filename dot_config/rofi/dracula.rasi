@@ -1,4 +1,7 @@
-/* global settings and color variables */
+/*
+vim:ft=css
+*/
+
 * {
    blue:             #6272a4;
    darkblue:         #bd93f9;
@@ -61,6 +64,11 @@ listview {
 
 element {
    padding: 4px 10px;
+}
+
+element-text, element-icon {
+    background-color: inherit;
+    text-color:       inherit;
 }
 
 element normal.normal {
@@ -161,6 +169,3 @@ case-indicator {
     background-color:@background-color;
 }
 
-element-icon {
-    size: 1.65ch;
-}
