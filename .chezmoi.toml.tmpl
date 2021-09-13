@@ -1,10 +1,10 @@
 {{- $rbw := lookPath "rbw" -}}
-{{- if not $rbw -}}
-{{- writeToStdout "rbw not found, bootstrapping will fail.\n" -}}
+{{- if or (not $rbw) (output $rbw "unlocked") -}}
+{{- fail "rbw not found, bootstrapping will fail.\n" -}}
 {{- end -}}
 {{- $gpg := lookPath "gpg" -}}
-{{- if not $rbw -}}
-{{- writeToStdout "gpg not found, bootstrapping will fail.\n" -}}
+{{- if (not $gpg) -}}
+{{- fail "gpg not found, bootstrapping will fail.\n" -}}
 {{- end -}}
 {{- $fullName := "Omar Zeghouani" -}}
 {{- $email := promptString  "email" -}}
@@ -16,7 +16,7 @@
 {{- $isWsl := or (env "WSL_DISTRO_NAME") (env "WSLENV") | not | not -}}
 {{- $isWayland := and (and (eq .chezmoi.os "linux") (not $isWsl)) (promptBool "wayland") -}}
 {{- $isX11 := and (not $isWsl) (not $isWayland) -}}
-{{- $isLaptop := and (eq .chezmoi.os "linux") (not (stat "/sys/class/power_supply")) -}}
+{{- $isLaptop := and (eq .chezmoi.os "linux") (not (not (stat "/proc/acpi/button/lid"))) -}}
 
 [diff]
   format = "git"
