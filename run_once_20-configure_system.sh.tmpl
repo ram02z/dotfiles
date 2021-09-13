@@ -1,30 +1,52 @@
 {{ if (eq .chezmoi.os "linux") -}}
 #!/bin/bash
+
+# Distro specifc
 {{ if (eq .chezmoi.osRelease.id "void")}}
-    {{ if and (not (eq (env "XDG_SESSION_DESKTOP") "sway"))
-    (not (env "XDG_RUNTIME_DIR")) }}
-# Setup pam_rundir
+{{ if and (not (eq (env "XDG_SESSION_DESKTOP") "sway")) (not (env "XDG_RUNTIME_DIR")) }}
+
+{{ if (not (stat "/var/service/seatd")) }}
+# Set up seatd
 sudo ln -s /etc/sv/seatd /var/service
 sudo usermod -a -G _seatd {{ (env "USER") }}
-# NOTE: maybe I should not edit this file automatically
-echo -ne '-session optional pam_rundir.so\n' | sudo tee -a /etc/pam.d/system-login
+{{- end -}}
 
+{{ if (eq (output "grep" "pam_rundir" "/etc/pam.d/system-login" "||" "true") "")}}
+# Set up pam_rundir
+echo -ne '-session optional pam_rundir.so\n' | sudo tee -a /etc/pam.d/system-login
+{{- end -}}
+
+{{ if (not (stat "/var/service/dbus")) }}
 # Set up dbus
 sudo ln -s /etc/sv/dbus /var/service
+{{ end }}
 
+{{ if (not (stat "/var/service/iwd")) }}
 # Set up iwd
 sudo ln -s /etc/sv/iwd /var/service
-sudo ln -s /etc/sv/ead /var/service
+{{ end }}
 
-# Set up ssh
+{{ if (not (stat "/var/service/ead")) }}
+# Set up ead
+sudo ln -s /etc/sv/ead /var/service
+{{ end }}
+
+{{ if (not (stat "/var/service/sshd")) }}
+# Set up openssh
 sudo ln -s /etc/sv/sshd /var/service
+{{ end }}
 
 {{ if .is_laptop }}
+{{ if (not (stat "/var/service/tlp")) }}
 # Set up tlp
 sudo ln -s /etc/sv/tlp /var/service
 {{ end }}
-    {{ end }}
 {{ end }}
+
+{{ end }}
+{{ end }}
+
+# General config
 {{ if not (contains "fish" (env "SHELL")) }}
 sudo -u {{ (env "USER") }} chsh -s "{{ or (lookPath "fish") (lookPath "bash") }}";
 {{- end }}
