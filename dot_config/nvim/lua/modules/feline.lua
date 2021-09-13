@@ -332,7 +332,7 @@ local get_char = require("utils.window").get_char
 -- TODO: add window character if the window is not active
 table.insert(components.inactive[1], {
   provider = function(_, winid)
-    return " "..get_char(vim.api.nvim_win_get_number(winid)).." "
+    return " " .. get_char(vim.api.nvim_win_get_number(winid)) .. " "
   end,
   hl = function()
     return {
