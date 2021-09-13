@@ -1,13 +1,6 @@
 local gitsigns = require("gitsigns")
 
 local gs_conf = {
-  signs = {
-    add = { hl = "DiffAdd", text = "│", numhl = "GitSignsAddNr", linehl = "GitSignsAddLn" },
-    change = { hl = "DiffChange", text = "│", numhl = "GitSignsChangeNr", linehl = "GitSignsChangeLn" },
-    delete = { hl = "DiffDelete", text = "_", numhl = "GitSignsDeleteNr", linehl = "GitSignsDeleteLn" },
-    topdelete = { hl = "DiffDelete", text = "‾", numhl = "GitSignsDeleteNr", linehl = "GitSignsDeleteLn" },
-    changedelete = { hl = "DiffChange", text = "~", numhl = "GitSignsChangeNr", linehl = "GitSignsChangeLn" },
-  },
   numhl = false,
   linehl = false,
   keymaps = {
@@ -42,7 +35,11 @@ local gs_conf = {
   update_debounce = 100,
   status_formatter = nil, -- Use default
   word_diff = false,
-  use_internal_diff = true, -- If vim.diff or luajit is present
+  diff_opts = {
+    algorithm = "myers",
+    internal = true,
+    indent_heuristic = true,
+  },
 }
 
 gitsigns.setup(gs_conf)

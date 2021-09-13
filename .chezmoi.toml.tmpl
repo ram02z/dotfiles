@@ -1,14 +1,22 @@
+{{- $rbw := lookPath "rbw" -}}
+{{- if not $rbw -}}
+{{- writeToStdout "rbw not found, bootstrapping will fail.\n" -}}
+{{- end -}}
+{{- $gpg := lookPath "gpg" -}}
+{{- if not $rbw -}}
+{{- writeToStdout "gpg not found, bootstrapping will fail.\n" -}}
+{{- end -}}
 {{- $fullName := "Omar Zeghouani" -}}
 {{- $email := promptString  "email" -}}
-{{- $gpgKey := secret "get" (cat $email "GPG short ID") -}}
-{{- $sshPublicKey := secret "get" (cat $email "SSH public key") -}}
-{{- $sshPrivateKey := secret "get" (cat $email "SSH private key") -}}
+{{- $gpgKey := output "rbw" "get" (cat $email "GPG short ID") | trim -}}
+{{- $sshPublicKey := output "rbw" "get" (cat $email "SSH public key") | trim -}}
+{{- $sshPrivateKey := output "rbw" "get" (cat $email "SSH private key") | trim -}}
 {{- $gitPager := or (lookPath "delta") "less -FRSX" -}}
 {{- $editor := or (lookPath "nvim") "vi" -}}
 {{- $isWsl := or (env "WSL_DISTRO_NAME") (env "WSLENV") | not | not -}}
 {{- $isWayland := and (and (eq .chezmoi.os "linux") (not $isWsl)) (promptBool "wayland") -}}
 {{- $isX11 := and (not $isWsl) (not $isWayland) -}}
-{{- $isLaptop := and (and (eq .chezmoi.os "linux") (not $isWsl)) (promptBool "laptop") -}}
+{{- $isLaptop := and (eq .chezmoi.os "linux") (not (stat "/sys/class/power_supply")) -}}
 
 [diff]
   format = "git"
@@ -19,7 +27,7 @@
   args = "-d"
 
 [secret]
-  command = {{ lookPath "rbw" | quote }}
+  command = {{ $rbw | quote }}
 
 [data]
   name = {{ $fullName | quote }}

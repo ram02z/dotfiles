@@ -28,7 +28,9 @@ sudo ln -s /etc/sv/tlp /var/service
 {{ if not (contains "fish" (env "SHELL")) }}
 sudo -u {{ (env "USER") }} chsh -s "{{ or (lookPath "fish") (lookPath "bash") }}";
 {{- end }}
-{{ if and (lookPath "gpg") (lookPath "rbw") (not (stat (list (env "HOME") "/.gnupg/pubring.kbx" | join ""))) -}}
-rbw get {{ quote (cat .email "GPG private key" ) }} | gpg --import
+{{ if and (lookPath "gpg") (not (stat (list (env "HOME") "/.gnupg/pubring.kbx" | join ""))) -}}
+export GPG_TTY=$(tty)
+rbw get {{ quote (cat .email "GPG private key" ) }} | gpg --import --batch
+unset GPG_TTY
 {{- end }}
 {{- end }}

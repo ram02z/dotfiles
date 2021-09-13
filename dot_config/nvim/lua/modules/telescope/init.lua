@@ -12,7 +12,7 @@ local tscope_config = {
 
     layout_strategy = "bottom_pane",
     layout_config = {
-      height = 10,
+      height = 11,
     },
 
     border = true,
@@ -36,6 +36,7 @@ local tscope_config = {
   },
   pickers = {
     buffers = {
+      sort_lastused = true,
       mappings = {
         i = {
           ["<C-d>"] = actions.delete_buffer,

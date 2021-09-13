@@ -1,7 +1,7 @@
 ### dotfiles
 
 #### Prerequisites:
-- chezmoi >= v2.1.2
+- chezmoi >= v2.2.0
 - rbw for gpg and ssh keys
 
 

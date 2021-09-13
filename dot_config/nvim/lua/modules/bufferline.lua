@@ -13,6 +13,7 @@ local bline_conf = {
       require("utils.buffer").bufwipeout(bufnum, { force = true })
     end,
     always_show_bufferline = false,
+    enforce_regular_tabs = true,
     diagnostics = "nvim_lsp",
     offsets = {
       { filetype = "undotree", highlight = "StatusLine", text_align = "left" },

@@ -178,6 +178,7 @@ packer.startup({
     use({
       "akinsho/bufferline.nvim",
       event = "BufReadPre",
+      disable = true,
       requires = { "kyazdani42/nvim-web-devicons" },
       config = [[require'modules.bufferline']],
     })
@@ -186,7 +187,7 @@ packer.startup({
     use({
       "famiu/feline.nvim",
       -- "~/Downloads/feline.nvim",
-      event = { "BufNewFile", "BufReadPre" },
+      -- event = { "BufNewFile", "BufReadPre" },
       -- event = "FileType nix",
       config = [[require'modules.feline']],
       -- config = [[require'feline'.setup()]]
@@ -244,7 +245,6 @@ packer.startup({
     use({
       -- '~/Downloads/vim',
       "ram02z/vim",
-      branch = "perf",
       as = "dracula",
       config = function()
         vim.cmd([[colorscheme dracula]])

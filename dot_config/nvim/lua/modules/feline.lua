@@ -1,11 +1,9 @@
 local vi_mode_utils = require("feline.providers.vi_mode")
 
-local properties = {
-  force_inactive = {
-    filetypes = {},
-    buftypes = {},
-    bufnames = {},
-  },
+local force_inactive = {
+  filetypes = {},
+  buftypes = {},
+  bufnames = {},
 }
 
 -- Initialize the components table
@@ -19,9 +17,7 @@ local components = {
   },
 }
 
--- FIXME: packer/nnn/telescope dont work
--- qf works after switching window
-properties.force_inactive.filetypes = {
+force_inactive.filetypes = {
   "packer",
   "undotree",
   "Outline",
@@ -35,7 +31,7 @@ properties.force_inactive.filetypes = {
   "qf",
 }
 
-properties.force_inactive.buftypes = {
+force_inactive.buftypes = {
   "terminal",
   "prompt",
   "nofile",
@@ -59,7 +55,8 @@ end
 
 -- Dracula-esque colors
 local colors = {
-  black = "#21222C",
+  bg = "#21222C",
+  fg = "#F8F8F2",
   gray = "#3A3C4E",
   light_gray = "#8791A5",
   purple = "#BD93F9",
@@ -69,7 +66,6 @@ local colors = {
   red = "#FF5555",
   magenta = "#EA51B2",
   pink = "#FF79C6",
-  white = "#F8F8F2",
   yellow = "#F1FA8C",
 }
 
@@ -111,7 +107,7 @@ table.insert(components.active[1], {
     return {
       name = vi_mode_utils.get_mode_highlight_name(),
       bg = vi_mode_utils.get_mode_color(),
-      fg = colors.black,
+      fg = colors.bg,
     }
   end,
   right_sep = " ",
@@ -332,31 +328,17 @@ table.insert(components.active[2], {
 --
 -- Inactive components
 --
--- local get_char = require("utils.window").get_char
+local get_char = require("utils.window").get_char
 -- TODO: add window character if the window is not active
 table.insert(components.inactive[1], {
-  provider = function()
-    -- FIXME: n needs to be passed by the provider I think
-    -- if vim.api.nvim_win_get_buf(n) ~= vim.api.nvim_get_current_buf() then
-    --   return " ? "
-    -- end
-    if vim.bo.buftype == "nowrite" or vim.bo.buftype == "nofile" then
-      return "  "
-    end
-    local mode = vi_mode_utils.get_vim_mode()
-    if #mode > 0 then
-      return " " .. mode:sub(1, 1) .. " "
-    end
-    return " \\ "
+  provider = function(_, winid)
+    return " "..get_char(vim.api.nvim_win_get_number(winid)).." "
   end,
   hl = function()
-    local val = {}
-
-    val.name = vi_mode_utils.get_mode_highlight_name()
-    val.bg = vi_mode_utils.get_mode_color()
-    val.fg = colors.black
-
-    return val
+    return {
+      bg = vi_mode_utils.get_mode_color(),
+      fg = colors.bg,
+    }
   end,
   right_sep = " ",
 })
@@ -367,10 +349,8 @@ table.insert(components.inactive[1], {
 })
 
 require("feline").setup({
-  default_bg = colors.black,
-  default_fg = colors.white,
   colors = colors,
   components = components,
-  properties = properties,
+  force_inactive = force_inactive,
   vi_mode_colors = vi_mode_colors,
 })
