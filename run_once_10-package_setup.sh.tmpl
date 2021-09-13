@@ -72,13 +72,22 @@ _addAptRepo() {
 }
 
 {{- if (eq .chezmoi.osRelease.id "void") }}
-packages=("fish-shell" "neovim" "python3-neovim"
+{{ if (not (stat "/etc/xbps.d/11-neovim-nightly.conf")) -}}
+# Add neovim-nightly repo
+if [[ $(xbps-uhelper arch) == *"musl"* ]]; then
+    echo 'repository=https://ram02z.github.io/neovim-nightly/musl' | sudo tee /etc/xbps.d/11-neovim-nightly.conf
+else
+    echo 'repository=https://ram02z.github.io/neovim-nightly/glibc' | sudo tee /etc/xbps.d/11-neovim-nightly.conf
+fi
+{{- end }}
+packages=("fish-shell" "neovim-nightly"
 "nnn" "git" "delta" "base-devel" "jq" "fzf" "gnupg"
 "curl" "ripgrep" "bottom" "zoxide" "bat" "fd"
 "exa" "hyperfine" "rustup" "trash-cli" "meson" "clang"
 "openssl-devel" "pinentry-tty" "fuzzypkg" "xtools");
 {{ if .is_laptop }}
-packages+=("tlp" "light");
+# NOTE: using tlp from my own repository
+packages+=("light");
 {{ end }}
 # TODO: Missing packages
 # neovim-nightly (c)
