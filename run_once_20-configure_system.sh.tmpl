@@ -11,7 +11,7 @@ sudo ln -s /etc/sv/seatd /var/service
 sudo usermod -a -G _seatd {{ (env "USER") }}
 {{- end -}}
 
-{{ if (eq (output "grep" "pam_rundir" "/etc/pam.d/system-login" "||" "true") "")}}
+{{ if (not (contains "pam_rundir.so" (output "cat" "/etc/pam.d/system-login"))) }}
 # Set up pam_rundir
 echo -ne '-session optional pam_rundir.so\n' | sudo tee -a /etc/pam.d/system-login
 {{- end -}}
@@ -48,7 +48,7 @@ sudo ln -s /etc/sv/tlp /var/service
 
 # General config
 {{ if not (contains "fish" (env "SHELL")) }}
-sudo -u {{ (env "USER") }} chsh -s "{{ or (lookPath "fish") (lookPath "bash") }}";
+sudo -u {{ (env "USER") }} chsh -s {{ or (lookPath "fish") (lookPath "bash") | quote }}
 {{- end }}
 {{ if and (lookPath "gpg") (not (stat (list (env "HOME") "/.gnupg/pubring.kbx" | join ""))) -}}
 export GPG_TTY=$(tty)
