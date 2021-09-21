@@ -47,15 +47,15 @@ xwayland disable
 {{ $playerctl := (lookPath "playerctl") }}
 exec swayidle -w \
         {{ if lookPath "light" -}}
-        timeout 100 'light -T 0.5' \
+        timeout 200 'light -T 0.5' \
             resume 'light -T 2.0' \
         {{ end -}}
         {{ if $playerctl -}}
-        timeout 200 'playerctl pause' \
+        timeout 400 'playerctl pause' \
         {{- end }}
-        timeout 200 'rbw lock' \
-        timeout 200 'setsid -f waylock' \
-        timeout 400 'swaymsg "output * dpms off"' \
+        timeout 400 'rbw lock' \
+        timeout 400 'setsid -f waylock' \
+        timeout 600 'swaymsg "output * dpms off"' \
             resume 'swaymsg "output * dpms on"'
 
 #
@@ -384,7 +384,7 @@ bindsym $mod+p exec fish -c sway-prop
 
 bindsym $mod+Shift+q exec fish -c sway-kill
 
-bindsym $mod+c exec pkill rofi || rofi -plugin-path /usr/lib/rofi -show calc -modi calc -no-show-match -no-sort
+bindsym $mod+c exec pkill rofi || rofi -show calc
 
 bindsym $mod+Print exec $HOME/.local/bin/sway-screenshot-dmenu
 bindsym Print exec $HOME/.local/bin/grimshot copy screen
@@ -418,9 +418,14 @@ bindsym $mod+d exec {{ lookPath "makoctl" }} dismiss
 exec {{ $kdeconnect }} --refresh
 {{ end }}
 
-# TODO: maybe switch to swayr
+{{ if ($swayr := (lookPath "swayr")) }}
+exec env RUST_BACKTRACE=1 {{ $swayr }}d > /tmp/swayrd.log 2>&1
+bindsym $mod+Tab exec env RUST_BACKTRACE=1 \
+    swayr switch-window >> /tmp/swayr.log 2>&1
+bindsym $alt+Tab exec env RUST_BACKTRACE=1 \
+    swayr switch-to-urgent-or-lru-window >> /tmp/swayr.log 2>&1
+{{ else if ($i3_focus_last := (lookPath "i3-focus-last")) }}
 # cargo install --git https://github.com/lbonn/i3-focus-last
-{{ if ($i3_focus_last := (lookPath "i3-focus-last")) }}
 exec {{ $i3_focus_last }} server
 bindsym $mod+Tab exec {{ $i3_focus_last}} menu
 bindsym $alt+Tab exec {{ $i3_focus_last }}
@@ -467,7 +472,7 @@ bar {
     position top
     mode dock
     height 18
-    font pango:Fira Code, Symbols Nerd Font
+    font pango:Iosevka, Symbols Nerd Font
     {{ if ($i3status := (lookPath "i3status-rs")) }}
     status_command {{ $i3status }} $HOME/.config/i3status-rust/config.toml
     {{ else }}

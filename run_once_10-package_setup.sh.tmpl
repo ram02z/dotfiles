@@ -80,32 +80,24 @@ else
     echo 'repository=https://ram02z.github.io/neovim-nightly/glibc' | sudo tee /etc/xbps.d/11-neovim-nightly.conf
 fi
 {{- end }}
-packages=("fish-shell" "neovim-nightly"
+packages=("fish-shell" "neovim-nightly" "chrony"
 "nnn" "git" "delta" "base-devel" "jq" "fzf" "gnupg"
-"curl" "ripgrep" "bottom" "zoxide" "bat" "fd"
+"curl" "ripgrep" "bottom" "zoxide" "bat" "fd" "nftables"
 "exa" "hyperfine" "rustup" "trash-cli" "meson" "clang"
-"openssl-devel" "pinentry-tty" "fuzzypkg" "xtools");
+"openresolv" "pinentry-tty" "fuzzypkg" "xtools" "dcron");
 {{ if .is_laptop }}
-# NOTE: using tlp from my own repository
 packages+=("light");
 {{ end }}
-# TODO: Missing packages
-# neovim-nightly (c)
-# swayr or i3-focus-last & autotiling-rs (rust)
-# swaywsr (rust)
-# rofi-wayland and calc (c)
-# tlp 1.4
-# rbw (rust)
-# ncspot (rust)
 # NOTE: Replace packages
 # pam_rundir -> rundird
 {{ if .is_wayland -}}
-packages+=("sway" "seatd" "polkit" "firefox" "foot" "libappindicator"
+packages+=("sway" "seatd" "polkit" "firefox" "foot" "poweralertd"
     "wdisplays" "waylock" "bluez" "pipewire" "pulseaudio-utils"
     "mpv" "libnotify" "wl-clipboard" "CopyQ" "swayidle" "wtype"
     "pam_rundir" "font-iosevka" "i3status-rust" "python3-i3ipc"
     "mesa-dri" "iwd" "wev" "slurp" "grim" "mako" "kdeconnect"
-    "iwgtk" "playerctl" "noto-fonts-emoji");
+    "iwgtk" "playerctl" "noto-fonts-emoji" "dejavu-fonts-ttf"
+    "grimshot");
 {{- end }}
 {{ else if (eq (get .chezmoi.osRelease "idLike") "arch") }}
 # Assumes we are running sway
@@ -137,8 +129,5 @@ packages=("fish" "neovim" "python3-neovim" "nnn" "build-essential" "bat-musl"
 {{ end }}
 _installMany "${packages[@]}";
 
-{{- if and (lookPath "curl") (not (lookPath "rustup")) }}
-curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh;
-{{ end }}
 # vim: ft=sh
 {{- end }}

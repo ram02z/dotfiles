@@ -16,32 +16,38 @@ sudo usermod -a -G _seatd {{ (env "USER") }}
 echo -ne '-session optional pam_rundir.so\n' | sudo tee -a /etc/pam.d/system-login
 {{- end -}}
 
-{{ if (not (stat "/var/service/dbus")) }}
+{{ if and (not (stat "/etc/sv/dbus")) (not (stat "/var/service/dbus")) }}
 # Set up dbus
 sudo ln -s /etc/sv/dbus /var/service
 {{ end }}
 
-{{ if (not (stat "/var/service/iwd")) }}
+{{ if and (stat "/etc/sv/iwd") (not (stat "/var/service/iwd")) }}
 # Set up iwd
 sudo ln -s /etc/sv/iwd /var/service
 {{ end }}
 
-{{ if (not (stat "/var/service/ead")) }}
+{{ if and (stat "/etc/sv/ead") (not (stat "/var/service/ead")) }}
 # Set up ead
 sudo ln -s /etc/sv/ead /var/service
 {{ end }}
 
-{{ if (not (stat "/var/service/sshd")) }}
+{{ if and (stat "/etc/sv/sshd") (not (stat "/var/service/sshd")) }}
 # Set up openssh
 sudo ln -s /etc/sv/sshd /var/service
 {{ end }}
 
-{{ if .is_laptop }}
-{{ if (not (stat "/var/service/tlp")) }}
-# Set up tlp
-sudo ln -s /etc/sv/tlp /var/service
+{{ if and (stat "/etc/sv/chronyd") (not (stat "/var/service/chronyd")) }}
+# Set up openntpd
+sudo ln -s /etc/sv/chronyd /var/service
+{{ if (not (stat "/etc/localtime")) }}
+sudo ln -sf /usr/share/zoneinfo/Europe/London /etc/localtime
 {{ end }}
 {{ end }}
+
+{{ if and (stat "/etc/sv/bluetoothd") (not (stat "/var/service/bluetoothd")) }}
+# Set up bluetooth
+sudo ln -s /etc/sv/bluetoothd /var/service
+{{- end -}}
 
 {{ end }}
 {{ end }}
@@ -55,4 +61,5 @@ export GPG_TTY=$(tty)
 rbw get {{ quote (cat .email "GPG private key" ) }} | gpg --import --batch
 unset GPG_TTY
 {{- end }}
+# vim: ft=chezmoitmpl
 {{- end }}

@@ -64,7 +64,7 @@ def conf_path():
     home_dir = os.environ["HOME"]
     xdg_dir = os.environ.get("XDG_CONFIG_DIR", "{}/.config".format(home_dir))
 
-    return xdg_dir + "/i3/i3-quickterm.json"
+    return xdg_dir + "/i3-quickterm.json"
 
 
 def read_conf(fn):
@@ -116,13 +116,13 @@ def pop_it(conn, mark_name, pos="top", ratio=0.25):
 
     height = int(wheight * ratio)
     posx = wx
-    
+
 
     if pos == "bottom":
         margin = 6
         posy = wy + wheight - height - margin
     elif pos == "center":
-        width = int(width * (ratio / 1.25)) 
+        width = int(width * (ratio / 1.25))
         posy =  (wheight + wy) / 2
     else:  # pos == 'top'
         posy = wy

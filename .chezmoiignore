@@ -8,17 +8,13 @@ README.md
 .config/sway/**
 .config/sway/
 {{ end }}
+{{ if not (lookPath "swayr") }}
+.config/swayr/**
+.config/sway/
+{{ end }}
 {{ if not (lookPath "copyq") }}
 .config/copyq/**
 .config/copyq/
-{{ end }}
-{{ if or (not (lookPath "i3")) (not (lookPath "i3-quickterm")) }}
-.config/i3/**
-.config/i3/
-{{ end }}
-{{ if not (lookPath "i3-focus-last") }}
-.config/i3-focus-last/**
-.config/i3-focus-last/
 {{ end }}
 {{ if not (lookPath "i3status-rs") }}
 .config/i3status-rust/**
@@ -49,6 +45,7 @@ README.md
 .config/gtk-3.0/
 .config/fontconfig/**
 .config/fontconfig/
+.config/i3-quickterm.json
 .local/**
 .local/
 .icons/**

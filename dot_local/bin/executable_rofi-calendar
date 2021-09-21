@@ -58,7 +58,7 @@ selected="$(echo $month_page \
     -dmenu \
     -font $FONT \
     -m -3 \
-    -lines $(echo $month_page | wc -l) \
+    -l $(echo $month_page | wc -l) \
     -theme-str '#window {anchor: '"$anchor"'; location: northeast; width: 14em;}' \
     -selected-row $current_row \
     -markup-rows \

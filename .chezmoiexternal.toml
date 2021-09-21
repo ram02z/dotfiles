@@ -13,7 +13,7 @@
   url = "https://github.com/ram02z/Simp1e-dark/archive/master.tar.gz"
   exact = true
   stripComponents = 1
-{{ if (.is_wayland) -}}
+{{ if and (.is_wayland) (not (lookPath "grimshot")) -}}
 [".local/bin/grimshot"]
   type = "file"
   url  = "https://github.com/swaywm/sway/raw/master/contrib/grimshot"

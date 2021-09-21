@@ -9,7 +9,7 @@
         "spotify": "{$SHELL} -c 'ncspot'",
         "btm_simple": "{$SHELL} -c 'btm -b'",
         "battery": "{$SHELL} -c 'battop'",
-        "weather": "{$SHELL} -c 'curl \"wttr.in/?1n\"'"
+        "weather": "{$SHELL} -c 'curl \"https://wttr.in/?1n\"'"
 
     }
 }
