@@ -1,4 +1,5 @@
 local M = {}
+local cmd = vim.api.nvim_command
 
 M.t = function(str)
   return vim.api.nvim_replace_termcodes(str, true, true, true)
@@ -150,11 +151,11 @@ M.toggle_qf = function()
     end
   end
   if qf_open == true then
-    vim.cmd("cclose")
+    cmd("cclose")
     return
   end
   if not vim.tbl_isempty(vim.fn.getqflist()) then
-    vim.cmd("copen")
+    cmd("copen")
   end
 end
 
@@ -166,11 +167,11 @@ M.toggle_loc = function()
     end
   end
   if loc_open == true then
-    vim.cmd("lclose")
+    cmd("lclose")
     return
   end
   if not vim.tbl_isempty(vim.fn.getloclist(0)) then
-    vim.cmd("lopen")
+    cmd("lopen")
   end
 end
 

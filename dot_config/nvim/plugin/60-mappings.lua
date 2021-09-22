@@ -1,5 +1,8 @@
 local K = vim.keymap
 
+-- Disable exmode
+K.nnoremap({ "Q", "<nop>" })
+
 -- Yank
 -- NOTE: #13268 got merged
 -- K.nmap({ "Y", "y$" })

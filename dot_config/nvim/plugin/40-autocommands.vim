@@ -45,6 +45,7 @@ autocmd BufEnter *.txt call utils#helpvsplit()
 
 augroup windows
   autocmd!
+  autocmd BufNew * call utils#handle_win()
   autocmd FileType * call utils#handle_win()
 augroup END
 

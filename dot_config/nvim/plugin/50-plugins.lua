@@ -98,8 +98,8 @@ packer.startup({
       event = "InsertEnter",
       module = "cmp",
       requires = {
-        { "saadparwaiz1/cmp_luasnip", after = "nvim-cmp" },
         { "hrsh7th/cmp-nvim-lsp", after = "nvim-cmp" },
+        { "hrsh7th/cmp-nvim-lua", ft = "lua" },
         { "hrsh7th/cmp-path", after = "nvim-cmp" },
         { "hrsh7th/cmp-buffer", after = "nvim-cmp" },
       },
@@ -186,6 +186,8 @@ packer.startup({
     -- Statusline
     use({
       "famiu/feline.nvim",
+      -- tag = "v0.1.1",
+      branch = "develop",
       -- "~/Downloads/feline.nvim",
       -- event = { "BufNewFile", "BufReadPre" },
       -- event = "FileType nix",
@@ -237,27 +239,6 @@ packer.startup({
             "table",
           },
         })
-      end,
-    })
-
-    -- Colorscheme
-    -- FIXME: Syntax files in the after directory aren't reloaded on PackerCompile
-    use({
-      -- '~/Downloads/vim',
-      "ram02z/vim",
-      as = "dracula",
-      config = function()
-        vim.cmd([[colorscheme dracula]])
-      end,
-    })
-
-    use({
-      "folke/tokyonight.nvim",
-      disable = true,
-      config = function()
-        vim.g.tokyonight_terminal_colors = false
-        vim.g.tokyonight_style = "night"
-        vim.cmd([[colorscheme tokyonight]])
       end,
     })
 
@@ -457,17 +438,17 @@ packer.startup({
         -- Register pickers
         vim.keymap.inoremap({
           "<C-r>",
-          "<cmd>Telescope registers theme=get_cursor layout_config={height=14}<CR>",
+          "<cmd>Telescope registers theme=get_cursor layout_config={height=18}<CR>",
           silent = true,
         })
         vim.keymap.xnoremap({
           '"',
-          "<cmd>Telescope registers theme=get_cursor layout_config={height=14}<CR><Esc>",
+          "<cmd>Telescope registers theme=get_cursor layout_config={height=18}<CR><Esc>",
           silent = true,
         })
         vim.keymap.nnoremap({
           '"',
-          "<cmd>Telescope registers theme=get_cursor layout_config={height=14}<CR>",
+          "<cmd>Telescope registers theme=get_cursor layout_config={height=18}<CR>",
           silent = true,
         })
       end,

@@ -3,6 +3,7 @@
 -- current tab page.
 local api = vim.api
 local fn = vim.fn
+local cmd = api.nvim_command
 local M = {}
 
 -- The keycode for the Escape key, used to cancel the window picker.
@@ -32,7 +33,7 @@ local config = {
 
   -- A group to use for overwriting the Normal highlight group in the floating
   -- window. This can be used to change the background color.
-  normal_hl = "BlackOnPink",
+  normal_hl = "BlackOnPurple",
 
   -- The highlight group to apply to the line that contains the hint characters.
   -- This is used to make them stand out more.
@@ -142,7 +143,7 @@ function M.pick()
 
   -- We need to redraw here, otherwise the floats won't show up until after the
   -- getchar() call.
-  vim.cmd("redraw")
+  cmd("redraw")
 
   local char = fn.getchar()
   local key = fn.nr2char(char)

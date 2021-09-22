@@ -5,14 +5,13 @@ local actions = require("telescope.actions")
 
 local tscope_config = {
   defaults = {
-    -- TODO: better bottom pane (telescope.nvim #765)
     sorting_strategy = "ascending",
 
     preview_title = "",
 
     layout_strategy = "bottom_pane",
     layout_config = {
-      height = 11,
+      height = 13,
     },
 
     border = true,

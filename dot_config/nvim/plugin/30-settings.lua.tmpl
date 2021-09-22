@@ -1,50 +1,45 @@
-local opt = setmetatable({}, {
-  __newindex = function(_, key, value)
-    vim.o[key] = value
-    vim.bo[key] = value
-  end,
-})
-
 vim.g.mapleader = " "
 
-opt.undolevels = 10000
+vim.o.tabline = "%!v:lua.require'modules.tabline'.tabline()"
+
+vim.opt.undolevels = 10000
 
 -- Overriden by vim-undodir-tree
-vim.o.undofile = false
+vim.opt.undofile = false
 
 {{ if (eq .chezmoi.os "linux") -}}
-vim.o.shell = '{{ or (lookPath "bash") (lookPath "sh")}}'
+vim.opt.shell = '{{ or (lookPath "bash") (lookPath "sh")}}'
 {{- end }}
 
-vim.o.backup = false
-vim.o.writebackup = true
+vim.opt.backup = false
+vim.opt.writebackup = true
 
-vim.o.confirm = true
+vim.opt.confirm = true
 
-vim.o.updatetime = 250
+vim.opt.updatetime = 250
 
-vim.o.termguicolors = true
+vim.opt.termguicolors = true
 
-vim.o.hidden = true
+vim.opt.hidden = true
 
-vim.o.hlsearch = true
-vim.o.ignorecase = true
-vim.o.infercase = true
-vim.o.smartcase = true
-vim.o.wildignorecase = true
+vim.opt.hlsearch = true
+vim.opt.ignorecase = true
+vim.opt.infercase = true
+vim.opt.smartcase = true
+vim.opt.wildignorecase = true
 
-vim.o.virtualedit = "block"
+vim.opt.virtualedit = "block"
 
-vim.o.mouse = "nv"
+vim.opt.mouse = "nv"
 
-vim.o.lazyredraw = true
+vim.opt.lazyredraw = true
 
-vim.o.whichwrap = "<,>,h,l,[,]"
+vim.opt.whichwrap = "<,>,h,l,[,]"
 
-vim.o.viewoptions = ""
+vim.opt.viewoptions = ""
 
-vim.o.showbreak = "↳\\"
-vim.o.list = true
+vim.opt.showbreak = "↳\\"
+vim.opt.list = true
 vim.opt.listchars = {
   space = "⋅",
   eol = "↲",
@@ -59,17 +54,19 @@ vim.opt.fillchars = {
   diff = "╱",
 }
 
-vim.wo.wrap = true
-vim.wo.linebreak = true
-vim.wo.breakindent = true
-vim.wo.breakindentopt = "sbr"
+vim.opt.showtabline = 2
 
-vim.wo.foldenable = false
+vim.opt.wrap = true
+vim.opt.linebreak = true
+vim.opt.breakindent = true
+vim.opt.breakindentopt = "sbr"
 
-vim.wo.number = true
-vim.wo.relativenumber = true
+vim.opt.foldenable = false
 
-vim.wo.signcolumn = "yes:1"
+vim.opt.number = true
+vim.opt.relativenumber = true
+
+vim.opt.signcolumn = "yes:1"
 
 -- Ensure c syntax is use for header files
 vim.g.c_syntax_for_h = 1

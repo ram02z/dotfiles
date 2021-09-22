@@ -44,7 +44,7 @@ endfunction
 
 " Used to set darker winhighlight for specific filetypes
 function! utils#handle_win()
-  let l:sidebar = ['undotree', 'Outline', 'qf']
+  let l:sidebar = ['undotree', 'Outline', 'qf', 'DiffviewFiles', 'DiffviewFileHistory']
   if index(l:sidebar, &filetype) >= 0
     setlocal winhighlight=Normal:TabLineFill
   endif
