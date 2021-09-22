@@ -26,9 +26,11 @@ M.tabline = function()
     end
     line = line .. " "
     buf_name = vim.api.nvim_buf_get_name(cur_buf)
-    if buf_name == ""
-    or vim.api.nvim_win_get_config(curr_win).relative ~= ""
-    or vim.tbl_contains(disabled_fts, vim.bo[cur_buf].filetype) then
+    if
+      buf_name == ""
+      or vim.api.nvim_win_get_config(curr_win).relative ~= ""
+      or vim.tbl_contains(disabled_fts, vim.bo[cur_buf].filetype)
+    then
       buf_name = "[No Name]"
       if vim.bo[cur_buf].filetype ~= "" and cached_tabs[tab] then
         buf_name = cached_tabs[tab]
