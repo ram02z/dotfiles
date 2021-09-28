@@ -10,15 +10,15 @@ local ts_config = {
     enable = true,
     -- additional_vim_regex_highlighting = true,
   },
-  incremental_selection = {
-    enable = true,
-    keymaps = {
-      init_selection = "gnn",
-      node_incremental = "grn",
-      scope_incremental = "grc",
-      node_decremental = "grm",
-    },
-  },
+  -- incremental_selection = {
+  --   enable = true,
+  --   keymaps = {
+  --     init_selection = "gnn",
+  --     node_incremental = "grn",
+  --     scope_incremental = "grc",
+  --     node_decremental = "grm",
+  --   },
+  -- },
   -- Disabled until merge
   -- https://github.com/nvim-treesitter/nvim-treesitter/pull/1127
   indent = {

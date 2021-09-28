@@ -18,17 +18,18 @@ cmp.setup({
       require("luasnip").lsp_expand(args.body)
     end,
   },
-  -- preselect = cmp.PreselectMode.None,
-  -- experimental = {
-  --   ghost_text = true,
-  -- },
+  preselect = cmp.PreselectMode.None,
+  experimental = {
+    ghost_text = true,
+    native_menu = false,
+  },
   mapping = {
     ["<C-p>"] = cmp.mapping.select_prev_item(),
     ["<C-n>"] = cmp.mapping.select_next_item(),
     ["<C-d>"] = cmp.mapping.scroll_docs(-4),
     ["<C-f>"] = cmp.mapping.scroll_docs(4),
     ["<C-Space>"] = function()
-      if fn.pumvisible() == 1 then
+      if cmp.visible() then
         cmp.close()
       else
         cmp.complete()
@@ -39,8 +40,8 @@ cmp.setup({
       select = false,
     }),
     ["<Tab>"] = cmp.mapping(function()
-      if fn.pumvisible() == 1 then
-        fn.feedkeys(utils.t("<C-n>"), "n")
+      if cmp.visible() then
+        cmp.select_next_item()
       elseif utils.invalid_prev_col() then
         fn.feedkeys(utils.t("<Tab>"), "n")
       elseif require("luasnip").expand_or_jumpable() then
@@ -53,10 +54,10 @@ cmp.setup({
       "s",
     }),
     ["<S-Tab>"] = cmp.mapping(function()
-      if fn.pumvisible() == 1 then
-        fn.feedkeys(utils.t("<C-p>"), "n")
+      if cmp.visible() then
+        cmp.select_prev_item()
       elseif require("luasnip").jumpable(-1) then
-        vim.fn.feedkeys(utils.t("<Plug>luasnip-jump-prev"), "")
+        fn.feedkeys(utils.t("<Plug>luasnip-jump-prev"), "")
       else
         fn.feedkeys(utils.t("<C-d>"), "n")
       end

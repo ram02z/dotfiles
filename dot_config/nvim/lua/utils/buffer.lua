@@ -4,7 +4,10 @@ local cmd = vim.api.nvim_command
 
 -- opts: force
 M.bufwipeout = function(bufnr, opts)
-  local buffers = vim.api.nvim_list_bufs()
+  local buffers = vim.tbl_filter(
+    vim.api.nvim_buf_is_loaded,
+    vim.api.nvim_list_bufs()
+  )
   -- exit if buffer number is invalid
   if bufnr and not vim.tbl_contains(buffers, bufnr) then
     return

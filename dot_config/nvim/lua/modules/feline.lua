@@ -42,12 +42,6 @@ force_inactive.buftypes = {
 -- Helper functions
 --
 
--- Returns true if 1/2 window width is greater than cols
-local has_width_gt = function(cols, winid)
-  winid = winid or 0
-  return vim.api.nvim_win_get_width(winid) > cols
-end
-
 -- Returns number of buffers in current tabpage
 local no_buffers = function(winid)
   winid = winid or 0
@@ -126,7 +120,7 @@ table.insert(components.active[1], {
   provider = "file_type",
   hl = { fg = "light_gray" },
   enabled = function(winid)
-    return vim.bo.buftype == "" and has_width_gt(50, winid)
+    return vim.bo.buftype == ""
   end,
   right_sep = " ",
 })
@@ -135,41 +129,34 @@ table.insert(components.active[1], {
   provider = "file_size",
   hl = { fg = "light_gray" },
   enabled = function(winid)
-    return vim.bo.buftype == "" and vim.bo.filetype ~= "" and has_width_gt(60, winid)
+    return vim.bo.buftype == "" and vim.bo.filetype ~= ""
   end,
+  truncate_hide = true,
   -- right_sep = ' '
 })
 
 table.insert(components.active[1], {
   provider = "diagnostic_errors",
-  enabled = function(winid)
-    return has_width_gt(80, winid)
-  end,
   hl = { fg = "red" },
+  truncate_hide = true,
 })
 
 table.insert(components.active[1], {
   provider = "diagnostic_warnings",
-  enabled = function(winid)
-    return has_width_gt(80, winid)
-  end,
   hl = { fg = "orange" },
+  truncate_hide = true,
 })
 
 table.insert(components.active[1], {
   provider = "diagnostic_hints",
-  enabled = function(winid)
-    return has_width_gt(80, winid)
-  end,
   hl = { fg = "cyan" },
+  truncate_hide = true,
 })
 
 table.insert(components.active[1], {
   provider = "diagnostic_info",
-  enabled = function(winid)
-    return has_width_gt(80, winid)
-  end,
   hl = { fg = "cyan" },
+  truncate_hide = true,
 })
 
 --
@@ -177,35 +164,32 @@ table.insert(components.active[1], {
 --
 table.insert(components.active[2], {
   provider = "git_diff_added",
-  enabled = function()
-    return has_width_gt(70)
-  end,
   hl = {
     fg = "green",
   },
   icon = " +",
+  truncate_hide = true,
+  priority = 1,
 })
 
 table.insert(components.active[2], {
   provider = "git_diff_changed",
-  enabled = function(winid)
-    return has_width_gt(70, winid)
-  end,
   hl = {
     fg = "orange",
   },
   icon = " ~",
+  truncate_hide = true,
+  priority = 1,
 })
 
 table.insert(components.active[2], {
   provider = "git_diff_removed",
-  enabled = function(winid)
-    return has_width_gt(70, winid)
-  end,
   hl = {
     fg = "red",
   },
   icon = " -",
+  truncate_hide = true,
+  priority = 1,
 })
 
 table.insert(components.active[2], {
@@ -214,10 +198,9 @@ table.insert(components.active[2], {
     fg = "pink",
   },
   icon = "  ",
-  enabled = function(winid)
-    return has_width_gt(50, winid)
-  end,
   left_sep = " ",
+  truncate_hide = true,
+  priority = 2,
 })
 
 local cached_git_dirs = {}
@@ -242,8 +225,9 @@ table.insert(components.active[2], {
     return git_basename
   end,
   enabled = function(winid)
-    return vim.b.gitsigns_status_dict and has_width_gt(60, winid)
+    return vim.b.gitsigns_status_dict
   end,
+  truncate_hide = true,
   hl = {
     fg = "cyan",
     style = "bold",
@@ -253,14 +237,13 @@ table.insert(components.active[2], {
 
 table.insert(components.active[2], {
   provider = "position",
-  enabled = function()
-    return has_width_gt(40)
-  end,
   hl = {
     fg = "light_gray",
   },
   left_sep = " ",
   right_sep = " ",
+  truncate_hide = true,
+  priority = 1,
 })
 
 table.insert(components.active[2], {
@@ -268,10 +251,8 @@ table.insert(components.active[2], {
   hl = {
     fg = "light_gray",
   },
-  enabled = function(winid)
-    return has_width_gt(40, winid)
-  end,
   left_sep = " ",
+  truncate_hide = true,
 })
 
 --
@@ -279,7 +260,7 @@ table.insert(components.active[2], {
 --
 local get_char = require("utils.window").get_char
 table.insert(components.inactive[1], {
-  provider = function(_, winid)
+  provider = function(winid)
     -- NOTE: this fails once it windows exceed amount of chars
     return " " .. (get_char(vim.api.nvim_win_get_number(winid)) or "\\") .. " "
   end,

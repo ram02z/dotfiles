@@ -95,6 +95,7 @@ packer.startup({
 
     use({
       "hrsh7th/nvim-cmp",
+      branch = "custom-menu",
       event = "InsertEnter",
       module = "cmp",
       requires = {
@@ -186,7 +187,7 @@ packer.startup({
     -- Statusline
     use({
       "famiu/feline.nvim",
-      -- tag = "v0.1.1",
+      -- tag = "v0.2.1",
       branch = "develop",
       -- "~/Downloads/feline.nvim",
       -- event = { "BufNewFile", "BufReadPre" },
@@ -257,6 +258,9 @@ packer.startup({
 
     -- Automatically set `paste`
     use({ "ConradIrwin/vim-bracketed-paste" })
+
+    -- Faster filetype detection
+    use({ "nathom/filetype.nvim" })
 
     -- OSC52 yank
     use({
@@ -536,7 +540,7 @@ packer.startup({
       "AndrewRadev/splitjoin.vim",
       -- FIXME: keys don't load instantly (seems to be a vim plugin issue)
       -- experienced the same with vim-sandwich
-      config = function()
+      setup = function()
         vim.g.splitjoin_split_mapping = "sj"
         vim.g.splitjoin_join_mapping = "sk"
       end,
@@ -659,7 +663,14 @@ packer.startup({
     -- Multiple cursors
     use({
       "mg979/vim-visual-multi",
-      keys = { "<C-n>", "<C-Down>", "<C-Up>" },
+      keys = {
+        "<C-n>",
+        "<C-Down>",
+        "<C-Up>",
+        "<S-Right>",
+        "<S-Left>",
+        "\\\\",
+      },
     })
 
     -- Text manipulation

@@ -143,7 +143,7 @@ hi! link DiagnosticWarn DraculaOrange
 hi! link DiagnosticVirtualTextInfo DraculaInfoBg
 hi! link DiagnosticVirtualTextHint DraculaInfoBg
 hi! link DiagnosticVirtualTextError DraculaErrorBg
-hi! link DiagnosticVirtualTextWarn DraculaWarningBg
+hi! link DiagnosticVirtualTextWarn DraculaWarnBg
 hi! link DiagnosticUnderlineError DraculaErrorLine
 hi! link DiagnosticUnderlineHint DraculaInfoLine
 hi! link DiagnosticUnderlineInfo DraculaInfoLine

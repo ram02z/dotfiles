@@ -8,7 +8,7 @@ local m = require("luasnip.extras").match
 local r = require("luasnip.extras").rep
 
 -- TODO: use treesitter to for pairs
--- use tabout.nvim for inspiration
+-- ref tabout.nvim for inspiration
 local function char_count_nequal(c1, c2)
   local line = vim.api.nvim_get_current_line()
   -- '%'-escape chars to force explicit match (gsub accepts patterns).
@@ -50,6 +50,7 @@ end
 
 ls.config.set_config({
   history = true,
+  delete_check_events = "InsertLeave",
 })
 
 ls.snippets = {

@@ -34,3 +34,6 @@ K.nnoremap({ "<Leader>w", require("utils.window").pick, silent = true })
 -- Toggle lists
 K.nnoremap({ "<Leader>]", require("utils.misc").toggle_qf, silent = true })
 K.nnoremap({ "<Leader>[", require("utils.misc").toggle_loc, silent = true })
+
+-- Search and replace
+K.nnoremap({ "<Leader>sr", ":%s/\\<<C-r><C-w>\\>//g<left><left>", silent = true })
