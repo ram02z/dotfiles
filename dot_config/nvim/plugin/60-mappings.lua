@@ -3,6 +3,11 @@ local K = vim.keymap
 -- Disable exmode
 K.nnoremap({ "Q", "<nop>" })
 
+vim.cmd [[
+command! -nargs=0 W :w
+command! -nargs=0 Q :q
+]]
+
 -- Yank
 -- NOTE: #13268 got merged
 -- K.nmap({ "Y", "y$" })

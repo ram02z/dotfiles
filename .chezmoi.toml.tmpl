@@ -9,8 +9,8 @@
 {{- $fullName := "Omar Zeghouani" -}}
 {{- $email := promptString  "email" -}}
 {{- $gpgKey := output "rbw" "get" (cat $email "GPG short ID") | trim -}}
-{{- $sshPublicKey := output "rbw" "get" (cat $email "SSH public key") | trim -}}
-{{- $sshPrivateKey := output "rbw" "get" (cat $email "SSH private key") | trim -}}
+{{- $sshPublicKey := output "rbw" "get" (cat "SSH public key") | trim -}}
+{{- $sshPrivateKey := output "rbw" "get" (cat "SSH private key") | trim -}}
 {{- $gitPager := or (lookPath "delta") "less -FRSX" -}}
 {{- $editor := or (lookPath "nvim") "vi" -}}
 {{- $isWsl := or (env "WSL_DISTRO_NAME") (env "WSLENV") | not | not -}}

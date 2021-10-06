@@ -42,12 +42,6 @@ force_inactive.buftypes = {
 -- Helper functions
 --
 
--- Returns number of buffers in current tabpage
-local no_buffers = function(winid)
-  winid = winid or 0
-  return #vim.api.nvim_tabpage_list_wins(vim.api.nvim_win_get_tabpage(winid))
-end
-
 -- Dracula-esque colors
 local colors = {
   bg = "#21222C",
@@ -119,7 +113,7 @@ table.insert(components.active[1], {
 table.insert(components.active[1], {
   provider = "file_type",
   hl = { fg = "light_gray" },
-  enabled = function(winid)
+  enabled = function()
     return vim.bo.buftype == ""
   end,
   right_sep = " ",
@@ -128,7 +122,7 @@ table.insert(components.active[1], {
 table.insert(components.active[1], {
   provider = "file_size",
   hl = { fg = "light_gray" },
-  enabled = function(winid)
+  enabled = function()
     return vim.bo.buftype == "" and vim.bo.filetype ~= ""
   end,
   truncate_hide = true,
@@ -224,7 +218,7 @@ table.insert(components.active[2], {
 
     return git_basename
   end,
-  enabled = function(winid)
+  enabled = function()
     return vim.b.gitsigns_status_dict
   end,
   truncate_hide = true,
@@ -260,9 +254,9 @@ table.insert(components.active[2], {
 --
 local get_char = require("utils.window").get_char
 table.insert(components.inactive[1], {
-  provider = function(winid)
+  provider = function()
     -- NOTE: this fails once it windows exceed amount of chars
-    return " " .. (get_char(vim.api.nvim_win_get_number(winid)) or "\\") .. " "
+    return " " .. (get_char(vim.api.nvim_win_get_number(0)) or "\\") .. " "
   end,
   hl = {
     bg = colors.purple,

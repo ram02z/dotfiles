@@ -540,6 +540,7 @@ packer.startup({
       "AndrewRadev/splitjoin.vim",
       -- FIXME: keys don't load instantly (seems to be a vim plugin issue)
       -- experienced the same with vim-sandwich
+      event = "BufRead",
       setup = function()
         vim.g.splitjoin_split_mapping = "sj"
         vim.g.splitjoin_join_mapping = "sk"
