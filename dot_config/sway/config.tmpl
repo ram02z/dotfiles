@@ -190,15 +190,19 @@ seat seat0 xcursor_theme "Simp1e-dark" 16
 #
 
 {{ if ($volumectl := (lookPath "pactl")) }}
-bindsym XF86AudioRaiseVolume exec {{ $volumectl }} set-sink-volume @DEFAULT_SINK@ +5%
-bindsym XF86AudioLowerVolume exec {{ $volumectl }} set-sink-volume @DEFAULT_SINK@ -5%
+bindsym XF86AudioRaiseVolume exec {{ $volumectl }} set-sink-volume @DEFAULT_SINK@ +2%
+bindsym XF86AudioLowerVolume exec {{ $volumectl }} set-sink-volume @DEFAULT_SINK@ -2%
+bindsym $mod+XF86AudioRaiseVolume exec {{ $volumectl }} set-sink-volume @DEFAULT_SINK@ +5%
+bindsym $mod+XF86AudioLowerVolume exec {{ $volumectl }} set-sink-volume @DEFAULT_SINK@ -5%
 bindsym XF86AudioMute exec {{ $volumectl }} set-sink-mute @DEFAULT_SINK@ toggle
 bindsym XF86AudioMicMute exec {{ $volumectl }} set-source-mute @DEFAULT_SOURCE@ toggle
 {{ end }}
 
 {{ if ($lightctl := (lookPath "light")) }}
-bindsym XF86MonBrightnessUp exec {{ $lightctl }} -A 5
-bindsym XF86MonBrightnessDown exec {{ $lightctl }} -U 5
+bindsym XF86MonBrightnessUp exec {{ $lightctl }} -A 2
+bindsym XF86MonBrightnessDown exec {{ $lightctl }} -U 2
+bindsym $mod+XF86MonBrightnessUp exec {{ $lightctl }} -A 5
+bindsym $mod+XF86MonBrightnessDown exec {{ $lightctl }} -U 5
 {{ end }}
 
 {{ if lookPath "avizo-service" }}

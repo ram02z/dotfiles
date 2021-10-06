@@ -19,6 +19,7 @@ gopls = {
 {{- end }}
 {{ if lookPath "clangd" -}}
 clangd = {},
+{{- $servers = add1 $servers -}}
 {{ else if lookPath "ccls" -}}
 ccls = {},
 {{- $servers = add1 $servers -}}
