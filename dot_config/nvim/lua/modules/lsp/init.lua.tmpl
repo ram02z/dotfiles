@@ -1,33 +1,4 @@
 -- vim: ft=lua
--- Inspired by whynothugo's lsp config
-{{ $servers := 0 }}
--- Define enabled servers
-local servers = {
-{{ if lookPath "rust-analyzer" -}}
-rust_analyzer = {},
-{{- $servers = add1 $servers -}}
-{{- end }}
-{{ if lookPath "gopls" -}}
-gopls = {
-  settings = {
-    gopls = {
-      staticcheck = true,
-    },
-  },
-},
-{{- $servers = add1 $servers -}}
-{{- end }}
-{{ if lookPath "clangd" -}}
-clangd = {},
-{{- $servers = add1 $servers -}}
-{{ else if lookPath "ccls" -}}
-ccls = {},
-{{- $servers = add1 $servers -}}
-{{- end }}
-}
-
-{{ if gt $servers 0 -}}
-local lspconfig = require("lspconfig")
 
 -- TODO: use lsp_status for capabilites
 local on_attach = function(client, bufnr)
@@ -71,6 +42,11 @@ local on_attach = function(client, bufnr)
   if client.resolved_capabilities.signature_help then
     vim.keymap.nnoremap({
       "<Leader><CR>",
+      vim.lsp.buf.signature_help,
+      buffer = true,
+    })
+    vim.keymap.inoremap({
+      "<C-s>",
       vim.lsp.buf.signature_help,
       buffer = true,
     })
@@ -168,39 +144,51 @@ local make_config = function()
         signs = true,
         update_in_insert = false,
       }),
+      ['textDocument/signatureHelp'] = vim.lsp.with(
+      vim.lsp.handlers.signature_help, {
+        border = "single",
+        close_events = { "CursorMoved", "BufHidden", "InsertCharPre" },
+      })
     },
   }
 end
 
--- Requires codicon font
--- vim.lsp.protocol.CompletionItemKind = {
---   "  Text", -- = 1
---   "  Function", -- = 2;
---   "  Method", -- = 3;
---   "  Constructor", -- = 4;
---   "  Field", -- = 5;
---   "  Variable", -- = 6;
---   "  Class", -- = 7;
---   "  Interface", -- = 8;
---   "  Module", -- = 9;
---   "  Property", -- = 10;
---   "  Unit", -- = 11;
---   "  Value", -- = 12;
---   "  Enum", -- = 13;
---   "  Keyword", -- = 14;
---   "  Snippet", -- = 15;
---   "  Color", -- = 16;
---   "  File", -- = 17;
---   "  Reference", -- = 18;
---   "  Folder", -- = 19;
---   "  EnumMember", -- = 20;
---   "  Constant", -- = 21;
---   "  Struct", -- = 22;
---   "  Event", -- = 23;
---   "  Operator", -- = 24;
---   "  TypeParameter", -- = 25;
--- }
+{{ $servers := 0 }}
+-- Define enabled servers
+local servers = {
+{{ if lookPath "rust-analyzer" -}}
+rust_analyzer = {},
+{{- $servers = add1 $servers -}}
+{{- end }}
+{{ if lookPath "gopls" -}}
+gopls = {
+  settings = {
+    gopls = {
+      staticcheck = true,
+    },
+  },
+},
+{{- $servers = add1 $servers -}}
+{{- end }}
+{{ if lookPath "clangd" -}}
+clangd = {},
+{{- $servers = add1 $servers -}}
+{{ else if lookPath "ccls" -}}
+ccls = {},
+{{- $servers = add1 $servers -}}
+{{- end }}
+}
 
+{{ if lookPath "lean" -}}
+require("lean").setup{
+  lsp3 = { on_attach = on_attach },
+  lsp = { enable = false },
+  mappings = true,
+}
+{{- $servers = add1 $servers -}}
+{{- end }}
+
+{{ if gt $servers 0 -}}
 -- Change diagnostic symbols in the sign column
 local signs = { Error = " ", Warn = " ", Hint = " ", Info = " " }
 
@@ -210,6 +198,7 @@ for type, icon in pairs(signs) do
 end
 
 -- Register all the LSP servers.
+local lspconfig = require("lspconfig")
 local common_config = make_config()
 for server, config in pairs(servers) do
   -- Merge per-LSP configs with the common settings, and use that:

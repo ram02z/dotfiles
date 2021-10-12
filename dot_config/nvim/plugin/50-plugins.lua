@@ -35,8 +35,6 @@ packer.startup({
     --
     use({
       "neovim/nvim-lspconfig",
-      module_pattern = "lspconfig.*",
-      event = { "BufReadPre", "BufNewFile" },
       config = [[require'modules.lsp']],
     })
 
@@ -87,24 +85,16 @@ packer.startup({
     })
 
     use({
-      "hrsh7th/nvim-compe",
-      event = "InsertEnter",
-      disable = true,
-      config = [[require'modules.compe']],
-    })
-
-    use({
       "hrsh7th/nvim-cmp",
-      branch = "custom-menu",
       event = "InsertEnter",
       module = "cmp",
       requires = {
+        { "kdheepak/cmp-latex-symbols", after = "nvim-cmp" },
         { "hrsh7th/cmp-nvim-lsp", after = "nvim-cmp" },
         { "hrsh7th/cmp-nvim-lua", ft = "lua" },
         { "hrsh7th/cmp-path", after = "nvim-cmp" },
         { "hrsh7th/cmp-buffer", after = "nvim-cmp" },
       },
-      -- disable = true,
       config = [[require'modules.cmp']],
     })
 
@@ -187,7 +177,7 @@ packer.startup({
     -- Statusline
     use({
       "famiu/feline.nvim",
-      -- tag = "v0.2.1",
+      -- tag = "v0.3",
       branch = "develop",
       -- "~/Downloads/feline.nvim",
       -- event = { "BufNewFile", "BufReadPre" },
@@ -329,11 +319,20 @@ packer.startup({
       end,
     })
 
+    --
+    -- Language support
+    --
+
     -- Chezmoi template support
     -- NOTE: needs to be loaded first
     use({
       "alker0/chezmoi.vim",
       opt = true,
+    })
+
+    use({
+      "Julian/lean.nvim",
+      module = "lean",
     })
 
     -- Git integration
@@ -609,6 +608,7 @@ packer.startup({
     use({
       "DarwinSenior/nvim-colorizer.lua",
       event = "BufReadPre",
+      disable = true,
       config = function()
         require("colorizer").setup({ "*" }, {
           RGB = false,
@@ -674,54 +674,18 @@ packer.startup({
       },
     })
 
-    -- Text manipulation
+    -- TODO: fork and implement left-right movement
+    -- block movement
+    -- duplicate feature maybe
     use({
-      "t9md/vim-textmanip",
-      keys = {
-        { "i", "<C-o><Plug>(textmanip-move-up)" },
-        { "i", "<C-o><Plug>(textmanip-move-down)" },
-        "<Plug>(textmanip-move-down)",
-        "<Plug>(textmanip-move-up)",
-        "<Plug>(textmanip-move-left)",
-        "<Plug>(textmanip-move-right)",
-        "<Plug>(textmanip-duplicate-down)",
-        "<Plug>(textmanip-duplicate-up)",
-        "<Plug>(textmanip-blank-above)",
-        "<Plug>(textmanip-blank-below)",
-      },
+      "fedepujol/move.nvim",
+      module = "move",
       setup = function()
-        vim.keymap.map({ "<A-j>", "<Plug>(textmanip-move-down)", silent = true })
-        vim.keymap.map({ "<A-k>", "<Plug>(textmanip-move-up)", silent = true })
-        vim.keymap.imap({ "<A-j>", "<C-o><Plug>(textmanip-move-down)", silent = true })
-        vim.keymap.imap({ "<A-k>", "<C-o><Plug>(textmanip-move-up)", silent = true })
-        vim.keymap.xmap({ "<A-h>", "<Plug>(textmanip-move-left)", silent = true })
-        vim.keymap.xmap({ "<A-l>", "<Plug>(textmanip-move-right)", silent = true })
-        vim.keymap.map({ "<C-j>", "<Plug>(textmanip-duplicate-down)", silent = true })
-        vim.keymap.map({ "<C-k>", "<Plug>(textmanip-duplicate-up)", silent = true })
-        vim.keymap.map({ "[<Space>", "<Plug>(textmanip-blank-above)", silent = true })
-        vim.keymap.map({ "]<Space>", "<Plug>(textmanip-blank-below)", silent = true })
-      end,
-      config = function()
-        -- TODO: lua :)
-        vim.api.nvim_exec(
-          [[
-          let g:textmanip_hooks = {}
-          function! g:textmanip_hooks.finish(tm)
-            let tm = a:tm
-            let helper = textmanip#helper#get()
-            if tm.linewise
-              call helper.indent(tm)
-            else
-              " When blockwise move/duplicate, remove trailing white space.
-              " To use this feature without feeling counterintuitive,
-              " I recommend you to ':set virtualedit=block',
-              call helper.remove_trailing_WS(tm)
-            endif
-          endfunction
-          ]],
-          true
-        )
-      end,
+        vim.keymap.nmap({ "<A-k>", "<cmd>lua require('move').MoveLine(-1)<CR>", silent = true })
+        vim.keymap.xmap({ "<A-j>", "<cmd>lua require('move').MoveBlock(1)<CR>", silent = true })
+        vim.keymap.xmap({ "<A-k>", "<cmd>lua require('move').MoveBlock(-1)<CR>", silent = true })
+        vim.keymap.nmap({ "<A-j>", "<cmd>lua require('move').MoveLine(1)<CR>", silent = true })
+      end
     })
 
     -- Smooth scrolling
