@@ -608,7 +608,6 @@ packer.startup({
     use({
       "DarwinSenior/nvim-colorizer.lua",
       event = "BufReadPre",
-      disable = true,
       config = function()
         require("colorizer").setup({ "*" }, {
           RGB = false,
@@ -685,7 +684,7 @@ packer.startup({
         vim.keymap.xmap({ "<A-j>", "<cmd>lua require('move').MoveBlock(1)<CR>", silent = true })
         vim.keymap.xmap({ "<A-k>", "<cmd>lua require('move').MoveBlock(-1)<CR>", silent = true })
         vim.keymap.nmap({ "<A-j>", "<cmd>lua require('move').MoveLine(1)<CR>", silent = true })
-      end
+      end,
     })
 
     -- Smooth scrolling
