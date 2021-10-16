@@ -91,13 +91,12 @@ packages+=("light");
 # NOTE: Replace packages
 # pam_rundir -> rundird
 {{ if .is_wayland -}}
-packages+=("sway" "seatd" "polkit" "firefox" "foot" "poweralertd"
-    "wdisplays" "waylock" "bluez" "pipewire" "pulseaudio-utils"
-    "mpv" "libnotify" "wl-clipboard" "CopyQ" "swayidle" "wtype"
+packages+=("sway" "seatd" "polkit" "firefox" "foot" "poweralertd" "bluez"
+    "wdisplays" "waylock" "pipewire" "pulseaudio-utils" "libspa-bluetooth"
+    "mpv" "libnotify" "wl-clipboard" "CopyQ" "swayidle" "wtype" "fuse-sshfs"
     "pam_rundir" "font-iosevka" "i3status-rust" "python3-i3ipc"
-    "mesa-dri" "iwd" "wev" "slurp" "grim" "mako" "kdeconnect"
-    "iwgtk" "playerctl" "noto-fonts-emoji" "dejavu-fonts-ttf"
-    "grimshot");
+    "mesa-dri" "iwd" "wev" "slurp" "grim" "mako" "grimshot"
+    "iwgtk" "playerctl" "noto-fonts-emoji" "dejavu-fonts-ttf");
 {{- end }}
 {{ else if (eq (get .chezmoi.osRelease "idLike") "arch") }}
 # Assumes we are running sway

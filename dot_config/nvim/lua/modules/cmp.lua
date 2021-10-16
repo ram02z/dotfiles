@@ -77,6 +77,7 @@ cmp.setup({
   },
   sources = {
     { name = "latex_symbols" },
+    { name = "luasnip" },
     { name = "nvim_lsp" },
     { name = "nvim_lua" },
     { name = "path" },

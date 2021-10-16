@@ -87,13 +87,13 @@ on_click = "~/.local/bin/i3-quickterm weather"
 # hide_disconnected = true
 
 # Bose QC35s
-# [[block]]
-# block = "bluetooth"
-# label = " QC35"
-# mac = "60:AB:D2:42:04:74"
-# format_unavailable = ""
-# hide_disconnected = true
-# on_click = "i3-nagbar -m $(based-connect -b 60:AB:D2:42:04:74) -type warning"
+{{ if lookPath "bluetoothctl" -}}
+[[block]]
+block = "bluetooth"
+label = "QC35"
+mac = "60:AB:D2:42:04:74"
+hide_disconnected = false
+{{- end }}
 
 [[block]]
 block = "net"

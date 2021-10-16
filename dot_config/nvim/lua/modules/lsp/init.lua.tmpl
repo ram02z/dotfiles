@@ -179,10 +179,12 @@ ccls = {},
 {{- end }}
 }
 
-{{ if lookPath "lean" -}}
+{{ if and (lookPath "lean") (lookPath "lean-language-server") -}}
 require("lean").setup{
+  abbreviations = { builtin = true },
   lsp3 = { on_attach = on_attach },
   lsp = { enable = false },
+  ft = {default = "lean3" },
   mappings = true,
 }
 {{- $servers = add1 $servers -}}

@@ -89,6 +89,7 @@ packer.startup({
       event = "InsertEnter",
       module = "cmp",
       requires = {
+        { "saadparwaiz1/cmp_luasnip", after = "nvim-cmp" },
         { "kdheepak/cmp-latex-symbols", after = "nvim-cmp" },
         { "hrsh7th/cmp-nvim-lsp", after = "nvim-cmp" },
         { "hrsh7th/cmp-nvim-lua", ft = "lua" },
@@ -165,15 +166,6 @@ packer.startup({
       module = "nvim-web-devicons",
     })
 
-    -- Buffer/Tabline
-    use({
-      "akinsho/bufferline.nvim",
-      event = "BufReadPre",
-      disable = true,
-      requires = { "kyazdani42/nvim-web-devicons" },
-      config = [[require'modules.bufferline']],
-    })
-
     -- Statusline
     use({
       "famiu/feline.nvim",
@@ -186,53 +178,6 @@ packer.startup({
       -- config = [[require'feline'.setup()]]
     })
 
-    -- Indentation line
-    use({
-      "lukas-reineke/indent-blankline.nvim",
-      disable = true,
-      event = "BufReadPost",
-      config = function()
-        require("indent_blankline").setup({
-          char = "│",
-          buftype_exclude = { "terminal" },
-          filetype_exclude = {
-            "help",
-            "vimwiki",
-            "man",
-            "quickfix",
-            "TelescopePrompt",
-            "undotree",
-            "packer",
-            "lspinfo",
-            "qf",
-            "tsplayground",
-            "",
-          },
-          show_first_indent_level = false,
-          show_current_context = true,
-          context_patterns = {
-            "class",
-            "function",
-            "method",
-            "^if",
-            "switch",
-            "begin",
-            "while",
-            "for",
-            "with",
-            "func_literal",
-            "block",
-            "try",
-            "except",
-            "argument_list",
-            "object",
-            "dictionary",
-            "table",
-          },
-        })
-      end,
-    })
-
     --
     -- Misc
     --
@@ -240,17 +185,8 @@ packer.startup({
     -- Load my editor defaults
     use({ "gpanders/editorconfig.nvim" })
 
-    -- Lua profiler
-    use({ "norcalli/profiler.nvim", opt = true })
-
     -- See https://github.com/neovim/neovim/pull/15436
     use({ "lewis6991/impatient.nvim" })
-
-    -- Automatically set `paste`
-    use({ "ConradIrwin/vim-bracketed-paste" })
-
-    -- Faster filetype detection
-    use({ "nathom/filetype.nvim" })
 
     -- OSC52 yank
     use({

@@ -11,9 +11,6 @@ end
 
 disable_default_plugins()
 
--- Do not source the default filetype.vim
-vim.g.did_load_filetypes = 1
-
 -- TODO: remove when https://github.com/neovim/neovim/pull/15436 is merged
 pcall(require, "impatient")
 
