@@ -26,6 +26,7 @@ highlight DraculaBgDarker guifg=NONE ctermfg=NONE guibg=#1C1D25 ctermbg=235 gui=
 highlight DraculaBgDarkest guifg=NONE ctermfg=NONE guibg=#191A21 ctermbg=234 gui=NONE cterm=NONE guisp=NONE
 
 highlight DraculaFg guifg=#F8F8F2 ctermfg=253 guibg=NONE ctermbg=NONE gui=NONE cterm=NONE guisp=NONE
+highlight DraculaFgStrikethrough guifg=#F8F8F2 ctermfg=253 guibg=NONE ctermbg=NONE gui=strikethrough cterm=strikethrough guisp=NONE
 highlight DraculaFgUnderline guifg=#F8F8F2 ctermfg=253 guibg=NONE ctermbg=NONE gui=underline cterm=underline guisp=NONE
 highlight DraculaFgBold guifg=#F8F8F2 ctermfg=253 guibg=NONE ctermbg=NONE gui=bold cterm=bold guisp=NONE
 
@@ -36,6 +37,7 @@ highlight DraculaSelection guifg=NONE ctermfg=NONE guibg=#44475A ctermbg=239 gui
 highlight DraculaSubtle guifg=#424450 ctermfg=238 guibg=NONE ctermbg=NONE gui=NONE cterm=NONE guisp=NONE
 
 highlight DraculaCyan guifg=#8BE9FD ctermfg=117 guibg=NONE ctermbg=NONE gui=NONE cterm=NONE guisp=NONE
+highlight DraculaCyanBold guifg=#8BE9FD ctermfg=117 guibg=NONE ctermbg=NONE gui=bold cterm=bold guisp=NONE
 highlight DraculaCyanItalic guifg=#8BE9FD ctermfg=117 guibg=NONE ctermbg=NONE gui=italic cterm=italic guisp=NONE
 
 highlight DraculaGreen guifg=#50FA7B ctermfg=84 guibg=NONE ctermbg=NONE gui=NONE cterm=NONE guisp=NONE
@@ -242,16 +244,20 @@ hi! link cssTSProperty DraculaOrangeItalic
 
 " # My plugins
 " IndentLine.nvim
-hi! link IndentBlanklineContextChar Comment
+" hi! link IndentBlanklineContextChar Comment
 " Gitsigns
 hi! link GitSignsAdd      DraculaGreen
 hi! link GitSignsChange   DraculaOrange
 hi! link GitSignsDelete   DraculaRed
 
-" Nvim-bufferline.lua (don't get loaded when lazy)
-" hi! link BufferLineIndicatorSelected DraculaPink
-" hi! link BufferlinePickSelected DraculaRed
-" hi! link BufferlinePickVisible DraculaRed
+" nvim-cmp
+hi! link CmpItemKind DraculaPurple
+hi! link CmpItemAbbr DraculaFg
+hi! link CmpItemAbbrMatch DraculaCyanBold
+hi! link CmpItemAbbrFuzzy DraculaCyan
+hi! link CmpItemAbbrDeprecated DraculaFgStrikethrough
+
+
 " Hop.nvim
 " hi! link HopUnmatched DraculaSubtle
 " Telescope.nvim

@@ -20,7 +20,7 @@ cmp.setup({
   },
   preselect = cmp.PreselectMode.None,
   experimental = {
-    ghost_text = true,
+    ghost_text = false,
     native_menu = false,
   },
   mapping = {
@@ -45,7 +45,7 @@ cmp.setup({
       elseif utils.invalid_prev_col() then
         fn.feedkeys(utils.t("<Tab>"), "n")
       elseif require("luasnip").expand_or_jumpable() then
-        fn.feedkeys(utils.t("<Plug>luasnip-expand-or-jump"), "")
+        require("luasnip").expand_or_jump()
       else
         fn.feedkeys(utils.t("<Tab>"), "n")
       end
@@ -57,7 +57,7 @@ cmp.setup({
       if cmp.visible() then
         cmp.select_prev_item()
       elseif require("luasnip").jumpable(-1) then
-        fn.feedkeys(utils.t("<Plug>luasnip-jump-prev"), "")
+        require("luasnip").jump(-1)
       else
         fn.feedkeys(utils.t("<C-d>"), "n")
       end
@@ -71,7 +71,8 @@ cmp.setup({
       local codicons = require("codicons")
       local symbols = require("codicons.extensions.completion_item_kind").symbols
       local icon = codicons.get(symbols[vim_item.kind].icon)
-      vim_item.kind = string.format("%s %s", vim_item.kind, icon)
+      -- vim_item.kind = string.format("%s %s", vim_item.kind, icon)
+      vim_item.kind = icon
       return vim_item
     end,
   },
