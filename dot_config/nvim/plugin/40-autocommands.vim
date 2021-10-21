@@ -58,6 +58,7 @@ augroup END
 augroup diagnostics
   au!
   autocmd VimEnter * lua require"modules.diagnostic"
-  autocmd CursorHold,InsertEnter,InsertLeave * lua require"modules.diagnostic".update_hover_diagnostics()
+  autocmd CursorHold,CursorHoldI * lua require"modules.diagnostic".update_hover_diagnostics()
+  autocmd User DiagnosticsChanged lua require"modules.diagnostic".update_hover_diagnostics()
 augroup END
 

@@ -60,7 +60,7 @@ end
 -- Remove previous virtual text highlight
 function M.clear_hover_diagnostics(bufnr)
   if config.view == "virt" then
-    vim.api.nvim_buf_clear_namespace(bufnr, VIRTUAL_DIAGNOSTICS_NS, 0, -1)
+    vim.diagnostic.hide(VIRTUAL_DIAGNOSTICS_NS, bufnr)
   elseif config.view == "float" and FLOATING_DIAGNOSTICS_NR then
     if vim.api.nvim_buf_is_loaded(FLOATING_DIAGNOSTICS_NR) then
       vim.api.nvim_buf_delete(FLOATING_DIAGNOSTICS_NR, { force = true })
@@ -75,7 +75,10 @@ function M.update_hover_diagnostics(bufnr)
     return
   end
 
-  M.clear_hover_diagnostics(bufnr)
+  if vim.api.nvim_get_mode().mode == "i" then
+    M.clear_hover_diagnostics(bufnr)
+    return
+  end
 
   if config.view == "float" then
     FLOATING_DIAGNOSTICS_NR = vim.diagnostic.open_float(bufnr, {
