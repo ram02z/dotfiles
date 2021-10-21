@@ -47,13 +47,13 @@ K.nnoremap({ "<Leader>sr", ":%s/\\<<C-r><C-w>\\>//g<left><left>", silent = true 
 K.nnoremap({
   "]d",
   function()
-    vim.diagnostic.goto_next({float=false})
+    vim.diagnostic.goto_next({ float = false })
   end,
 })
 K.nnoremap({
   "[d",
   function()
-    vim.diagnostic.goto_prev({float=false})
+    vim.diagnostic.goto_prev({ float = false })
   end,
 })
 K.nnoremap({

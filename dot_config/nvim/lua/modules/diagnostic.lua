@@ -51,9 +51,9 @@ function M.toggle_all_diagnostics(bufnr)
   config.show_all = not config.show_all
   if config.view == "virt" and config.show_all then
     M.clear_hover_diagnostics(bufnr)
-    vim.diagnostic.config({virtual_text = true})
+    vim.diagnostic.config({ virtual_text = true })
   else
-    vim.diagnostic.config({virtual_text = false})
+    vim.diagnostic.config({ virtual_text = false })
   end
 end
 
@@ -80,25 +80,25 @@ function M.update_hover_diagnostics(bufnr)
   if config.view == "float" then
     FLOATING_DIAGNOSTICS_NR = vim.diagnostic.open_float(bufnr, {
       {
-        focusable=false,
-        show_header=false,
+        focusable = false,
+        show_header = false,
       },
-      scope="line",
+      scope = "line",
     })
   elseif config.view == "virt" then
     if config.show_all == true then
-      vim.diagnostic.config({virtual_text = true})
+      vim.diagnostic.config({ virtual_text = true })
       return
     end
 
     local lnum, _ = unpack(vim.api.nvim_win_get_cursor(0))
     lnum = lnum - 1
 
-    local diagnostics = vim.diagnostic.get(bufnr, {lnum=lnum})
+    local diagnostics = vim.diagnostic.get(bufnr, { lnum = lnum })
     vim.diagnostic.show(VIRTUAL_DIAGNOSTICS_NS, bufnr, diagnostics, {
-      signs=false,
-      virtual_text=true,
-      underline=false
+      signs = false,
+      virtual_text = true,
+      underline = false,
     })
   end
 end
