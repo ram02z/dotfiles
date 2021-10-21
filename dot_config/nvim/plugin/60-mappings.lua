@@ -42,3 +42,35 @@ K.nnoremap({ "<Leader>[", require("utils.misc").toggle_loc, silent = true })
 
 -- Search and replace
 K.nnoremap({ "<Leader>sr", ":%s/\\<<C-r><C-w>\\>//g<left><left>", silent = true })
+
+-- Diagnostic keymaps
+K.nnoremap({
+  "]d",
+  function()
+    vim.diagnostic.goto_next({float=false})
+  end,
+})
+K.nnoremap({
+  "[d",
+  function()
+    vim.diagnostic.goto_prev({float=false})
+  end,
+})
+K.nnoremap({
+  "<Leader>dl",
+  vim.diagnostic.setloclist,
+})
+K.nnoremap({
+  "<Leader>dt",
+  require("modules.diagnostic").toggle_hover_diagnostics,
+})
+K.nnoremap({
+  "<Leader>dv",
+  require("modules.diagnostic").toggle_hover_view,
+})
+K.nnoremap({
+  "<Leader>da",
+  require("modules.diagnostic").toggle_all_diagnostics,
+})
+
+require("utils.keychord").cancel("<Leader>d", false)

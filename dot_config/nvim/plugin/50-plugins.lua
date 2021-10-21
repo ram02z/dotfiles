@@ -354,8 +354,8 @@ packer.startup({
         })
       end,
     })
+
     -- Fuzzy finder
-    -- TODO: replace with snap unless it gets async
     use({
       "nvim-telescope/telescope.nvim",
       keys = {

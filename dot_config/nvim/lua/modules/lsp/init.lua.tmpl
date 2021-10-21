@@ -3,7 +3,7 @@
 -- TODO: use lsp_status for capabilites
 local on_attach = function(client, bufnr)
   -- Set autocommands conditional on server_capabilities
-  -- TODO: add implementation, declaration and signature help
+  -- TODO: add implementation capability
   if client.resolved_capabilities.goto_definition then
     vim.keymap.nnoremap({
       "<Leader>ld",
@@ -26,7 +26,7 @@ local on_attach = function(client, bufnr)
     })
   end
   if client.resolved_capabilities.code_action then
-    vim.fn.sign_define('LightBulbSign', { text = "", texthl = "String", linehl="", numhl="" })
+    vim.fn.sign_define('LightBulbSign', { text = "", texthl = "String", linehl="", numhl="" })
     vim.cmd([[autocmd CursorHold,CursorHoldI,InsertLeave <buffer> lua require"nvim-lightbulb".update_lightbulb()]])
     vim.keymap.nnoremap({
       "<Leader>la",
@@ -73,36 +73,6 @@ local on_attach = function(client, bufnr)
   --     buffer = true,
   --   })
   -- end
-  vim.keymap.nnoremap({
-    "]d",
-    function()
-      vim.lsp.diagnostic.goto_next({enable_popup=false})
-    end,
-    buffer = true,
-  })
-  vim.keymap.nnoremap({
-    "[d",
-    function()
-      vim.lsp.diagnostic.goto_next({enable_popup=false})
-    end,
-    buffer = true,
-  })
-  vim.keymap.nnoremap({
-    "<Leader>ll",
-    vim.lsp.diagnostic.set_loclist,
-    buffer = true,
-  })
-  vim.keymap.nnoremap({
-    "<Leader>lt",
-    require("modules.lsp.utils").toggle_hover_diagnostics,
-    buffer = true,
-  })
-  vim.keymap.nnoremap({
-    "<Leader>lv",
-    require("modules.lsp.utils").toggle_hover_view,
-    buffer = true,
-  })
-  vim.cmd([[autocmd CursorHold,InsertEnter,InsertLeave <buffer> lua require"modules.lsp.utils".update_hover_diagnostics()]])
 
   require("utils.keychord").cancel("<Leader>l", true)
 
@@ -134,21 +104,7 @@ local make_config = function()
     on_attach = on_attach,
     autostart = true,
     flags = {
-      debounce_text_changes = 250,
-    },
-    handlers = {
-      ['textDocument/publishDiagnostics'] = vim.lsp.with(
-      vim.lsp.diagnostic.on_publish_diagnostics, {
-        virtual_text = false,
-        underline = true,
-        signs = true,
-        update_in_insert = false,
-      }),
-      ['textDocument/signatureHelp'] = vim.lsp.with(
-      vim.lsp.handlers.signature_help, {
-        border = "single",
-        close_events = { "CursorMoved", "BufHidden", "InsertCharPre" },
-      })
+      debounce_text_changes = 500,
     },
   }
 end
@@ -187,18 +143,9 @@ require("lean").setup{
   ft = {default = "lean3" },
   mappings = true,
 }
-{{- $servers = add1 $servers -}}
 {{- end }}
 
 {{ if gt $servers 0 -}}
--- Change diagnostic symbols in the sign column
-local signs = { Error = " ", Warn = " ", Hint = " ", Info = " " }
-
-for type, icon in pairs(signs) do
-  local hl = "DiagnosticSign" .. type
-  vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "" })
-end
-
 -- Register all the LSP servers.
 local lspconfig = require("lspconfig")
 local common_config = make_config()
