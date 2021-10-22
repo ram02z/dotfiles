@@ -143,7 +143,8 @@ table.insert(components.active[1], {
 
 table.insert(components.active[1], {
   provider = "diagnostic_hints",
-  hl = { fg = "cyan" },
+  hl = { fg = "yellow" },
+  icon = "  ",
   truncate_hide = true,
 })
 
