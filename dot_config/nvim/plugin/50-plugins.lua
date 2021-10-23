@@ -443,7 +443,7 @@ packer.startup({
       end,
       config = function()
         require("hop").setup({ keys = "asdghklwertyuipzxcvbnmfj" })
-      end
+      end,
     })
 
     -- Extends * motions
