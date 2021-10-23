@@ -35,8 +35,6 @@ packer.startup({
     --
     use({
       "neovim/nvim-lspconfig",
-      event = { "BufNewFile", "BufRead" },
-      module_pattern = "lspconfig.*",
       config = [[require'modules.lsp']],
     })
 
@@ -91,7 +89,6 @@ packer.startup({
       event = "InsertEnter",
       module = "cmp",
       requires = {
-        { "saadparwaiz1/cmp_luasnip", after = "nvim-cmp" },
         { "hrsh7th/cmp-nvim-lsp", after = "nvim-cmp" },
         { "hrsh7th/cmp-nvim-lua", after = "nvim-cmp" },
         { "hrsh7th/cmp-path", after = "nvim-cmp" },
@@ -132,12 +129,6 @@ packer.startup({
       config = function()
         require("utils.keychord").cancel("<Leader>t")
       end,
-    })
-
-    use({
-      "p00f/nvim-ts-rainbow",
-      -- wants = "nvim-treesitter",
-      event = "BufReadPre",
     })
 
     -- FIXME: this causes slow down in big files

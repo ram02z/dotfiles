@@ -236,8 +236,8 @@ hi! link TSTitle DraculaYellow
 hi! link TSNote DraculaWarning
 hi! link TSWarning DraculaNote
 hi! link TSDanger DraculaDanger
+hi! TSPunctBracket guifg=#43A64B ctermfg=green
 hi! link TSConstructor DraculaCyan
-hi! link TSPunctBracket DraculaCyan
 " # Language specific
 hi! link tomlTSProperty DraculaOrangeItalic
 hi! link cssTSProperty DraculaOrangeItalic
