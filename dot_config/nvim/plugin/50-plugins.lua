@@ -35,6 +35,8 @@ packer.startup({
     --
     use({
       "neovim/nvim-lspconfig",
+      event = { "BufNewFile", "BufRead" },
+      module_pattern = "lspconfig.*",
       config = [[require'modules.lsp']],
     })
 
@@ -101,8 +103,17 @@ packer.startup({
 
     use({
       "L3MON4D3/LuaSnip",
-      event = "InsertCharPre",
+      keys = {
+        "<Plug>luasnip-expand-or-jump",
+        "<Plug>luasnip-jump-prev",
+      },
       module_pattern = "luasnip.*",
+      setup = function()
+        vim.keymap.imap({"<Tab>", "luasnip#expand_or_jumpable() ? '<Plug>luasnip-expand-or-jump' : '<Tab>'", silent =
+        true, expr = true})
+        vim.keymap.imap({"<S-Tab>", "luasnip#jumpable(-1) ? '<Plug>luasnip-jump-prev' : '<C-d>'", silent =
+        true, expr = true})
+      end,
       config = [[require'modules.snippets']],
     })
 

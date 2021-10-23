@@ -24,6 +24,24 @@ K.map({ "<PageDown>", "<C-f>", silent = true })
 K.imap({ "<PageUp>", "<C-O><C-b>", silent = true })
 K.imap({ "<PageDown>", "<C-O><C-f>", silent = true })
 
+-- Moving in insert mode
+K.imap({"<C-j>", "<C-O>j", silent = true})
+K.imap({"<C-k>", "<C-O>k", silent = true})
+K.imap({"<C-h>", "<C-O>h", silent = true})
+K.imap({"<C-l>", "<C-O>l", silent = true})
+-- Useful arrow keys
+K.map({"<Down>", "<C-e>"})
+K.map({"<Up>", "<C-y>"})
+K.imap({"<Down>", "<C-O><C-e>"})
+K.imap({"<Up>", "<C-O><C-y>"})
+K.nmap({"<Left>", "<<"})
+K.nmap({"<Right>", ">>"})
+K.vmap({"<Left>", "<gv"})
+K.vmap({"<Right>", ">gv"})
+-- TODO: find a usecase
+K.imap({"<Left>", "<nop>"})
+K.imap({"<Right>", "<nop>"})
+
 -- Leave terminal mode
 K.tnoremap({ "<C-]>", "<C-\\><C-n>", silent = true })
 
@@ -31,14 +49,14 @@ K.tnoremap({ "<C-]>", "<C-\\><C-n>", silent = true })
 K.noremap({ "0", "getline('.')[0 : col('.') - 2] =~# '^\\s\\+$' ? '0' : '^'", silent = true, expr = true })
 
 -- Buffer wipeout
-K.nnoremap({ "<Leader>q", require("utils.buffer").bufwipeout, silent = true })
+K.nnoremap({ "<Leader>q", "<cmd>lua require('utils.buffer').bufwipeout()<CR>", silent = true })
 
 -- Window switcher
-K.nnoremap({ "<Leader>w", require("utils.window").pick, silent = true })
+K.nnoremap({ "<Leader>w", "<cmd>lua require('utils.window').pick()<CR>", silent = true })
 
 -- Toggle lists
-K.nnoremap({ "<Leader>]", require("utils.misc").toggle_qf, silent = true })
-K.nnoremap({ "<Leader>[", require("utils.misc").toggle_loc, silent = true })
+K.nnoremap({ "<Leader>]", "<cmd>lua require('utils.misc').toggle_qf()<CR>", silent = true })
+K.nnoremap({ "<Leader>[", "<cmd>lua require('utils.misc').toggle_loc()<CR>", silent = true })
 
 -- Search and replace
 K.nnoremap({ "<Leader>sr", ":%s/\\<<C-r><C-w>\\>//g<left><left>", silent = true })
@@ -46,31 +64,27 @@ K.nnoremap({ "<Leader>sr", ":%s/\\<<C-r><C-w>\\>//g<left><left>", silent = true 
 -- Diagnostic keymaps
 K.nnoremap({
   "]d",
-  function()
-    vim.diagnostic.goto_next({ float = false })
-  end,
+  "<cmd>lua vim.diagnostic.goto_next({ float = false })<CR>",
 })
 K.nnoremap({
   "[d",
-  function()
-    vim.diagnostic.goto_prev({ float = false })
-  end,
+  "<cmd>lua vim.diagnostic.goto_prev({ float = false })<CR>",
 })
 K.nnoremap({
   "<Leader>dl",
-  vim.diagnostic.setloclist,
+  "<cmd>lua vim.diagnostic.setloclist()<CR>",
 })
 K.nnoremap({
   "<Leader>dt",
-  require("modules.diagnostic").toggle_hover_diagnostics,
+  "<cmd>lua require('modules.diagnostic').toggle_hover_diagnostics()<CR>",
 })
 K.nnoremap({
   "<Leader>dv",
-  require("modules.diagnostic").toggle_hover_view,
+  "<cmd>lua require('modules.diagnostic').toggle_hover_view()<CR>",
 })
 K.nnoremap({
   "<Leader>da",
-  require("modules.diagnostic").toggle_all_diagnostics,
+  "<cmd>lua require('modules.diagnostic').toggle_all_diagnostics()<CR>",
 })
 
 require("utils.keychord").cancel("<Leader>d", false)
