@@ -275,24 +275,18 @@ packer.startup({
     use({
       {
         "sindrets/diffview.nvim",
-        cmd = {
-          "DiffviewOpen",
-          "DiffviewFileHistory",
-          "DiffviewClose",
-          "DiffviewFocusFiles",
-          "DiffviewToggleFiles",
-          "DiffviewRefresh",
-        },
+        cmd = "Diffview*",
         setup = function()
-          vim.keymap.nnoremap({ "<Leader>do", "<cmd>DiffviewOpen<CR>", silent = true })
-          vim.keymap.nnoremap({ "<Leader>dc", "<cmd>DiffviewClose<CR>", silent = true })
-          vim.keymap.nnoremap({ "<Leader>dh", "<cmd>DiffviewFileHistory<CR>", silent = true })
+          vim.keymap.nnoremap({ "<Leader>vo", "<cmd>DiffviewOpen<CR>", silent = true })
+          vim.keymap.nnoremap({ "<Leader>vr", "<cmd>DiffviewRefresh<CR>", silent = true })
+          vim.keymap.nnoremap({ "<Leader>vc", "<cmd>DiffviewClose<CR>", silent = true })
+          vim.keymap.nnoremap({ "<Leader>vh", "<cmd>DiffviewFileHistory<CR>", silent = true })
         end,
         config = function()
           require("diffview").setup({
             enhanced_diff_hl = true,
           })
-          require("utils.keychord").cancel("<Leader>d")
+          require("utils.keychord").cancel("<Leader>v")
         end,
       },
       {
@@ -442,14 +436,14 @@ packer.startup({
     -- Jump anywhere on screen
     use({
       "phaazon/hop.nvim",
-      keys = {
-        { "n", "<Leader>;" },
-      },
-      config = function()
-        local hop = require("hop")
-        vim.keymap.nnoremap({ "<Leader>;", hop.hint_words, silent = true })
-        hop.setup({ keys = "asdghklwertyuipzxcvbnmfj" })
+      cmd = "Hop*",
+      setup = function()
+        vim.keymap.nnoremap({ "<Leader>;", "<cmd>HopWord<CR>", silent = true })
+        vim.keymap.nnoremap({ "<Leader>/", "<cmd>HopPattern<CR>", silent = true })
       end,
+      config = function()
+        require("hop").setup({ keys = "asdghklwertyuipzxcvbnmfj" })
+      end
     })
 
     -- Extends * motions
@@ -485,7 +479,7 @@ packer.startup({
     -- Swap delimiter seperated items
     use({
       "mizlan/iswap.nvim",
-      cmd = "ISwap",
+      cmd = "ISwap*",
       setup = function()
         vim.keymap.nnoremap({ "gs", "<cmd>ISwap<CR>", silent = true })
         vim.keymap.nnoremap({ "gS", "<cmd>ISwapWith<CR>", silent = true })
