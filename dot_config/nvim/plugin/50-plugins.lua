@@ -92,9 +92,8 @@ packer.startup({
       module = "cmp",
       requires = {
         { "saadparwaiz1/cmp_luasnip", after = "nvim-cmp" },
-        { "kdheepak/cmp-latex-symbols", after = "nvim-cmp" },
         { "hrsh7th/cmp-nvim-lsp", after = "nvim-cmp" },
-        { "hrsh7th/cmp-nvim-lua", ft = "lua" },
+        { "hrsh7th/cmp-nvim-lua", after = "nvim-cmp" },
         { "hrsh7th/cmp-path", after = "nvim-cmp" },
         { "hrsh7th/cmp-buffer", after = "nvim-cmp" },
       },
@@ -103,25 +102,8 @@ packer.startup({
 
     use({
       "L3MON4D3/LuaSnip",
-      keys = {
-        "<Plug>luasnip-expand-or-jump",
-        "<Plug>luasnip-jump-prev",
-      },
+      event = "InsertCharPre",
       module_pattern = "luasnip.*",
-      setup = function()
-        vim.keymap.imap({
-          "<Tab>",
-          "luasnip#expand_or_jumpable() ? '<Plug>luasnip-expand-or-jump' : '<Tab>'",
-          silent = true,
-          expr = true,
-        })
-        vim.keymap.imap({
-          "<S-Tab>",
-          "luasnip#jumpable(-1) ? '<Plug>luasnip-jump-prev' : '<C-d>'",
-          silent = true,
-          expr = true,
-        })
-      end,
       config = [[require'modules.snippets']],
     })
 

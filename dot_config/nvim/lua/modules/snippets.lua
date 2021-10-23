@@ -53,6 +53,32 @@ ls.config.set_config({
   delete_check_events = "InsertLeave",
 })
 
+local utils = require("utils.misc")
+local tab_expr = function()
+  if ls.expandable() then
+    ls.expand()
+  elseif require("utils.misc").invalid_prev_col() then
+    vim.fn.feedkeys(utils.t("<Tab>"), "n")
+  elseif ls.jumpable(1) then
+    ls.jump(1)
+  else
+    vim.fn.feedkeys(utils.t("<Tab>"), "n")
+  end
+end
+
+local stab_expr = function()
+  if ls.jumpable(-1) then
+    ls.jump(-1)
+  else
+    vim.fn.feedkeys(utils.t("<C-d>"), "n")
+  end
+end
+
+vim.keymap.inoremap({ "<Tab>", tab_expr, silent = true })
+vim.keymap.snoremap({ "<Tab>", tab_expr, silent = true })
+vim.keymap.inoremap({ "<S-Tab>", stab_expr, silent = true })
+vim.keymap.snoremap({ "<S-Tab>", stab_expr, silent = true })
+
 ls.snippets = {
   all = {
     pair("(", ")", { condition = partial(char_count_nequal, "(", ")") }),

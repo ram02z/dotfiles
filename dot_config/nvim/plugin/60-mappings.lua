@@ -25,22 +25,19 @@ K.imap({ "<PageUp>", "<C-O><C-b>", silent = true })
 K.imap({ "<PageDown>", "<C-O><C-f>", silent = true })
 
 -- Moving in insert mode
-K.imap({ "<C-j>", "<C-O>j", silent = true })
-K.imap({ "<C-k>", "<C-O>k", silent = true })
-K.imap({ "<C-h>", "<C-O>h", silent = true })
-K.imap({ "<C-l>", "<C-O>l", silent = true })
+K.imap({ "<C-j>", "<Down>", silent = true })
+K.imap({ "<C-k>", "<Up>", silent = true })
+K.imap({ "<C-h>", "<Left>", silent = true })
+K.imap({ "<C-l>", "<Right>", silent = true })
 -- Useful arrow keys
-K.map({ "<Down>", "<C-e>" })
-K.map({ "<Up>", "<C-y>" })
-K.imap({ "<Down>", "<C-O><C-e>" })
-K.imap({ "<Up>", "<C-O><C-y>" })
+K.nmap({ "<Down>", "<C-e>" })
+K.nmap({ "<Up>", "<C-y>" })
+K.vmap({ "<Down>", "<C-e>" })
+K.vmap({ "<Up>", "<C-y>" })
 K.nmap({ "<Left>", "<<" })
 K.nmap({ "<Right>", ">>" })
 K.vmap({ "<Left>", "<gv" })
 K.vmap({ "<Right>", ">gv" })
--- TODO: find a usecase
-K.imap({ "<Left>", "<nop>" })
-K.imap({ "<Right>", "<nop>" })
 
 -- Leave terminal mode
 K.tnoremap({ "<C-]>", "<C-\\><C-n>", silent = true })
