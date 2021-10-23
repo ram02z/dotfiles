@@ -2,26 +2,28 @@ status is-interactive || exit
 
 # Git Aliases from https://bitsofco.de/git-aliases-for-lazy-developers/
 {{ if lookPath "git" -}}
+abbr --add g "git"
 abbr --add gs "git status"
 abbr --add gf "git fetch"
 abbr --add gm "git merge"
 abbr --add gd "git diff"
 abbr --add ga "git add"
 abbr --add gaa "git add -A"
-abbr --add gcam "git commit -am"
-abbr --add gca "git commit -a"
-abbr --add gcaa "git commit -a --amend"
+abbr --add gc "git commit"
+abbr --add gca "git commit --amend"
+abbr --add gcan "git commit --amend --no-edit"
 abbr --add gp "git push"
+abbr --add gpo "git push origin"
 abbr --add gu "git pull"
+abbr --add gur "git pull --rebase"
 abbr --add grb "git rebase"
 abbr --add grs "git restore"
 abbr --add gsb "git switch"
-abbr --add gpo "git push origin" # + branch name
-abbr --add gl "git log --stat"
-abbr --add gpom "git push origin master"
-abbr --add gb "git branch" # + branch name
-abbr --add gc "git checkout" # + branch name
-abbr --add gcb "git checkout -b" # + branch name
+abbr --add gl "git log"
+abbr --add gls "git log --stat"
+abbr --add glS "git log --stat -p"
+abbr --add glg "git log --graph"
+abbr --add gb "git branch"
 {{- end }}
 # C utils
 {{ if lookPath "valgrind" -}}
