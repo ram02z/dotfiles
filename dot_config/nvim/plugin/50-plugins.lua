@@ -109,10 +109,18 @@ packer.startup({
       },
       module_pattern = "luasnip.*",
       setup = function()
-        vim.keymap.imap({"<Tab>", "luasnip#expand_or_jumpable() ? '<Plug>luasnip-expand-or-jump' : '<Tab>'", silent =
-        true, expr = true})
-        vim.keymap.imap({"<S-Tab>", "luasnip#jumpable(-1) ? '<Plug>luasnip-jump-prev' : '<C-d>'", silent =
-        true, expr = true})
+        vim.keymap.imap({
+          "<Tab>",
+          "luasnip#expand_or_jumpable() ? '<Plug>luasnip-expand-or-jump' : '<Tab>'",
+          silent = true,
+          expr = true,
+        })
+        vim.keymap.imap({
+          "<S-Tab>",
+          "luasnip#jumpable(-1) ? '<Plug>luasnip-jump-prev' : '<C-d>'",
+          silent = true,
+          expr = true,
+        })
       end,
       config = [[require'modules.snippets']],
     })
