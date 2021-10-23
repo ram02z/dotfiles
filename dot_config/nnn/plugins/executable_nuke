@@ -41,7 +41,7 @@
 #      most archives: list with atool, bsdtar
 #      rar: list with unrar
 #      7-zip: list with 7z
-#      pdf: zathura (GUI), pdftotext, mutool, exiftool
+#      pdf: firefox (GUI), zathura (GUI), pdftotext, mutool, exiftool
 #      audio: mocq (nnn plugin using MOC), mpv, media_client (Haiku), mediainfo, exiftool
 #      avi|mkv|mp4: smplayer, mpv (GUI), ffmpegthumbnailer, mediainfo, exiftool
 #      log: vi
@@ -89,7 +89,9 @@ is_mac() {
 
 handle_pdf() {
     if [ "$GUI" -ne 0 ]; then
-        if is_mac; then
+        if type firefox >/dev/null 2>&1; then
+            nohup firefox "${FPATH}" > /dev/null 2>&1 &
+        elif is_mac; then
             nohup open "${FPATH}" >/dev/null 2>&1 &
         elif type zathura >/dev/null 2>&1; then
             nohup zathura "${FPATH}" >/dev/null 2>&1 &
