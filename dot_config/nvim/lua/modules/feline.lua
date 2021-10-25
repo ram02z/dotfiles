@@ -272,7 +272,7 @@ table.insert(components.inactive[1], {
 })
 
 require("feline").setup({
-  colors = colors,
+  theme = colors,
   components = components,
   force_inactive = force_inactive,
   vi_mode_colors = vi_mode_colors,

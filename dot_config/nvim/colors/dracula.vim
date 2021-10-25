@@ -130,6 +130,7 @@ hi! link VertSplit    DraculaBoundary
 hi! link Visual       DraculaSelection
 hi! link VisualNOS    Visual
 hi! link WarningMsg   DraculaWarning
+hi! link QuickFixLine DraculaDiffAdd
 
 hi! link Conceal DraculaCyan
 hi! link MatchParen Comment

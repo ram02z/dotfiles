@@ -1,0 +1,16 @@
+{
+  "name": "maths_abbrs",
+  "contributes": {
+    "snippets": [
+      {
+        "language" : [
+          "markdown",
+          "tex",
+          "norg",
+          "lean3"
+        ],
+        "path": "./maths_abbr.json"
+      }
+    ]
+  }
+}

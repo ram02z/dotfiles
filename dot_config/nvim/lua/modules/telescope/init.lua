@@ -88,5 +88,15 @@ vim.keymap.nnoremap({ "<Leader>pa", "<cmd>Telescope autocommands<CR>", silent = 
 vim.keymap.nnoremap({ "<Leader>ph", "<cmd>Telescope highlights<CR>", silent = true })
 -- Resume picker
 vim.keymap.nnoremap({ "<Leader>p<CR>", "<cmd>Telescope resume<CR>", silent = true })
+vim.keymap.inoremap({
+  "<C-s>",
+  "<cmd>Telescope spell_suggest theme=get_cursor layout_config={height=6}<CR>",
+  silent = true,
+})
+vim.keymap.nnoremap({
+  '<Leader>ps',
+  "<cmd>Telescope spell_suggest theme=get_cursor layout_config={height=6}<CR>",
+  silent = true,
+})
 
 cancel("<Leader>p")

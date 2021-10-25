@@ -136,7 +136,7 @@ ccls = {},
 
 {{ if and (lookPath "lean") (lookPath "lean-language-server") -}}
 require("lean").setup{
-  abbreviations = { builtin = true },
+  abbreviations = { builtin = false },
   lsp3 = { on_attach = on_attach },
   lsp = { enable = false },
   ft = {default = "lean3" },

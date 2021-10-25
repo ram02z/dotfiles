@@ -62,3 +62,12 @@ augroup diagnostics
   autocmd User DiagnosticsChanged lua require"modules.diagnostic".update_hover_diagnostics()
 augroup END
 
+augroup textSpell
+    autocmd!
+    " NOTE: not sure how enablin neorg source would affect markdown
+    autocmd FileType markdown,norg setlocal spell
+          \| lua require('cmp').setup.buffer { sources = { { name = "neorg" }, } }
+    autocmd BufRead,BufNewFile *.md,*.norg setlocal spell
+          \| lua require('cmp').setup.buffer { sources = { { name = "neorg" }, } }
+  augroup END
+

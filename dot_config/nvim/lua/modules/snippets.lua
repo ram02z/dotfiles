@@ -389,3 +389,8 @@ ls.snippets = {
     }),
   },
 }
+
+-- in a lua file: search lua-, then c-, then all-snippets.
+-- ls.filetype_extend("lua", { "c" })
+
+require("luasnip/loaders/from_vscode").load({ paths = { "~/.config/nvim/snippets/" } })

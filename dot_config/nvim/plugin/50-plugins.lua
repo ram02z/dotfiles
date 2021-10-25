@@ -86,13 +86,11 @@ packer.startup({
 
     use({
       "hrsh7th/nvim-cmp",
-      event = "InsertEnter",
-      module = "cmp",
       requires = {
-        { "hrsh7th/cmp-nvim-lsp", after = "nvim-cmp" },
-        { "hrsh7th/cmp-nvim-lua", after = "nvim-cmp" },
-        { "hrsh7th/cmp-path", after = "nvim-cmp" },
-        { "hrsh7th/cmp-buffer", after = "nvim-cmp" },
+        { "hrsh7th/cmp-nvim-lsp" },
+        { "hrsh7th/cmp-nvim-lua" },
+        { "hrsh7th/cmp-path" },
+        { "hrsh7th/cmp-buffer" },
       },
       config = [[require'modules.cmp']],
     })
@@ -201,7 +199,6 @@ packer.startup({
       event = "BufReadPre",
     })
 
-    -- TODO: actually set this up
     use({
       "vhyrro/neorg",
       branch = "unstable",
@@ -211,10 +208,15 @@ packer.startup({
           load = {
             ["core.defaults"] = {}, -- Load all the default modules
             ["core.norg.concealer"] = {}, -- Allows for use of icons
+            ["core.norg.completion"] = {
+              config = {
+                engine = "nvim-cmp",
+              },
+            },
             ["core.norg.dirman"] = { -- Manage your directories with Neorg
               config = {
                 workspaces = {
-                  my_workspace = "~/neorg",
+                  my_workspace = "~/Notes",
                 },
               },
             },
