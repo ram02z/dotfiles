@@ -94,7 +94,7 @@ vim.keymap.inoremap({
   silent = true,
 })
 vim.keymap.nnoremap({
-  '<Leader>ps',
+  "<Leader>ps",
   "<cmd>Telescope spell_suggest theme=get_cursor layout_config={height=6}<CR>",
   silent = true,
 })
