@@ -120,11 +120,11 @@ ls.snippets = {
     ls.parser.parse_snippet({ trig = "datetime;", wordTrig = true }, os.date("%d-%m-%Y %H:%M")),
   },
   norg = {
-    pair('/', '/', { condition = partial(odd_count, '/') }),
-    pair('_', '_', { condition = partial(odd_count, '_') }),
-    pair('*', '*', { condition = partial(odd_count, '*') }),
-    pair('-', '-', { condition = partial(odd_count, '-') }),
-    pair('#', '#', { condition = partial(odd_count, '#') }),
+    pair("/", "/", { condition = partial(odd_count, "/") }),
+    pair("_", "_", { condition = partial(odd_count, "_") }),
+    pair("*", "*", { condition = partial(odd_count, "*") }),
+    pair("-", "-", { condition = partial(odd_count, "-") }),
+    pair("#", "#", { condition = partial(odd_count, "#") }),
   },
   lua = {
     s("if", {

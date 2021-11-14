@@ -124,9 +124,9 @@ packer.startup({
       disable = true,
       config = function()
         require("spellsitter").setup({
-          enable = { "norg" }
+          enable = { "norg" },
         })
-      end
+      end,
     })
 
     use({
@@ -222,23 +222,23 @@ packer.startup({
             if venn_enabled == "nil" then
               print("Entered venn mode")
               vim.b.venn_enabled = true
-              vim.cmd[[setlocal ve=all]]
+              vim.cmd([[setlocal ve=all]])
               -- draw a line on HJKL keystokes
-              vim.keymap.nnoremap({"J", "<C-v>j:VBox<CR>", buffer = true})
-              vim.keymap.nnoremap({"K", "<C-v>k:VBox<CR>", buffer = true})
-              vim.keymap.nnoremap({"L", "<C-v>l:VBox<CR>", buffer = true})
-              vim.keymap.nnoremap({"H", "<C-v>h:VBox<CR>", buffer = true})
+              vim.keymap.nnoremap({ "J", "<C-v>j:VBox<CR>", buffer = true })
+              vim.keymap.nnoremap({ "K", "<C-v>k:VBox<CR>", buffer = true })
+              vim.keymap.nnoremap({ "L", "<C-v>l:VBox<CR>", buffer = true })
+              vim.keymap.nnoremap({ "H", "<C-v>h:VBox<CR>", buffer = true })
               -- draw a box by pressing "f" with visual selection
-              vim.keymap.vnoremap({"f", ":VBox<CR>", buffer = true})
+              vim.keymap.vnoremap({ "f", ":VBox<CR>", buffer = true })
             else
               print("Exited venn mode")
-              vim.cmd[[setlocal ve=block]]
-              vim.cmd[[mapclear <buffer>]]
+              vim.cmd([[setlocal ve=block]])
+              vim.cmd([[mapclear <buffer>]])
               vim.b.venn_enabled = nil
             end
-          end
-          })
-      end
+          end,
+        })
+      end,
     })
 
     -- TODO: telescope plugin? #749
@@ -273,12 +273,12 @@ packer.startup({
     use({
       "nathom/filetype.nvim",
       config = function()
-        require('filetype').setup({
+        require("filetype").setup({
           overrides = {
             extensions = {
-              lean = 'lean3'
+              lean = "lean3",
             },
-          }
+          },
         })
       end,
     })
@@ -573,7 +573,7 @@ packer.startup({
         })
         kommentary.configure_language("norg", {
           single_line_comment_string = "$comment",
-          multi_line_comment_strings = {"@comment", "@end"},
+          multi_line_comment_strings = { "@comment", "@end" },
         })
       end,
     })
@@ -678,7 +678,6 @@ packer.startup({
         vim.keymap.xmap({ "<A-l>", "<Plug>(textmanip-move-right)", silent = true })
         vim.keymap.map({ "<C-j>", "<Plug>(textmanip-duplicate-down)", silent = true })
         vim.keymap.map({ "<C-k>", "<Plug>(textmanip-duplicate-up)", silent = true })
-
       end,
       config = function()
         -- TODO: lua :)
