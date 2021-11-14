@@ -27,7 +27,8 @@ abbr --add gb "git branch"
 {{- end }}
 # C utils
 {{ if lookPath "valgrind" -}}
-abbr --add vgmc "valgrind --tool=memcheck --leak-check=yes --show-reachable=yes"
+abbr --add vgmc "valgrind --tool=memcheck --leak-check=yes --show-reachable=yes --track-origins=yes"
+abbr --add vghg "valgrind --tool=helgrind"
 {{- end }}
 
 {{ if lookPath "sudoedit" -}}

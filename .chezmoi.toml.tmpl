@@ -1,6 +1,10 @@
-{{- $rbw := lookPath "rbw" -}}
-{{- if or (not $rbw) (output $rbw "unlocked") -}}
-{{- fail "rbw not found, bootstrapping will fail.\n" -}}
+{{- $bw := lookPath "rbw" -}}
+{{- if or (not $bw) (output $bw "unlocked") -}}
+{{- fail "rbw not found, fallback to bw.\n" -}}
+{{- $bw := lookPath "bw" -}}
+{{- if or (not $bw) (output $bw "list") -}}
+{{- fail "bw not found, bootstrapping will fail.\n" -}}
+{{- end -}}
 {{- end -}}
 {{- $gpg := lookPath "gpg" -}}
 {{- if (not $gpg) -}}
@@ -8,9 +12,9 @@
 {{- end -}}
 {{- $fullName := "Omar Zeghouani" -}}
 {{- $email := promptString  "email" -}}
-{{- $gpgKey := output "rbw" "get" (cat $email "GPG short ID") | trim -}}
-{{- $sshPublicKey := output "rbw" "get" (cat "SSH public key") | trim -}}
-{{- $sshPrivateKey := output "rbw" "get" (cat "SSH private key") | trim -}}
+{{- $gpgKey := output $bw "get" (cat $email "GPG short ID") | trim -}}
+{{- $sshPublicKey := output $bw "get" (cat "SSH public key") | trim -}}
+{{- $sshPrivateKey := output $bw "get" (cat "SSH private key") | trim -}}
 {{- $gitPager := or (lookPath "delta") "less -FRSX" -}}
 {{- $editor := or (lookPath "nvim") "vi" -}}
 {{- $isWsl := or (env "WSL_DISTRO_NAME") (env "WSLENV") | not | not -}}
@@ -27,7 +31,7 @@
   args = "-d"
 
 [secret]
-  command = {{ $rbw | quote }}
+  command = {{ $bw | quote }}
 
 [data]
   name = {{ $fullName | quote }}

@@ -45,8 +45,7 @@ autocmd BufEnter *.txt call utils#helpvsplit()
 
 augroup windows
   autocmd!
-  autocmd BufNew * call utils#handle_win()
-  autocmd FileType * call utils#handle_win()
+  autocmd BufNew,FileType * call utils#handle_win()
 augroup END
 
 augroup colorcolumn
@@ -69,5 +68,5 @@ augroup textSpell
           \| lua require('cmp').setup.buffer { sources = { { name = "neorg" }, } }
     autocmd BufRead,BufNewFile *.md,*.norg setlocal spell
           \| lua require('cmp').setup.buffer { sources = { { name = "neorg" }, } }
-  augroup END
+augroup END
 

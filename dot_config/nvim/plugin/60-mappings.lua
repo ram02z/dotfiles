@@ -39,6 +39,17 @@ K.nmap({ "<Right>", ">>" })
 K.vmap({ "<Left>", "<gv" })
 K.vmap({ "<Right>", ">gv" })
 
+-- Remap for dealing with word wrap
+K.nnoremap({ "k", "v:count == 0 ? 'gk' : 'k'", silent = true, expr = true })
+K.nnoremap({ "j", "v:count == 0 ? 'gj' : 'j'", silent = true, expr = true })
+
+-- Insert blankline
+K.nnoremap({"<Plug>(BlankDown)", ":<C-U>exe utils#blank_down()<CR>", silent = true})
+K.nnoremap({"<Leader>o", ":<C-U>exe utils#blank_down()<CR>", silent = true})
+
+K.nnoremap({"<Plug>(BlankUp)", ":<C-U>exe utils#blank_up()<CR>", silent = true})
+K.nnoremap({"<Leader>O", ":<C-U>exe utils#blank_up()<CR>", silent = true})
+
 -- Leave terminal mode
 K.tnoremap({ "<C-]>", "<C-\\><C-n>", silent = true })
 
@@ -55,8 +66,8 @@ K.nnoremap({ "<Leader>w", "<cmd>lua require('utils.window').pick()<CR>", silent 
 K.nnoremap({ "<Leader>]", "<cmd>lua require('utils.misc').toggle_qf()<CR>", silent = true })
 K.nnoremap({ "<Leader>[", "<cmd>lua require('utils.misc').toggle_loc()<CR>", silent = true })
 
--- Search and replace
-K.nnoremap({ "<Leader>sr", ":%s/\\<<C-r><C-w>\\>//g<left><left>", silent = true })
+-- Find and replace
+K.nnoremap({ "<Leader>fs", ":%s/\\<<C-r><C-w>\\>//g<left><left>", silent = true })
 
 -- Diagnostic keymaps
 K.nnoremap({

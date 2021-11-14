@@ -82,10 +82,14 @@ if [ -n "$sel" ]; then
         # Check for picker mode
         if [ "$3" ]; then
             if [ "$fname" ]; then
+                case "$fname" in
+                    /*) fullpath="$fname" ;;
+                    *)  fullpath="$PWD/$fname" ;;
+                esac
                 if [ "-" = "$3" ]; then
-                    printf "%s\n" "$fname"
+                    printf "%s\n" "$fullpath"
                 else
-                    printf "%s\n" "$fname" > "$3"
+                    printf "%s\n" "$fullpath" > "$3"
                 fi
 
                 # Tell `nnn` to clear its internal selection

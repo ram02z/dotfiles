@@ -65,6 +65,11 @@ local on_attach = function(client, bufnr)
       buffer = true,
     })
   end
+  vim.keymap.nnoremap({
+    "<Leader>lf",
+    vim.lsp.buf.formatting,
+    buffer = true,
+  })
   -- if client.resolved_capabilities.code_lens then
   --   vim.api.nvim_command [[autocmd CursorHold,CursorHoldI,InsertLeave <buffer> lua vim.lsp.codelens.refresh()]]
   --   vim.keymap.nnoremap({
@@ -126,10 +131,32 @@ gopls = {
 {{- $servers = add1 $servers -}}
 {{- end }}
 {{ if lookPath "clangd" -}}
-clangd = {},
+clangd = {
+  cmd = {
+   "clangd", "--background-index", "--pch-storage=memory",
+    "--clang-tidy", "--enable-config", "--header-insertion=iwyu"
+  },
+  init_options = { fallbackFlags = { "-std=gnu99" } },
+},
 {{- $servers = add1 $servers -}}
 {{ else if lookPath "ccls" -}}
 ccls = {},
+{{- $servers = add1 $servers -}}
+{{- end }}
+{{ if lookPath "pyright" -}}
+pyright = {},
+{{- $servers = add1 $servers -}}
+{{- end }}
+{{ if lookPath "vscode-html-language-server" -}}
+html = {},
+{{- $servers = add1 $servers -}}
+{{- end }}
+{{ if lookPath "vscode-css-language-server" -}}
+cssls = {},
+{{- $servers = add1 $servers -}}
+{{- end }}
+{{ if lookPath "vscode-json-language-server" -}}
+jsonls = {},
 {{- $servers = add1 $servers -}}
 {{- end }}
 }

@@ -117,6 +117,18 @@ packer.startup({
       run = ":TSUpdate",
     })
 
+    -- TODO: add norg/spell.scm queries once neorg gets parses concealed items with TS
+    -- Get telescope spell_suggest to work as well
+    use({
+      "lewis6991/spellsitter.nvim",
+      disable = true,
+      config = function()
+        require("spellsitter").setup({
+          enable = { "norg" }
+        })
+      end
+    })
+
     use({
       "nvim-treesitter/playground",
       cmd = { "TSPlaygroundToggle", "TSHighlightCapturesUnderCursor" },
@@ -200,29 +212,33 @@ packer.startup({
     })
 
     use({
-      "vhyrro/neorg",
-      branch = "unstable",
-      after = "nvim-treesitter",
-      config = function()
-        require("neorg").setup({
-          load = {
-            ["core.defaults"] = {}, -- Load all the default modules
-            ["core.norg.concealer"] = {}, -- Allows for use of icons
-            ["core.norg.completion"] = {
-              config = {
-                engine = "nvim-cmp",
-              },
-            },
-            ["core.norg.dirman"] = { -- Manage your directories with Neorg
-              config = {
-                workspaces = {
-                  my_workspace = "~/Notes",
-                },
-              },
-            },
-          },
-        })
-      end,
+      "jbyuki/venn.nvim",
+      cmd = "VBox",
+      setup = function()
+        vim.keymap.nnoremap({
+          "<Leader>\\",
+          function()
+            local venn_enabled = vim.inspect(vim.b.venn_enabled)
+            if venn_enabled == "nil" then
+              print("Entered venn mode")
+              vim.b.venn_enabled = true
+              vim.cmd[[setlocal ve=all]]
+              -- draw a line on HJKL keystokes
+              vim.keymap.nnoremap({"J", "<C-v>j:VBox<CR>", buffer = true})
+              vim.keymap.nnoremap({"K", "<C-v>k:VBox<CR>", buffer = true})
+              vim.keymap.nnoremap({"L", "<C-v>l:VBox<CR>", buffer = true})
+              vim.keymap.nnoremap({"H", "<C-v>h:VBox<CR>", buffer = true})
+              -- draw a box by pressing "f" with visual selection
+              vim.keymap.vnoremap({"f", ":VBox<CR>", buffer = true})
+            else
+              print("Exited venn mode")
+              vim.cmd[[setlocal ve=block]]
+              vim.cmd[[mapclear <buffer>]]
+              vim.b.venn_enabled = nil
+            end
+          end
+          })
+      end
     })
 
     -- TODO: telescope plugin? #749
@@ -253,11 +269,50 @@ packer.startup({
     -- Language support
     --
 
+    -- Faster filetype detection
+    use({
+      "nathom/filetype.nvim",
+      config = function()
+        require('filetype').setup({
+          overrides = {
+            extensions = {
+              lean = 'lean3'
+            },
+          }
+        })
+      end,
+    })
+
     -- Chezmoi template support
     -- NOTE: needs to be loaded first
     use({
       "alker0/chezmoi.vim",
       opt = true,
+    })
+
+    use({
+      "vhyrro/neorg",
+      branch = "unstable",
+      config = function()
+        require("neorg").setup({
+          load = {
+            ["core.defaults"] = {}, -- Load all the default modules
+            ["core.norg.concealer"] = {}, -- Allows for use of icons
+            ["core.norg.completion"] = {
+              config = {
+                engine = "nvim-cmp",
+              },
+            },
+            ["core.norg.dirman"] = { -- Manage your directories with Neorg
+              config = {
+                workspaces = {
+                  my_workspace = "~/Notes",
+                },
+              },
+            },
+          },
+        })
+      end,
     })
 
     use({
@@ -486,7 +541,7 @@ packer.startup({
       setup = function()
         -- Disable default binds
         vim.g.kommentary_create_default_mappings = false
-        vim.keymap.nmap({ "gcl", "<Plug>kommentary_line_default", silent = true })
+        vim.keymap.nmap({ "gcc", "<Plug>kommentary_line_default", silent = true })
         vim.keymap.nmap({ "gc", "<Plug>kommentary_motion_default", silent = true })
         vim.keymap.vmap({ "gc", "<Plug>kommentary_visual_default", silent = true })
       end,
@@ -515,6 +570,10 @@ packer.startup({
         })
         kommentary.configure_language("lua", {
           prefer_single_line_comments = true,
+        })
+        kommentary.configure_language("norg", {
+          single_line_comment_string = "$comment",
+          multi_line_comment_strings = {"@comment", "@end"},
         })
       end,
     })
@@ -597,17 +656,50 @@ packer.startup({
       },
     })
 
-    -- TODO: fork and implement left-right movement
-    -- block movement
-    -- duplicate feature maybe
+    -- Text manipulation
     use({
-      "fedepujol/move.nvim",
-      module = "move",
+      "t9md/vim-textmanip",
+      keys = {
+        { "i", "<C-o><Plug>(textmanip-move-up)" },
+        { "i", "<C-o><Plug>(textmanip-move-down)" },
+        "<Plug>(textmanip-move-down)",
+        "<Plug>(textmanip-move-up)",
+        "<Plug>(textmanip-move-left)",
+        "<Plug>(textmanip-move-right)",
+        "<Plug>(textmanip-duplicate-down)",
+        "<Plug>(textmanip-duplicate-up)",
+      },
       setup = function()
-        vim.keymap.nmap({ "<A-k>", "<cmd>lua require('move').MoveLine(-1)<CR>", silent = true })
-        vim.keymap.xmap({ "<A-j>", "<cmd>lua require('move').MoveBlock(1)<CR>", silent = true })
-        vim.keymap.xmap({ "<A-k>", "<cmd>lua require('move').MoveBlock(-1)<CR>", silent = true })
-        vim.keymap.nmap({ "<A-j>", "<cmd>lua require('move').MoveLine(1)<CR>", silent = true })
+        vim.keymap.map({ "<A-j>", "<Plug>(textmanip-move-down)", silent = true })
+        vim.keymap.map({ "<A-k>", "<Plug>(textmanip-move-up)", silent = true })
+        vim.keymap.imap({ "<A-j>", "<C-o><Plug>(textmanip-move-down)", silent = true })
+        vim.keymap.imap({ "<A-k>", "<C-o><Plug>(textmanip-move-up)", silent = true })
+        vim.keymap.xmap({ "<A-h>", "<Plug>(textmanip-move-left)", silent = true })
+        vim.keymap.xmap({ "<A-l>", "<Plug>(textmanip-move-right)", silent = true })
+        vim.keymap.map({ "<C-j>", "<Plug>(textmanip-duplicate-down)", silent = true })
+        vim.keymap.map({ "<C-k>", "<Plug>(textmanip-duplicate-up)", silent = true })
+
+      end,
+      config = function()
+        -- TODO: lua :)
+        vim.api.nvim_exec(
+          [[
+          let g:textmanip_hooks = {}
+          function! g:textmanip_hooks.finish(tm)
+            let tm = a:tm
+            let helper = textmanip#helper#get()
+            if tm.linewise
+              call helper.indent(tm)
+            else
+              " When blockwise move/duplicate, remove trailing white space.
+              " To use this feature without feeling counterintuitive,
+              " I recommend you to ':set virtualedit=block',
+              call helper.remove_trailing_WS(tm)
+            endif
+          endfunction
+          ]],
+          true
+        )
       end,
     })
 

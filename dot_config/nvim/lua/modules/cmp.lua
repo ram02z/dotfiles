@@ -9,6 +9,9 @@ local fn = vim.fn
 local utils = require("utils.misc")
 
 cmp.setup({
+  completion = {
+    completeopt = "menu,menuone,noinsert",
+  },
   snippet = {
     expand = function(args)
       require("luasnip").lsp_expand(args.body)
@@ -30,13 +33,13 @@ cmp.setup({
       end
     end,
     ["<C-y>"] = cmp.mapping.confirm({
-      behavior = cmp.ConfirmBehavior.Insert,
-      select = false,
-    }),
-    ["<CR>"] = cmp.mapping.confirm({
       behavior = cmp.ConfirmBehavior.Replace,
       select = false,
     }),
+    -- ["<CR>"] = cmp.mapping.confirm({
+    --   behavior = cmp.ConfirmBehavior.Insert,
+    --   select = false,
+    -- }),
   },
   formatting = {
     format = function(_, vim_item)

@@ -56,3 +56,19 @@ function! utils#setccol()
   endif
 endfunction
 
+function! utils#blank_up()
+  let cmd = 'put!=repeat(nr2char(10), v:count1)|silent '']+'
+  if &modifiable
+    let cmd .= '|silent! call repeat#set("\<Plug>(BlankUp)", v:count1)'
+  endif
+  return cmd
+endfunction
+
+function! utils#blank_down()
+  let cmd = 'put =repeat(nr2char(10), v:count1)|silent ''[-'
+  if &modifiable
+    let cmd .= '|silent! call repeat#set("\<Plug>(BlankDown)", v:count1)'
+  endif
+  return cmd
+endfunction
+

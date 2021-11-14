@@ -3,17 +3,11 @@
 
 # Distro specifc
 {{ if (eq .chezmoi.osRelease.id "void")}}
-{{ if and (not (eq (env "XDG_SESSION_DESKTOP") "sway")) (not (env "XDG_RUNTIME_DIR")) }}
 
 {{ if (not (stat "/var/service/seatd")) }}
 # Set up seatd
 sudo ln -s /etc/sv/seatd /var/service
 sudo usermod -a -G _seatd {{ (env "USER") }}
-{{- end -}}
-
-{{ if (not (contains "pam_rundir.so" (output "cat" "/etc/pam.d/system-login"))) }}
-# Set up pam_rundir
-echo -ne '-session optional pam_rundir.so\n' | sudo tee -a /etc/pam.d/system-login
 {{- end -}}
 
 {{ if and (not (stat "/etc/sv/dbus")) (not (stat "/var/service/dbus")) }}
@@ -50,7 +44,6 @@ sudo ln -s /etc/sv/bluetoothd /var/service
 {{- end -}}
 
 {{ end }}
-{{ end }}
 
 # General config
 {{ if not (contains "fish" (env "SHELL")) }}
@@ -58,7 +51,7 @@ sudo -u {{ (env "USER") }} chsh -s {{ or (lookPath "fish") (lookPath "bash") | q
 {{- end }}
 {{ if and (lookPath "gpg") (not (stat (list (env "HOME") "/.gnupg/pubring.kbx" | join ""))) -}}
 export GPG_TTY=$(tty)
-rbw get {{ quote (cat .email "GPG private key" ) }} | gpg --import --batch
+{{ secret.command }} get {{ quote (cat .email "GPG private key" ) }} | gpg --import --batch
 unset GPG_TTY
 {{- end }}
 # vim: ft=chezmoitmpl

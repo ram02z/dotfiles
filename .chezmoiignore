@@ -1,5 +1,12 @@
 README.md
 
+.clang-format
+
+{{/* symlinked files */}}
+symlinks/
+symlinks/en.utf-8.add
+symlinks/en.utf-8.add.spl
+
 {{ if not (lookPath "alacritty") }}
 .config/alacritty/**
 .config/alacritty/

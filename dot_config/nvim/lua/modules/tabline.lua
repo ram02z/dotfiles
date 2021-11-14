@@ -7,6 +7,9 @@ local disabled_fts = {
   "undotree",
   "DiffviewFileHistory",
   "DiffviewFiles",
+  "TelescopePicker",
+  "TelescopePrompt",
+  "toggleterm",
 }
 
 -- TODO: implement click tab switching

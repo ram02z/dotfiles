@@ -51,16 +51,15 @@ end
 ls.config.set_config({
   history = true,
   delete_check_events = "InsertLeave",
+  region_check_events = "CursorHold",
 })
 
 local utils = require("utils.misc")
 local tab_expr = function()
-  if ls.expandable() then
-    ls.expand()
-  elseif require("utils.misc").invalid_prev_col() then
+  if require("utils.misc").invalid_prev_col() then
     vim.fn.feedkeys(utils.t("<Tab>"), "n")
-  elseif ls.jumpable(1) then
-    ls.jump(1)
+  elseif ls.expand_or_locally_jumpable() then
+    ls.expand_or_jump()
   else
     vim.fn.feedkeys(utils.t("<Tab>"), "n")
   end
@@ -119,6 +118,13 @@ ls.snippets = {
     ls.parser.parse_snippet({ trig = "date;", wordTrig = true }, os.date("%d-%m-%Y")),
     ls.parser.parse_snippet({ trig = "time;", wordTrig = true }, os.date("%H:%M")),
     ls.parser.parse_snippet({ trig = "datetime;", wordTrig = true }, os.date("%d-%m-%Y %H:%M")),
+  },
+  norg = {
+    pair('/', '/', { condition = partial(odd_count, '/') }),
+    pair('_', '_', { condition = partial(odd_count, '_') }),
+    pair('*', '*', { condition = partial(odd_count, '*') }),
+    pair('-', '-', { condition = partial(odd_count, '-') }),
+    pair('#', '#', { condition = partial(odd_count, '#') }),
   },
   lua = {
     s("if", {
@@ -245,7 +251,7 @@ ls.snippets = {
       i(2),
       t({ "; " }),
       i(3),
-      t({ ")", "{", "\t" }),
+      t({ ") {", "\t" }),
       i(4),
       t({ "", "}" }),
       i(0),
@@ -261,7 +267,7 @@ ls.snippets = {
       t({ "; " }),
       r(1),
       i(4, "++"),
-      t({ ")", "{", "\t" }),
+      t({ ") {", "\t" }),
       i(5),
       t({ "", "}" }),
       i(0),

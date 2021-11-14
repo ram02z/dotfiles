@@ -70,6 +70,7 @@ highlight DraculaErrorBg guifg=#FF5555 ctermfg=203 guibg=#4C313B ctermbg=NONE gu
 highlight DraculaErrorLine guifg=#FF5555 ctermfg=203 guibg=NONE ctermbg=NONE gui=undercurl cterm=undercurl guisp=#FF5555
 highlight DraculaWarnBg guifg=#FFB86C ctermfg=215 guibg=#4C423F ctermbg=NONE gui=NONE cterm=NONE
 highlight DraculaWarnLine guifg=#FFB86C ctermfg=215 guibg=NONE ctermbg=NONE gui=undercurl cterm=undercurl guisp=#FFB86C
+highlight DraculaHintBg guifg=#F1FA8C ctermfg=228 guibg=#5C6047 ctermbg=NONE gui=NONE cterm=NONE
 highlight DraculaInfoBg guifg=#8BE9FD ctermfg=117 guibg=#394A57 ctermbg=NONE gui=NONE cterm=NONE
 highlight DraculaInfoLine guifg=#8BE9FD ctermfg=117 guibg=NONE ctermbg=NONE gui=undercurl cterm=undercurl guisp=#8BE9FD
 
@@ -140,15 +141,15 @@ hi! link LspReferenceText DraculaSelection
 hi! link LspReferenceRead DraculaSelection
 hi! link LspReferenceWrite DraculaSelection
 hi! link DiagnosticInfo DraculaCyan
-hi! link DiagnosticHint DraculaCyan
+hi! link DiagnosticHint DraculaYellow
 hi! link DiagnosticError DraculaError
 hi! link DiagnosticWarn DraculaOrange
 hi! link DiagnosticVirtualTextInfo DraculaInfoBg
-hi! link DiagnosticVirtualTextHint DraculaInfoBg
+hi! link DiagnosticVirtualTextHint DraculaHintBg
 hi! link DiagnosticVirtualTextError DraculaErrorBg
 hi! link DiagnosticVirtualTextWarn DraculaWarnBg
 hi! link DiagnosticUnderlineError DraculaErrorLine
-hi! link DiagnosticUnderlineHint DraculaInfoLine
+hi! link DiagnosticUnderlineHint DraculaYellowUnderline
 hi! link DiagnosticUnderlineInfo DraculaInfoLine
 hi! link DiagnosticUnderlineWarn DraculaWarnLine
 

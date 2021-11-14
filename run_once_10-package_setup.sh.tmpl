@@ -88,14 +88,12 @@ packages=("fish-shell" "neovim-nightly" "chrony"
 {{ if .is_laptop }}
 packages+=("light");
 {{ end }}
-# NOTE: Replace packages
-# pam_rundir -> rundird
 {{ if .is_wayland -}}
 packages+=("sway" "seatd" "polkit" "firefox" "foot" "poweralertd" "bluez"
     "wdisplays" "waylock" "pipewire" "pulseaudio-utils" "libspa-bluetooth"
     "mpv" "libnotify" "wl-clipboard" "CopyQ" "swayidle" "wtype" "fuse-sshfs"
-    "pam_rundir" "font-iosevka" "i3status-rust" "python3-i3ipc"
-    "mesa-dri" "iwd" "wev" "slurp" "grim" "mako" "grimshot"
+    "font-iosevka" "i3status-rust" "python3-i3ipc" "xdg-utils" "mesa-dri"
+    "iwd" "wev" "slurp" "grim" "mako" "grimshot" "man-pages-devel"
     "iwgtk" "playerctl" "noto-fonts-emoji" "dejavu-fonts-ttf");
 {{- end }}
 {{ else if (eq (get .chezmoi.osRelease "idLike") "arch") }}
