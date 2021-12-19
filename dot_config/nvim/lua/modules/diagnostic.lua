@@ -28,10 +28,10 @@ end
 -- Workaround for ESLint (neovim #16673)
 vim.diagnostic.set = (function(orig)
   return function(namespace, bufnr, diagnostics, opts)
-      for _, v in ipairs(diagnostics) do
-          v.col = v.col or 0
-      end
-      return orig(namespace, bufnr, diagnostics, opts)
+    for _, v in ipairs(diagnostics) do
+      v.col = v.col or 0
+    end
+    return orig(namespace, bufnr, diagnostics, opts)
   end
 end)(vim.diagnostic.set)
 

@@ -40,14 +40,14 @@ packer.startup({
 
     use({
       "jose-elias-alvarez/null-ls.nvim",
-      requires = {"nvim-lua/plenary.nvim", "neovim/nvim-lspconfig"},
+      requires = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig" },
     })
 
     use({
       "stevearc/aerial.nvim",
       cmd = "AerialToggle",
       setup = function()
-        vim.keymap.nnoremap({"<Leader>a", "<cmd>AerialToggle!<CR>", silent = true})
+        vim.keymap.nnoremap({ "<Leader>a", "<cmd>AerialToggle!<CR>", silent = true })
         vim.g.aerial = { nerd_font = false }
       end,
     })
@@ -73,7 +73,7 @@ packer.startup({
     })
 
     use({
-      "rafamadriz/friendly-snippets"
+      "rafamadriz/friendly-snippets",
     })
 
     use({
