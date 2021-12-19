@@ -39,48 +39,16 @@ packer.startup({
     })
 
     use({
-      "simrat39/symbols-outline.nvim",
-      -- "~/Downloads/symbols-outline.nvim",
-      cmd = "SymbolsOutline",
+      "jose-elias-alvarez/null-ls.nvim",
+      requires = {"nvim-lua/plenary.nvim", "neovim/nvim-lspconfig"},
+    })
+
+    use({
+      "stevearc/aerial.nvim",
+      cmd = "AerialToggle",
       setup = function()
-        vim.keymap.nnoremap({ "<Leader>s", "<cmd>SymbolsOutline<CR>", silent = true })
-      end,
-      config = function()
-        require("symbols-outline").setup({
-          highlight_hovered_item = false,
-          auto_preview = false,
-          keymaps = {
-            toggle_preview = "p",
-          },
-          symbols = {
-            File = { icon = "", hl = "TSURI" },
-            Module = { icon = "", hl = "TSNamespace" },
-            Namespace = { icon = "", hl = "TSNamespace" },
-            Package = { icon = "", hl = "TSNamespace" },
-            Class = { icon = "", hl = "TSType" },
-            Method = { icon = "", hl = "TSMethod" },
-            Property = { icon = "", hl = "TSMethod" },
-            Field = { icon = "", hl = "TSField" },
-            Constructor = { icon = "", hl = "TSConstructor" },
-            Enum = { icon = "", hl = "TSType" },
-            Interface = { icon = "", hl = "TSType" },
-            Function = { icon = "", hl = "TSFunction" },
-            Variable = { icon = "", hl = "TSConstant" },
-            Constant = { icon = "", hl = "TSConstant" },
-            String = { icon = "", hl = "TSString" },
-            Number = { icon = "", hl = "TSNumber" },
-            Boolean = { icon = "", hl = "TSBoolean" },
-            Array = { icon = "", hl = "TSConstant" },
-            Object = { icon = "", hl = "TSType" },
-            Key = { icon = "", hl = "TSType" },
-            Null = { icon = "NULL", hl = "TSType" },
-            EnumMember = { icon = "", hl = "TSField" },
-            Struct = { icon = "", hl = "TSType" },
-            Event = { icon = "", hl = "TSType" },
-            Operator = { icon = "", hl = "TSOperator" },
-            TypeParameter = { icon = "", hl = "TSParameter" },
-          },
-        })
+        vim.keymap.nnoremap({"<Leader>a", "<cmd>AerialToggle!<CR>", silent = true})
+        vim.g.aerial = { nerd_font = false }
       end,
     })
 
@@ -91,15 +59,21 @@ packer.startup({
         { "hrsh7th/cmp-nvim-lua" },
         { "hrsh7th/cmp-path" },
         { "hrsh7th/cmp-buffer" },
+        { "saadparwaiz1/cmp_luasnip" },
+        { "hrsh7th/cmp-nvim-lsp-signature-help" },
       },
       config = [[require'modules.cmp']],
     })
 
     use({
       "L3MON4D3/LuaSnip",
-      event = "InsertCharPre",
-      module_pattern = "luasnip.*",
+      -- event = "BufReadPost",
+      -- module_pattern = "luasnip.*",
       config = [[require'modules.snippets']],
+    })
+
+    use({
+      "rafamadriz/friendly-snippets"
     })
 
     use({
@@ -117,15 +91,10 @@ packer.startup({
       run = ":TSUpdate",
     })
 
-    -- TODO: add norg/spell.scm queries once neorg gets parses concealed items with TS
-    -- Get telescope spell_suggest to work as well
     use({
       "lewis6991/spellsitter.nvim",
-      disable = true,
       config = function()
-        require("spellsitter").setup({
-          enable = { "norg" },
-        })
+        require("spellsitter").setup()
       end,
     })
 
@@ -141,6 +110,13 @@ packer.startup({
       end,
     })
 
+    use({
+      "monkoose/matchparen.nvim",
+      config = function()
+        require("matchparen").setup()
+      end,
+    })
+
     -- FIXME: this causes slow down in big files
     use({
       "nvim-treesitter/nvim-treesitter-refactor",
@@ -151,7 +127,6 @@ packer.startup({
 
     use({
       "mfussenegger/nvim-ts-hint-textobject",
-      event = "BufReadPost",
       config = function()
         vim.keymap.onoremap({ "m", require("tsht").nodes, silent = true })
         vim.keymap.vnoremap({ "m", [[:lua require'tsht'.nodes()<CR>]], silent = true })
@@ -170,7 +145,7 @@ packer.startup({
 
     -- Statusline
     use({
-      "famiu/feline.nvim",
+      "feline-nvim/feline.nvim",
       -- tag = "v0.3",
       branch = "develop",
       -- "~/Downloads/feline.nvim",
@@ -203,12 +178,6 @@ packer.startup({
     use({
       "mortepau/codicons.nvim",
       module = "codicons",
-    })
-
-    -- Change directory to project root
-    use({
-      "ram02z/rooter.nvim",
-      event = "BufReadPre",
     })
 
     use({
@@ -269,20 +238,6 @@ packer.startup({
     -- Language support
     --
 
-    -- Faster filetype detection
-    use({
-      "nathom/filetype.nvim",
-      config = function()
-        require("filetype").setup({
-          overrides = {
-            extensions = {
-              lean = "lean3",
-            },
-          },
-        })
-      end,
-    })
-
     -- Chezmoi template support
     -- NOTE: needs to be loaded first
     use({
@@ -291,8 +246,7 @@ packer.startup({
     })
 
     use({
-      "vhyrro/neorg",
-      branch = "unstable",
+      "nvim-neorg/neorg",
       config = function()
         require("neorg").setup({
           load = {
@@ -303,13 +257,13 @@ packer.startup({
                 engine = "nvim-cmp",
               },
             },
-            ["core.norg.dirman"] = { -- Manage your directories with Neorg
-              config = {
-                workspaces = {
-                  my_workspace = "~/Notes",
-                },
-              },
-            },
+            -- ["core.norg.dirman"] = { -- Manage your directories with Neorg
+            --   config = {
+            --     workspaces = {
+            --       my_workspace = "~/Notes",
+            --     },
+            --   },
+            -- },
           },
         })
       end,
@@ -389,12 +343,7 @@ packer.startup({
           },
           replace_netrw = 1,
         })
-        vim.keymap.noremap({ "<Leader>N", "<cmd>NnnPicker<CR>", silent = true })
-        vim.keymap.noremap({
-          "<Leader>n",
-          require("utils.misc").t(":NnnPicker %:p:h<CR>"),
-          silent = true,
-        })
+        vim.keymap.noremap({ "<Leader>n", "<cmd>NnnPicker<CR>", silent = true })
       end,
     })
 
@@ -450,20 +399,6 @@ packer.startup({
       end,
     })
 
-    -- Matchit extension
-    use({
-      "andymass/vim-matchup",
-      event = "BufReadPost",
-      setup = function()
-        vim.g.matchup_delim_noskips = 2
-        vim.g.matchup_matchparen_pumvisible = 0
-        vim.g.matchup_matchparen_singleton = 0
-        vim.g.matchup_matchparen_nomode = "ivV\\<c-v>"
-        vim.g.matchup_surround_enabled = 1
-        vim.g.matchup_matchparen_offscreen = { ["method"] = "popup" }
-      end,
-    })
-
     -- Extends f/t motions
     use({
       "rhysd/clever-f.vim",
@@ -495,24 +430,6 @@ packer.startup({
       end,
     })
 
-    -- Extends * motions
-    use({
-      "haya14busa/vim-asterisk",
-      keys = {
-        "<Plug>(asterisk-*)",
-        "<Plug>(asterisk-#)",
-        "<Plug>(asterisk-g*)",
-        "<Plug>(askerisk-g#)",
-      },
-      setup = function()
-        vim.keymap.map({ "*", "<Plug>(asterisk-*)", silent = true })
-        vim.keymap.map({ "#", "<Plug>(asterisk-#)", silent = true })
-        vim.keymap.map({ "g*", "<Plug>(asterisk-g*)", silent = true })
-        vim.keymap.map({ "g#", "<Plug>(asterisk-g#)", silent = true })
-        vim.g["asterisk#keeppos"] = 1
-      end,
-    })
-
     -- Wrap and unwrap arguments
     use({
       "AndrewRadev/splitjoin.vim",
@@ -537,43 +454,14 @@ packer.startup({
 
     -- Comments
     use({
-      "b3nj5m1n/kommentary",
-      setup = function()
-        -- Disable default binds
-        vim.g.kommentary_create_default_mappings = false
-        vim.keymap.nmap({ "gcc", "<Plug>kommentary_line_default", silent = true })
-        vim.keymap.nmap({ "gc", "<Plug>kommentary_motion_default", silent = true })
-        vim.keymap.vmap({ "gc", "<Plug>kommentary_visual_default", silent = true })
-      end,
-      keys = {
-        { "n", "<Plug>kommentary_line_default" },
-        { "n", "<Plug>kommentary_motion_default" },
-        { "v", "<Plug>kommentary_visual_default" },
-      },
+      "numToStr/Comment.nvim",
+      keys = { "gc", "gb" },
       config = function()
-        require("utils.keychord").cancel("gc")
-        local kommentary = require("kommentary.config")
-
-        kommentary.configure_language("default", {
-          use_consistent_indent = true,
-          ignore_whitespace = true,
-        })
-
-        kommentary.configure_language("dosini", {
-          prefer_single_line_comments = true,
-          single_line_comment_string = "#",
-        })
-
-        kommentary.configure_language("fish", {
-          prefer_single_line_comments = true,
-          single_line_comment_string = "#",
-        })
-        kommentary.configure_language("lua", {
-          prefer_single_line_comments = true,
-        })
-        kommentary.configure_language("norg", {
-          single_line_comment_string = "$comment",
-          multi_line_comment_strings = { "@comment", "@end" },
+        local ft = require("Comment.ft")
+        ft.dosini = "#%s"
+        ft.norg = { "$comment%s", "@comment\r%s@end" }
+        require("Comment").setup({
+          ignore = "^$",
         })
       end,
     })

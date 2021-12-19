@@ -66,6 +66,10 @@ max_line_length = 120
 [*.go]
 indent_style=tab
 
+# Python
+[*.py]
+indent_size = 4
+
 {{ if eq .chezmoi.osRelease.id "void" -}}
 [**/srcpkgs/*/template]
 indent_style=tab

@@ -5,6 +5,7 @@ local ts_config = {
   -- ensure_installed = 'maintained',
   highlight = {
     enable = true,
+    disable = { "html", "markdown" }
     -- additional_vim_regex_highlighting = true,
   },
   -- incremental_selection = {

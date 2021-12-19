@@ -58,15 +58,16 @@ augroup diagnostics
   au!
   autocmd VimEnter * lua require"modules.diagnostic"
   autocmd CursorHold,CursorHoldI * lua require"modules.diagnostic".update_hover_diagnostics()
-  autocmd User DiagnosticsChanged lua require"modules.diagnostic".update_hover_diagnostics()
+  autocmd DiagnosticChanged * lua require"modules.diagnostic".update_hover_diagnostics()
 augroup END
 
-augroup textSpell
+augroup enableNeorgCmp
     autocmd!
-    " NOTE: not sure how enablin neorg source would affect markdown
-    autocmd FileType markdown,norg setlocal spell
-          \| lua require('cmp').setup.buffer { sources = { { name = "neorg" }, } }
-    autocmd BufRead,BufNewFile *.md,*.norg setlocal spell
-          \| lua require('cmp').setup.buffer { sources = { { name = "neorg" }, } }
+    autocmd FileType norg lua require('cmp').setup.buffer { sources = { { name = "neorg" }, } }
+    autocmd BufRead,BufNewFile *.norg lua require('cmp').setup.buffer { sources = { { name = "neorg" }, } }
 augroup END
 
+augroup disableSpell
+  autocmd!
+  autocmd FileType git setlocal nospell
+augroup END

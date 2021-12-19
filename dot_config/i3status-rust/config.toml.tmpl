@@ -32,6 +32,13 @@ interval = "once"
 on_click = "cat /tmp/xbps-updates | rofi -dmenu"
 {{- end }}
 
+{{ if lookPath "docker" -}}
+[[block]]
+block = "docker"
+interval = 10
+format = "{running}/{total}"
+{{- end }}
+
 {{ if ($kdeconnect := (lookPath "kdeconnect-cli")) -}}
 # TODO: investigate why it can't connect to kde daemon
 # [[block]]
@@ -120,11 +127,19 @@ hide_when_empty = true
 json = true
 {{ end }}
 
+[[block]]
+block = "battery"
+format = "GPro {percentage:2}"
+device = "hidpp_battery_0"
+allow_missing = true
+
 {{ if .is_laptop }}
 [[block]]
 block = "battery"
 format = "{percentage:2}"
 on_click = "~/.local/bin/i3-quickterm battery"
+allow_missing = true
+hide_missing = true
 {{ end }}
 
 [[block]]

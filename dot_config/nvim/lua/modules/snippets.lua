@@ -52,6 +52,7 @@ ls.config.set_config({
   history = true,
   delete_check_events = "InsertLeave",
   region_check_events = "CursorHold",
+  ft_func = require("luasnip.extras.filetype_functions").from_pos_or_filetype,
 })
 
 local utils = require("utils.misc")
@@ -123,7 +124,6 @@ ls.snippets = {
     pair("/", "/", { condition = partial(odd_count, "/") }),
     pair("_", "_", { condition = partial(odd_count, "_") }),
     pair("*", "*", { condition = partial(odd_count, "*") }),
-    pair("-", "-", { condition = partial(odd_count, "-") }),
     pair("#", "#", { condition = partial(odd_count, "#") }),
   },
   lua = {
@@ -291,6 +291,13 @@ ls.snippets = {
       i(0),
     }),
   },
+  python = {
+    s({ trig = '"""', wordTrig = false }, {
+      t({ '"""' }),
+      i(0),
+      t({ '"""' }),
+    })
+  },
   go = {
     s("pkg", {
       t({ "package " }),
@@ -400,3 +407,5 @@ ls.snippets = {
 -- ls.filetype_extend("lua", { "c" })
 
 require("luasnip/loaders/from_vscode").load({ paths = { "~/.config/nvim/snippets/" } })
+-- friendly-snippets
+require("luasnip/loaders/from_vscode").load({ include = { "html" } })

@@ -422,6 +422,9 @@ exec {{ $pipewire }}
     {{ if ($pipewire_pulse := (lookPath "pipewire-pulse")) }}
 exec {{ $pipewire_pulse }}
     {{ end }}
+    {{ if ($inhibit_idle := (lookPath "sway-audio-idle-inhibit") )}}
+exec {{ $inhibit_idle }}
+    {{ end }}
 {{ end }}
 
 {{ if ($mako := (lookPath "mako")) }}

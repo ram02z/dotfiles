@@ -16,6 +16,7 @@ vim.diagnostic.config({
   signs = true,
   update_in_insert = false,
 })
+
 -- Change diagnostic signs
 local signs = { Error = "", Warn = "", Hint = "", Info = "" }
 
@@ -23,6 +24,16 @@ for type, icon in pairs(signs) do
   local hl = "DiagnosticSign" .. type
   vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "" })
 end
+
+-- Workaround for ESLint (neovim #16673)
+vim.diagnostic.set = (function(orig)
+  return function(namespace, bufnr, diagnostics, opts)
+      for _, v in ipairs(diagnostics) do
+          v.col = v.col or 0
+      end
+      return orig(namespace, bufnr, diagnostics, opts)
+  end
+end)(vim.diagnostic.set)
 
 function M.toggle_hover_view(bufnr)
   if config.show_all then
@@ -84,7 +95,7 @@ function M.update_hover_diagnostics(bufnr)
     FLOATING_DIAGNOSTICS_NR = vim.diagnostic.open_float(bufnr, {
       {
         focusable = false,
-        show_header = false,
+        header = false,
       },
       scope = "line",
     })

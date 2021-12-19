@@ -102,6 +102,19 @@ table.insert(components.active[1], {
 })
 
 table.insert(components.active[1], {
+  provider = function()
+    local name = os.getenv("VIRTUAL_ENV")
+    return string.format("(%s)",require("utils.misc").baseName(name))
+  end,
+  hl = { fg = "light_gray" },
+  right_sep = " ",
+  truncate_hide = true,
+  enabled = function()
+    return os.getenv("VIRTUAL_ENV") ~= nil
+  end
+})
+
+table.insert(components.active[1], {
   provider = "",
   hl = { fg = "red" },
   right_sep = " ",
@@ -126,7 +139,7 @@ table.insert(components.active[1], {
     return vim.bo.buftype == "" and vim.bo.filetype ~= ""
   end,
   truncate_hide = true,
-  -- right_sep = ' '
+  right_sep = " ",
 })
 
 table.insert(components.active[1], {

@@ -65,11 +65,20 @@ local on_attach = function(client, bufnr)
       buffer = true,
     })
   end
-  vim.keymap.nnoremap({
-    "<Leader>lf",
-    vim.lsp.buf.formatting,
-    buffer = true,
-  })
+  if client.resolved_capabilities.document_formatting then
+    vim.keymap.nnoremap({
+      "<Leader>lf",
+      vim.lsp.buf.formatting,
+      buffer = true,
+    })
+  end
+  if client.resolved_capabilities.document_range_formatting then
+    vim.keymap.xnoremap({
+      "<Leader>lf",
+      vim.lsp.buf.range_formatting,
+      buffer = true,
+    })
+  end
   -- if client.resolved_capabilities.code_lens then
   --   vim.api.nvim_command [[autocmd CursorHold,CursorHoldI,InsertLeave <buffer> lua vim.lsp.codelens.refresh()]]
   --   vim.keymap.nnoremap({
@@ -113,6 +122,25 @@ local make_config = function()
   }
 end
 
+local null_ls = require("null-ls")
+
+-- register any number of sources simultaneously
+local sources = {
+    null_ls.builtins.formatting.prettier,
+    null_ls.builtins.formatting.black,
+    null_ls.builtins.formatting.isort,
+    null_ls.builtins.formatting.fish_indent,
+    null_ls.builtins.formatting.stylua,
+    null_ls.builtins.diagnostics.flake8.with({
+        diagnostics_format = "[#{c}] #{m}",
+        method = null_ls.methods.DIAGNOSTICS_ON_SAVE,
+        extra_args = { "--extend-ignore", "E203", "--max-line-length", "88" }
+    }),
+    null_ls.builtins.code_actions.gitrebase,
+}
+
+null_ls.setup({ sources = sources, on_attach = on_attach })
+
 {{ $servers := 0 }}
 -- Define enabled servers
 local servers = {
@@ -144,7 +172,15 @@ ccls = {},
 {{- $servers = add1 $servers -}}
 {{- end }}
 {{ if lookPath "pyright" -}}
-pyright = {},
+pyright = {
+  settings = {
+    python = {
+      analysis = {
+        useLibraryCodeForTypes = false
+      }
+    }
+  }
+},
 {{- $servers = add1 $servers -}}
 {{- end }}
 {{ if lookPath "vscode-html-language-server" -}}
@@ -157,6 +193,10 @@ cssls = {},
 {{- end }}
 {{ if lookPath "vscode-json-language-server" -}}
 jsonls = {},
+{{- $servers = add1 $servers -}}
+{{- end }}
+{{ if lookPath "vscode-eslint-language-server" -}}
+eslint = {},
 {{- $servers = add1 $servers -}}
 {{- end }}
 }
