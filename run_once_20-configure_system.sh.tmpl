@@ -4,13 +4,13 @@
 # Distro specifc
 {{ if (eq .chezmoi.osRelease.id "void")}}
 
-{{ if (not (stat "/var/service/seatd")) }}
+{{ if and (stat "/etc/sv/seatd") (not (stat "/var/service/seatd")) }}
 # Set up seatd
 sudo ln -s /etc/sv/seatd /var/service
 sudo usermod -a -G _seatd {{ (env "USER") }}
 {{- end -}}
 
-{{ if and (not (stat "/etc/sv/dbus")) (not (stat "/var/service/dbus")) }}
+{{ if and (stat "/etc/sv/dbus") (not (stat "/var/service/dbus")) }}
 # Set up dbus
 sudo ln -s /etc/sv/dbus /var/service
 {{ end }}
@@ -46,7 +46,7 @@ sudo ln -s /etc/sv/bluetoothd /var/service
 {{ end }}
 
 # General config
-{{ if not (contains "fish" (env "SHELL")) }}
+{{ if (contains "/sh" (env "SHELL")) }}
 sudo -u {{ (env "USER") }} chsh -s {{ or (lookPath "fish") (lookPath "bash") | quote }}
 {{- end }}
 {{ if and (lookPath "gpg") (not (stat (list (env "HOME") "/.gnupg/pubring.kbx" | join ""))) -}}
