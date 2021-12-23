@@ -389,12 +389,12 @@ packer.startup({
     use({
       "delphinus/dwm.nvim",
       config = function()
-        local dwm = require"dwm"
-        dwm.setup{
+        local dwm = require("dwm")
+        dwm.setup({
           key_maps = false,
           master_pane_count = 1,
           master_pane_width = "50%",
-        }
+        })
         dwm.map("<C-j>", "<C-w>w")
         dwm.map("<C-k>", "<C-w>W")
         dwm.map("<A-f>", dwm.focus)
@@ -404,12 +404,12 @@ packer.startup({
         dwm.map("<C-\\>", dwm.new)
         dwm.map("<C-c>", function()
           -- You can use any Lua function to map.
-          vim.api.nvim_echo({{"closing!", "WarningMsg"}}, false, {})
+          vim.api.nvim_echo({ { "closing!", "WarningMsg" } }, false, {})
           dwm.close()
         end)
 
         -- When b:dwm_disabled is set, all features are disabled.
-        vim.cmd[[au BufRead * if &previewwindow | let b:dwm_disabled = 1 | endif]]
+        vim.cmd([[au BufRead * if &previewwindow | let b:dwm_disabled = 1 | endif]])
       end,
     })
 
