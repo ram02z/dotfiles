@@ -16,12 +16,11 @@ vim.opt.backup = false
 vim.opt.writebackup = true
 
 -- Editing text files
-vim.opt.spell = true
+-- vim.opt.spell = true
 {{ if stat (joinPath .chezmoi.homeDir ".config/nvim/spell/en.utf.8.add") -}}
 vim.opt.spellfile = '{{ (output "readlink" "-f" (joinPath .chezmoi.homeDir ".config/nvim/spell/en.utf.8.add")) | trim }}'
 {{- end }}
 vim.opt.spelllang = { "en_gb" }
-vim.opt.conceallevel = 2
 
 vim.opt.confirm = true
 

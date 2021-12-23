@@ -63,11 +63,11 @@ augroup END
 
 augroup enableNeorgCmp
     autocmd!
-    autocmd FileType norg lua require('cmp').setup.buffer { sources = { { name = "neorg" }, } }
-    autocmd BufRead,BufNewFile *.norg lua require('cmp').setup.buffer { sources = { { name = "neorg" }, } }
+    autocmd FileType norg lua require("cmp").setup.buffer { sources = { { name = "neorg" }, } }; vim.wo.conceallevel = 2
+    autocmd BufRead,BufNewFile *.norg lua require("cmp").setup.buffer { sources = { { name = "neorg" }, } }; vim.wo.conceallevel = 2
 augroup END
 
-augroup disableSpell
+augroup TSSpell
   autocmd!
-  autocmd FileType git setlocal nospell
+  autocmd BufWinEnter * lua require("utils.misc").enableSpell()
 augroup END
