@@ -386,6 +386,33 @@ packer.startup({
       config = [[require'modules.telescope']],
     })
 
+    use({
+      "delphinus/dwm.nvim",
+      config = function()
+        local dwm = require"dwm"
+        dwm.setup{
+          key_maps = false,
+          master_pane_count = 1,
+          master_pane_width = "50%",
+        }
+        dwm.map("<C-j>", "<C-w>w")
+        dwm.map("<C-k>", "<C-w>W")
+        dwm.map("<A-f>", dwm.focus)
+        dwm.map("<C-Space>", dwm.focus)
+        dwm.map("<C-l>", dwm.grow)
+        dwm.map("<C-h>", dwm.shrink)
+        dwm.map("<C-\\>", dwm.new)
+        dwm.map("<C-c>", function()
+          -- You can use any Lua function to map.
+          vim.api.nvim_echo({{"closing!", "WarningMsg"}}, false, {})
+          dwm.close()
+        end)
+
+        -- When b:dwm_disabled is set, all features are disabled.
+        vim.cmd[[au BufRead * if &previewwindow | let b:dwm_disabled = 1 | endif]]
+      end,
+    })
+
     -- Helper for resizing splits
     use({
       "simeji/winresizer",
@@ -564,8 +591,8 @@ packer.startup({
         vim.keymap.imap({ "<A-k>", "<C-o><Plug>(textmanip-move-up)", silent = true })
         vim.keymap.xmap({ "<A-h>", "<Plug>(textmanip-move-left)", silent = true })
         vim.keymap.xmap({ "<A-l>", "<Plug>(textmanip-move-right)", silent = true })
-        vim.keymap.map({ "<C-j>", "<Plug>(textmanip-duplicate-down)", silent = true })
-        vim.keymap.map({ "<C-k>", "<Plug>(textmanip-duplicate-up)", silent = true })
+        vim.keymap.map({ "<A-J>", "<Plug>(textmanip-duplicate-down)", silent = true })
+        vim.keymap.map({ "<A-K>", "<Plug>(textmanip-duplicate-up)", silent = true })
       end,
       config = function()
         -- TODO: lua :)
