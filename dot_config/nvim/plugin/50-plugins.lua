@@ -310,7 +310,7 @@ packer.startup({
       cmd = { "ToggleTerm", "TermExec" },
       keys = "<C-_>",
       setup = function()
-        vim.cmd([[command! Ca TermExec cmd='chezmoi apply']])
+        vim.api.nvim_add_user_command("Ca", "TermExec cmd='chezmoi apply'", {})
         vim.cmd([[cabbrev ca Ca]])
       end,
       config = function()
@@ -573,47 +573,9 @@ packer.startup({
 
     -- Text manipulation
     use({
-      "t9md/vim-textmanip",
-      keys = {
-        { "i", "<C-o><Plug>(textmanip-move-up)" },
-        { "i", "<C-o><Plug>(textmanip-move-down)" },
-        "<Plug>(textmanip-move-down)",
-        "<Plug>(textmanip-move-up)",
-        "<Plug>(textmanip-move-left)",
-        "<Plug>(textmanip-move-right)",
-        "<Plug>(textmanip-duplicate-down)",
-        "<Plug>(textmanip-duplicate-up)",
-      },
-      setup = function()
-        vim.keymap.map({ "<A-j>", "<Plug>(textmanip-move-down)", silent = true })
-        vim.keymap.map({ "<A-k>", "<Plug>(textmanip-move-up)", silent = true })
-        vim.keymap.imap({ "<A-j>", "<C-o><Plug>(textmanip-move-down)", silent = true })
-        vim.keymap.imap({ "<A-k>", "<C-o><Plug>(textmanip-move-up)", silent = true })
-        vim.keymap.xmap({ "<A-h>", "<Plug>(textmanip-move-left)", silent = true })
-        vim.keymap.xmap({ "<A-l>", "<Plug>(textmanip-move-right)", silent = true })
-        vim.keymap.map({ "<A-J>", "<Plug>(textmanip-duplicate-down)", silent = true })
-        vim.keymap.map({ "<A-K>", "<Plug>(textmanip-duplicate-up)", silent = true })
-      end,
+      "booperlv/nvim-gomove",
       config = function()
-        -- TODO: lua :)
-        vim.api.nvim_exec(
-          [[
-          let g:textmanip_hooks = {}
-          function! g:textmanip_hooks.finish(tm)
-            let tm = a:tm
-            let helper = textmanip#helper#get()
-            if tm.linewise
-              call helper.indent(tm)
-            else
-              " When blockwise move/duplicate, remove trailing white space.
-              " To use this feature without feeling counterintuitive,
-              " I recommend you to ':set virtualedit=block',
-              call helper.remove_trailing_WS(tm)
-            endif
-          endfunction
-          ]],
-          true
-        )
+        require("gomove").setup()
       end,
     })
 

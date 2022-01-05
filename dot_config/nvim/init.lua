@@ -7,6 +7,9 @@ local function disable_default_plugins()
   vim.g.loaded_tarPlugin = 1
   vim.g.loaded_zipPlugin = 1
   vim.g.loaded_2html_plugin = 1
+  -- use filetype.lua only
+  vim.g.do_filetype_lua = 1
+  vim.g.did_load_filetypes = 0
 end
 
 disable_default_plugins()
@@ -18,8 +21,6 @@ pcall(require, "impatient")
 pcall(vim.api.nvim_command, "packadd chezmoi.vim")
 -- Rest of startup moved to top level plugins folder
 
--- Commands
--- TODO: change to native lua if that ever gets merged
-vim.api.nvim_command([[command! PurgeUndoFiles call luaeval('require"utils.misc".purge_old_undos()')]])
+vim.api.nvim_add_user_command("PurgeUndoFiles", function() require"utils.misc".purge_old_undos() end, {})
 
 vim.api.nvim_command("colorscheme dracula")
