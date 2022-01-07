@@ -88,7 +88,8 @@ vim.keymap.set("n", "<Leader>pa", "<cmd>Telescope autocommands<CR>", { silent = 
 vim.keymap.set("n", "<Leader>ph", "<cmd>Telescope highlights<CR>", { silent = true })
 -- Resume picker
 vim.keymap.set("n", "<Leader>p<CR>", "<cmd>Telescope resume<CR>", { silent = true })
-vim.keymap.set("n",
+vim.keymap.set(
+  "n",
   "<Leader>ps",
   "<cmd>Telescope spell_suggest theme=get_cursor layout_config={height=6}<CR>",
   { silent = true }

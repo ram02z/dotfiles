@@ -12,7 +12,7 @@ execute("packadd packer.nvim")
 
 local packer = require("packer")
 
-vim.keymap.set("", "<C-S>", packer.sync, {silent=true})
+vim.keymap.set("", "<C-S>", packer.sync, { silent = true })
 
 packer.startup({
   function(use)
@@ -47,7 +47,7 @@ packer.startup({
       "stevearc/aerial.nvim",
       cmd = "AerialToggle",
       setup = function()
-        vim.keymap.set("n", "<Leader>a", "<cmd>AerialToggle!<CR>", {silent=true})
+        vim.keymap.set("n", "<Leader>a", "<cmd>AerialToggle!<CR>", { silent = true })
         vim.g.aerial = { nerd_font = false }
       end,
     })
@@ -128,7 +128,7 @@ packer.startup({
     use({
       "mfussenegger/nvim-ts-hint-textobject",
       config = function()
-        vim.keymap.set({"o", "v"}, "m", "<cmd>lua require'tsht'.nodes()<CR>", {silent = true})
+        vim.keymap.set({ "o", "v" }, "m", "<cmd>lua require'tsht'.nodes()<CR>", { silent = true })
       end,
     })
 
@@ -183,30 +183,26 @@ packer.startup({
       "jbyuki/venn.nvim",
       cmd = "VBox",
       setup = function()
-        vim.keymap.set(
-          "n",
-          "<Leader>\\",
-          function()
-            local venn_enabled = vim.inspect(vim.b.venn_enabled)
-            if venn_enabled == "nil" then
-              print("Entered venn mode")
-              vim.b.venn_enabled = true
-              vim.cmd([[setlocal ve=all]])
-              -- draw a line on HJKL keystokes
-              vim.keymap.set("n", "J", "<C-v>j:VBox<CR>", { buffer = true })
-              vim.keymap.set("n", "K", "<C-v>k:VBox<CR>", { buffer = true })
-              vim.keymap.set("n", "L", "<C-v>l:VBox<CR>", { buffer = true })
-              vim.keymap.set("n", "H", "<C-v>h:VBox<CR>", { buffer = true })
-              -- draw a box by pressing "f" with visual selection
-              vim.keymap.set("v", "f", ":VBox<CR>", {buffer=true})
-            else
-              print("Exited venn mode")
-              vim.cmd([[setlocal ve=block]])
-              vim.cmd([[mapclear <buffer>]])
-              vim.b.venn_enabled = nil
-            end
+        vim.keymap.set("n", "<Leader>\\", function()
+          local venn_enabled = vim.inspect(vim.b.venn_enabled)
+          if venn_enabled == "nil" then
+            print("Entered venn mode")
+            vim.b.venn_enabled = true
+            vim.cmd([[setlocal ve=all]])
+            -- draw a line on HJKL keystokes
+            vim.keymap.set("n", "J", "<C-v>j:VBox<CR>", { buffer = true })
+            vim.keymap.set("n", "K", "<C-v>k:VBox<CR>", { buffer = true })
+            vim.keymap.set("n", "L", "<C-v>l:VBox<CR>", { buffer = true })
+            vim.keymap.set("n", "H", "<C-v>h:VBox<CR>", { buffer = true })
+            -- draw a box by pressing "f" with visual selection
+            vim.keymap.set("v", "f", ":VBox<CR>", { buffer = true })
+          else
+            print("Exited venn mode")
+            vim.cmd([[setlocal ve=block]])
+            vim.cmd([[mapclear <buffer>]])
+            vim.b.venn_enabled = nil
           end
-        )
+        end)
       end,
     })
 
@@ -229,7 +225,7 @@ packer.startup({
       "junegunn/vim-easy-align",
       keys = "<Plug>(EasyAlign)",
       setup = function()
-        vim.keymap.set({"x", "n"}, "ga", "<Plug>(EasyAlign)", {silent=true})
+        vim.keymap.set({ "x", "n" }, "ga", "<Plug>(EasyAlign)", { silent = true })
       end,
     })
 
@@ -280,7 +276,7 @@ packer.startup({
         cmd = "Diffview*",
         setup = function()
           vim.keymap.set("n", "<Leader>vo", "<cmd>DiffviewOpen<CR>", { silent = true })
-          vim.keymap.set("n", "<Leader>vr", "<cmd>DiffviewRefresh<CR>",  { silent = true })
+          vim.keymap.set("n", "<Leader>vr", "<cmd>DiffviewRefresh<CR>", { silent = true })
           vim.keymap.set("n", "<Leader>vc", "<cmd>DiffviewClose<CR>", { silent = true })
           vim.keymap.set("n", "<Leader>vh", "<cmd>DiffviewFileHistory<CR>", { silent = true })
         end,
@@ -342,7 +338,7 @@ packer.startup({
           },
           replace_netrw = 1,
         })
-        vim.keymap.set("", "<Leader>n", "<cmd>NnnPicker<CR>", {silent=true})
+        vim.keymap.set("", "<Leader>n", "<cmd>NnnPicker<CR>", { silent = true })
       end,
     })
 
@@ -366,13 +362,9 @@ packer.startup({
       },
       setup = function()
         -- Register pickers
+        vim.keymap.set("i", "<C-r>", "<cmd>Telescope registers theme=get_cursor layout_config={height=18}<CR>")
         vim.keymap.set(
-          "i",
-          "<C-r>",
-          "<cmd>Telescope registers theme=get_cursor layout_config={height=18}<CR>"
-        )
-        vim.keymap.set(
-          {"x", "n"},
+          { "x", "n" },
           '"',
           "<cmd>Telescope registers theme=get_cursor layout_config={height=18}<CR><Esc>"
         )
@@ -431,10 +423,10 @@ packer.startup({
         vim.g.clever_f_mark_direct = 1
       end,
       config = function()
-        vim.keymap.set("", ";", "<Plug>(clever-f-repeat-forward)", {silent=true})
-        vim.keymap.set("", ",", "<Plug>(clever-f-repeat-back)", {silent=true})
+        vim.keymap.set("", ";", "<Plug>(clever-f-repeat-forward)", { silent = true })
+        vim.keymap.set("", ",", "<Plug>(clever-f-repeat-back)", { silent = true })
         -- FIXME: Issue #61
-        vim.keymap.set("n", "<Esc>", "<Plug>(clever-f-reset)<cmd>nod<CR>", {silent=true})
+        vim.keymap.set("n", "<Esc>", "<Plug>(clever-f-reset)<cmd>nod<CR>", { silent = true })
       end,
     })
 
@@ -443,8 +435,8 @@ packer.startup({
       "phaazon/hop.nvim",
       cmd = "Hop*",
       setup = function()
-        vim.keymap.set("n", "<Leader>;", "<cmd>HopWord<CR>", {silent=true})
-        vim.keymap.set("n", "<Leader>/", "<cmd>HopPattern<CR>", {silent=true})
+        vim.keymap.set("n", "<Leader>;", "<cmd>HopWord<CR>", { silent = true })
+        vim.keymap.set("n", "<Leader>/", "<cmd>HopPattern<CR>", { silent = true })
       end,
       config = function()
         require("hop").setup({ keys = "asdghklwertyuipzxcvbnmfj" })
@@ -468,8 +460,8 @@ packer.startup({
       "mizlan/iswap.nvim",
       cmd = "ISwap*",
       setup = function()
-        vim.keymap.set("n", "gs", "<cmd>ISwap<CR>", {silent=true})
-        vim.keymap.set("n", "gS", "<cmd>ISwapWith<CR>", {silent=true})
+        vim.keymap.set("n", "gs", "<cmd>ISwap<CR>", { silent = true })
+        vim.keymap.set("n", "gS", "<cmd>ISwapWith<CR>", { silent = true })
       end,
     })
 
@@ -518,8 +510,8 @@ packer.startup({
       "monaqa/dial.nvim",
       keys = { "<Plug>(dial-decrement)", "<Plug>(dial-increment)" },
       setup = function()
-        vim.keymap.set({"n", "v"}, "<C-a>", "<Plug>(dial-increment)", {silent=true})
-        vim.keymap.set({"n", "v"}, "<C-x>", "<Plug>(dial-decrement)", {silent=true})
+        vim.keymap.set({ "n", "v" }, "<C-a>", "<Plug>(dial-increment)", { silent = true })
+        vim.keymap.set({ "n", "v" }, "<C-x>", "<Plug>(dial-decrement)", { silent = true })
       end,
       config = function()
         local dial = require("dial")
@@ -593,7 +585,7 @@ packer.startup({
         vim.g.undotree_SplitWidth = 40
         vim.g.undotree_SetFocusWhenToggle = 1
         vim.g.undotree_DiffAutoOpen = 0
-        vim.keymap.set("n", "<Leader>ut", "<cmd>UndotreeToggle<CR>", {silent=true})
+        vim.keymap.set("n", "<Leader>ut", "<cmd>UndotreeToggle<CR>", { silent = true })
       end,
       config = function()
         require("utils.keychord").cancel("<Leader>u")

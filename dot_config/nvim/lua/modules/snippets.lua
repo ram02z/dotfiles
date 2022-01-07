@@ -55,7 +55,6 @@ ls.config.set_config({
   ft_func = require("luasnip.extras.filetype_functions").from_pos_or_filetype,
 })
 
-
 local stab_expr = function()
   if ls.jumpable(-1) then
     ls.jump(-1)
@@ -64,7 +63,7 @@ local stab_expr = function()
   end
 end
 
-vim.keymap.set({"i", "s"}, "<Tab>", function()
+vim.keymap.set({ "i", "s" }, "<Tab>", function()
   local utils = require("utils.misc")
   if require("utils.misc").invalid_prev_col() then
     vim.fn.feedkeys(utils.t("<Tab>"), "n")
@@ -75,7 +74,7 @@ vim.keymap.set({"i", "s"}, "<Tab>", function()
   end
 end)
 
-vim.keymap.set({"i", "s"}, "<S-Tab>", function()
+vim.keymap.set({ "i", "s" }, "<S-Tab>", function()
   local utils = require("utils.misc")
   if ls.jumpable(-1) then
     ls.jump(-1)
