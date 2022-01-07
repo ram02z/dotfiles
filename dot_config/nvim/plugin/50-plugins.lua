@@ -12,7 +12,7 @@ execute("packadd packer.nvim")
 
 local packer = require("packer")
 
-vim.keymap.set("", "<C-S>", packer.sync, { silent = true })
+vim.keymap.set("", "<C-S>", packer.sync, { silent = true, desc = "Sync packer" })
 
 packer.startup({
   function(use)
@@ -202,7 +202,7 @@ packer.startup({
             vim.cmd([[mapclear <buffer>]])
             vim.b.venn_enabled = nil
           end
-        end)
+        end, { desc = "Toggle venn mode" })
       end,
     })
 

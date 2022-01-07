@@ -63,7 +63,7 @@ local cancel = require("utils.keychord").cancel
 -- View help pages
 vim.keymap.set("n", "<Leader>pm", "<cmd>Telescope help_tags<CR>", { silent = true })
 -- Git project files (fall back to cwd)
-vim.keymap.set("n", "<Leader>pf", tscope.project_files, { silent = true })
+vim.keymap.set("n", "<Leader>pf", tscope.project_files, { silent = true, desc = "Telescope project files" })
 -- Live grep cwd
 vim.keymap.set("n", "<Leader>pl", "<cmd>Telescope live_grep<CR>", { silent = true })
 -- Buffer picker
@@ -77,9 +77,9 @@ vim.keymap.set("n", "<Leader>pgb", "<cmd>Telescope git_branches<CR>", { silent =
 -- Treesitter picker
 vim.keymap.set("n", "<Leader>pt", "<cmd>Telescope treesitter<CR>", { silent = true })
 -- Keymaps picker
-vim.keymap.set("n", "<Leader>pk", tscope.keymaps, { silent = true })
+vim.keymap.set("n", "<Leader>pk", tscope.keymaps, { silent = true, desc = "Telescope keymaps" })
 -- Commands picker
-vim.keymap.set("n", "<Leader>pc", tscope.commands, { silent = true })
+vim.keymap.set("n", "<Leader>pc", tscope.commands, { silent = true, desc = "Telescope commmands" })
 -- File history picker
 vim.keymap.set("n", "<Leader>pr", "<cmd>Telescope oldfiles<CR>", { silent = true })
 -- Autocommands picker

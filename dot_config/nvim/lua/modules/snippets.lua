@@ -64,7 +64,7 @@ vim.keymap.set({ "i", "s" }, "<Tab>", function()
   else
     vim.fn.feedkeys(utils.t("<Tab>"), "n")
   end
-end)
+end, { desc = "Expand/jump snippet or tab" })
 
 vim.keymap.set({ "i", "s" }, "<S-Tab>", function()
   local utils = require("utils.misc")
@@ -73,7 +73,7 @@ vim.keymap.set({ "i", "s" }, "<S-Tab>", function()
   else
     vim.fn.feedkeys(utils.t("<C-d>"), "n")
   end
-end)
+end, { desc = "Jump to last snippet or shift tab" })
 
 ls.snippets = {
   all = {
