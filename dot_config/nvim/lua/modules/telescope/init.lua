@@ -61,42 +61,37 @@ telescope.setup(tscope_config)
 local tscope = require("modules.telescope.functions")
 local cancel = require("utils.keychord").cancel
 -- View help pages
-vim.keymap.nnoremap({ "<Leader>pm", "<cmd>Telescope help_tags<CR>", silent = true })
+vim.keymap.set("n", "<Leader>pm", "<cmd>Telescope help_tags<CR>", { silent = true })
 -- Git project files (fall back to cwd)
-vim.keymap.nnoremap({ "<Leader>pf", tscope.project_files, silent = true })
+vim.keymap.set("n", "<Leader>pf", tscope.project_files, { silent = true })
 -- Live grep cwd
-vim.keymap.nnoremap({ "<Leader>pl", "<cmd>Telescope live_grep<CR>", silent = true })
+vim.keymap.set("n", "<Leader>pl", "<cmd>Telescope live_grep<CR>", { silent = true })
 -- Buffer picker
-vim.keymap.nnoremap({ "<Leader>pb", "<cmd>Telescope buffers<CR>", silent = true })
+vim.keymap.set("n", "<Leader>pb", "<cmd>Telescope buffers<CR>", { silent = true })
 -- Live grep open buffers
-vim.keymap.nnoremap({ "<Leader>po", "<cmd>Telescope live_grep grep_open_files=true<CR>", silent = true })
+vim.keymap.set("n", "<Leader>po", "<cmd>Telescope live_grep grep_open_files=true<CR>", { silent = true })
 -- List git status
-vim.keymap.nnoremap({ "<Leader>pgs", "<cmd>Telescope git_status<CR>", silent = true })
+vim.keymap.set("n", "<Leader>pgs", "<cmd>Telescope git_status<CR>", { silent = true })
 -- Git branches
-vim.keymap.nnoremap({ "<Leader>pgb", "<cmd>Telescope git_branches<CR>", silent = true })
+vim.keymap.set("n", "<Leader>pgb", "<cmd>Telescope git_branches<CR>", { silent = true })
 -- Treesitter picker
-vim.keymap.nnoremap({ "<Leader>pt", "<cmd>Telescope treesitter<CR>", silent = true })
+vim.keymap.set("n", "<Leader>pt", "<cmd>Telescope treesitter<CR>", { silent = true })
 -- Keymaps picker
-vim.keymap.nnoremap({ "<Leader>pk", tscope.keymaps, silent = true })
+vim.keymap.set("n", "<Leader>pk", tscope.keymaps, { silent = true })
 -- Commands picker
-vim.keymap.nnoremap({ "<Leader>pc", tscope.commands, silent = true })
+vim.keymap.set("n", "<Leader>pc", tscope.commands, { silent = true })
 -- File history picker
-vim.keymap.nnoremap({ "<Leader>pr", "<cmd>Telescope oldfiles<CR>", silent = true })
+vim.keymap.set("n", "<Leader>pr", "<cmd>Telescope oldfiles<CR>", { silent = true })
 -- Autocommands picker
-vim.keymap.nnoremap({ "<Leader>pa", "<cmd>Telescope autocommands<CR>", silent = true })
+vim.keymap.set("n", "<Leader>pa", "<cmd>Telescope autocommands<CR>", { silent = true })
 -- View highlights
-vim.keymap.nnoremap({ "<Leader>ph", "<cmd>Telescope highlights<CR>", silent = true })
+vim.keymap.set("n", "<Leader>ph", "<cmd>Telescope highlights<CR>", { silent = true })
 -- Resume picker
-vim.keymap.nnoremap({ "<Leader>p<CR>", "<cmd>Telescope resume<CR>", silent = true })
-vim.keymap.inoremap({
-  "<C-s>",
-  "<cmd>Telescope spell_suggest theme=get_cursor layout_config={height=6}<CR>",
-  silent = true,
-})
-vim.keymap.nnoremap({
+vim.keymap.set("n", "<Leader>p<CR>", "<cmd>Telescope resume<CR>", { silent = true })
+vim.keymap.set("n",
   "<Leader>ps",
   "<cmd>Telescope spell_suggest theme=get_cursor layout_config={height=6}<CR>",
-  silent = true,
-})
+  { silent = true }
+)
 
 cancel("<Leader>p")

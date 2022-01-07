@@ -55,16 +55,6 @@ ls.config.set_config({
   ft_func = require("luasnip.extras.filetype_functions").from_pos_or_filetype,
 })
 
-local utils = require("utils.misc")
-local tab_expr = function()
-  if require("utils.misc").invalid_prev_col() then
-    vim.fn.feedkeys(utils.t("<Tab>"), "n")
-  elseif ls.expand_or_locally_jumpable() then
-    ls.expand_or_jump()
-  else
-    vim.fn.feedkeys(utils.t("<Tab>"), "n")
-  end
-end
 
 local stab_expr = function()
   if ls.jumpable(-1) then
@@ -74,10 +64,25 @@ local stab_expr = function()
   end
 end
 
-vim.keymap.inoremap({ "<Tab>", tab_expr, silent = true })
-vim.keymap.snoremap({ "<Tab>", tab_expr, silent = true })
-vim.keymap.inoremap({ "<S-Tab>", stab_expr, silent = true })
-vim.keymap.snoremap({ "<S-Tab>", stab_expr, silent = true })
+vim.keymap.set({"i", "s"}, "<Tab>", function()
+  local utils = require("utils.misc")
+  if require("utils.misc").invalid_prev_col() then
+    vim.fn.feedkeys(utils.t("<Tab>"), "n")
+  elseif ls.expand_or_locally_jumpable() then
+    ls.expand_or_jump()
+  else
+    vim.fn.feedkeys(utils.t("<Tab>"), "n")
+  end
+end)
+
+vim.keymap.set({"i", "s"}, "<S-Tab>", function()
+  local utils = require("utils.misc")
+  if ls.jumpable(-1) then
+    ls.jump(-1)
+  else
+    vim.fn.feedkeys(utils.t("<C-d>"), "n")
+  end
+end)
 
 ls.snippets = {
   all = {
