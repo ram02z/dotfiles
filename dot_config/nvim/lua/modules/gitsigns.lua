@@ -1,28 +1,35 @@
 local gitsigns = require("gitsigns")
 
-local gs_conf = {
+gitsigns.setup({
   numhl = false,
   linehl = false,
-  keymaps = {
-    -- Default keymap options
-    noremap = true,
-    buffer = true,
+  on_attach = function(bufnr)
+    local function map(mode, l, r, opts)
+      opts = opts or {}
+      opts.buffer = bufnr
+      vim.keymap.set(mode, l, r, opts)
+    end
 
-    ["n ]g"] = { expr = true, "&diff ? ']c' : '<cmd>lua require\"gitsigns.actions\".next_hunk()<CR>'" },
-    ["n [g"] = { expr = true, "&diff ? '[c' : '<cmd>lua require\"gitsigns.actions\".prev_hunk()<CR>'" },
+    -- Navigation
+    map('n', ']g', "&diff ? ']g' : '<cmd>Gitsigns next_hunk<CR>'", {expr=true})
+    map('n', '[g', "&diff ? '[g' : '<cmd>Gitsigns prev_hunk<CR>'", {expr=true})
 
-    ["n <leader>gs"] = '<cmd>lua require"gitsigns".stage_hunk()<CR>',
-    ["n <leader>gu"] = '<cmd>lua require"gitsigns".undo_stage_hunk()<CR>',
-    ["n <leader>gr"] = '<cmd>lua require"gitsigns".reset_hunk()<CR>',
-    ["n <leader>gR"] = '<cmd>lua require"gitsigns".reset_buffer()<CR>',
-    ["n <leader>gp"] = '<cmd>lua require"gitsigns".preview_hunk()<CR>',
-    ["n <leader>gb"] = '<cmd>lua require"gitsigns".blame_line()<CR>',
-    ["n <leader>gt"] = "<cmd>Gitsigns toggle_current_line_blame<CR>",
+    -- Actions
+    map({'n', 'v'}, '<leader>gs', gitsigns.stage_hunk)
+    map({'n', 'v'}, '<leader>gr', gitsigns.reset_hunk)
+    map('n', '<leader>gS', gitsigns.stage_buffer)
+    map('n', '<leader>gu', gitsigns.undo_stage_hunk)
+    map('n', '<leader>gR', gitsigns.reset_buffer)
+    map('n', '<leader>gp', gitsigns.preview_hunk)
+    map('n', '<leader>gb', function() gitsigns.blame_line{full=true} end)
+    map('n', '<leader>gt', gitsigns.toggle_current_line_blame)
 
-    -- Text objects
-    ["o gh"] = ':<C-U>lua require"gitsigns.actions".select_hunk()<CR>',
-    ["x gh"] = ':<C-U>lua require"gitsigns.actions".select_hunk()<CR>',
-  },
+    -- Text object
+    map({'o', 'x'}, 'ig', ':<C-U>Gitsigns select_hunk<CR>')
+
+    local cancel = require("utils.keychord").cancel
+    cancel("<Leader>g")
+  end,
   watch_gitdir = {
     interval = 1000,
     follow_files = true,
@@ -40,9 +47,6 @@ local gs_conf = {
     internal = true,
     indent_heuristic = true,
   },
-}
+})
 
-gitsigns.setup(gs_conf)
 
-local cancel = require("utils.keychord").cancel
-cancel("<Leader>g")

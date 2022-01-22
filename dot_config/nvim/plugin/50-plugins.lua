@@ -39,16 +39,33 @@ packer.startup({
     })
 
     use({
+      "https://git.sr.ht/~whynothugo/lsp_lines.nvim",
+      config = function()
+        require("modules.diagnostic")
+        require("lsp_lines").register_lsp_virtual_lines()
+      end,
+    })
+
+    use({
       "jose-elias-alvarez/null-ls.nvim",
       requires = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig" },
+    })
+
+    use({
+      "b0o/schemastore.nvim",
+      module = "schemastore",
     })
 
     use({
       "stevearc/aerial.nvim",
       cmd = "AerialToggle",
       setup = function()
-        vim.keymap.set("n", "<Leader>a", "<cmd>AerialToggle!<CR>", { silent = true })
-        vim.g.aerial = { nerd_font = false }
+        vim.keymap.set("n", "<Leader>a", "<cmd>AerialToggle<CR>", { silent = true })
+      end,
+      config = function()
+        require("aerial").setup({
+          nerd_font = false,
+        })
       end,
     })
 
@@ -117,6 +134,11 @@ packer.startup({
       end,
     })
 
+    use({
+      -- "~/Projects/forks/nvim-treesitter-pairs",
+      "ram02z/nvim-treesitter-pairs",
+    })
+
     -- FIXME: this causes slow down in big files
     use({
       "nvim-treesitter/nvim-treesitter-refactor",
@@ -126,9 +148,9 @@ packer.startup({
     })
 
     use({
-      "mfussenegger/nvim-ts-hint-textobject",
+      "mfussenegger/nvim-treehopper",
       config = function()
-        vim.keymap.set({ "o", "v" }, "m", "<cmd>lua require'tsht'.nodes()<CR>", { silent = true })
+        vim.keymap.set({ "o", "v" }, "m", ":lua require'tsht'.nodes()<CR>", { silent = true })
       end,
     })
 
@@ -266,7 +288,6 @@ packer.startup({
 
     use({
       "Julian/lean.nvim",
-      module = "lean",
     })
 
     -- Git integration
@@ -373,7 +394,17 @@ packer.startup({
     })
 
     use({
+      "nvim-telescope/telescope-ui-select.nvim",
+      after = "telescope.nvim",
+      config = function()
+        require("telescope").load_extension("ui-select")
+      end,
+    })
+
+    -- EXPERIMENTAL: dwm style window management
+    use({
       "delphinus/dwm.nvim",
+      disable = true,
       config = function()
         local dwm = require("dwm")
         dwm.setup({

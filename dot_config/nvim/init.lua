@@ -7,9 +7,6 @@ local function disable_default_plugins()
   vim.g.loaded_tarPlugin = 1
   vim.g.loaded_zipPlugin = 1
   vim.g.loaded_2html_plugin = 1
-  -- use filetype.lua only
-  vim.g.do_filetype_lua = 1
-  vim.g.did_load_filetypes = 0
 end
 
 disable_default_plugins()

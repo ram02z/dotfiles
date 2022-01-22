@@ -54,20 +54,19 @@ augroup colorcolumn
   autocmd OptionSet textwidth call utils#setccol()
 augroup END
 
-augroup diagnostics
-  au!
-  autocmd VimEnter * lua require"modules.diagnostic"
-  autocmd CursorHold,CursorHoldI * lua require"modules.diagnostic".update_hover_diagnostics()
-  autocmd DiagnosticChanged * lua require"modules.diagnostic".update_hover_diagnostics()
-augroup END
-
 augroup enableNeorgCmp
     autocmd!
-    autocmd FileType norg lua require("cmp").setup.buffer { sources = { { name = "neorg" }, } }; vim.wo.conceallevel = 2
-    autocmd BufRead,BufNewFile *.norg lua require("cmp").setup.buffer { sources = { { name = "neorg" }, } }; vim.wo.conceallevel = 2
+    autocmd FileType norg lua require("cmp").setup.buffer { sources = { { name = "neorg" }, } }
+    autocmd BufRead,BufNewFile *.norg lua require("cmp").setup.buffer { sources = { { name = "neorg" }, } }
 augroup END
 
 augroup TSSpell
   autocmd!
+  autocmd VimEnter * lua require("utils.misc").enableSpell()
   autocmd BufWinEnter * lua require("utils.misc").enableSpell()
+augroup END
+
+augroup PlenaryFiletypes
+  autocmd!
+  autocmd BufReadPost * lua require("utils.misc").getFiletype()
 augroup END

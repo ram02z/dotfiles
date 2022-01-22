@@ -97,6 +97,7 @@ highlight WildMenu guifg=#181A26 ctermfg=236 guibg=#BD93F9 ctermbg=141 gui=bold 
 highlight CursorLine guifg=NONE ctermfg=NONE guibg=#424450 ctermbg=238 gui=NONE cterm=NONE guisp=NONE
 highlight BlackOnPurple guifg=#21222C ctermfg=235 guibg=#BD93D9 ctermbg=141 gui=NONE cterm=NONE guisp=NONE
 highlight DiffDelete guifg=NONE ctermfg=203 guibg=#4C313B ctermbg=NONE gui=NONE cterm=NONE guisp=NONE
+highlight BoldUnderlined guifg=NONE ctermfg=NONE guibg=NONE ctermbg=NONE gui=undercurl,bold cterm=undercurl,bold guisp=NONE
 
 hi! link ColorColumn  DraculaBgLight
 hi! link CursorColumn CursorLine
@@ -158,10 +159,10 @@ hi! link Underlined DraculaFgUnderline
 hi! link Todo DraculaNote
 
 hi! link Error DraculaError
-hi! link SpellBad DraculaErrorLine
-hi! link SpellLocal DraculaWarnLine
-hi! link SpellCap DraculaInfoLine
-hi! link SpellRare DraculaInfoLine
+hi! link SpellBad BoldUnderlined
+hi! link SpellLocal BoldUnderlined
+hi! link SpellCap BoldUnderlined
+hi! link SpellRare BoldUnderlined
 
 hi! link Constant DraculaPurple
 hi! link String DraculaYellow
@@ -275,9 +276,12 @@ hi! link OperatorSandwichDelete DraculaError
 hi! CleverFDefaultLabel guifg=#FF007C guibg=NONE gui=bold ctermfg=162 cterm=NONE
 " # vim-matchup
 " hi! link MatchParenCur Comment
-hi! link MatchWord CursorLine
-hi! link MatchWordCur CursorLine
+" hi! link MatchWord CursorLine
+" hi! link MatchWordCur CursorLine
 " # nvim-bqf
 hi! link BqfPreviewBorder FloatBorder
+" # treesitter-pairs
+hi! link NvimTreesitterPairsSelf CursorLine
+hi! link NvimTreesitterPairsPartner CursorLine
 
 " vim: fdm=marker ts=2 sts=2 sw=2 fdl=0 et:
