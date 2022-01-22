@@ -55,13 +55,13 @@ local ts_config = {
   pairs = {
     enable = true,
     disable = {},
-    highlight_pair_events = {"CursorHoldI", "CursorHold"},
+    highlight_pair_events = { "CursorHoldI", "CursorHold" },
     highlight_self = true, -- whether to highlight also the part of the pair under cursor (or only the partner)
     goto_right_end = true, -- whether to go to the end of the right partner or the beginning
     fallback_cmd_normal = "",
     keymaps = {
       goto_partner = "<leader>%",
-    }
+    },
   },
 }
 

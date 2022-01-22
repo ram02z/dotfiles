@@ -5,5 +5,5 @@ vim.g.did_load_filetypes = 0
 vim.filetype.add({
   extension = {
     tmpl = "gotmpl",
-  }
+  },
 })

@@ -11,21 +11,23 @@ gitsigns.setup({
     end
 
     -- Navigation
-    map('n', ']g', "&diff ? ']g' : '<cmd>Gitsigns next_hunk<CR>'", {expr=true})
-    map('n', '[g', "&diff ? '[g' : '<cmd>Gitsigns prev_hunk<CR>'", {expr=true})
+    map("n", "]g", "&diff ? ']g' : '<cmd>Gitsigns next_hunk<CR>'", { expr = true })
+    map("n", "[g", "&diff ? '[g' : '<cmd>Gitsigns prev_hunk<CR>'", { expr = true })
 
     -- Actions
-    map({'n', 'v'}, '<leader>gs', gitsigns.stage_hunk)
-    map({'n', 'v'}, '<leader>gr', gitsigns.reset_hunk)
-    map('n', '<leader>gS', gitsigns.stage_buffer)
-    map('n', '<leader>gu', gitsigns.undo_stage_hunk)
-    map('n', '<leader>gR', gitsigns.reset_buffer)
-    map('n', '<leader>gp', gitsigns.preview_hunk)
-    map('n', '<leader>gb', function() gitsigns.blame_line{full=true} end)
-    map('n', '<leader>gt', gitsigns.toggle_current_line_blame)
+    map({ "n", "v" }, "<leader>gs", gitsigns.stage_hunk)
+    map({ "n", "v" }, "<leader>gr", gitsigns.reset_hunk)
+    map("n", "<leader>gS", gitsigns.stage_buffer)
+    map("n", "<leader>gu", gitsigns.undo_stage_hunk)
+    map("n", "<leader>gR", gitsigns.reset_buffer)
+    map("n", "<leader>gp", gitsigns.preview_hunk)
+    map("n", "<leader>gb", function()
+      gitsigns.blame_line({ full = true })
+    end)
+    map("n", "<leader>gt", gitsigns.toggle_current_line_blame)
 
     -- Text object
-    map({'o', 'x'}, 'ig', ':<C-U>Gitsigns select_hunk<CR>')
+    map({ "o", "x" }, "ig", ":<C-U>Gitsigns select_hunk<CR>")
 
     local cancel = require("utils.keychord").cancel
     cancel("<Leader>g")
@@ -48,5 +50,3 @@ gitsigns.setup({
     indent_heuristic = true,
   },
 })
-
-
