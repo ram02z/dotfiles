@@ -1,5 +1,3 @@
--- vim: ft=lua
-
 -- TODO: use lsp_status for capabilites
 local on_attach = function(client, bufnr)
   -- Set autocommands conditional on server_capabilities
@@ -165,6 +163,9 @@ gopls = {
   settings = {
     gopls = {
       staticcheck = true,
+      analyses = {
+        fieldalignment = true,
+      },
     },
   },
 },
