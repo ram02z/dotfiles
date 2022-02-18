@@ -18,10 +18,10 @@ local ts_config = {
   --   },
   -- }
   -- NOTE: testing this after #2275
-  indent = {
-    enable = true,
-    disable = { "html", "xml" },
-  },
+  -- indent = {
+  --   enable = true,
+  --   disable = { "html", "xml" },
+  -- },
   -- refactor = {
   --   highlight_definitions = { enable = true },
   --   smart_rename = {

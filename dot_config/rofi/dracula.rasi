@@ -22,7 +22,7 @@ vim:ft=css
    text-color:       @dark3;
    dark-text-color:  @dark4;
    main-color:       @blue;
-   highlight:        @light1;
+   highlight:        @green;
    urgent-color:     @red;
    selected-color:   @lightcyan;
 }

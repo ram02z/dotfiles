@@ -130,16 +130,19 @@ json = true
 [[block]]
 block = "battery"
 format = "GPro {percentage:2}"
+missing_format = "GPro X"
 device = "hidpp_battery_0"
+driver = "upower"
 allow_missing = true
 
 {{ if .is_laptop }}
 [[block]]
 block = "battery"
 format = "{percentage:2}"
+full_format = "{percentage}"
+device = "BAT0"
 on_click = "~/.local/bin/i3-quickterm battery"
 allow_missing = true
-hide_missing = true
 {{ end }}
 
 [[block]]

@@ -27,7 +27,6 @@ highlight DraculaBgDarkest guifg=NONE ctermfg=NONE guibg=#191A21 ctermbg=234 gui
 
 highlight DraculaFg guifg=#F8F8F2 ctermfg=253 guibg=NONE ctermbg=NONE gui=NONE cterm=NONE guisp=NONE
 highlight DraculaFgStrikethrough guifg=#F8F8F2 ctermfg=253 guibg=NONE ctermbg=NONE gui=strikethrough cterm=strikethrough guisp=NONE
-highlight DraculaFgUnderline guifg=#F8F8F2 ctermfg=253 guibg=NONE ctermbg=NONE gui=underline cterm=underline guisp=NONE
 highlight DraculaFgBold guifg=#F8F8F2 ctermfg=253 guibg=NONE ctermbg=NONE gui=bold cterm=bold guisp=NONE
 
 highlight DraculaComment guifg=#6272A4 ctermfg=61 guibg=NONE ctermbg=NONE gui=NONE cterm=NONE guisp=NONE
@@ -97,7 +96,7 @@ highlight WildMenu guifg=#181A26 ctermfg=236 guibg=#BD93F9 ctermbg=141 gui=bold 
 highlight CursorLine guifg=NONE ctermfg=NONE guibg=#424450 ctermbg=238 gui=NONE cterm=NONE guisp=NONE
 highlight BlackOnPurple guifg=#21222C ctermfg=235 guibg=#BD93D9 ctermbg=141 gui=NONE cterm=NONE guisp=NONE
 highlight DiffDelete guifg=NONE ctermfg=203 guibg=#4C313B ctermbg=NONE gui=NONE cterm=NONE guisp=NONE
-highlight BoldUnderlined guifg=NONE ctermfg=NONE guibg=NONE ctermbg=NONE gui=undercurl,bold cterm=undercurl,bold guisp=NONE
+highlight Underlined guifg=NONE ctermfg=NONE guibg=NONE ctermbg=NONE gui=undercurl cterm=undercurl guisp=NONE
 
 hi! link ColorColumn  DraculaBgLight
 hi! link CursorColumn CursorLine
@@ -155,14 +154,13 @@ hi! link DiagnosticUnderlineInfo DraculaInfoLine
 hi! link DiagnosticUnderlineWarn DraculaWarnLine
 
 hi! link Comment DraculaComment
-hi! link Underlined DraculaFgUnderline
 hi! link Todo DraculaNote
 
 hi! link Error DraculaError
-hi! link SpellBad BoldUnderlined
-hi! link SpellLocal BoldUnderlined
-hi! link SpellCap BoldUnderlined
-hi! link SpellRare BoldUnderlined
+hi! link SpellBad Underlined
+hi! link SpellLocal Underlined
+hi! link SpellCap Underlined
+hi! link SpellRare Underlined
 
 hi! link Constant DraculaPurple
 hi! link String DraculaYellow
@@ -283,5 +281,7 @@ hi! link BqfPreviewBorder FloatBorder
 " # treesitter-pairs
 hi! link NvimTreesitterPairsSelf CursorLine
 hi! link NvimTreesitterPairsPartner CursorLine
+" # fidget.nvim
+hi! link FidgetTask Comment
 
 " vim: fdm=marker ts=2 sts=2 sw=2 fdl=0 et:

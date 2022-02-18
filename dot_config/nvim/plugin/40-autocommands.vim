@@ -70,3 +70,8 @@ augroup PlenaryFiletypes
   autocmd!
   autocmd BufReadPost * lua require("utils.misc").getFiletype()
 augroup END
+
+augroup StartJdtLsp
+  autocmd!
+  autocmd FileType java lua require("modules.lsp").start_jdt()
+augroup END

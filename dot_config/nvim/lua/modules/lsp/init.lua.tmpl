@@ -64,14 +64,14 @@ local on_attach = function(client, bufnr)
       {buffer = true}
    )
   end
-  if client.resolved_capabilities.find_references then
+  -- if client.resolved_capabilities.find_references then
     vim.keymap.set(
 			"n",
       "<Leader>*",
       vim.lsp.buf.references,
       {buffer = true}
     )
-  end
+  -- end
   if client.resolved_capabilities.document_formatting then
     vim.keymap.set(
 			"n",
@@ -172,12 +172,7 @@ gopls = {
 {{- $servers = add1 $servers -}}
 {{- end }}
 {{ if lookPath "clangd" -}}
-clangd = {
-  cmd = {
-   "clangd", "--background-index", "--pch-storage=memory",
-    "--clang-tidy", "--enable-config", "--header-insertion=iwyu"
-  },
-},
+-- clangd moved to start_clangd
 {{- $servers = add1 $servers -}}
 {{ else if lookPath "ccls" -}}
 ccls = {},
@@ -217,24 +212,88 @@ jsonls = {
 eslint = {},
 {{- $servers = add1 $servers -}}
 {{- end }}
+{{ if lookPath "texlab" -}}
+texlab = {},
+{{- $servers = add1 $servers -}}
+{{- end }}
 }
+
+local M = {}
 
 {{ if and (lookPath "lean") (lookPath "lean-language-server") -}}
-require("lean").setup{
-  abbreviations = { builtin = false },
-  lsp3 = { on_attach = on_attach },
-  lsp = { enable = false },
-  ft = {default = "lean3" },
-  mappings = true,
-}
-{{- end }}
-
-{{ if gt $servers 0 -}}
--- Register all the LSP servers.
-local lspconfig = require("lspconfig")
-local common_config = make_config()
-for server, config in pairs(servers) do
-  -- Merge per-LSP configs with the common settings, and use that:
-  lspconfig[server].setup(vim.tbl_extend("keep", config, common_config))
+function M.start_lean3()
+  require("lean").setup{
+    abbreviations = { builtin = false },
+    lsp3 = { on_attach = on_attach },
+    lsp = { enable = false },
+    ft = {default = "lean3" },
+    mappings = true,
+  }
 end
 {{- end }}
+
+{{ if lookPath "clangd" -}}
+function M.start_clangd()
+  require("clangd_extensions").setup({
+      server = {
+        cmd = {
+          "clangd", "--background-index", "--pch-storage=memory",
+          "--clang-tidy", "--enable-config", "--header-insertion=iwyu"
+        },
+        on_attach = on_attach,
+      },
+  })
+end
+{{- end }}
+
+function M.setup_servers()
+  M.start_lean3()
+  M.start_clangd()
+  {{ if gt $servers 0 -}}
+  -- Register all the LSP servers.
+  local lspconfig = require("lspconfig")
+  local common_config = make_config()
+  for server, config in pairs(servers) do
+    -- Merge per-LSP configs with the common settings, and use that:
+    lspconfig[server].setup(vim.tbl_extend("keep", config, common_config))
+  end
+  {{- end }}
+end
+
+
+
+function M.start_jdt()
+{{ if lookPath "jdtls" -}}
+  local root_markers = {'gradlew', '.git', 'module-info.java'}
+  local root_dir = require('jdtls.setup').find_root(root_markers)
+  local workspace_folder = U.os.home .. "/.local/share/eclipse/" .. vim.fn.fnamemodify(root_dir, ":p:h:t")
+
+  local jdtls_on_attach = function(client, buffer)
+    on_attach(client, buffer)
+    require("jdtls.setup").add_commands()
+  end
+
+  require("jdtls").start_or_attach(vim.tbl_extend("keep", {
+    cmd = {
+      "jdtls",
+      "-data", workspace_folder,
+    },
+    on_attach = jdtls_on_attach,
+    root_dir = root_dir,
+    flags = {
+      server_side_fuzzy_completion = true,
+    },
+    settings = {
+      java = {
+        signatureHelp = { enabled = true },
+        contentProvider = { preferred = "fernflower" },
+      },
+    },
+    init_options = {
+      bundles = {}
+    },
+  }, make_config()))
+{{- end }}
+end
+
+return M

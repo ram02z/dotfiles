@@ -90,6 +90,9 @@ seat seat0 xcursor_theme "Simp1e-dark" 16
     # Start a terminal
     bindsym $mod+Return exec $term
 
+    # Start vim
+    bindsym $mod+Control+Return exec $term -e $EDITOR
+
     # Kill focused window
     bindsym $mod+q kill
 
@@ -230,8 +233,7 @@ exec "avizo-service"
     bindsym $mod+bracketright splitv
 
     # Switch the current container between different layout styles
-    bindsym $mod+e layout stacking
-    bindsym $mod+w layout tabbed
+    bindsym $mod+t toggle tabbed split
     # bindsym $mod+e layout toggle split
 
     # Make the current focus fullscreen
@@ -241,7 +243,7 @@ exec "avizo-service"
     bindsym $mod+Shift+f floating toggle
 
     # Swap focus between the tiling area and the floating area
-    bindsym $mod+t focus mode_toggle
+    bindsym $mod+e focus mode_toggle
 
     # Move focus to the parent container
     bindsym $mod+a focus parent
