@@ -383,7 +383,7 @@ ls.snippets = {
       c(1, {
         t("public "),
         t("private "),
-        t("protected ")
+        t("protected "),
       }),
       t("class "),
       dl(2, l.TM_FILENAME:match("([^.]*)"), {}),
@@ -399,7 +399,7 @@ ls.snippets = {
       c(1, {
         t("public "),
         t("private "),
-        t("protected ")
+        t("protected "),
       }),
       c(2, {
         t("static "),
