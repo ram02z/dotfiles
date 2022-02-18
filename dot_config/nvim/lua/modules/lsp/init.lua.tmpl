@@ -220,8 +220,8 @@ texlab = {},
 
 local M = {}
 
-{{ if and (lookPath "lean") (lookPath "lean-language-server") -}}
 function M.start_lean3()
+{{ if and (lookPath "lean") (lookPath "lean-language-server") -}}
   require("lean").setup{
     abbreviations = { builtin = false },
     lsp3 = { on_attach = on_attach },
@@ -229,11 +229,11 @@ function M.start_lean3()
     ft = {default = "lean3" },
     mappings = true,
   }
-end
 {{- end }}
+end
 
-{{ if lookPath "clangd" -}}
 function M.start_clangd()
+{{ if lookPath "clangd" -}}
   require("clangd_extensions").setup({
       server = {
         cmd = {
@@ -243,8 +243,8 @@ function M.start_clangd()
         on_attach = on_attach,
       },
   })
-end
 {{- end }}
+end
 
 function M.setup_servers()
   M.start_lean3()
