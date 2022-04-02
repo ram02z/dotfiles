@@ -467,11 +467,11 @@ packer.startup({
       {
         "akinsho/git-conflict.nvim",
         config = function()
-          require('git-conflict').setup({
+          require("git-conflict").setup({
             disable_diagnostics = true,
             highlights = {
               incoming = "DiffIncoming",
-              current  = "DiffAdd",
+              current = "DiffAdd",
             },
           })
           vim.keymap.set("n", "cq", "<cmd>GitConflictListQf<CR>")
