@@ -483,7 +483,7 @@ packer.startup({
     use({
       "akinsho/toggleterm.nvim",
       cmd = { "ToggleTerm", "TermExec" },
-      keys = "<C-/>",
+      keys = [[<C-\>]],
       setup = function()
         vim.api.nvim_add_user_command("Ca", "TermExec cmd='chezmoi apply'", {})
         vim.cmd([[cabbrev ca Ca]])
@@ -491,7 +491,7 @@ packer.startup({
       config = function()
         require("toggleterm").setup({
           shell = "/usr/bin/env fish",
-          open_mapping = [[<C-/>]],
+          open_mapping = [[<C-\>]],
         })
       end,
     })
