@@ -90,11 +90,11 @@ packages+=("light");
 {{ end }}
 {{ if .is_wayland -}}
 packages+=("sway" "seatd" "polkit" "firefox" "foot" "poweralertd" "bluez"
-    "wdisplays" "waylock" "pipewire" "pulseaudio-utils" "libspa-bluetooth"
+    "wdisplays" "swaylock" "pipewire" "pulseaudio-utils" "libspa-bluetooth"
     "mpv" "libnotify" "wl-clipboard" "CopyQ" "swayidle" "wtype" "fuse-sshfs"
     "font-iosevka" "i3status-rust" "python3-i3ipc" "xdg-utils" "mesa-dri"
-    "iwd" "wev" "slurp" "grim" "mako" "grimshot" "man-pages-devel"
-    "iwgtk" "playerctl" "noto-fonts-emoji" "dejavu-fonts-ttf");
+    "iwd" "wev" "slurp" "grim" "mako" "grimshot" "man-pages-devel" "dumb_runtime_dir"
+    "iwgtk" "playerctl" "noto-fonts-emoji" "dejavu-fonts-ttf" "gcolor3");
 {{- end }}
 {{ else if (eq (get .chezmoi.osRelease "idLike") "arch") }}
 # Assumes we are running sway

@@ -16,11 +16,11 @@ vim.opt.backup = false
 vim.opt.writebackup = true
 
 -- Editing text files
--- vim.opt.spell = true
 {{ if stat (joinPath .chezmoi.homeDir ".config/nvim/spell/en.utf.8.add") -}}
 vim.opt.spellfile = '{{ (output "readlink" "-f" (joinPath .chezmoi.homeDir ".config/nvim/spell/en.utf.8.add")) | trim }}'
 {{- end }}
 vim.opt.spelllang = { "en_gb" }
+vim.opt.spelloptions = "camel"
 
 vim.opt.confirm = true
 
@@ -77,9 +77,6 @@ vim.opt.number = true
 vim.opt.relativenumber = true
 
 vim.opt.signcolumn = "yes:1"
-
--- Ensure c syntax is use for header files
-vim.g.c_syntax_for_h = 1
 
 {{ if (eq .chezmoi.os "linux") -}}
 {{ if .is_wsl -}}

@@ -22,9 +22,9 @@ local function char_count_nequal(c1, c2)
   return ct1 ~= ct2
 end
 
-local function odd_count(c)
+local function odd_count(ch)
   local line = vim.api.nvim_get_current_line()
-  local _, ct = string.gsub(line, c, "")
+  local _, ct = string.gsub(line, ch, "")
   return ct % 2 ~= 0
 end
 
@@ -107,7 +107,7 @@ local function jdocsnip(args, _, old_state)
   end
 
   local insert = 2
-  for indx, arg in ipairs(vim.split(args[2][1], ", ", true)) do
+  for _, arg in ipairs(vim.split(args[2][1], ", ", true)) do
     -- Get actual name parameter.
     arg = vim.split(arg, " ", true)[2]
     if arg then
@@ -159,7 +159,7 @@ local function jdocsnip(args, _, old_state)
   return snip
 end
 
-ls.snippets = {
+ls.add_snippets(nil, {
   all = {
     pair("(", ")", { condition = partial(char_count_nequal, "(", ")") }),
     pair("{", "}", { condition = partial(char_count_nequal, "{", "}") }),
@@ -284,7 +284,7 @@ ls.snippets = {
       i(0),
     }),
     s("eli", {
-      t({ "else if(" }),
+      t({ "else if (" }),
       i(1),
       t({ ") {", "\t" }),
       i(2),
@@ -370,6 +370,26 @@ ls.snippets = {
       t({ "", "};" }),
       i(0),
     }),
+    s("switch", {
+      t({ "switch (" }),
+      i(1),
+      t({ ") {", "\t" }),
+      i(2),
+      t({ "", "}" }),
+      i(0),
+    }),
+  },
+  cpp = {
+    s("class", {
+      t({ "class " }),
+      i(1),
+      t({ " {", "\t" }),
+      i(2),
+      t({ "", "}" }),
+      i(3),
+      t({ ";" }),
+      i(0),
+    })
   },
   python = {
     s({ trig = '"""', wordTrig = false }, {
@@ -526,11 +546,11 @@ ls.snippets = {
       i(0),
     }),
   },
-}
+})
 
 -- in a cpp file: search c-snippets, then all-snippets only (no cpp-snippets!!).
-ls.filetype_set("cpp", { "c" })
+ls.filetype_set("cpp", { "c", "cpp" })
 
 require("luasnip/loaders/from_vscode").lazy_load({ paths = { "~/.config/nvim/snippets/" } })
 -- friendly-snippets
-require("luasnip/loaders/from_vscode").load({ include = { "html", "java", "latex" } })
+require("luasnip/loaders/from_vscode").lazy_load({ include = { "html", "java", "latex" } })

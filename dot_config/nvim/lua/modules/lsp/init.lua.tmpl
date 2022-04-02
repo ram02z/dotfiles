@@ -101,6 +101,11 @@ local on_attach = function(client, bufnr)
   require("utils.keychord").cancel("<Leader>l", true)
 
   -- Additional plugins
+  require("fidget").setup({
+    window = {
+      blend = 0,
+    },
+  })
   -- require("cmp_nvim_lsp").setup()
 end
 
@@ -138,7 +143,9 @@ local null_ls = require("null-ls")
 local sources = {
     null_ls.builtins.formatting.prettier,
     null_ls.builtins.formatting.black,
-    null_ls.builtins.formatting.isort,
+    null_ls.builtins.formatting.isort.with({
+      extra_args = {"--profile", "black"}
+    }),
     null_ls.builtins.formatting.fish_indent,
     null_ls.builtins.formatting.stylua,
     null_ls.builtins.diagnostics.flake8.with({
@@ -215,6 +222,33 @@ eslint = {},
 {{ if lookPath "texlab" -}}
 texlab = {},
 {{- $servers = add1 $servers -}}
+{{- end }}
+{{ if lookPath "lua-language-server" -}}
+sumneko_lua = {
+  autostart = false,
+  settings = {
+    Lua = {
+      runtime = {
+        version = "LuaJIT",
+        path = vim.split(package.path, ";"),
+      },
+      workspace = {
+        library = {
+          [vim.env.VIMRUNTIME] = true,
+          [U.os.data .. "/pack/*/start/*"] = true,
+          [U.os.data .. "/pack/*/opt/*"] = true,
+          [U.os.data .. "/rocks/*"] = true,
+        },
+        maxPreload = 2000,
+        preloadFileSize = 50000,
+      },
+      diagnostics = {
+        globals = { "vim" },
+      },
+      telemetry = { enable = false },
+    },
+  },
+}
 {{- end }}
 }
 

@@ -41,6 +41,7 @@ packer.startup({
     use({
       "https://git.sr.ht/~whynothugo/lsp_lines.nvim",
       config = function()
+        -- FIXME: diagnostic config shouldn't rely on this plugin
         require("modules.diagnostic")
         require("lsp_lines").register_lsp_virtual_lines()
       end,
@@ -48,6 +49,7 @@ packer.startup({
 
     use({
       "j-hui/fidget.nvim",
+      module = "fidget",
       config = function()
         require("fidget").setup({
           window = {
@@ -281,6 +283,7 @@ packer.startup({
       opt = true,
     })
 
+    -- TODO: move to own file
     use({
       "nvim-neorg/neorg",
       config = function()
@@ -383,7 +386,7 @@ packer.startup({
                 end,
               },
             },
-            ["core.norg.concealer"] = {}, -- Allows for use of icons
+            ["core.norg.concealer"] = {},
             ["core.norg.manoeuvre"] = {},
             ["core.norg.completion"] = {
               config = {
@@ -461,13 +464,26 @@ packer.startup({
         event = { "BufRead", "BufNewFile" },
         config = [[require'modules.gitsigns']],
       },
+      {
+        "akinsho/git-conflict.nvim",
+        config = function()
+          require('git-conflict').setup({
+            disable_diagnostics = true,
+            highlights = {
+              incoming = "DiffIncoming",
+              current  = "DiffAdd",
+            },
+          })
+          vim.keymap.set("n", "cq", "<cmd>GitConflictListQf<CR>")
+        end,
+      },
     })
 
     -- Toggle terminal
     use({
       "akinsho/toggleterm.nvim",
       cmd = { "ToggleTerm", "TermExec" },
-      keys = "<C-_>",
+      keys = "<C-/>",
       setup = function()
         vim.api.nvim_add_user_command("Ca", "TermExec cmd='chezmoi apply'", {})
         vim.cmd([[cabbrev ca Ca]])
@@ -475,7 +491,7 @@ packer.startup({
       config = function()
         require("toggleterm").setup({
           shell = "/usr/bin/env fish",
-          open_mapping = [[<C-_>]],
+          open_mapping = [[<C-/>]],
         })
       end,
     })
@@ -618,16 +634,14 @@ packer.startup({
     })
 
     -- Wrap and unwrap arguments
-    use({
-      "AndrewRadev/splitjoin.vim",
-      -- FIXME: keys don't load instantly (seems to be a vim plugin issue)
-      -- experienced the same with vim-sandwich
-      event = "BufRead",
-      setup = function()
-        vim.g.splitjoin_split_mapping = "sj"
-        vim.g.splitjoin_join_mapping = "sk"
-      end,
-    })
+    -- TODO: find better plugin
+    -- use({
+    --   "AndrewRadev/splitjoin.vim",
+    --   setup = function()
+    --     vim.g.splitjoin_split_mapping = "sj"
+    --     vim.g.splitjoin_join_mapping = "sk"
+    --   end,
+    -- })
 
     -- Swap delimiter seperated items
     use({
@@ -682,37 +696,42 @@ packer.startup({
     -- Increment/decrement
     use({
       "monaqa/dial.nvim",
-      keys = { "<Plug>(dial-decrement)", "<Plug>(dial-increment)" },
-      setup = function()
-        vim.keymap.set({ "n", "v" }, "<C-a>", "<Plug>(dial-increment)", { silent = true })
-        vim.keymap.set({ "n", "v" }, "<C-x>", "<Plug>(dial-decrement)", { silent = true })
-      end,
       config = function()
-        local dial = require("dial")
-        dial.augends["custom#small#boolean"] = dial.common.enum_cyclic({
-          name = "boolean",
-          strlist = { "true", "false" },
+        local augend = require("dial.augend")
+
+        require("dial.config").augends:register_group({
+          default = {
+            augend.integer.alias.decimal_int,
+            augend.semver.alias.semver,
+            augend.constant.new({
+              elements = { "true", "false" },
+              word = true,
+              cyclic = true,
+            }),
+            augend.constant.new({
+              elements = { "True", "False" },
+              word = true,
+              cyclic = true,
+            }),
+            augend.constant.new({
+              elements = { "&&", "||" },
+              word = false,
+              cyclic = true,
+            }),
+          },
+          visual = {
+            augend.integer.new({
+              radix = 16,
+              prefix = "0x",
+              natural = true,
+              case = "upper",
+            }),
+          },
         })
-
-        dial.augends["custom#capital#boolean"] = dial.common.enum_cyclic({
-          name = "boolean",
-          strlist = { "True", "False" },
-        })
-
-        dial.config.searchlist.normal = {
-          "number#decimal#int",
-          "markup#markdown#header",
-          "custom#capital#boolean",
-          "custom#small#boolean",
-        }
-
-        dial.config.searchlist.visual = {
-          "number#decimal#int",
-          "markup#markdown#header",
-          "number#hex",
-          "number#binary",
-          "color#hex",
-        }
+        vim.keymap.set("n", "<C-a>", require("dial.map").inc_normal(), { silent = true })
+        vim.keymap.set("v", "<C-a>", require("dial.map").inc_visual(), { silent = true })
+        vim.keymap.set("n", "<C-x>", require("dial.map").dec_normal(), { silent = true })
+        vim.keymap.set("v", "<C-x>", require("dial.map").dec_visual(), { silent = true })
       end,
     })
 

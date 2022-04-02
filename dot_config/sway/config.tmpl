@@ -21,9 +21,9 @@ set $term footclient
 # on the original workspace that the command was run on.
 set $menu pkill rofi || rofi -show drun -drun-show-actions |xargs swaymsg exec --
 
-{{ if and (eq .chezmoi.osRelease.id "void") (lookPath "dbus-daemon") }}
-# Setup dbus
-exec dbus-daemon --session --address=unix:path=$XDG_RUNTIME_DIR/bus
+{{ if and (eq .chezmoi.osRelease.id "void") (lookPath "dbus-update-activation-environment") }}
+# NOTE: needed for chrome screensharing
+exec dbus-update-activation-environment DISPLAY XAUTHORITY SWAYSOCK I3SOCK WAYLAND_DISPLAY
 {{ end }}
 
 ### Output configuration
@@ -34,7 +34,13 @@ output * bg $HOME/.local/share/backgrounds/dotachina.png fill
 
 output HDMI-A-1 {
     mode 2560x1440@143.912003Hz
+    position 0 0
 }
+
+output eDP-1 {
+  position 2560 360
+}
+
 xwayland disable
 #
 # Example configuration:
@@ -42,6 +48,7 @@ xwayland disable
 #   output HDMI-A-1 resolution 1920x1080 position 1920,0
 #
 # You can get the names of your outputs by running: swaymsg -t get_outputs
+
 
 ### Idle configuration
 {{ $playerctl := (lookPath "playerctl") }}
@@ -54,7 +61,11 @@ exec swayidle -w \
         timeout 400 'playerctl pause' \
         {{- end }}
         timeout 400 'rbw lock' \
-        timeout 400 'setsid -f waylock' \
+        {{ if ($swaylock := (lookPath "swaylock")) -}}
+        timeout 400 '{{$swaylock}} -f' \
+        {{- else if ($waylock := (lookPath "waylock")) }}
+        timeout 400 'setsid -f {{$waylock}}' \
+        {{- end }}
         timeout 600 'swaymsg "output * dpms off"' \
             resume 'swaymsg "output * dpms on"'
 
@@ -198,6 +209,8 @@ seat seat0 xcursor_theme "Simp1e-dark" 16
     bindsym $mod+Shift+0 move container to workspace number 10
     # Note: workspaces can have any name you want, not just numbers.
     # We just use 1-10 as the default.
+    bindsym $mod+Next workspace next
+    bindsym $mod+Prior workspace prev
 
 #
 # Media keys
@@ -347,6 +360,7 @@ floating_maximum_size 1440 x 810
 # for_window [app_id="firefox"] floating enable
 for_window [app_id="foot-sp"] floating enable
 for_window [app_id="mpv"] floating enable
+for_window [app_id="gcolor*"] floating enable
 for_window [app_id=".*gnome.*"] floating enable
 for_window [app_id="(?i)gnome"] floating enable
 for_window [app_id="(?i)gtk"] floating enable
@@ -382,9 +396,17 @@ mode "$mode_system" {
     bindsym r exec "sudo reboot", mode "default"
     bindsym s exec "sudo poweroff", mode "default"
     {{ if $playerctl -}}
-    bindsym l exec "playerctl pause; setsid -f waylock", mode "default"
+    {{ if ($swaylock := (lookPath "swaylock")) }}
+    bindsym l exec "playerctl pause; {{$swaylock}} -f", mode "default"
+    {{ else if ($waylock := (lookPath "waylock")) }}
+    bindsym l exec "playerctl pause; setsid -f {{$waylock}}", mode "default"
+    {{ end }}
     {{ else -}}
-    bindsym l exec "setsid -f waylock", mode "default"
+    {{ if ($swaylock := (lookPath "swaylock")) }}
+    bindsym l exec "{{$swaylock}} -f", mode "default"
+    {{ else if ($waylock := (lookPath "waylock")) }}
+    bindsym l exec "setsid -f {{$waylock}}", mode "default"
+    {{ end }}
     {{- end }}
 
     # return to default mode
@@ -423,6 +445,9 @@ exec {{ $foot }} --server
 exec {{ $pipewire }}
     {{ if ($pipewire_pulse := (lookPath "pipewire-pulse")) }}
 exec {{ $pipewire_pulse }}
+    {{ end }}
+    {{ if ($pipewire_media_session := (lookPath "pipewire-media-session")) }}
+exec {{ $pipewire_media_session }}
     {{ end }}
     {{ if ($inhibit_idle := (lookPath "sway-audio-idle-inhibit") )}}
 exec {{ $inhibit_idle }}

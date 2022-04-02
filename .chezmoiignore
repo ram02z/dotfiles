@@ -39,6 +39,10 @@ symlinks/en.utf-8.add.spl
 .config/waylock/**
 .config/waylock/
 {{ end }}
+{{ if not (lookPath "swaylock") }}
+.config/swaylock/**
+.config/swaylock/
+{{ end }}
 {{ if not (lookPath "mako") }}
 .config/mako/**
 .config/mako/

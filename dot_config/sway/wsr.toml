@@ -1,9 +1,11 @@
 [icons]
-firefox = ""
+"firefox-default" = ""
 foot = ""
 copyq = ""
 iwgtk = ""
 "com.github.quaternion" = ""
+libreoffice-writer = ""
+
 
 [general]
 default_icon = ""

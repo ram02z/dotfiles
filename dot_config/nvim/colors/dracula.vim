@@ -84,6 +84,7 @@ highlight DraculaDiffAdd guifg=NONE ctermfg=215 guibg=#2F4D42 ctermbg=NONE gui=N
 highlight DraculaDiffChange guifg=NONE ctermfg=215 guibg=#4C423F ctermbg=NONE gui=NONE cterm=NONE guisp=NONE
 highlight DraculaDiffText guifg=#FFB86C ctermfg=215 guibg=#4C423F ctermbg=NONE gui=NONE cterm=NONE guisp=NONE
 highlight DraculaDiffDelete guifg=NONE ctermfg=203 guibg=#4C313B ctermbg=NONE gui=NONE cterm=NONE guisp=NONE
+highlight DraculaDiffIncoming guifg=NONE ctermfg=215 guibg=#344f69 ctermbg=NONE gui=NONE cterm=NONE guisp=NONE
 
 " Required as some plugins will overwrite
 highlight Normal guifg=#F8F8F2 ctermfg=253 guibg=NONE ctermbg=NONE gui=NONE cterm=NONE guisp=NONE
@@ -107,6 +108,7 @@ hi! link DiffChange   DraculaDiffChange
 hi! link DiffChanged  DraculaOrange
 hi! link DiffRemoved  DraculaRed
 hi! link DiffText     DraculaDiffText
+hi! link DiffIncoming DraculaDiffIncoming
 hi! link Directory    DraculaPurpleBold
 hi! link ErrorMsg     DraculaRedInverse
 hi! link FoldColumn   DraculaSubtle
@@ -215,6 +217,7 @@ hi! link TSOperator DraculaPink
 hi! link TSSymbol DraculaPurple
 hi! link TSAnnotation DraculaYellow
 hi! link TSAttribute DraculaGreenItalic
+hi! link TSError Error
 " # Functions
 hi! link TSFuncBuiltin DraculaCyan
 hi! link TSFuncMacro Function
