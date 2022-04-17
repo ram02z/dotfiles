@@ -143,9 +143,10 @@ local null_ls = require("null-ls")
 local sources = {
     null_ls.builtins.formatting.prettier,
     null_ls.builtins.formatting.black,
-    null_ls.builtins.formatting.isort.with({
-      extra_args = {"--profile", "black"}
-    }),
+    -- NOTE: isort is broken
+    -- null_ls.builtins.formatting.isort.with({
+    --   extra_args = {"--profile", "black"}
+    -- }),
     null_ls.builtins.formatting.fish_indent,
     null_ls.builtins.formatting.stylua,
     null_ls.builtins.diagnostics.flake8.with({
@@ -156,7 +157,7 @@ local sources = {
     null_ls.builtins.code_actions.gitrebase,
 }
 
-null_ls.setup({ sources = sources, on_attach = on_attach })
+null_ls.setup({ sources = sources, on_attach = on_attach, debug = true })
 
 {{ $servers := 0 }}
 -- Define enabled servers
@@ -248,7 +249,10 @@ sumneko_lua = {
       telemetry = { enable = false },
     },
   },
-}
+},
+{{- end }}
+{{ if lookPath "typescript-language-server" -}}
+tsserver = {},
 {{- end }}
 }
 

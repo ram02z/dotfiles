@@ -485,7 +485,7 @@ packer.startup({
       cmd = { "ToggleTerm", "TermExec" },
       keys = [[<C-\>]],
       setup = function()
-        vim.api.nvim_add_user_command("Ca", "TermExec cmd='chezmoi apply'", {})
+        vim.api.nvim_create_user_command("Ca", "TermExec cmd='chezmoi apply'", {})
         vim.cmd([[cabbrev ca Ca]])
       end,
       config = function()
@@ -633,15 +633,15 @@ packer.startup({
       end,
     })
 
-    -- Wrap and unwrap arguments
-    -- TODO: find better plugin
-    -- use({
-    --   "AndrewRadev/splitjoin.vim",
-    --   setup = function()
-    --     vim.g.splitjoin_split_mapping = "sj"
-    --     vim.g.splitjoin_join_mapping = "sk"
-    --   end,
-    -- })
+    use({
+      "AckslD/nvim-trevJ.lua",
+      module = "trevj",
+      setup = function()
+        vim.keymap.set("n", "gJ", function()
+          require("trevj").format_at_cursor()
+        end)
+      end,
+    })
 
     -- Swap delimiter seperated items
     use({

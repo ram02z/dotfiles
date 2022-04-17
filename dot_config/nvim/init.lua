@@ -18,7 +18,7 @@ pcall(require, "impatient")
 pcall(vim.api.nvim_command, "packadd chezmoi.vim")
 -- Rest of startup moved to top level plugins folder
 
-vim.api.nvim_add_user_command("PurgeUndoFiles", function()
+vim.api.nvim_create_user_command("PurgeUndoFiles", function()
   require("utils.misc").purge_old_undos()
 end, {})
 
