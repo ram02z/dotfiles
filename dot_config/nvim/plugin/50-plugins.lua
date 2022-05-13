@@ -189,8 +189,7 @@ packer.startup({
     use({
       "feline-nvim/feline.nvim",
       -- tag = "v0.3",
-      branch = "develop",
-      -- "~/Downloads/feline.nvim",
+      -- branch = "develop",
       -- event = { "BufNewFile", "BufReadPre" },
       -- event = "FileType nix",
       config = [[require'modules.feline']],
@@ -286,140 +285,15 @@ packer.startup({
     -- TODO: move to own file
     use({
       "nvim-neorg/neorg",
-      config = function()
-        require("neorg").setup({
-          load = {
-            ["core.defaults"] = {}, -- Load all the default modules
-            ["core.keybinds"] = {
-              config = {
-                default_keybinds = false,
-                hook = function(keybinds)
-                  local leader = keybinds.leader
-
-                  -- Map all the below keybinds only when the "norg" mode is active
-                  keybinds.map_event_to_mode("norg", {
-                    n = { -- Bind keys in normal mode
-
-                      -- Keys for managing TODO items and setting their states
-                      { "gtu", "core.norg.qol.todo_items.todo.task_undone" },
-                      { "gtp", "core.norg.qol.todo_items.todo.task_pending" },
-                      { "gtd", "core.norg.qol.todo_items.todo.task_done" },
-                      { "gth", "core.norg.qol.todo_items.todo.task_on_hold" },
-                      { "gtc", "core.norg.qol.todo_items.todo.task_cancelled" },
-                      { "gtr", "core.norg.qol.todo_items.todo.task_recurring" },
-                      { "gti", "core.norg.qol.todo_items.todo.task_important" },
-                      { "<C-Space>", "core.norg.qol.todo_items.todo.task_cycle" },
-
-                      -- Keys for managing GTD
-                      { leader .. "tc", "core.gtd.base.capture" },
-                      { leader .. "tv", "core.gtd.base.views" },
-                      { leader .. "te", "core.gtd.base.edit" },
-
-                      -- Keys for managing notes
-                      { leader .. "nn", "core.norg.dirman.new.note" },
-
-                      { "<CR>", "core.norg.esupports.hop.hop-link" },
-                      { "<M-CR>", "core.norg.esupports.hop.hop-link", "vsplit" },
-
-                      -- mnemonic: markup toggle
-                      { leader .. "mt", "core.norg.concealer.toggle-markup" },
-                    },
-
-                    o = {
-                      { "ah", "core.norg.manoeuvre.textobject.around-heading" },
-                      { "ih", "core.norg.manoeuvre.textobject.inner-heading" },
-                      { "at", "core.norg.manoeuvre.textobject.around-tag" },
-                      { "it", "core.norg.manoeuvre.textobject.inner-tag" },
-                      { "al", "core.norg.manoeuvre.textobject.around-whole-list" },
-                    },
-                    -- i = {
-                    --   { "<C-l>", "core.integrations.telescope.insert_link" },
-                    -- },
-                  }, {
-                    silent = true,
-                    noremap = true,
-                  })
-
-                  -- Map the below keys on gtd displays
-                  keybinds.map_event_to_mode("gtd-displays", {
-                    n = {
-                      { "<CR>", "core.gtd.ui.goto_task" },
-
-                      -- Keys for closing the current display
-                      { "q", "core.gtd.ui.close" },
-                      { "<Esc>", "core.gtd.ui.close" },
-
-                      { "e", "core.gtd.ui.edit_task" },
-                      { "<Tab>", "core.gtd.ui.details" },
-                    },
-                  }, {
-                    silent = true,
-                    noremap = true,
-                    nowait = true,
-                  })
-
-                  -- Map the below keys only when traverse-heading mode is active
-                  keybinds.map_event_to_mode("traverse-heading", {
-                    n = {
-                      -- Rebind j and k to move between headings in traverse-heading mode
-                      { "j", "core.integrations.treesitter.next.heading" },
-                      { "k", "core.integrations.treesitter.previous.heading" },
-                    },
-                  }, {
-                    silent = true,
-                    noremap = true,
-                  })
-
-                  -- Apply the below keys to all modes
-                  keybinds.map_to_mode("all", {
-                    n = {
-                      { leader .. "mn", ":Neorg mode norg<CR>" },
-                      { leader .. "mh", ":Neorg mode traverse-heading<CR>" },
-                      { leader .. "gv", ":Neorg gtd views<CR>" },
-                      { leader .. "gc", ":Neorg gtd capture<CR>" },
-                      { leader .. "ge", ":Neorg gtd edit<CR>" },
-                    },
-                  }, {
-                    silent = true,
-                    noremap = true,
-                  })
-                end,
-              },
-            },
-            ["core.norg.concealer"] = {},
-            ["core.norg.manoeuvre"] = {},
-            ["core.norg.completion"] = {
-              config = {
-                engine = "nvim-cmp",
-              },
-            },
-            ["core.norg.esupports.metagen"] = {
-              config = {
-                type = "auto",
-              },
-            },
-            ["core.gtd.base"] = {
-              config = {
-                workspace = "gtd",
-              },
-            },
-            ["core.gtd.ui"] = {},
-            ["core.norg.dirman"] = { -- Manage your directories with Neorg
-              config = {
-                workspaces = {
-                  gtd = "~/gtd",
-                },
-              },
-            },
-          },
-        })
-      end,
+      config = [[require'modules.neorg']],
     })
 
+    -- Lean language support
     use({
       "Julian/lean.nvim",
     })
 
+    -- CPP docs
     use({
       "skywind3000/vim-cppman",
     })
@@ -483,7 +357,7 @@ packer.startup({
     use({
       "akinsho/toggleterm.nvim",
       cmd = { "ToggleTerm", "TermExec" },
-      keys = [[<C-\>]],
+      keys = [[<C-/>]],
       setup = function()
         vim.api.nvim_create_user_command("Ca", "TermExec cmd='chezmoi apply'", {})
         vim.cmd([[cabbrev ca Ca]])
@@ -491,7 +365,7 @@ packer.startup({
       config = function()
         require("toggleterm").setup({
           shell = "/usr/bin/env fish",
-          open_mapping = [[<C-\>]],
+          open_mapping = [[<C-/>]],
         })
       end,
     })
@@ -557,48 +431,6 @@ packer.startup({
       after = "telescope.nvim",
       config = function()
         require("telescope").load_extension("ui-select")
-      end,
-    })
-
-    -- EXPERIMENTAL: dwm style window management
-    use({
-      "delphinus/dwm.nvim",
-      disable = true,
-      config = function()
-        local dwm = require("dwm")
-        dwm.setup({
-          key_maps = false,
-          master_pane_count = 1,
-          master_pane_width = "50%",
-        })
-        dwm.map("<C-j>", "<C-w>w")
-        dwm.map("<C-k>", "<C-w>W")
-        dwm.map("<A-f>", dwm.focus)
-        dwm.map("<C-Space>", dwm.focus)
-        dwm.map("<C-l>", dwm.grow)
-        dwm.map("<C-h>", dwm.shrink)
-        dwm.map("<C-\\>", dwm.new)
-        dwm.map("<C-c>", function()
-          -- You can use any Lua function to map.
-          vim.api.nvim_echo({ { "closing!", "WarningMsg" } }, false, {})
-          dwm.close()
-        end)
-
-        -- When b:dwm_disabled is set, all features are disabled.
-        vim.cmd([[au BufRead * if &previewwindow | let b:dwm_disabled = 1 | endif]])
-      end,
-    })
-
-    -- Helper for resizing splits
-    use({
-      "simeji/winresizer",
-      keys = {
-        { "n", "<Leader>r" },
-      },
-      setup = function()
-        vim.g.winresizer_start_key = "<Leader>r"
-        vim.g.winresizer_vert_resize = 5
-        vim.g.winresizer_horiz_resize = 5
       end,
     })
 

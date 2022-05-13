@@ -2,7 +2,7 @@
 local on_attach = function(client, bufnr)
   -- Set autocommands conditional on server_capabilities
   -- TODO: add implementation capability
-  if client.resolved_capabilities.goto_definition then
+  if client.server_capabilities.definitionProvider then
     vim.keymap.set(
 			"n",
       "<Leader>ld",
@@ -10,7 +10,7 @@ local on_attach = function(client, bufnr)
       {buffer = true}
     )
   end
-  if client.resolved_capabilities.declaration then
+  if client.server_capabilities.declarationProvider then
     vim.keymap.set(
 			"n",
       "<Leader>lD",
@@ -18,7 +18,7 @@ local on_attach = function(client, bufnr)
       {buffer = true}
     )
   end
-  if client.resolved_capabilities.hover then
+  if client.server_capabilities.hoverProvider then
     vim.keymap.set(
 			"n",
       "<CR>",
@@ -26,7 +26,7 @@ local on_attach = function(client, bufnr)
       {buffer = true}
     )
   end
-  if client.resolved_capabilities.code_action then
+  if client.server_capabilities.codeActionProvider then
     vim.fn.sign_define('LightBulbSign', { text = "", texthl = "String", linehl="", numhl="" })
     vim.cmd([[autocmd CursorHold,CursorHoldI,InsertLeave <buffer> lua require"nvim-lightbulb".update_lightbulb()]])
     vim.keymap.set(
@@ -42,7 +42,7 @@ local on_attach = function(client, bufnr)
       {buffer = true}
     )
   end
-  if client.resolved_capabilities.signature_help then
+  if client.server_capabilities.signatureHelpProvider then
     vim.keymap.set(
 			"n",
       "<Leader><CR>",
@@ -56,7 +56,7 @@ local on_attach = function(client, bufnr)
       {buffer = true}
     )
   end
-  if client.resolved_capabilities.rename then
+  if client.server_capabilities.renameProvider then
     vim.keymap.set(
 			"n",
       "<Leader>lr",
@@ -64,7 +64,7 @@ local on_attach = function(client, bufnr)
       {buffer = true}
    )
   end
-  -- if client.resolved_capabilities.find_references then
+  -- if client.server_capabilities.referencesProvider then
     vim.keymap.set(
 			"n",
       "<Leader>*",
@@ -72,15 +72,17 @@ local on_attach = function(client, bufnr)
       {buffer = true}
     )
   -- end
-  if client.resolved_capabilities.document_formatting then
+  if client.server_capabilities.documentFormattingProvider then
     vim.keymap.set(
 			"n",
       "<Leader>lf",
-      vim.lsp.buf.formatting,
+      function()
+        vim.lsp.buf.format({async=true})
+      end,
       {buffer = true}
     )
   end
-  if client.resolved_capabilities.document_range_formatting then
+  if client.server_capabilities.documentRangeFormattingProvider then
     vim.keymap.set(
       "x",
       "<Leader>lf",
@@ -88,7 +90,7 @@ local on_attach = function(client, bufnr)
       {buffer = true}
     )
   end
-  -- if client.resolved_capabilities.code_lens then
+  -- if client.server_capabilities.code_lens then
   --   vim.api.nvim_command [[autocmd CursorHold,CursorHoldI,InsertLeave <buffer> lua vim.lsp.codelens.refresh()]]
   --   vim.keymap.set(
   --     "n",
