@@ -19,4 +19,7 @@
   url  = "https://github.com/swaywm/sway/raw/master/contrib/grimshot"
   executable = true
 {{- end }}
-{{- end}}
+{{- end }}
+["gtd"]
+type = "git-repo"
+url = "git@github.com:ram02z/gtd.git"
