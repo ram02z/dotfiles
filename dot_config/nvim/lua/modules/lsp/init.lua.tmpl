@@ -144,11 +144,12 @@ local null_ls = require("null-ls")
 -- register any number of sources simultaneously
 local sources = {
     null_ls.builtins.formatting.prettier,
-    null_ls.builtins.formatting.black,
-    -- NOTE: isort is broken
-    -- null_ls.builtins.formatting.isort.with({
-    --   extra_args = {"--profile", "black"}
-    -- }),
+    null_ls.builtins.formatting.black.with({
+      timeout = 10000,
+    }),
+    null_ls.builtins.formatting.isort.with({
+      extra_args = {"--profile", "black"}
+    }),
     null_ls.builtins.formatting.fish_indent,
     null_ls.builtins.formatting.stylua,
     null_ls.builtins.diagnostics.flake8.with({
