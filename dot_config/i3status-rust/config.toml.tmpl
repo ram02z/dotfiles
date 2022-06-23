@@ -28,7 +28,7 @@ format_singular="{count:1}"
 format = "{count:1}"
 critical_updates_regex = "(linux |linux-lts|linux-zen)"
 on_click = "APT_CONFIG=/tmp/i3rs-apt/apt.conf apt list --upgradable | tail -n +2 | cut -f1 -d '/' | rofi -dmenu"
-{{ else if (eq .chezmoi.osRelease.id "void") -}}
+{{ else if and (eq .chezmoi.os "linux") (eq .chezmoi.osRelease.id "void") -}}
 [[block]]
 block = "custom"
 command = "xbps-install -Mun | tee /tmp/xbps-updates | grep '' -c"

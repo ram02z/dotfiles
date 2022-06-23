@@ -10,10 +10,8 @@ alias agud "sudo apt update && sudo apt dist-upgrade"
 alias bat "batcat"
 {{- end }}
 {{- end }}
-{{ if (eq .chezmoi.osRelease.id "void") -}}
 {{ if lookPath "fuzzypkg" -}}
 alias xs "fuzzypkg"
-{{- end }}
 {{- end }}
 # Fish
 alias src "source ~/.config/fish/config.fish"

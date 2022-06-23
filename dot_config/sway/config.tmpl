@@ -21,7 +21,7 @@ set $term footclient
 # on the original workspace that the command was run on.
 set $menu pkill rofi || rofi -show drun -drun-show-actions |xargs swaymsg exec --
 
-{{ if and (eq .chezmoi.osRelease.id "void") (lookPath "dbus-update-activation-environment") }}
+{{ if and (eq .chezmoi.os "linux") (eq .chezmoi.osRelease.id "void") (lookPath "dbus-update-activation-environment") }}
 # NOTE: needed for chrome screensharing
 exec dbus-update-activation-environment DISPLAY XAUTHORITY SWAYSOCK I3SOCK WAYLAND_DISPLAY
 {{ end }}

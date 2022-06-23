@@ -7,7 +7,7 @@
 
 _isInstalled() {
     package="$1"
-    {{ if (eq .chezmoi.osRelease.id "void")}}
+    {{ if and (eq .chezmoi.os "linux") (eq .chezmoi.osRelease.id "void")}}
     sudo xbps-query "${package}" &>/dev/null;
     {{ else if (eq (get .chezmoi.osRelease "idLike") "arch") }}
     sudo paru -Qs "${package}" &>/dev/null;
