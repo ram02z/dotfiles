@@ -1,6 +1,8 @@
 local options = {
   load = {
     ["core.defaults"] = {}, -- Load all the default modules
+    ["core.export"] = {},
+    ["core.export.markdown"] = {},
     ["core.keybinds"] = {
       config = {
         default_keybinds = false,
