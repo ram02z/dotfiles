@@ -22,6 +22,11 @@
 {{- $isX11 := and (not $isWsl) (not $isWayland) -}}
 {{- $isLaptop := and (eq .chezmoi.os "linux") (not (not (stat "/proc/acpi/button/lid"))) -}}
 
+{{- $osID := .chezmoi.os -}}
+{{- if hasKey .chezmoi.osRelease "id" -}}
+{{-   $osID = printf "%s-%s" .chezmoi.os .chezmoi.osRelease.id -}}
+{{- end -}}
+
 [diff]
   format = "git"
   pager = {{ $gitPager | quote }}
@@ -45,3 +50,4 @@
   is_wsl = {{ $isWsl }}
   is_x11 = {{ $isX11 }}
   is_wayland = {{ $isWayland }}
+  os_id = {{ $osID | quote }}

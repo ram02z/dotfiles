@@ -1,6 +1,6 @@
 # TODO: add arch aliases
 
-{{ if (eq (get .chezmoi.osRelease "idLike") "debian") -}}
+{{ if or (eq .os_id "linux-debian") (eq .os_id "linux-ubuntu") -}}
 alias aup "sudo apt update && apt list --upgradable"
 alias aguu "sudo apt update && sudo apt upgrade"
 alias allpkgs 'dpkg --get-selections | grep -v deinstall'
