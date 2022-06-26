@@ -58,12 +58,12 @@ symlinks/en.utf-8.add.spl
 {{ if not (lookPath "stylua") }}
 stylua.toml
 {{ end }}
-{{ if and (not .is_x11) (not .is_wayland) (ne .os_id "darwin") }}
-{{   if and (not .is_x11) (not .is_wayland) }}
+{{ if and (not .is_x11) (not .is_wayland) }}
 .config/gtk-3.0/**
 .config/gtk-3.0/
 .config/i3-quickterm.json
-{{   end }}
+{{ end }}
+{{ if and (not .is_x11) (not .is_wayland) (ne .os_id "darwin") }}
 .config/fontconfig/**
 .config/fontconfig/
 .local/**
