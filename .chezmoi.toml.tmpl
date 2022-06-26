@@ -28,7 +28,7 @@
 {{- $editor := or (base (lookPath "nvim")) "vi" -}}
 {{- $isWsl := or (env "WSL_DISTRO_NAME") (env "WSLENV") | not | not -}}
 {{- $isWayland := and (and (eq .chezmoi.os "linux") (not $isWsl)) (promptBool "wayland") -}}
-{{- $isX11 := and (not $isWsl) (not $isWayland) -}}
+{{- $isX11 := and (not $isWsl) (not $isWayland) (not (eq .chezmoi.os "darwin")) -}}
 {{- $isLaptop := and (eq .chezmoi.os "linux") (not (not (stat "/proc/acpi/button/lid"))) -}}
 
 {{- $osID := .chezmoi.os -}}
