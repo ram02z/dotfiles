@@ -1,4 +1,4 @@
-{{ if or (.is_x11) (.is_wayland) -}}
+{{ if or (.is_x11) (.is_wayland) (eq .os_id "darwin") -}}
 [".local/share/fonts/Symbols-1000-em Nerd Font Complete.ttf"]
   type = "file"
   url = "https://github.com/ryanoasis/nerd-fonts/raw/master/src/glyphs/Symbols-1000-em Nerd Font Complete.ttf"
@@ -13,13 +13,15 @@
   url = "https://github.com/ram02z/Simp1e-dark/archive/master.tar.gz"
   exact = true
   stripComponents = 1
-{{ if and (.is_wayland) (not (lookPath "grimshot")) -}}
+{{-   if and (.is_wayland) (not (lookPath "grimshot")) -}}
 [".local/bin/grimshot"]
   type = "file"
   url  = "https://github.com/swaywm/sway/raw/master/contrib/grimshot"
   executable = true
+{{-   end }}
 {{- end }}
-{{- end }}
+{{ if .is_personal -}}
 ["gtd"]
 type = "git-repo"
 url = "git@github.com:ram02z/gtd.git"
+{{- end }}

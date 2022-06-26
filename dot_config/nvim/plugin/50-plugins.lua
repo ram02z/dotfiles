@@ -21,7 +21,7 @@ packer.startup({
       opt = true,
     })
 
-    -- Common dependancies
+    -- Common dependencies
     use({
       "nvim-lua/plenary.nvim",
       module_pattern = "plenary.*",
@@ -156,14 +156,6 @@ packer.startup({
       "ram02z/nvim-treesitter-pairs",
     })
 
-    -- FIXME: this causes slow down in big files
-    use({
-      "nvim-treesitter/nvim-treesitter-refactor",
-      disable = true,
-      event = "CursorHold",
-      -- wants = "nvim-treesitter"
-    })
-
     use({
       "mfussenegger/nvim-treehopper",
       config = function()
@@ -217,6 +209,7 @@ packer.startup({
       module = "codicons",
     })
 
+    -- Draw shapes
     use({
       "jbyuki/venn.nvim",
       cmd = "VBox",
@@ -289,6 +282,7 @@ packer.startup({
       "skywind3000/vim-cppman",
     })
 
+    -- Tex support
     use({
       "lervag/vimtex",
       ft = "tex",
@@ -558,7 +552,7 @@ packer.startup({
       end,
     })
 
-    -- Emacs hydra at neovim
+    -- Emacs hydra for neovim
     use({
       "anuvyklack/hydra.nvim",
       config = function()

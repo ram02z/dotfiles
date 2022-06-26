@@ -1,6 +1,8 @@
 [user]
-    email = {{ .email }}
     name = {{ .name }}
+    {{ if .is_personal -}}
+    email = omarzeghouanii@gmail.com
+    {{- end }}
 [core]
   symlinks = true
 {{ if lookPath "gpg" -}}
@@ -8,8 +10,10 @@
     gpgSign = true
 [gpg]
     program = gpg
+{{   if .gpg_key -}}
 [user]
     signingkey = {{ .gpg_key }}
+{{-  end }}
 {{- end }}
 [push]
     default = simple

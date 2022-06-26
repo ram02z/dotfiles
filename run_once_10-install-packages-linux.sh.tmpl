@@ -7,11 +7,11 @@
 
 _isInstalled() {
     package="$1"
-    {{ if and (eq .chezmoi.os "linux") (eq .chezmoi.osRelease.id "void")}}
+    {{ if (eq .os_id "linux-void")}}
     sudo xbps-query "${package}" &>/dev/null;
-    {{ else if (eq (get .chezmoi.osRelease "idLike") "arch") }}
+    {{ else if (eq .os_id "linux-arch") }}
     sudo paru -Qs "${package}" &>/dev/null;
-    {{ else if (eq (get .chezmoi.osRelease "idLike") "debian") }}
+    {{ else if or (eq .os_id "linux-debian") (eq .os_id "linux-ubuntu") }}
     sudo dpkg -s "${package}" &>/dev/null;
     {{ end }}
     return $?
@@ -47,11 +47,11 @@ _installMany() {
     # Install all package added to array
     printf "Packages not installed:\n";
     printf "%s\n" "${notInstalled[@]}";
-    {{ if (eq .chezmoi.osRelease.id "void")}}
+    {{ if (eq .os_id "linux-void")}}
     sudo xbps-install -Sv "${notInstalled[@]}";
-    {{ else if (eq (get .chezmoi.osRelease "idLike") "arch") }}
+    {{ else if (eq .os_id "linux-arch") }}
     sudo paru -S "${notInstalled[@]}";
-    {{ else if (eq (get .chezmoi.osRelease "idLike") "debian") }}
+    {{ else if or (eq .os_id "linux-debian") (eq .os_id "linux-ubuntu") }}
     sudo apt install "${notInstalled[@]}";
     {{ end }}
 }
@@ -71,7 +71,7 @@ _addAptRepo() {
     return 1;
 }
 
-{{- if (eq .chezmoi.osRelease.id "void") }}
+{{ if (eq .os_id "linux-void")}}
 {{ if (not (stat "/etc/xbps.d/11-neovim-nightly.conf")) -}}
 # Add neovim-nightly repo
 if [[ $(xbps-uhelper arch) == *"musl"* ]]; then
@@ -96,7 +96,7 @@ packages+=("sway" "seatd" "polkit" "firefox" "foot" "poweralertd" "bluez"
     "iwd" "wev" "slurp" "grim" "mako" "grimshot" "man-pages-devel" "dumb_runtime_dir"
     "iwgtk" "playerctl" "noto-fonts-emoji" "dejavu-fonts-ttf" "gcolor3");
 {{- end }}
-{{ else if (eq (get .chezmoi.osRelease "idLike") "arch") }}
+{{ else if (eq .os_id "linux-arch") }}
 # Assumes we are running sway
 # Checks if paru has been installed
 {{ if not (lookPath "paru") }}
@@ -107,9 +107,9 @@ makepkg -si
 rm -rf /tmp/paru
 {{ end }}
 packages=("sway" "fish" "neovim-nightly-bin" "git-delta-bin");
-{{ else if (eq (get .chezmoi.osRelease "idLike") "debian") }}
+{{ else if or (eq .os_id "linux-debian") (eq .os_id "linux-ubuntu") }}
 {{ $versionCodename := or (get .chezmoi.osRelease "versionCodename") "all" }}
-    {{ if (eq .chezmoi.osRelease.id "ubuntu") }}
+    {{ if (eq .os_id "linux-ubuntu") }}
     {{ if not (stat (joinPath "/etc/apt/sources.list.d/" "neovim-nightly.list")) -}}
 _addAptRepo "neovim-nightly" "http://ppa.launchpad.net/neovim-ppa/unstable/ubuntu" {{ $versionCodename | quote }} "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x9dbb0be9366964f134855e2255f96fcf8231b6dd"
 {{- end }}

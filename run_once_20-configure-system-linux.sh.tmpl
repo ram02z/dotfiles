@@ -2,7 +2,7 @@
 #!/bin/bash
 
 # Distro specifc
-{{ if (eq .chezmoi.osRelease.id "void")}}
+{{ if (eq .os_id "linux-void")}}
 
 {{ if and (stat "/etc/sv/seatd") (not (stat "/var/service/seatd")) }}
 # Set up seatd

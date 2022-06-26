@@ -39,7 +39,7 @@ exit 2
 if [ -n "$git_dirs" ]; then
     dirs=$(printf "%s" "$git_dirs" | rev | cut -d"/" -f2- | rev)
     if [ "$(printf "%s" "$git_dirs" | rg . -c)" -eq "1" ]; then
-        [ "$dirs" != ".git" ] && cd "$dirs"
+        [[ "$dirs" =~ ".git" ]] || cd "$dirs"
         unset dirs
     fi
 fi

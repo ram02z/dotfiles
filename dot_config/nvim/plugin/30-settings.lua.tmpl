@@ -17,7 +17,11 @@ vim.opt.writebackup = true
 
 -- Editing text files
 {{ if stat (joinPath .chezmoi.homeDir ".config/nvim/spell/en.utf.8.add") -}}
-vim.opt.spellfile = '{{ (output "readlink" "-f" (joinPath .chezmoi.homeDir ".config/nvim/spell/en.utf.8.add")) | trim }}'
+{{- $readlink := lookPath "readlink" -}}
+{{   if eq .os_id "darwin" }}
+{{-    $readlink = lookPath "greadlink" }}
+{{-   end }}
+vim.opt.spellfile = '{{ (output $readlink "-f" (joinPath .chezmoi.homeDir ".config/nvim/spell/en.utf.8.add")) | trim }}'
 {{- end }}
 vim.opt.spelllang = { "en_gb" }
 vim.opt.spelloptions = "camel"
