@@ -1,6 +1,8 @@
 [user]
-    email = {{ .email }}
     name = {{ .name }}
+    {{ if .is_personal -}}
+    email = omarzeghouanii@gmail.com
+    {{- end }}
 [core]
   symlinks = true
 {{ if lookPath "gpg" -}}

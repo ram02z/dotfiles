@@ -1,22 +1,31 @@
-{{- $bw := lookPath "rbw" -}}
-{{- if or (not $bw) (output $bw "unlocked") -}}
-{{- fail "rbw not found, fallback to bw.\n" -}}
-{{- $bw := lookPath "bw" -}}
-{{- if or (not $bw) (output $bw "list") -}}
-{{- fail "bw not found, bootstrapping will fail.\n" -}}
-{{- end -}}
-{{- end -}}
-{{- $gpg := lookPath "gpg" -}}
-{{- if (not $gpg) -}}
-{{- fail "gpg not found, bootstrapping will fail.\n" -}}
-{{- end -}}
+{{/* boolean feature tags */}}
+{{- $personal := promptBool "personal" -}}{{/* true if this machine should have personal secrets from BitWarden */}}
+{{- "" -}}
+
 {{- $fullName := "Omar Zeghouani" -}}
-{{- $email := promptString  "email" -}}
-{{- $gpgKey := output $bw "get" (cat $email "GPG short ID") | trim -}}
-{{- $sshPublicKey := output $bw "get" (cat "SSH public key") | trim -}}
-{{- $sshPrivateKey := output $bw "get" (cat "SSH private key") | trim -}}
+{{- $bw := "" -}}
+{{- $gpgKey := "" -}}
+{{- $sshPublicKey := "" -}}
+{{- $sshPrivateKey := "" -}}
+{{ if $personal }}
+{{-   $bw = lookPath "rbw" -}}
+{{-   if or (not $bw) (output $bw "unlocked") -}}
+{{-     $bw = lookPath "bw" -}}
+{{-     if or (not $bw) (output $bw "list") -}}
+{{-       fail "bw not found, bootstrapping will fail.\n" -}}
+{{-     end -}}
+{{-   end -}}
+{{-   $gpg := lookPath "gpg" -}}
+{{-   if (not $gpg) -}}
+{{-     fail "gpg not found, bootstrapping will fail.\n" -}}
+{{-   end -}}
+{{-   $gpgKey = output $bw "get" "omarzeghouanii@gmail.com GPG short ID" | trim -}}
+{{-   $sshPublicKey = output $bw "get" (cat "SSH public key") | trim -}}
+{{-   $sshPrivateKey = output $bw "get" (cat "SSH private key") | trim -}}
+{{- end -}}
+
 {{- $gitPager := or (lookPath "delta") "less -FRSX" -}}
-{{- $editor := or (lookPath "nvim") "vi" -}}
+{{- $editor := or (base (lookPath "nvim")) "vi" -}}
 {{- $isWsl := or (env "WSL_DISTRO_NAME") (env "WSLENV") | not | not -}}
 {{- $isWayland := and (and (eq .chezmoi.os "linux") (not $isWsl)) (promptBool "wayland") -}}
 {{- $isX11 := and (not $isWsl) (not $isWayland) -}}
@@ -35,17 +44,19 @@
   command = {{ (base $editor) | quote }}
   args = "-d"
 
+{{ if .personal }}
 [secret]
   command = {{ $bw | quote }}
+{{ end }}
 
 [data]
   name = {{ $fullName | quote }}
-  email = {{ $email | quote }}
+  is_personal = {{ $personal }}
   gpg_key = {{ $gpgKey | trim | quote }}
   ssh_public_key = {{ $sshPublicKey | trim | quote }}
   ssh_private_key = {{ $sshPrivateKey | quote }}
   git_pager = {{ $gitPager | quote }}
-  editor = {{ (base $editor) | quote }}
+  editor = {{ ($editor) | quote }}
   is_laptop = {{ $isLaptop }}
   is_wsl = {{ $isWsl }}
   is_x11 = {{ $isX11 }}
