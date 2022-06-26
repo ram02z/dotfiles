@@ -14,6 +14,8 @@
 
 `$ chezmoi init ram02z`
 
+Use `one-shot` flag during init for a one time initialisation
+
 #### Tested on:
 - Ubuntu WSL2 20.04
 - Ubuntu 21.04
