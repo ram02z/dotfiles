@@ -20,6 +20,8 @@
   executable = true
 {{-   end }}
 {{- end }}
+{{ if .is_personal -}}
 ["gtd"]
 type = "git-repo"
 url = "git@github.com:ram02z/gtd.git"
+{{- end }}
