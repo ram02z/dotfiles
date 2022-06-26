@@ -10,12 +10,10 @@ indent_size = 2
 indent_style = space
 insert_final_newline = true
 trim_trailing_whitespace = true
-{{- if (eq .chezmoi.os "linux") }}
-end_of_line = lf
-{{- else if (eq .chezmoi.os "darwin") }}
-end_of_line = cr
-{{- else if (eq .chezmoi.os "windows") }}
+{{- if (eq .chezmoi.os "windows") }}
 end_of_line = crlf
+{{- else }}
+end_of_line = lf
 {{- end }}
 
 
