@@ -1,0 +1,25 @@
+{{- if eq .chezmoi.os "darwin" -}}
+#!/bin/bash
+
+{{ if not (lookPath "brew") -}}
+curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh
+{{- end }}
+
+brew bundle --no-lock --file=/dev/stdin <<EOF
+brew "git"
+brew "nnn"
+brew "fish"
+brew "git-delta"
+brew "pinentry-tty"
+brew "neovim", args: ["HEAD"]
+brew "gnupg"
+brew "zoxide"
+brew "fzf"
+brew "bat"
+brew "fd"
+brew "ripgrep"
+cask "kitty"
+tap "homebrew/cask-fonts"
+cask "font-iosevka"
+EOF
+{{ end -}}
