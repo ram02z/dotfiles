@@ -567,6 +567,22 @@ packer.startup({
       end,
     })
 
+    -- Emacs hydra at neovim
+    use({
+      "anuvyklack/hydra.nvim",
+      config = function()
+        require("modules.hydra")
+      end,
+    })
+
+    -- Window shift
+    use({
+      "sindrets/winshift.nvim",
+      config = function()
+        require("winshift").setup()
+      end,
+    })
+
     -- Multiple cursors
     use({
       "mg979/vim-visual-multi",

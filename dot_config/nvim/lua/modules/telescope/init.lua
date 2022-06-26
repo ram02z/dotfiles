@@ -61,41 +61,46 @@ local tscope_config = {
 
 telescope.setup(tscope_config)
 
+local hydra = require("hydra")
 local tscope = require("modules.telescope.functions")
 local cancel = require("utils.keychord").cancel
--- View help pages
-vim.keymap.set("n", "<Leader>pm", "<cmd>Telescope help_tags<CR>", { silent = true })
--- Git project files (fall back to cwd)
-vim.keymap.set("n", "<Leader>pf", tscope.project_files, { silent = true, desc = "Telescope project files" })
--- Live grep cwd
-vim.keymap.set("n", "<Leader>pl", "<cmd>Telescope live_grep<CR>", { silent = true })
--- Buffer picker
-vim.keymap.set("n", "<Leader>pb", "<cmd>Telescope buffers<CR>", { silent = true })
--- Live grep open buffers
-vim.keymap.set("n", "<Leader>po", "<cmd>Telescope live_grep grep_open_files=true<CR>", { silent = true })
--- List git status
-vim.keymap.set("n", "<Leader>pgs", "<cmd>Telescope git_status<CR>", { silent = true })
--- Git branches
-vim.keymap.set("n", "<Leader>pgb", "<cmd>Telescope git_branches<CR>", { silent = true })
--- Treesitter picker
-vim.keymap.set("n", "<Leader>pt", "<cmd>Telescope treesitter<CR>", { silent = true })
--- Keymaps picker
-vim.keymap.set("n", "<Leader>pk", tscope.keymaps, { silent = true, desc = "Telescope keymaps" })
--- Commands picker
-vim.keymap.set("n", "<Leader>pc", tscope.commands, { silent = true, desc = "Telescope commmands" })
--- File history picker
-vim.keymap.set("n", "<Leader>pr", "<cmd>Telescope oldfiles<CR>", { silent = true })
--- Autocommands picker
-vim.keymap.set("n", "<Leader>pa", "<cmd>Telescope autocommands<CR>", { silent = true })
--- View highlights
-vim.keymap.set("n", "<Leader>ph", "<cmd>Telescope highlights<CR>", { silent = true })
--- Resume picker
-vim.keymap.set("n", "<Leader>p<CR>", "<cmd>Telescope resume<CR>", { silent = true })
-vim.keymap.set(
-  "n",
-  "<Leader>ps",
-  "<cmd>Telescope spell_suggest theme=get_cursor layout_config={height=6}<CR>",
-  { silent = true }
-)
+local function cmd(command)
+  return table.concat({ "<cmd>", command, "<CR>" })
+end
+local hint = [[
+ _f_: project files       _l_:  live grep       _h_: highlights   _r_: old files
+ _s_: spell suggest       _c_: commands         _k_: keymaps      _b_: buffers
+ _o_: live grep open      _a_: autocommands     _m_: help tags    _<Enter>_: all
+ ^
+ ^ ^              ^ ^        _?_: Resume       ^ ^            _<Esc>_
+]]
+
+hydra({
+  hint = hint,
+  config = {
+    invoke_on_body = true,
+    hint = {
+      border = "rounded",
+    },
+  },
+  mode = "n",
+  body = "<Leader>p",
+  heads = {
+    { "f", tscope.project_files },
+    { "l", cmd("Telescope live_grep") },
+    { "h", cmd("Telescope highlights") },
+    { "r", cmd("Telescope oldfiles") },
+    { "s", cmd("Telescope spell_suggest theme=get_cursor layout_config={height=6}"), { desc = "Spell suggest" } },
+    { "c", tscope.commands, },
+    { "k", tscope.keymaps },
+    { "b", cmd("Telescope buffers") },
+    { "o", cmd("Telescope live_grep grep_open_files=true"), { desc = "Grep only open files" } },
+    { "a", cmd("Telescope autocommands"), },
+    { "m", cmd("Telescope help_tags") },
+    { "<Enter>", cmd("Telescope resume") },
+    { "?", cmd("Telescope"), { exit = true, desc = "List all pickers" } },
+    { "<Esc>", nil, { exit = true, nowait = true } },
+  },
+})
 
 cancel("<Leader>p")
