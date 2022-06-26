@@ -65,10 +65,6 @@ packer.startup({
     })
 
     use({
-      "mfussenegger/nvim-jdtls",
-    })
-
-    use({
       "p00f/clangd_extensions.nvim",
     })
 
@@ -286,11 +282,6 @@ packer.startup({
     use({
       "nvim-neorg/neorg",
       config = [[require'modules.neorg']],
-    })
-
-    -- Lean language support
-    use({
-      "Julian/lean.nvim",
     })
 
     -- CPP docs

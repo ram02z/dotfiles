@@ -261,18 +261,6 @@ tsserver = {},
 
 local M = {}
 
-function M.start_lean3()
-{{ if and (lookPath "lean") (lookPath "lean-language-server") -}}
-  require("lean").setup{
-    abbreviations = { builtin = false },
-    lsp3 = { on_attach = on_attach },
-    lsp = { enable = false },
-    ft = {default = "lean3" },
-    mappings = true,
-  }
-{{- end }}
-end
-
 function M.start_clangd()
 {{ if lookPath "clangd" -}}
   require("clangd_extensions").setup({
@@ -288,7 +276,6 @@ function M.start_clangd()
 end
 
 function M.setup_servers()
-  M.start_lean3()
   M.start_clangd()
   {{ if gt $servers 0 -}}
   -- Register all the LSP servers.
@@ -302,39 +289,5 @@ function M.setup_servers()
 end
 
 
-
-function M.start_jdt()
-{{ if lookPath "jdtls" -}}
-  local root_markers = {'gradlew', '.git', 'module-info.java'}
-  local root_dir = require('jdtls.setup').find_root(root_markers)
-  local workspace_folder = U.os.home .. "/.local/share/eclipse/" .. vim.fn.fnamemodify(root_dir, ":p:h:t")
-
-  local jdtls_on_attach = function(client, buffer)
-    on_attach(client, buffer)
-    require("jdtls.setup").add_commands()
-  end
-
-  require("jdtls").start_or_attach(vim.tbl_extend("keep", {
-    cmd = {
-      "jdtls",
-      "-data", workspace_folder,
-    },
-    on_attach = jdtls_on_attach,
-    root_dir = root_dir,
-    flags = {
-      server_side_fuzzy_completion = true,
-    },
-    settings = {
-      java = {
-        signatureHelp = { enabled = true },
-        contentProvider = { preferred = "fernflower" },
-      },
-    },
-    init_options = {
-      bundles = {}
-    },
-  }, make_config()))
-{{- end }}
-end
 
 return M
