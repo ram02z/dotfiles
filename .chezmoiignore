@@ -51,6 +51,10 @@ symlinks/en.utf-8.add.spl
 .config/ncspot/**
 .config/ncspot/
 {{ end }}
+{{ if not (lookPath "kitty") }}
+.config/kitty/**
+.config/kitty/
+{{ end }}
 {{ if and (not .is_x11) (not .is_wayland) }}
 .config/gtk-3.0/**
 .config/gtk-3.0/
