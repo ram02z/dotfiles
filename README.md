@@ -1,15 +1,22 @@
-### dotfiles
+## dotfiles
 
-#### Prerequisites:
-- chezmoi >= v2.2.0
-- rbw for gpg and ssh keys
-
+### Prerequisites:
+- chezmoi
+- (opt) gpg and rbw for personal setup
 
 #### Setup
-Run `chezmoi init ram02z --ssh`
+
+##### SSH
+
+`$ chezmoi init ram02z --ssh`
+
+##### HTTPS
+
+`$ chezmoi init ram02z`
 
 #### Tested on:
-- Ubuntu WSL2
+- Ubuntu WSL2 20.04
 - Ubuntu 21.04
 - Void Linux
+- macOS Big Sur
 - Arch Linux (needs more testing)
