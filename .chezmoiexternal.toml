@@ -1,4 +1,4 @@
-{{ if or (.is_x11) (.is_wayland) -}}
+{{ if or (.is_x11) (.is_wayland) (eq .os_id "darwin") -}}
 [".local/share/fonts/Symbols-1000-em Nerd Font Complete.ttf"]
   type = "file"
   url = "https://github.com/ryanoasis/nerd-fonts/raw/master/src/glyphs/Symbols-1000-em Nerd Font Complete.ttf"
