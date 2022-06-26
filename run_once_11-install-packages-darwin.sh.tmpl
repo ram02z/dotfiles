@@ -2,7 +2,7 @@
 #!/bin/bash
 
 {{ if not (lookPath "brew") -}}
-curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh
+bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 {{- end }}
 
 brew bundle --no-lock --file=/dev/stdin <<EOF
