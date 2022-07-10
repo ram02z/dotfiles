@@ -90,7 +90,7 @@ M.enableSpell = function()
   end
 end
 
--- Get filetype using plenary
+-- Set filetype using plenary
 -- Requires plenary
 M.getFiletype = function()
   local curr_ft = vim.bo.filetype

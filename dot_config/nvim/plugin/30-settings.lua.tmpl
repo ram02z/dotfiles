@@ -99,5 +99,3 @@ vim.g.clipyank = '{{ lookPath "clip.exe" }}'
 {{ else if (eq .chezmoi.os "darwin") -}}
 vim.g.clipyank = '{{ lookPath "pbcopy" }}'
 {{- end }}
-
--- vim: ft=lua sw=2
