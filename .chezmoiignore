@@ -7,6 +7,10 @@ symlinks/
 symlinks/en.utf-8.add
 symlinks/en.utf-8.add.spl
 
+{{ if not .is_personal }}
+.gitconfig
+{{ end }}
+
 {{ if not (lookPath "alacritty") }}
 .config/alacritty/**
 .config/alacritty/

@@ -171,6 +171,7 @@ rust_analyzer = {},
 {{- end }}
 {{ if lookPath "gopls" -}}
 gopls = {
+  filetypes = { "go", "gomod", "gotmpl", "chezmoitmpl" },
   settings = {
     gopls = {
       staticcheck = true,
