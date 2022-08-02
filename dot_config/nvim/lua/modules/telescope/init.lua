@@ -70,9 +70,9 @@ end
 local hint = [[
  _f_: project files       _l_:  live grep       _h_: highlights   _r_: old files
  _s_: spell suggest       _c_: commands         _k_: keymaps      _b_: buffers
- _o_: live grep open      _a_: autocommands     _m_: help tags    _<Enter>_: all
+ _o_: live grep open      _a_: autocommands     _m_: help tags    _d_: comments
  ^
- ^ ^              ^ ^        _?_: Resume       ^ ^            _<Esc>_
+ ^ ^     _<Enter>_: Resume     ^ ^     _?_: all     ^ ^       _<Esc>_
 ]]
 
 hydra({
@@ -97,6 +97,7 @@ hydra({
     { "o", cmd("Telescope live_grep grep_open_files=true"), { desc = "Grep only open files" } },
     { "a", cmd("Telescope autocommands") },
     { "m", cmd("Telescope help_tags") },
+    { "d", cmd("Telescope dev_comments") },
     { "<Enter>", cmd("Telescope resume") },
     { "?", cmd("Telescope"), { exit = true, desc = "List all pickers" } },
     { "<Esc>", nil, { exit = true, nowait = true } },

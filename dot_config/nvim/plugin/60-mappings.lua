@@ -62,14 +62,3 @@ K.set("n", "<Leader>[", "<cmd>lua require('utils.misc').toggle_loc()<CR>", { sil
 
 -- Find and replace
 K.set("n", "<Leader>fs", ":%s/\\<<C-r><C-w>\\>//g<left><left>", { silent = true })
-
--- Diagnostic keymaps
-K.set("n", "]d", "<cmd>lua vim.diagnostic.goto_next({ float = false })<CR>")
-K.set("n", "[d", "<cmd>lua vim.diagnostic.goto_prev({ float = false })<CR>")
-K.set("n", "<Leader>dl", "<cmd>lua vim.diagnostic.setloclist()<CR>")
-K.set("n", "<Leader>df", "<cmd>lua require('modules.diagnostic').toggle_float_view()<CR>")
--- K.set("n", "<Leader>dt", "<cmd>lua require('modules.diagnostic').toggle_hover_diagnostics()<CR>")
--- K.set("n", "<Leader>dv", "<cmd>lua require('modules.diagnostic').toggle_hover_view()<CR>")
-K.set("n", "<Leader>da", "<cmd>lua require('modules.diagnostic').toggle_all_diagnostics()<CR>")
-
-require("utils.keychord").cancel("<Leader>d", false)

@@ -40,11 +40,6 @@ packer.startup({
 
     use({
       "https://git.sr.ht/~whynothugo/lsp_lines.nvim",
-      config = function()
-        -- FIXME: diagnostic config shouldn't rely on this plugin
-        require("modules.diagnostic")
-        require("lsp_lines").register_lsp_virtual_lines()
-      end,
     })
 
     use({
@@ -123,6 +118,14 @@ packer.startup({
       -- might have something to do with BufReadPre event and after key idk
       config = [[require'modules.treesitter']],
       run = ":TSUpdate",
+    })
+
+    use({
+      -- "~/src/telescope-dev-comments.nvim",
+      "ram02z/telescope-dev-comments.nvim",
+      config = function()
+        require("telescope").load_extension("dev_comments")
+      end,
     })
 
     use({
@@ -384,11 +387,6 @@ packer.startup({
     -- Fuzzy finder
     use({
       "nvim-telescope/telescope.nvim",
-      -- keys = {
-      --   { "n", "<Leader>p" },
-      -- },
-      -- cmd = "Telescope",
-      -- module = "telescope",
       requires = {
         {
           "nvim-telescope/telescope-fzf-native.nvim",
