@@ -258,6 +258,9 @@ sumneko_lua = {
 {{ if lookPath "typescript-language-server" -}}
 tsserver = {},
 {{- end }}
+{{ if lookPath "jsonnet-language-server" -}}
+jsonnet_ls = {},
+{{- end }}
 }
 
 local M = {}
