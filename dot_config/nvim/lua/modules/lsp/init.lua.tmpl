@@ -254,12 +254,15 @@ sumneko_lua = {
     },
   },
 },
+{{- $servers = add1 $servers -}}
 {{- end }}
 {{ if lookPath "typescript-language-server" -}}
 tsserver = {},
+{{- $servers = add1 $servers -}}
 {{- end }}
 {{ if lookPath "jsonnet-language-server" -}}
 jsonnet_ls = {},
+{{- $servers = add1 $servers -}}
 {{- end }}
 }
 
