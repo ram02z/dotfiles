@@ -124,7 +124,7 @@ packer.startup({
       -- "~/src/telescope-dev-comments.nvim",
       "ram02z/telescope-dev-comments.nvim",
       config = function()
-        require("telescope").load_extension("dev_comments")
+        require("dev_comments").setup()
       end,
     })
 
@@ -322,8 +322,6 @@ packer.startup({
       },
       {
         "lewis6991/gitsigns.nvim",
-        module = "gitsigns",
-        event = { "BufRead", "BufNewFile" },
         config = [[require'modules.gitsigns']],
       },
       {

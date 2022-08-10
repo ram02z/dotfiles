@@ -97,7 +97,7 @@ hydra({
     { "o", cmd("Telescope live_grep grep_open_files=true"), { desc = "Grep only open files" } },
     { "a", cmd("Telescope autocommands") },
     { "m", cmd("Telescope help_tags") },
-    { "d", cmd("Telescope dev_comments") },
+    { "d", cmd("Telescope dev_comments current") },
     { "<Enter>", cmd("Telescope resume") },
     { "?", cmd("Telescope"), { exit = true, desc = "List all pickers" } },
     { "<Esc>", nil, { exit = true, nowait = true } },
