@@ -121,8 +121,8 @@ packer.startup({
     })
 
     use({
-      -- "~/src/telescope-dev-comments.nvim",
-      "ram02z/telescope-dev-comments.nvim",
+      -- "~/src/dev-comments.nvim",
+      "ram02z/dev-comments.nvim",
       config = function()
         require("dev_comments").setup()
       end,
