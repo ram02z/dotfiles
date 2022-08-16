@@ -94,9 +94,8 @@ highlight StatusLineNC guifg=NONE ctermfg=NONE guibg=#21222C ctermbg=235 gui=NON
 highlight StatusLineTerm guifg=NONE ctermfg=NONE guibg=#21222C ctermbg=235 gui=bold cterm=bold guisp=NONE
 highlight StatusLineTermNC guifg=NONE ctermfg=NONE guibg=#21222C ctermbg=235 gui=NONE cterm=NONE guisp=NONE
 highlight WildMenu guifg=#181A26 ctermfg=236 guibg=#BD93F9 ctermbg=141 gui=bold cterm=bold guisp=NONE
-highlight CursorLine guifg=NONE ctermfg=NONE guibg=#424450 ctermbg=238 gui=NONE cterm=NONE guisp=NONE
+highlight CursorLine guifg=NONE ctermfg=NONE guibg=#424450 ctermbg=238 gui=NONE cterm=NONE guisp=NONEram02z
 highlight BlackOnPurple guifg=#21222C ctermfg=235 guibg=#BD93D9 ctermbg=141 gui=NONE cterm=NONE guisp=NONE
-highlight DiffDelete guifg=NONE ctermfg=203 guibg=#4C313B ctermbg=NONE gui=NONE cterm=NONE guisp=NONE
 highlight Underlined guifg=NONE ctermfg=NONE guibg=NONE ctermbg=NONE gui=undercurl cterm=undercurl guisp=NONE
 
 hi! link ColorColumn  DraculaBgLight
@@ -109,6 +108,7 @@ hi! link DiffChanged  DraculaOrange
 hi! link DiffRemoved  DraculaRed
 hi! link DiffText     DraculaDiffText
 hi! link DiffIncoming DraculaDiffIncoming
+hi! link DiffDelete DraculaDiffDelete
 hi! link Directory    DraculaPurpleBold
 hi! link ErrorMsg     DraculaRedInverse
 hi! link FoldColumn   DraculaSubtle
@@ -253,6 +253,7 @@ hi! link cssTSProperty DraculaOrangeItalic
 hi! link GitSignsAdd      DraculaGreen
 hi! link GitSignsChange   DraculaOrange
 hi! link GitSignsDelete   DraculaRed
+hi! link GitSignsDeleteLn DiffDelete
 
 " nvim-cmp
 hi! link CmpItemKind DraculaPurple
