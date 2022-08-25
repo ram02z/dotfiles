@@ -5,8 +5,8 @@ local gitsigns = require("gitsigns")
 
 local hint = [[
  _J_: next hunk   _s_: stage hunk        _d_: show deleted   _b_: blame line
- _K_: prev hunk   _u_: undo last stage   _p_: preview hunk   _B_: blame show full
- ^ ^              _S_: stage buffer      _t_: toggle blame
+ _K_: prev hunk   _S_: undo last stage   _p_: preview hunk   _B_: blame show full
+ ^ ^               _t_: toggle blame     _r_: reset hunk
  ^
  ^ ^                            _q_: exit
 ]]
@@ -54,8 +54,7 @@ gitsigns.setup({
         on_enter = function()
           vim.cmd("mkview")
           vim.cmd("silent! %foldopen!")
-          vim.bo.modifiable = false
-          gitsigns.toggle_signs(true)
+          vim.bo.modifiable = true
           gitsigns.toggle_linehl(true)
         end,
         on_exit = function()
@@ -63,7 +62,6 @@ gitsigns.setup({
           vim.cmd("loadview")
           vim.api.nvim_win_set_cursor(0, cursor_pos)
           vim.cmd("normal zv")
-          gitsigns.toggle_signs(false)
           gitsigns.toggle_linehl(false)
           gitsigns.toggle_deleted(false)
         end,
@@ -98,8 +96,8 @@ gitsigns.setup({
           { expr = true, desc = "prev hunk" },
         },
         { "s", gitsigns.stage_hunk, { silent = true, desc = "stage hunk" } },
-        { "u", gitsigns.undo_stage_hunk, { desc = "undo last stage" } },
-        { "S", gitsigns.stage_buffer, { desc = "stage buffer" } },
+        { "S", gitsigns.undo_stage_hunk, { desc = "undo last stage" } },
+        { "r", gitsigns.reset_hunk, { desc = "reset hunk" } },
         { "p", gitsigns.preview_hunk, { desc = "preview hunk" } },
         { "d", gitsigns.toggle_deleted, { nowait = true, desc = "toggle deleted" } },
         { "b", gitsigns.blame_line, { desc = "blame" } },
