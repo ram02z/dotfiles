@@ -1,0 +1,5 @@
+{{  if lookPath "syncthing" -}}
+if not pgrep -f syncthing > /dev/null
+  syncthing -no-browser --logfile=".syncthing.log" --logflags="3" > /tmp/syncthing.out &
+end
+{{- end }}
