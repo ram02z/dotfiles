@@ -56,12 +56,6 @@ augroup colorcolumn
   autocmd OptionSet textwidth call utils#setccol()
 augroup END
 
-augroup enableNeorgCmp
-    autocmd!
-    autocmd FileType norg lua require("cmp").setup.buffer { sources = { { name = "neorg" }, } }
-    autocmd BufRead,BufNewFile *.norg lua require("cmp").setup.buffer { sources = { { name = "neorg" }, } }
-augroup END
-
 augroup TSSpell
   autocmd!
   autocmd VimEnter * lua require("utils.misc").enableSpell()

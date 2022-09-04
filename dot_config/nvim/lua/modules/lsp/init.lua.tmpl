@@ -1,167 +1,3 @@
--- TODO: use lsp_status for capabilites
-local on_attach = function(client, bufnr)
-  -- Set autocommands conditional on server_capabilities
-  -- TODO: add implementation capability
-  if client.server_capabilities.definitionProvider then
-    vim.keymap.set(
-			"n",
-      "<Leader>ld",
-      vim.lsp.buf.definition,
-      {buffer = true}
-    )
-  end
-  if client.server_capabilities.declarationProvider then
-    vim.keymap.set(
-			"n",
-      "<Leader>lD",
-      vim.lsp.buf.declaration,
-      {buffer = true}
-    )
-  end
-  if client.server_capabilities.hoverProvider then
-    vim.keymap.set(
-			"n",
-      "<CR>",
-      vim.lsp.buf.hover,
-      {buffer = true}
-    )
-  end
-  if client.server_capabilities.codeActionProvider then
-    vim.fn.sign_define('LightBulbSign', { text = "", texthl = "String", linehl="", numhl="" })
-    vim.cmd([[autocmd CursorHold,CursorHoldI,InsertLeave <buffer> lua require"nvim-lightbulb".update_lightbulb()]])
-    vim.keymap.set(
-			"n",
-      "<Leader>la",
-      vim.lsp.buf.code_action,
-      {buffer = true}
-    )
-    vim.keymap.set(
-      "v",
-      "<Leader>la",
-      vim.lsp.buf.range_code_action,
-      {buffer = true}
-    )
-  end
-  if client.server_capabilities.signatureHelpProvider then
-    vim.keymap.set(
-			"n",
-      "<Leader><CR>",
-      vim.lsp.buf.signature_help,
-      {buffer = true}
-    )
-    vim.keymap.set(
-      "i",
-      "<C-s>",
-      vim.lsp.buf.signature_help,
-      {buffer = true}
-    )
-  end
-  if client.server_capabilities.renameProvider then
-    vim.keymap.set(
-			"n",
-      "<Leader>lr",
-      vim.lsp.buf.rename,
-      {buffer = true}
-   )
-  end
-  -- if client.server_capabilities.referencesProvider then
-    vim.keymap.set(
-			"n",
-      "<Leader>*",
-      vim.lsp.buf.references,
-      {buffer = true}
-    )
-  -- end
-  if client.server_capabilities.documentFormattingProvider then
-    vim.keymap.set(
-			"n",
-      "<Leader>lf",
-      function()
-        vim.lsp.buf.format({async=true})
-      end,
-      {buffer = true}
-    )
-  end
-  if client.server_capabilities.documentRangeFormattingProvider then
-    vim.keymap.set(
-      "x",
-      "<Leader>lf",
-      vim.lsp.buf.range_formatting,
-      {buffer = true}
-    )
-  end
-  -- if client.server_capabilities.code_lens then
-  --   vim.api.nvim_command [[autocmd CursorHold,CursorHoldI,InsertLeave <buffer> lua vim.lsp.codelens.refresh()]]
-  --   vim.keymap.set(
-  --     "n",
-  --     "<Leader>lc",
-  --     vim.lsp.codelens.run,
-  --     buffer = true,
-  --   })
-  -- end
-
-  require("utils.keychord").cancel("<Leader>l", true)
-
-  -- Additional plugins
-  require("fidget").setup({
-    window = {
-      blend = 0,
-    },
-  })
-  -- require("cmp_nvim_lsp").setup()
-end
-
--- config that activates keymaps and enables snippet support
-local make_config = function()
-  local capabilities = vim.lsp.protocol.make_client_capabilities()
-  -- capabilities.textDocument.completion.completionItem.snippetSupport = true
-  -- capabilities.textDocument.completion.completionItem.preselectSupport = true
-  -- capabilities.textDocument.completion.completionItem.insertReplaceSupport = true
-  -- capabilities.textDocument.completion.completionItem.labelDetailsSupport = true
-  -- capabilities.textDocument.completion.completionItem.deprecatedSupport = true
-  -- capabilities.textDocument.completion.completionItem.commitCharactersSupport = true
-  -- capabilities.textDocument.completion.completionItem.tagSupport = { valueSet = { 1 } }
-  -- capabilities.textDocument.completion.completionItem.resolveSupport = {
-  --   properties = {
-  --     "documentation",
-  --     "detail",
-  --     "additionalTextEdits",
-  --   },
-  -- }
-  return {
-    capabilities = require'cmp_nvim_lsp'.update_capabilities(capabilities),
-    -- map buffer local keybindings when the language server attaches
-    on_attach = on_attach,
-    autostart = true,
-    flags = {
-      debounce_text_changes = 500,
-    },
-  }
-end
-
-local null_ls = require("null-ls")
-
--- register any number of sources simultaneously
-local sources = {
-    null_ls.builtins.formatting.prettier,
-    null_ls.builtins.formatting.black.with({
-      timeout = 10000,
-    }),
-    null_ls.builtins.formatting.isort.with({
-      extra_args = {"--profile", "black"}
-    }),
-    null_ls.builtins.formatting.fish_indent,
-    null_ls.builtins.formatting.stylua,
-    null_ls.builtins.diagnostics.flake8.with({
-        diagnostics_format = "[#{c}] #{m}",
-        method = null_ls.methods.DIAGNOSTICS_ON_SAVE,
-        extra_args = { "--extend-ignore", "E203", "--max-line-length", "88" }
-    }),
-    null_ls.builtins.code_actions.gitrebase,
-}
-
-null_ls.setup({ sources = sources, on_attach = on_attach, debug = true })
-
 {{ $servers := 0 }}
 -- Define enabled servers
 local servers = {
@@ -238,12 +74,7 @@ sumneko_lua = {
         path = vim.split(package.path, ";"),
       },
       workspace = {
-        library = {
-          [vim.env.VIMRUNTIME] = true,
-          [U.os.data .. "/pack/*/start/*"] = true,
-          [U.os.data .. "/pack/*/opt/*"] = true,
-          [U.os.data .. "/rocks/*"] = true,
-        },
+        library = vim.api.nvim_get_runtime_file('', true),
         maxPreload = 2000,
         preloadFileSize = 50000,
       },
@@ -264,30 +95,30 @@ tsserver = {},
 jsonnet_ls = {},
 {{- $servers = add1 $servers -}}
 {{- end }}
+{{ if lookPath "marksman" -}}
+marksman = {},
+{{- $servers = add1 $servers -}}
+{{- end }}
+{{ if lookPath "clangd" -}}
+clangd = {
+  server = {
+    cmd = {
+      "clangd", "--background-index", "--pch-storage=memory",
+      "--clang-tidy", "--enable-config", "--header-insertion=iwyu"
+    },
+  },
+}
+{{- $servers = add1 $servers -}}
+{{- end }}
 }
 
 local M = {}
 
-function M.start_clangd()
-{{ if lookPath "clangd" -}}
-  require("clangd_extensions").setup({
-      server = {
-        cmd = {
-          "clangd", "--background-index", "--pch-storage=memory",
-          "--clang-tidy", "--enable-config", "--header-insertion=iwyu"
-        },
-        on_attach = on_attach,
-      },
-  })
-{{- end }}
-end
-
 function M.setup_servers()
-  M.start_clangd()
   {{ if gt $servers 0 -}}
   -- Register all the LSP servers.
   local lspconfig = require("lspconfig")
-  local common_config = make_config()
+  local common_config = require("modules.lsp.config").make()
   for server, config in pairs(servers) do
     -- Merge per-LSP configs with the common settings, and use that:
     lspconfig[server].setup(vim.tbl_extend("keep", config, common_config))

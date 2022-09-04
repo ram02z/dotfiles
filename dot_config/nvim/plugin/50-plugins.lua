@@ -7,8 +7,6 @@ if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
   execute("!git clone https://github.com/wbthomason/packer.nvim " .. install_path)
 end
 execute("packadd packer.nvim")
--- NOTE: can fail on before installed
--- pcall(execute, "packadd chezmoi.vim")
 
 local packer = require("packer")
 
@@ -60,10 +58,6 @@ packer.startup({
     })
 
     use({
-      "p00f/clangd_extensions.nvim",
-    })
-
-    use({
       "b0o/schemastore.nvim",
       module = "schemastore",
     })
@@ -85,13 +79,16 @@ packer.startup({
       "hrsh7th/nvim-cmp",
       requires = {
         { "hrsh7th/cmp-nvim-lsp" },
-        { "hrsh7th/cmp-nvim-lua" },
         { "hrsh7th/cmp-path" },
         { "hrsh7th/cmp-buffer" },
         { "saadparwaiz1/cmp_luasnip" },
         { "hrsh7th/cmp-nvim-lsp-signature-help" },
       },
       config = [[require'modules.cmp']],
+    })
+
+    use({
+      "ii14/emmylua-nvim",
     })
 
     use({
@@ -179,12 +176,7 @@ packer.startup({
     -- Statusline
     use({
       "feline-nvim/feline.nvim",
-      -- tag = "v0.3",
-      -- branch = "develop",
-      -- event = { "BufNewFile", "BufReadPre" },
-      -- event = "FileType nix",
       config = [[require'modules.feline']],
-      -- config = [[require'feline'.setup()]]
     })
 
     --
@@ -217,36 +209,38 @@ packer.startup({
       "jbyuki/venn.nvim",
       cmd = "VBox",
       setup = function()
-        vim.keymap.set("n", "<Leader>\\", function()
-          local venn_enabled = vim.inspect(vim.b.venn_enabled)
-          if venn_enabled == "nil" then
-            print("Entered venn mode")
-            vim.b.venn_enabled = true
-            vim.cmd([[setlocal ve=all]])
-            -- draw a line on HJKL keystokes
-            vim.keymap.set("n", "J", "<C-v>j:VBox<CR>", { buffer = true })
-            vim.keymap.set("n", "K", "<C-v>k:VBox<CR>", { buffer = true })
-            vim.keymap.set("n", "L", "<C-v>l:VBox<CR>", { buffer = true })
-            vim.keymap.set("n", "H", "<C-v>h:VBox<CR>", { buffer = true })
-            -- draw a box by pressing "f" with visual selection
-            vim.keymap.set("v", "f", ":VBox<CR>", { buffer = true })
-          else
-            print("Exited venn mode")
-            vim.cmd([[setlocal ve=block]])
-            vim.cmd([[mapclear <buffer>]])
-            vim.b.venn_enabled = nil
-          end
-        end, { desc = "Toggle venn mode" })
-      end,
-    })
+        local Hydra = require("hydra")
+        local hint = [[
+ Arrow^^^^^^   Select region with <C-v>
+ ^ ^ _K_ ^ ^   _f_: surround it with box
+ _H_ ^ ^ _L_
+ ^ ^ _J_ ^ ^                      _<Esc>_
+        ]]
 
-    -- TODO: telescope plugin? #749
-    use({
-      "mhinz/vim-startify",
-      cmd = { "SLoad", "SSave", "SDelete", "SClose" },
-      setup = function()
-        vim.g.startify_change_to_dir = 0
-        vim.g.startify_disable_at_vimenter = true
+        Hydra({
+          name = "Draw Diagram",
+          hint = hint,
+          config = {
+            color = "pink",
+            invoke_on_body = true,
+            hint = {
+              border = "rounded",
+            },
+            on_enter = function()
+              vim.o.virtualedit = "all"
+            end,
+          },
+          mode = "n",
+          body = "<leader>\\",
+          heads = {
+            { "H", "<C-v>h:VBox<CR>" },
+            { "J", "<C-v>j:VBox<CR>" },
+            { "K", "<C-v>k:VBox<CR>" },
+            { "L", "<C-v>l:VBox<CR>" },
+            { "f", ":VBox<CR>", { mode = "v" } },
+            { "<Esc>", nil, { exit = true } },
+          },
+        })
       end,
     })
 
@@ -255,34 +249,66 @@ packer.startup({
       "tpope/vim-repeat",
     })
 
-    use({
-      "junegunn/vim-easy-align",
-      keys = "<Plug>(EasyAlign)",
-      setup = function()
-        vim.keymap.set({ "x", "n" }, "ga", "<Plug>(EasyAlign)", { silent = true })
-      end,
-    })
-
     --
     -- Language support
     --
 
-    -- Chezmoi template support
-    -- NOTE: needs to be loaded first
     use({
       "alker0/chezmoi.vim",
-      opt = true,
     })
 
-    -- TODO: move to own file
     use({
-      "nvim-neorg/neorg",
-      config = [[require'modules.neorg']],
+      "jakewvincent/mkdnflow.nvim",
+      ft = "markdown",
+      config = function()
+        require("mkdnflow").setup({
+          mappings = {
+            MkdnEnter = false,
+            MkdnNextLink = { "n", "]l" },
+            MkdnPrevLink = { "n", "[l" },
+            MkdnTableNextCell = false,
+            MkdnTablePrevCell = false,
+            MkdnUpdateNumbering = false,
+          },
+        })
+      end,
     })
 
-    -- CPP docs
     use({
-      "skywind3000/vim-cppman",
+      "AckslD/nvim-FeMaco.lua",
+      config = function()
+        local clip_val = require("femaco.utils").clip_val
+        require("femaco").setup({
+          float_opts = function(code_block)
+            return {
+              relative = "cursor",
+              width = clip_val(5, 120, vim.api.nvim_win_get_width(0) - 10),
+              height = clip_val(5, #code_block.lines, vim.api.nvim_win_get_height(0) - 6),
+              anchor = "NW",
+              row = 0,
+              col = 0,
+              style = "minimal",
+              border = "none",
+              zindex = 1,
+            }
+          end,
+        })
+      end,
+    })
+
+    use({
+      "arnarg/todotxt.nvim",
+      requires = { "MunifTanjim/nui.nvim" },
+      config = function()
+        vim.filetype.add({
+          filename = {
+            ["todo.txt"] = function(path)
+              require("todotxt-nvim").setup({ todo_file = path })
+              return "todotxt"
+            end,
+          },
+        })
+      end,
     })
 
     -- Tex support
@@ -311,7 +337,7 @@ packer.startup({
         end,
         config = function()
           require("diffview").setup({
-            enhanced_diff_hl = true,
+            enhanced_diff_hl = false,
           })
           require("utils.keychord").cancel("<Leader>v")
         end,
@@ -473,7 +499,6 @@ packer.startup({
       config = function()
         local ft = require("Comment.ft")
         ft.dosini = "#%s"
-        ft.norg = { "$comment%s", "@comment\r%s@end" }
         require("Comment").setup({
           ignore = "^$",
         })
@@ -491,17 +516,19 @@ packer.startup({
 
     -- Color highlighting
     use({
-      "DarwinSenior/nvim-colorizer.lua",
-      event = "BufReadPre",
+      "NvChad/nvim-colorizer.lua",
       config = function()
-        require("colorizer").setup({ "*" }, {
-          RGB = false,
-          RRGGBB = true,
-          RRGGBBAA = true,
-          css_fn = true,
-          names = false,
-          mode = "virtualtext",
-          virtualtext = "■",
+        require("colorizer").setup({
+          filetypes = { "*" },
+          user_default_options = {
+            RGB = false,
+            RRGGBB = true,
+            RRGGBBAA = true,
+            css_fn = true,
+            names = false,
+            mode = "virtualtext",
+            virtualtext = "■",
+          },
         })
       end,
     })

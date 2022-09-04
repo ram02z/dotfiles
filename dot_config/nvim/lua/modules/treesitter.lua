@@ -6,7 +6,7 @@ local ts_config = {
   highlight = {
     enable = true,
     disable = { "html" },
-    -- additional_vim_regex_highlighting = true,
+    additional_vim_regex_highlighting = { "markdown" },
   },
   -- incremental_selection = {
   --   enable = true,
@@ -69,19 +69,12 @@ require("nvim-treesitter.install").compilers = { "clang", "gcc", "cc" }
 
 local parser_configs = require("nvim-treesitter.parsers").get_parser_configs()
 
-parser_configs.norg_meta = {
+parser_configs.todotxt = {
   install_info = {
-    url = "https://github.com/nvim-neorg/tree-sitter-norg-meta",
+    url = "https://github.com/arnarg/tree-sitter-todotxt",
     files = { "src/parser.c" },
     branch = "main",
-  },
-}
-
-parser_configs.norg_table = {
-  install_info = {
-    url = "https://github.com/nvim-neorg/tree-sitter-norg-table",
-    files = { "src/parser.c" },
-    branch = "main",
+    filetype = "todotxt",
   },
 }
 tree_sitter.setup(ts_config)

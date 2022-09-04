@@ -14,10 +14,6 @@ disable_default_plugins()
 -- TODO: remove when https://github.com/neovim/neovim/pull/15436 is merged
 pcall(require, "impatient")
 
--- NOTE: can fail on before installations
-pcall(vim.api.nvim_command, "packadd chezmoi.vim")
--- Rest of startup moved to top level plugins folder
-
 vim.api.nvim_create_user_command("PurgeUndoFiles", function()
   require("utils.misc").purge_old_undos()
 end, {})

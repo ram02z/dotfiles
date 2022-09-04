@@ -143,16 +143,6 @@ table.insert(components.active[1], {
 })
 
 table.insert(components.active[1], {
-  provider = function()
-    return require("neorg").modules.get_module("core.mode").get_mode()
-  end,
-  hl = { fg = "gray" },
-  enabled = function()
-    return vim.o.filetype == "norg"
-  end,
-})
-
-table.insert(components.active[1], {
   provider = "diagnostic_errors",
   hl = { fg = "red" },
   truncate_hide = true,
