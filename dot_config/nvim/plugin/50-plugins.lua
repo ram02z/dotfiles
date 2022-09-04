@@ -262,6 +262,10 @@ packer.startup({
       ft = "markdown",
       config = function()
         require("mkdnflow").setup({
+          to_do = {
+            symbols = { " ", "x", " " },
+            complete = "x",
+          },
           mappings = {
             MkdnEnter = false,
             MkdnNextLink = { "n", "]l" },
