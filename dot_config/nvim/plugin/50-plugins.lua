@@ -10,7 +10,9 @@ execute("packadd packer.nvim")
 
 local packer = require("packer")
 
-vim.keymap.set("", "<C-S>", packer.sync, { silent = true, desc = "Sync packer" })
+vim.keymap.set("", "<C-S>", function()
+  packer.sync({ preview_updates = true })
+end, { silent = true, desc = "Sync packer preview" })
 
 packer.startup({
   function(use)
@@ -55,6 +57,7 @@ packer.startup({
     use({
       "jose-elias-alvarez/null-ls.nvim",
       requires = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig" },
+      config = [[require'modules.lsp.null_ls']],
     })
 
     use({

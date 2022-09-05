@@ -59,6 +59,3 @@ K.set("n", "<Leader>w", "<cmd>lua require('utils.window').pick()<CR>", { silent 
 -- Toggle lists
 K.set("n", "<Leader>]", "<cmd>lua require('utils.misc').toggle_qf()<CR>", { silent = true })
 K.set("n", "<Leader>[", "<cmd>lua require('utils.misc').toggle_loc()<CR>", { silent = true })
-
--- Find and replace
-K.set("n", "<Leader>fs", ":%s/\\<<C-r><C-w>\\>//g<left><left>", { silent = true })
