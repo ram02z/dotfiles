@@ -509,6 +509,11 @@ exec {{ $matrix }} --hide-mainwindow
 exec {{ $poweralertd }}
 {{ end }}
 
+{{ if ($syncthing := (lookPath "syncthing")) -}}
+exec {{ $syncthing }} -no-browser --logfile="/tmp/syncthing.log" --logflags="3" >/dev/null
+{{- end }}
+
+
 #
 # Status Bar:
 #

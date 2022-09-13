@@ -70,3 +70,6 @@ timezone
 Accessor
 Asynchronicity
 loopback
+Serverless
+serverless
+Microservice

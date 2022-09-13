@@ -1,4 +1,4 @@
-{{  if lookPath "syncthing" -}}
+{{  if and (lookPath "syncthing") (not (lookPath "sway")) -}}
 if not pgrep -f syncthing > /dev/null
   syncthing -no-browser --logfile="/tmp/syncthing.log" --logflags="3" > /dev/null &
 end
