@@ -129,13 +129,6 @@ packer.startup({
     })
 
     use({
-      "lewis6991/spellsitter.nvim",
-      config = function()
-        require("spellsitter").setup()
-      end,
-    })
-
-    use({
       "nvim-treesitter/playground",
       cmd = { "TSPlaygroundToggle", "TSHighlightCapturesUnderCursor" },
       setup = function()

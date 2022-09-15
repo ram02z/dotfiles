@@ -56,12 +56,6 @@ augroup colorcolumn
   autocmd OptionSet textwidth call utils#setccol()
 augroup END
 
-augroup TSSpell
-  autocmd!
-  autocmd VimEnter * lua require("utils.misc").enableSpell()
-  autocmd BufWinEnter * lua require("utils.misc").enableSpell()
-augroup END
-
 augroup PlenaryFiletypes
   autocmd!
   autocmd BufReadPost * lua require("utils.misc").getFiletype()

@@ -81,15 +81,6 @@ M.baseName = function(path, sep)
   return split[#split]
 end
 
--- Enables spell for treesitter buffers
-M.enableSpell = function()
-  vim.opt.spell = false
-  local curr_win = vim.api.nvim_get_current_win()
-  if vim.treesitter.highlighter.active[vim.api.nvim_win_get_buf(curr_win)] then
-    vim.wo[curr_win].spell = true
-  end
-end
-
 -- Set filetype using plenary
 -- Requires plenary
 M.getFiletype = function()
