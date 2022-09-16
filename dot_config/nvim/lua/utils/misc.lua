@@ -67,20 +67,6 @@ M.pathSep = function()
   end
 end
 
--- Returns path without last string
-M.dirName = function(path, sep)
-  sep = sep or M.pathSep()
-  return path:match(".*" .. sep)
-end
-
--- Returns last string in path
-M.baseName = function(path, sep)
-  sep = sep or M.pathSep()
-  local split = vim.split(path, sep)
-
-  return split[#split]
-end
-
 -- Set filetype using plenary
 -- Requires plenary
 M.getFiletype = function()

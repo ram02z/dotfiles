@@ -104,7 +104,7 @@ table.insert(components.active[1], {
 table.insert(components.active[1], {
   provider = function()
     local name = os.getenv("VIRTUAL_ENV")
-    return string.format("(%s)", require("utils.misc").baseName(name))
+    return string.format("(%s)", vim.fs.basename(name))
   end,
   hl = { fg = "light_gray" },
   right_sep = " ",
@@ -226,8 +226,7 @@ table.insert(components.active[2], {
       end
     end
 
-    local baseName = require("utils.misc").baseName
-    local git_basename = baseName(vim.b.gitsigns_status_dict["root"])
+    local git_basename = vim.fs.basename(vim.b.gitsigns_status_dict["root"])
     cached_git_dirs[cwd] = git_basename
 
     return git_basename
