@@ -1,4 +1,6 @@
 local vi_mode_utils = require("feline.providers.vi_mode")
+local colors = require("modules.feline.utils").colors
+local vi_mode_colors = require("modules.feline.utils").vi_mode_colors
 
 local force_inactive = {
   filetypes = {},
@@ -42,40 +44,6 @@ force_inactive.buftypes = {
 -- Helper functions
 --
 
--- Dracula-esque colors
-local colors = {
-  bg = "#21222C",
-  fg = "#F8F8F2",
-  gray = "#3A3C4E",
-  light_gray = "#8791A5",
-  purple = "#BD93F9",
-  cyan = "#62D6E8",
-  green = "#50FA8B",
-  orange = "#FFB86C",
-  red = "#FF5555",
-  magenta = "#EA51B2",
-  pink = "#FF79C6",
-  yellow = "#F1FA8C",
-}
-
--- This table is equal to the default vi_mode_colors table
-local vi_mode_colors = {
-  NORMAL = "purple",
-  OP = "purple",
-  INSERT = "green",
-  VISUAL = "yellow",
-  LINES = "yellow",
-  BLOCK = "cyan",
-  REPLACE = "red",
-  ["V-REPLACE"] = "red",
-  ENTER = "cyan",
-  MORE = "cyan",
-  SELECT = "magenta",
-  COMMAND = "orange",
-  SHELL = "orange",
-  TERM = "orange",
-  NONE = "purple",
-}
 
 -- HACK: figure out which components are most important on smaller windows
 -- Possibly create a system that prioritises based on the enabled components
@@ -111,15 +79,6 @@ table.insert(components.active[1], {
   truncate_hide = true,
   enabled = function()
     return os.getenv("VIRTUAL_ENV") ~= nil
-  end,
-})
-
-table.insert(components.active[1], {
-  provider = "",
-  hl = { fg = "red" },
-  right_sep = " ",
-  enabled = function()
-    return vim.bo.readonly
   end,
 })
 
@@ -265,16 +224,21 @@ table.insert(components.active[2], {
 --
 -- Inactive components
 --
-local get_char = require("utils.window").get_char
+
 table.insert(components.inactive[1], {
   provider = function()
-    -- NOTE: this fails once it windows exceed amount of chars
-    return " " .. (get_char(vim.api.nvim_win_get_number(0)) or "\\") .. " "
+    local mode = vi_mode_utils.get_vim_mode()
+    if #mode > 0 then
+      return " " .. mode:sub(1, 1) .. " "
+    end
+    return " // "
   end,
-  hl = {
-    bg = colors.purple,
-    fg = colors.bg,
-  },
+  hl = function()
+    return {
+      bg = vi_mode_utils.get_mode_color(),
+      fg = colors.bg,
+    }
+  end,
   right_sep = " ",
 })
 

@@ -77,7 +77,7 @@ highlight DraculaNote guifg=#8BE9FD ctermfg=117 guibg=NONE ctermbg=NONE gui=bold
 highlight DraculaWarning guifg=#FFB86C ctermfg=215 guibg=NONE ctermbg=NONE gui=bold,inverse cterm=bold,inverse guisp=NONE
 highlight DraculaDanger guifg=#FF5555 ctermfg=203 guibg=NONE ctermbg=NONE gui=bold,inverse cterm=bold,inverse guisp=NONE
 highlight DraculaSearch guifg=#50FA7B ctermfg=84 guibg=NONE ctermbg=NONE gui=inverse cterm=inverse guisp=NONE
-highlight DraculaBoundary guifg=#6272A4 ctermfg=61 guibg=#21222C ctermbg=235 gui=NONE cterm=NONE guisp=NONE
+highlight DraculaBoundary guifg=#6272A4 ctermfg=61 guibg=NONE ctermbg=NONE gui=NONE cterm=NONE guisp=NONE
 highlight DraculaLink guifg=#8BE9FD ctermfg=117 guibg=NONE ctermbg=NONE gui=underline cterm=underline guisp=NONE
 
 highlight DraculaDiffAdd guifg=NONE ctermfg=215 guibg=#2F4D42 ctermbg=NONE gui=NONE cterm=NONE guisp=NONE
