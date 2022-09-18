@@ -43,6 +43,16 @@ packer.startup({
     })
 
     use({
+      "theHamsta/nvim-semantic-tokens",
+      config = function()
+        require("nvim-semantic-tokens").setup({
+          preset = "default",
+          highlighters = { require("nvim-semantic-tokens.table-highlighter") },
+        })
+      end,
+    })
+
+    use({
       "j-hui/fidget.nvim",
       module = "fidget",
       config = function()
@@ -581,6 +591,7 @@ packer.startup({
     -- Emacs hydra for neovim
     use({
       "anuvyklack/hydra.nvim",
+      commit = "928855b69f55c7abcaa6594d20968c33ab2317e6",
       config = function()
         require("modules.hydra")
       end,

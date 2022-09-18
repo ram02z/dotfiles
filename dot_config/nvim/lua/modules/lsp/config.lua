@@ -1,13 +1,36 @@
 local M = {}
 
 M.on_attach = function(client, bufnr)
+  local caps = client.server_capabilities
   -- Set autocommands conditional on server_capabilities
-  if client.server_capabilities.codeActionProvider then
+  if caps.codeActionProvider then
     vim.fn.sign_define("LightBulbSign", { text = "", texthl = "String", linehl = "", numhl = "" })
-    vim.cmd([[autocmd CursorHold,CursorHoldI,InsertLeave <buffer> lua require"nvim-lightbulb".update_lightbulb()]])
+    local augroup = vim.api.nvim_create_augroup("CodeAction", {})
+    vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI", "InsertLeave" }, {
+      group = augroup,
+      buffer = bufnr,
+      callback = function()
+        require("nvim-lightbulb").update_lightbulb()
+      end,
+    })
     vim.keymap.set("n", "<Leader>la", vim.lsp.buf.code_action, { buffer = true })
     vim.keymap.set("v", "<Leader>la", vim.lsp.buf.range_code_action, { buffer = true })
   end
+
+  if caps.semanticTokensProvider and caps.semanticTokensProvider.full then
+    local augroup = vim.api.nvim_create_augroup("SemanticTokens", {})
+    vim.api.nvim_create_autocmd("TextChanged", {
+      group = augroup,
+      buffer = bufnr,
+      callback = function()
+        vim.lsp.buf.semantic_tokens_full()
+      end,
+    })
+    -- fire it first time on load as well
+    vim.lsp.buf.semantic_tokens_full()
+  end
+
+  -- Set kepmaps regardless of server_capabilities
   vim.keymap.set("n", "gd", vim.lsp.buf.definition, { buffer = true })
   vim.keymap.set("n", "gD", vim.lsp.buf.declaration, { buffer = true })
   vim.keymap.set("n", "<Leader>D", vim.lsp.buf.type_definition, { buffer = true })

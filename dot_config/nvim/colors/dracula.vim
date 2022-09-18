@@ -203,6 +203,31 @@ hi! link helpCommand DraculaPurple
 hi! link helpExample DraculaGreen
 hi! link helpBacktick Special
 
+" LSP semantic tokens
+hi! link LspNamespace Include
+hi! link LspType Type
+hi! link LspClass Type
+hi! link LspEnum Type
+hi! link LspInterface Type
+hi! link LspStruct Type
+hi! link LspTypeParameter Identifier
+hi! link LspParameter Identifier
+" hi! link LspVariable DraculaComment
+hi! link LspProperty Identifier
+hi! link LspEnumMember Identifier
+" hi! link LspEvent DraculaComment
+hi! link LspFunction Function
+hi! link LspMethod Function
+hi! link LspMacro Macro
+hi! link LspKeyword Keyword
+hi! link LspModifier Keyword
+hi! link LspComment DraculaComment
+hi! link LspString String
+hi! link LspNumber Number
+hi! link LspRegexp String
+hi! link LspOperator Operator
+hi! link LspDecorator DraculaGreenItalic
+
 " Treesitter
 hi! link TSPunctSpecial Special
 hi! link TSDefinition CursorLine

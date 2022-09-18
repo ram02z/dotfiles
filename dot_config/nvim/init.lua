@@ -18,4 +18,4 @@ vim.api.nvim_create_user_command("PurgeUndoFiles", function()
   require("utils.misc").purge_old_undos()
 end, {})
 
-vim.api.nvim_command("colorscheme dracula")
+vim.cmd.colorscheme("dracula")
