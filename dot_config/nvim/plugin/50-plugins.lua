@@ -203,8 +203,8 @@ packer.startup({
     -- Draw shapes
     use({
       "jbyuki/venn.nvim",
-      cmd = "VBox",
-      setup = function()
+      keys = [[<Leader>\]],
+      config = function()
         local Hydra = require("hydra")
         local hint = [[
  Arrow^^^^^^   Select region with <C-v>
@@ -276,6 +276,7 @@ packer.startup({
 
     use({
       "AckslD/nvim-FeMaco.lua",
+      cmd = "FeMaco",
       config = function()
         local clip_val = require("femaco.utils").clip_val
         require("femaco").setup({
@@ -517,6 +518,7 @@ packer.startup({
     -- Color highlighting
     use({
       "NvChad/nvim-colorizer.lua",
+      event = "BufReadPre",
       config = function()
         require("colorizer").setup({
           filetypes = { "*" },
@@ -536,6 +538,7 @@ packer.startup({
     -- Increment/decrement
     use({
       "monaqa/dial.nvim",
+      keys = { "<C-a>", "<C-x>" },
       config = function()
         local augend = require("dial.augend")
 
@@ -586,6 +589,7 @@ packer.startup({
     -- Window shift
     use({
       "sindrets/winshift.nvim",
+      cmd = "WinShift",
       config = function()
         require("winshift").setup()
       end,
