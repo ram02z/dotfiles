@@ -597,6 +597,15 @@ packer.startup({
       end,
     })
 
+    use({
+      "anuvyklack/windows.nvim",
+      requires = { "anuvyklack/middleclass" },
+      cmd = "Windows*",
+      config = function()
+        require("windows").setup()
+      end,
+    })
+
     -- Window shift
     use({
       "sindrets/winshift.nvim",
