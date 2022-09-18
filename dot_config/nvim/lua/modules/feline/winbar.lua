@@ -34,15 +34,6 @@ disable.buftypes = {
 }
 
 table.insert(components.active[1], {
-  provider = "",
-  hl = { fg = "red", bg = colors.bg },
-  right_sep = " ",
-  enabled = function()
-    return vim.bo.readonly
-  end,
-})
-
-table.insert(components.active[1], {
   provider = {
     name = "file_info",
     opts = {
@@ -53,7 +44,17 @@ table.insert(components.active[1], {
   },
   icon = "",
   hl = { bg = colors.bg },
-  left_sep = "left_filled",
+  left_sep = function()
+    local val = {}
+    val.hl = { fg = "red" }
+    if vim.bo.readonly then
+      val.str = ""
+    else
+      val.str = " "
+    end
+
+    return val
+  end,
   right_sep = function()
     local val = {}
     val.hl = { fg = "red" }
