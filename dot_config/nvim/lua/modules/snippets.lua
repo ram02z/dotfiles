@@ -1,13 +1,7 @@
 local ls = require("luasnip")
 local s = ls.s
-local sn = ls.snippet_node
 local t = ls.t
 local i = ls.i
-local d = ls.dynamic_node
-local c = ls.choice_node
--- local f = ls.function_node
-local dl = require("luasnip.extras").dynamic_lambda
-local l = require("luasnip.extras").lambda
 local m = require("luasnip.extras").match
 local r = require("luasnip.extras").rep
 
@@ -26,12 +20,6 @@ local function odd_count(ch)
   local line = vim.api.nvim_get_current_line()
   local _, ct = string.gsub(line, ch, "")
   return ct % 2 ~= 0
-end
-
--- args is a table, where 1 is the text in Placeholder 1, 2 the text in
--- placeholder 2,...
-local function copy(args)
-  return args[1]
 end
 
 -- This makes creation of pair-type snippets easier.
@@ -80,84 +68,6 @@ vim.keymap.set({ "i", "s" }, "<S-Tab>", function()
 end, { desc = "Jump to last snippet or shift tab" })
 
 vim.keymap.set({ "i", "s" }, "<C-E>", "<Plug>luasnip-next-choice")
-
--- complicated function for dynamicNode.
-local function jdocsnip(args, _, old_state)
-  -- !!! old_state is used to preserve user-input here. DON'T DO IT THAT WAY!
-  -- Using a restoreNode instead is much easier.
-  -- View this only as an example on how old_state functions.
-  local nodes = {
-    t({ "/**", " * " }),
-    i(1, "A short Description"),
-    t({ "", "" }),
-  }
-
-  -- These will be merged with the snippet; that way, should the snippet be updated,
-  -- some user input eg. text can be referred to in the new snippet.
-  local param_nodes = {}
-
-  if old_state then
-    nodes[2] = i(1, old_state.descr:get_text())
-  end
-  param_nodes.descr = nodes[2]
-
-  -- At least one param.
-  if string.find(args[2][1], ", ") then
-    vim.list_extend(nodes, { t({ " * ", "" }) })
-  end
-
-  local insert = 2
-  for _, arg in ipairs(vim.split(args[2][1], ", ", true)) do
-    -- Get actual name parameter.
-    arg = vim.split(arg, " ", true)[2]
-    if arg then
-      local inode
-      -- if there was some text in this parameter, use it as static_text for this new snippet.
-      if old_state and old_state[arg] then
-        inode = i(insert, old_state["arg" .. arg]:get_text())
-      else
-        inode = i(insert)
-      end
-      vim.list_extend(nodes, { t({ " * @param " .. arg .. " " }), inode, t({ "", "" }) })
-      param_nodes["arg" .. arg] = inode
-
-      insert = insert + 1
-    end
-  end
-
-  if args[1][1] ~= "void" then
-    local inode
-    if old_state and old_state.ret then
-      inode = i(insert, old_state.ret:get_text())
-    else
-      inode = i(insert)
-    end
-
-    vim.list_extend(nodes, { t({ " * ", " * @return " }), inode, t({ "", "" }) })
-    param_nodes.ret = inode
-    insert = insert + 1
-  end
-
-  if vim.tbl_count(args[3]) ~= 1 then
-    local exc = string.gsub(args[3][2], " throws ", "")
-    local ins
-    if old_state and old_state.ex then
-      ins = i(insert, old_state.ex:get_text())
-    else
-      ins = i(insert)
-    end
-    vim.list_extend(nodes, { t({ " * ", " * @throws " .. exc .. " " }), ins, t({ "", "" }) })
-    param_nodes.ex = ins
-    insert = insert + 1
-  end
-
-  vim.list_extend(nodes, { t({ " */" }) })
-
-  local snip = sn(nil, nodes)
-  -- Error on attempting overwrite.
-  snip.old_state = param_nodes
-  return snip
-end
 
 ls.add_snippets(nil, {
   all = {
@@ -396,51 +306,6 @@ ls.add_snippets(nil, {
       t({ '"""' }),
       i(0),
       t({ '"""' }),
-    }),
-  },
-  java = {
-    s("classn", {
-      c(1, {
-        t("public "),
-        t("private "),
-        t("protected "),
-      }),
-      t("class "),
-      dl(2, l.TM_FILENAME:match("([^.]*)"), {}),
-      t({ " {", "\t" }),
-      i(3),
-      t({ "", "}" }),
-      i(0),
-    }),
-    -- Very long example for a java class.
-    s("fn", {
-      d(7, jdocsnip, { 3, 5, 6 }),
-      t({ "", "" }),
-      c(1, {
-        t("public "),
-        t("private "),
-        t("protected "),
-      }),
-      c(2, {
-        t("static "),
-        i(nil, ""),
-      }),
-      i(3, "void"),
-      t(" "),
-      i(4, "myFunc"),
-      t("("),
-      i(5),
-      t(")"),
-      c(6, {
-        t(""),
-        sn(nil, {
-          t({ "", " throws " }),
-          i(1),
-        }),
-      }),
-      t({ " {", "\t" }),
-      i(0),
-      t({ "", "}" }),
     }),
   },
   go = {
