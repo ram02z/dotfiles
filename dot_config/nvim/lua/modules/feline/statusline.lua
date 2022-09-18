@@ -44,7 +44,6 @@ force_inactive.buftypes = {
 -- Helper functions
 --
 
-
 -- HACK: figure out which components are most important on smaller windows
 -- Possibly create a system that prioritises based on the enabled components
 -- and screen size

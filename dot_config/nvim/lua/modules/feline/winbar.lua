@@ -26,7 +26,6 @@ disable.filetypes = {
   "toggleterm",
 }
 
-
 disable.buftypes = {
   "terminal",
   "prompt",
@@ -39,7 +38,7 @@ table.insert(components.active[1], {
   hl = { fg = "red", bg = colors.bg },
   right_sep = " ",
   enabled = function()
-      return vim.bo.readonly
+    return vim.bo.readonly
   end,
 })
 
@@ -56,15 +55,15 @@ table.insert(components.active[1], {
   hl = { bg = colors.bg },
   left_sep = "left_filled",
   right_sep = function()
-      local val = {}
-      val.hl = { fg = "red" }
-      if vim.bo.modified then
-          val.str = "*"
-      else
-          val.str = " "
-      end
+    local val = {}
+    val.hl = { fg = "red" }
+    if vim.bo.modified then
+      val.str = "*"
+    else
+      val.str = " "
+    end
 
-      return val
+    return val
   end,
 })
 
