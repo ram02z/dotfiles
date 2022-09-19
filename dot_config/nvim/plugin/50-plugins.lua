@@ -307,21 +307,6 @@ packer.startup({
       end,
     })
 
-    use({
-      "arnarg/todotxt.nvim",
-      requires = { "MunifTanjim/nui.nvim" },
-      config = function()
-        vim.filetype.add({
-          filename = {
-            ["todo.txt"] = function(path)
-              require("todotxt-nvim").setup({ todo_file = path })
-              return "todotxt"
-            end,
-          },
-        })
-      end,
-    })
-
     -- Tex support
     use({
       "lervag/vimtex",

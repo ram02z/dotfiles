@@ -67,14 +67,4 @@ local ts_config = {
 
 require("nvim-treesitter.install").compilers = { "clang", "gcc", "cc" }
 
-local parser_configs = require("nvim-treesitter.parsers").get_parser_configs()
-
-parser_configs.todotxt = {
-  install_info = {
-    url = "https://github.com/arnarg/tree-sitter-todotxt",
-    files = { "src/parser.c" },
-    branch = "main",
-    filetype = "todotxt",
-  },
-}
 tree_sitter.setup(ts_config)
