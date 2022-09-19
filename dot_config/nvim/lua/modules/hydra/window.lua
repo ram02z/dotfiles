@@ -35,8 +35,8 @@ hydra({
     -- Split
     { "s", "<C-w>s" },
     { "v", "<C-w>v" },
-    { "z", cmd("WindowsMaximaze"), { exit = true, desc = "maximize" } },
-    { "<C-z>", cmd("WindowsMaximaze"), { exit = true, desc = false } },
+    { "z", cmd("WindowsMaximize"), { exit = true, desc = "maximize" } },
+    { "<C-z>", cmd("WindowsMaximize"), { exit = true, desc = false } },
     { "c", pcmd("close", "E444") },
     { "q", pcmd("close", "E444"), { desc = "close window" } },
     { "<C-c>", pcmd("close", "E444"), { desc = false } },
