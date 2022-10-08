@@ -13,8 +13,7 @@ M.on_attach = function(client, bufnr)
         require("nvim-lightbulb").update_lightbulb()
       end,
     })
-    vim.keymap.set("n", "<Leader>la", vim.lsp.buf.code_action, { buffer = true })
-    vim.keymap.set("v", "<Leader>la", vim.lsp.buf.range_code_action, { buffer = true })
+    vim.keymap.set({ "n", "v" }, "<Leader>la", vim.lsp.buf.code_action, { buffer = true })
   end
 
   if caps.semanticTokensProvider and caps.semanticTokensProvider.full then
@@ -42,7 +41,7 @@ M.on_attach = function(client, bufnr)
   vim.keymap.set("n", "<Leader>f", function()
     vim.lsp.buf.format({ async = true })
   end, { buffer = true })
-  vim.keymap.set("x", "<Leader>f", vim.lsp.buf.range_formatting, { buffer = true })
+  vim.keymap.set("x", "<Leader>f", vim.lsp.formatexpr, { buffer = true })
   vim.keymap.set("n", "gi", vim.lsp.buf.implementation, { buffer = true })
 
   -- Additional plugins

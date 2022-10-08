@@ -312,5 +312,8 @@ hi! link NvimTreesitterPairsSelf CursorLine
 hi! link NvimTreesitterPairsPartner CursorLine
 " # fidget.nvim
 hi! link FidgetTask Comment
+" # nvim-treehopper
+hi! TSNodeUnmatched guifg=#666666 guibg=bg guisp=#666666 ctermfg=242
+hi! TSNodeKey guifg=#ff007c guibg=NONE gui=bold ctermfg=198 cterm=bold
 
 " vim: fdm=marker ts=2 sts=2 sw=2 fdl=0 et:

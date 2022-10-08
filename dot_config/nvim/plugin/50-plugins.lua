@@ -398,7 +398,8 @@ packer.startup({
               highlight = "FloatBorder",
             },
           },
-          replace_netrw = 1,
+          replace_netrw = true,
+          statusline = false,
         })
         vim.keymap.set("", "<Leader>n", "<cmd>NnnPicker<CR>", { silent = true })
       end,
@@ -648,12 +649,6 @@ packer.startup({
       config = function()
         require("utils.keychord").cancel("<Leader>u")
       end,
-    })
-
-    -- Show warning if undoing change from before
-    use({
-      "ram02z/undofile_warn.vim",
-      event = "BufReadPost",
     })
 
     -- Remove annoying search highlighting
