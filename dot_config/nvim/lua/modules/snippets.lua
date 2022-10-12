@@ -106,7 +106,7 @@ ls.add_snippets(nil, {
       t({ "", "}," }),
       i(0),
     }),
-    ls.parser.parse_snippet({ trig = "date;", wordTrig = true }, os.date("%d-%m-%Y")),
+    ls.parser.parse_snippet({ trig = "date;", wordTrig = true }, os.date("%d %B %Y")),
     ls.parser.parse_snippet({ trig = "time;", wordTrig = true }, os.date("%H:%M")),
     ls.parser.parse_snippet({ trig = "datetime;", wordTrig = true }, os.date("%d-%m-%Y %H:%M")),
   },
