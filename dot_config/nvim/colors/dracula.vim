@@ -94,7 +94,7 @@ highlight StatusLineNC guifg=NONE ctermfg=NONE guibg=#21222C ctermbg=235 gui=NON
 highlight StatusLineTerm guifg=NONE ctermfg=NONE guibg=#21222C ctermbg=235 gui=bold cterm=bold guisp=NONE
 highlight StatusLineTermNC guifg=NONE ctermfg=NONE guibg=#21222C ctermbg=235 gui=NONE cterm=NONE guisp=NONE
 highlight WildMenu guifg=#181A26 ctermfg=236 guibg=#BD93F9 ctermbg=141 gui=bold cterm=bold guisp=NONE
-highlight CursorLine guifg=NONE ctermfg=NONE guibg=#424450 ctermbg=238 gui=NONE cterm=NONE guisp=NONEram02z
+highlight CursorLine guifg=NONE ctermfg=NONE guibg=#424450 ctermbg=238 gui=NONE cterm=NONE guisp=NONE
 highlight BlackOnPurple guifg=#21222C ctermfg=235 guibg=#BD93D9 ctermbg=141 gui=NONE cterm=NONE guisp=NONE
 highlight Underlined guifg=NONE ctermfg=NONE guibg=NONE ctermbg=NONE gui=undercurl cterm=undercurl guisp=NONE
 
@@ -229,44 +229,22 @@ hi! link LspOperator Operator
 hi! link LspDecorator DraculaGreenItalic
 
 " Treesitter
-hi! link TSPunctSpecial Special
-hi! link TSDefinition CursorLine
-" hi! link TSDefinitionUsage CursorLine
-" hi! link TSPunctDelimiter DraculaPink
-" hi! link TSPunctSpecial DraculaPink
-hi! link TSOperator DraculaPink
-" # Constants
-" hi! link TSConstMacro Macro
-" hi! link TSStringRegex DraculaCyan
-" hi! link TSStringEscape Character
-hi! link TSSymbol DraculaPurple
-hi! link TSAnnotation DraculaYellow
-hi! link TSAttribute DraculaGreenItalic
-hi! link TSError Error
-" # Functions
-hi! link TSFuncBuiltin DraculaCyan
-hi! link TSFuncMacro Function
-" hi! link TSParameter DraculaOrangeItalic
-hi! link TSParameterReference DraculaOrangeItalic
-" hi! link TSField DraculaOrange
-" # Keywords
-" hi! link TSLabel DraculaPurpleItalic
-hi! link TSTagAttribute DraculaGreenItalic
-" hi! link TSField DraculaOrange
-" # Variable
-hi! link TSVariableBuiltin DraculaPurpleItalic
-" # Text
-" hi! link TSStrong DraculaFgBold
-" hi! link TSEmphasis DraculaFg
-" hi! link TSUnderline Underlined
-hi! link TSTitle DraculaYellow
-" hi! link TSLiteral DraculaYellow
-" hi! link TSURI DraculaYellowUnderline
-hi! link TSNote DraculaWarning
-hi! link TSWarning DraculaNote
-hi! link TSDanger DraculaDanger
-hi! TSPunctBracket guifg=#43A64B ctermfg=green
-hi! link TSConstructor DraculaCyan
+hi! link @punctation.special Special
+hi! link @symbol DraculaPurple
+hi! link @annotation DraculaYellow
+hi! link @attribute DraculaGreenItalic
+hi! link @error Error
+hi! link @function.builtin DraculaCyan
+hi! link @function.macro Function
+hi! link @parameter.reference DraculaOrangeItalic
+hi! link @tag.attribute DraculaGreenItalic
+hi! link @variable.builtin DraculaPurpleItalic
+hi! link @text.title DraculaYellow
+hi! link @text.note DraculaWarning
+hi! link @text.warning DraculaNote
+hi! link @text.danger DraculaDanger
+hi! @punctuation.bracket guifg=#43A64B ctermfg=green
+hi! link @constructor DraculaCyan
 " # Language specific
 hi! link tomlTSProperty DraculaOrangeItalic
 hi! link cssTSProperty DraculaOrangeItalic

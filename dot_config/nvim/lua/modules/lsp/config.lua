@@ -54,9 +54,8 @@ end
 
 -- config that activates keymaps and enables snippet support
 M.make = function()
-  local capabilities = vim.lsp.protocol.make_client_capabilities()
   return {
-    capabilities = require("cmp_nvim_lsp").update_capabilities(capabilities),
+    capabilities = require("cmp_nvim_lsp").default_capabilities(),
     -- map buffer local keybindings when the language server attaches
     on_attach = M.on_attach,
     autostart = true,
