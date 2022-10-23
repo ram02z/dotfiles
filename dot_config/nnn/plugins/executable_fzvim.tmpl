@@ -26,23 +26,15 @@ editor="vim"
 exit 1
 {{- end }}
 
+# Get all git directories
 # Supported file search utilities
 {{ if lookPath "fd" -}}
-git_dirs=$(fd --type d -H -g '.git' --color=never --prune)
+dirs=$(fd --type d -H -g '.git' --color=never --prune --exec dirname)
 {{- else if lookPath "find" }}
-git_dirs=$(find . -type d -name '.git' -prune)
+dirs=$(find . -name .git -type d -prune | xargs -I '{}' dirname '{}')
 {{- else }}
 exit 2
 {{- end }}
-
-# Remove git suffix and check if only one directory exists
-if [ -n "$git_dirs" ]; then
-    dirs=$(printf "%s" "$git_dirs" | rev | cut -d"/" -f2- | rev)
-    if [ "$(printf "%s" "$git_dirs" | rg . -c)" -eq "1" ]; then
-        [[ "$dirs" =~ ".git" ]] || cd "$dirs"
-        unset dirs
-    fi
-fi
 
 # Check print_every_match option
 {{ if lookPath "rg" -}}

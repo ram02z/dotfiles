@@ -27,15 +27,7 @@ ccls = {},
 {{- $servers = add1 $servers -}}
 {{- end }}
 {{ if lookPath "pyright" -}}
-pyright = {
-  settings = {
-    python = {
-      analysis = {
-        useLibraryCodeForTypes = false
-      }
-    }
-  }
-},
+pyright = {},
 {{- $servers = add1 $servers -}}
 {{- end }}
 {{ if lookPath "vscode-html-language-server" -}}

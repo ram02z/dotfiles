@@ -238,6 +238,7 @@ hi! link @function.builtin DraculaCyan
 hi! link @function.macro Function
 hi! link @parameter.reference DraculaOrangeItalic
 hi! link @tag.attribute DraculaGreenItalic
+hi! link @variable DraculaFg
 hi! link @variable.builtin DraculaPurpleItalic
 hi! link @text.title DraculaYellow
 hi! link @text.note DraculaWarning

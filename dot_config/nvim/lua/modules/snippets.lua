@@ -418,4 +418,4 @@ ls.filetype_set("cpp", { "c", "cpp" })
 
 require("luasnip/loaders/from_vscode").lazy_load({ paths = { "~/.config/nvim/snippets/" } })
 -- friendly-snippets
-require("luasnip/loaders/from_vscode").lazy_load({ include = { "html", "java", "latex" } })
+require("luasnip/loaders/from_vscode").lazy_load({ include = { "html", "java", "python", "latex" } })
