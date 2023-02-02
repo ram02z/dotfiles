@@ -66,6 +66,8 @@ stylua.toml
 .config/gtk-3.0/**
 .config/gtk-3.0/
 .config/i3-quickterm.json
+.config/pipewire/**
+.config/pipewire/
 {{ end }}
 {{ if and (not .is_x11) (not .is_wayland) (ne .os_id "darwin") }}
 .config/fontconfig/**
