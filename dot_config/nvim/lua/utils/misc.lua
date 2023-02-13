@@ -67,22 +67,6 @@ M.pathSep = function()
   end
 end
 
--- Set filetype using plenary
--- Requires plenary
-M.getFiletype = function()
-  local curr_ft = vim.bo.filetype
-  if curr_ft == "" then
-    local ok = pcall(require, "plenary")
-    if not ok then
-      vim.notify("plenary is not installed", vim.log.levels.ERROR, {
-        title = "[getFiletype]",
-      })
-      return
-    end
-    vim.bo.filetype = require("plenary.filetype").detect(vim.api.nvim_buf_get_name(0), {})
-  end
-end
-
 -- Expects undo files to be directories
 -- Requires plenary
 -- FIXME: clean up this awful code

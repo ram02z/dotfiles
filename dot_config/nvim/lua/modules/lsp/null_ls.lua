@@ -3,7 +3,9 @@ local on_attach = require("modules.lsp.config").on_attach
 
 -- register any number of sources simultaneously
 local sources = {
-  null_ls.builtins.formatting.prettier,
+  null_ls.builtins.formatting.prettier.with({
+    disabled_filetypes = { "markdown" },
+  }),
   null_ls.builtins.formatting.black.with({
     timeout = 10000,
   }),

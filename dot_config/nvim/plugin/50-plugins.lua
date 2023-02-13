@@ -189,19 +189,13 @@ packer.startup({
     -- Misc
     --
 
-    -- Load my editor defaults
-    use({ "gpanders/editorconfig.nvim" })
-
     -- See https://github.com/neovim/neovim/pull/15436
     use({ "lewis6991/impatient.nvim" })
 
     -- OSC52 yank
     use({
-      "ojroques/vim-oscyank",
-      cmd = "OSCYankReg",
-      setup = function()
-        vim.g.oscyank_max_length = 1000000
-      end,
+      "ojroques/nvim-osc52",
+      module = "osc52",
     })
 
     -- Wrapper around codicons
@@ -274,6 +268,7 @@ packer.startup({
           },
           mappings = {
             MkdnEnter = false,
+            MkdnCreateLinkFromClipboard = false,
             MkdnNextLink = { "n", "]l" },
             MkdnPrevLink = { "n", "[l" },
             MkdnTableNextCell = false,
@@ -655,13 +650,6 @@ packer.startup({
     use({
       "romainl/vim-cool",
       event = { "InsertEnter", "CmdlineEnter" },
-    })
-
-    -- Remember last position in file
-    use({
-      "ethanholz/nvim-lastplace",
-      event = "BufReadPost",
-      config = [[require'nvim-lastplace'.setup()]],
     })
 
     -- Quickfix helper

@@ -1,31 +1,3 @@
-" TODO: translate to lua
-
-" Toggle numbers in split
-augroup numbertoggle
-  autocmd!
-  autocmd BufEnter,FocusGained,WinEnter * if &nu  | setlocal rnu   | endif
-  autocmd BufLeave,FocusLost,WinLeave   * if &nu  | setlocal nornu | endif
-augroup END
-
-" Remove numbers and signcolumn in terminal buffers
-autocmd TermOpen * startinsert | setlocal nonu nornu signcolumn=no
-
-" Force formatoptions
-" :help 'formatoptions' for more information
-autocmd! BufEnter * setlocal formatoptions=tcqnbj
-
-" Void linux templates
-autocmd! BufRead,BufNewFile srcpkgs/*/template set ft=sh
-
-" using osc52
-augroup Yank
-  autocmd!
-  autocmd TextYankPost * if v:event.operator is 'y' && v:event.regname is '' && !exists('b:visual_multi')
-        \| call luaeval('vim.highlight.on_yank()')
-        \| execute 'OSCYankReg "'
-        \| endif
-augroup END
-
 " From undo.vim
 if has('persistent_undo')
   " We disable the default saving of undo file as we're overwriting it
@@ -54,9 +26,4 @@ augroup colorcolumn
   autocmd!
   autocmd BufEnter * call utils#setccol()
   autocmd OptionSet textwidth call utils#setccol()
-augroup END
-
-augroup PlenaryFiletypes
-  autocmd!
-  autocmd BufReadPost * lua require("utils.misc").getFiletype()
 augroup END
