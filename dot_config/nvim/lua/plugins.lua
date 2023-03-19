@@ -116,7 +116,11 @@ return {
     end,
   },
 
-  "ram02z/nvim-treesitter-pairs",
+  {
+    "ram02z/nvim-treesitter-pairs",
+    dependencies = { "nvim-treesitter/nvim-treesitter" },
+    event = "VeryLazy",
+  },
 
   {
     "mfussenegger/nvim-treehopper",
@@ -242,6 +246,8 @@ return {
       require("git-conflict").setup({
         disable_diagnostics = true,
         highlights = {
+          -- FIXME: lazy loads before colorscheme highlights
+          -- incoming = "DiffIncoming",
           current = "DiffAdd",
         },
       })
@@ -300,8 +306,11 @@ return {
 
   {
     "nvim-telescope/telescope.nvim",
-    dependencies = { "nvim-telescope/telescope-fzf-native.nvim", "nvim-lua/plenary.nvim",
-    "nvim-telescope/telescope-ui-select.nvim" },
+    dependencies = {
+      "nvim-telescope/telescope-fzf-native.nvim",
+      "nvim-lua/plenary.nvim",
+      "nvim-telescope/telescope-ui-select.nvim",
+    },
     init = function()
       -- Register pickers
       vim.keymap.set("i", "<C-r>", "<cmd>Telescope registers theme=get_cursor layout_config={height=18}<CR>")
@@ -490,6 +499,12 @@ return {
   -- Multiple cursors
   {
     "mg979/vim-visual-multi",
+    keys = {
+      "<c-down>",
+      { "<c-n>", mode = "n" },
+      { "<c-n>", mode = "x" },
+      "<c-up",
+    },
     init = function()
       vim.g.VM_set_statusline = 0
     end,
