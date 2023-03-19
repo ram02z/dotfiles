@@ -410,7 +410,7 @@ packer.startup({
 
     use({
       "Wansmer/treesj",
-      cmd = "TSJ*",
+      module = "treesj",
       setup = function()
         vim.api.nvim_create_autocmd({ "FileType" }, {
           pattern = "*",
