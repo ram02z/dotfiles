@@ -1,5 +1,8 @@
 local K = vim.keymap
 
+-- Plugin manager
+K.set("", "<C-S>", "<cmd>Lazy sync<cr>", { silent = true, desc = "Run install, clean and update" })
+
 -- Disable exmode
 K.set("n", "Q", "<nop>")
 

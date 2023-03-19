@@ -1,18 +1,40 @@
-local function disable_default_plugins()
-  -- FIXME: WSL register bug
-  vim.g.loaded_clipboard_provider = 1
-  vim.g.loaded_matchit = 1
-  vim.g.loaded_matchparen = 1
-  vim.g.loaded_gzip = 1
-  vim.g.loaded_tarPlugin = 1
-  vim.g.loaded_zipPlugin = 1
-  vim.g.loaded_2html_plugin = 1
+-- Required to be loaded first by lazy.nvim
+vim.g.mapleader = " "
+vim.g.maplocalleader = "  "
+
+-- NOTE: required for WSL register bug
+vim.g.loaded_clipboard_provider = 1
+
+-- Install lazy
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+if not vim.loop.fs_stat(lazypath) then
+  vim.fn.system({
+    "git",
+    "clone",
+    "--filter=blob:none",
+    "https://github.com/folke/lazy.nvim.git",
+    "--branch=stable", -- latest stable release
+    lazypath,
+  })
 end
+vim.opt.rtp:prepend(lazypath)
 
-disable_default_plugins()
-
--- TODO: remove when https://github.com/neovim/neovim/pull/15436 is merged
-pcall(require, "impatient")
+require("lazy").setup("plugins", {
+  defaults = { lazy = true },
+  performance = {
+    rtp = {
+      disabled_plugins = {
+        "gzip",
+        "matchit",
+        "matchparen",
+        "tarPlugin",
+        "tohtml",
+        "tutor",
+        "zipPlugin",
+      },
+    },
+  },
+})
 
 vim.api.nvim_create_user_command("PurgeUndoFiles", function()
   require("utils.misc").purge_old_undos()
