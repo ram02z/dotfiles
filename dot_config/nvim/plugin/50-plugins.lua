@@ -43,16 +43,6 @@ packer.startup({
     })
 
     use({
-      "theHamsta/nvim-semantic-tokens",
-      config = function()
-        require("nvim-semantic-tokens").setup({
-          preset = "default",
-          highlighters = { require("nvim-semantic-tokens.table-highlighter") },
-        })
-      end,
-    })
-
-    use({
       "j-hui/fidget.nvim",
       module = "fidget",
       config = function()
@@ -96,6 +86,7 @@ packer.startup({
         { "hrsh7th/cmp-buffer" },
         { "saadparwaiz1/cmp_luasnip" },
         { "hrsh7th/cmp-nvim-lsp-signature-help" },
+        { "jc-doyle/cmp-pandoc-references" },
       },
       config = [[require'modules.cmp']],
     })
@@ -158,7 +149,6 @@ packer.startup({
     })
 
     use({
-      -- "~/Projects/forks/nvim-treesitter-pairs",
       "ram02z/nvim-treesitter-pairs",
     })
 
@@ -204,46 +194,6 @@ packer.startup({
       module = "codicons",
     })
 
-    -- Draw shapes
-    use({
-      "jbyuki/venn.nvim",
-      keys = [[<Leader>\]],
-      config = function()
-        local Hydra = require("hydra")
-        local hint = [[
- Arrow^^^^^^   Select region with <C-v>
- ^ ^ _K_ ^ ^   _f_: surround it with box
- _H_ ^ ^ _L_
- ^ ^ _J_ ^ ^                      _<Esc>_
-        ]]
-
-        Hydra({
-          name = "Draw Diagram",
-          hint = hint,
-          config = {
-            color = "pink",
-            invoke_on_body = true,
-            hint = {
-              border = "rounded",
-            },
-            on_enter = function()
-              vim.o.virtualedit = "all"
-            end,
-          },
-          mode = "n",
-          body = "<leader>\\",
-          heads = {
-            { "H", "<C-v>h:VBox<CR>" },
-            { "J", "<C-v>j:VBox<CR>" },
-            { "K", "<C-v>k:VBox<CR>" },
-            { "L", "<C-v>l:VBox<CR>" },
-            { "f", ":VBox<CR>", { mode = "v" } },
-            { "<Esc>", nil, { exit = true } },
-          },
-        })
-      end,
-    })
-
     -- Repeat support
     use({
       "tpope/vim-repeat",
@@ -282,21 +232,16 @@ packer.startup({
     use({
       "AckslD/nvim-FeMaco.lua",
       cmd = "FeMaco",
+      setup = function()
+        vim.keymap.set("n", "<Leader>m", "<cmd>FeMaco<CR>")
+      end,
       config = function()
-        local clip_val = require("femaco.utils").clip_val
         require("femaco").setup({
-          float_opts = function(code_block)
-            return {
-              relative = "cursor",
-              width = clip_val(5, 120, vim.api.nvim_win_get_width(0) - 10),
-              height = clip_val(5, #code_block.lines, vim.api.nvim_win_get_height(0) - 6),
-              anchor = "NW",
-              row = 0,
-              col = 0,
-              style = "minimal",
-              border = "none",
-              zindex = 1,
-            }
+          prepare_buffer = function(opts)
+            vim.cmd("belowright split")
+            local win = vim.api.nvim_get_current_win()
+            local buf = vim.api.nvim_create_buf(false, false)
+            return vim.api.nvim_win_set_buf(win, buf)
           end,
         })
       end,
@@ -315,24 +260,23 @@ packer.startup({
       end,
     })
 
+    -- SQL
+    use({
+      "nanotee/sqls.nvim",
+      module = "sqls",
+    })
+
+    -- Comment snippets
+    use({
+      "danymat/neogen",
+      cmd = "Neogen",
+      config = function()
+        require("neogen").setup({ snippet_engine = "luasnip" })
+      end,
+    })
+
     -- Git integration
     use({
-      {
-        "sindrets/diffview.nvim",
-        cmd = "Diffview*",
-        setup = function()
-          vim.keymap.set("n", "<Leader>vo", "<cmd>DiffviewOpen<CR>", { silent = true })
-          vim.keymap.set("n", "<Leader>vr", "<cmd>DiffviewRefresh<CR>", { silent = true })
-          vim.keymap.set("n", "<Leader>vc", "<cmd>DiffviewClose<CR>", { silent = true })
-          vim.keymap.set("n", "<Leader>vh", "<cmd>DiffviewFileHistory<CR>", { silent = true })
-        end,
-        config = function()
-          require("diffview").setup({
-            enhanced_diff_hl = false,
-          })
-          require("utils.keychord").cancel("<Leader>v")
-        end,
-      },
       {
         "rhysd/committia.vim",
         event = "BufReadPost COMMIT_EDITMSG,MERGE_MSG",
@@ -465,12 +409,23 @@ packer.startup({
     })
 
     use({
-      "AckslD/nvim-trevJ.lua",
-      module = "trevj",
+      "Wansmer/treesj",
+      cmd = "TSJ*",
       setup = function()
-        vim.keymap.set("n", "gJ", function()
-          require("trevj").format_at_cursor()
-        end)
+        vim.api.nvim_create_autocmd({ "FileType" }, {
+          pattern = "*",
+          callback = function()
+            local opts = { buffer = true }
+            local langs = require("treesj.langs")["presets"]
+            if langs[vim.bo.filetype] then
+              vim.keymap.set("n", "gJ", "<Cmd>TSJSplit<CR>", opts)
+              vim.keymap.set("n", "J", "<Cmd>TSJJoin<CR>", opts)
+            end
+          end,
+        })
+      end,
+      config = function()
+        require("treesj").setup({ use_default_keymaps = false })
       end,
     })
 
@@ -607,6 +562,9 @@ packer.startup({
         "<S-Left>",
         "\\\\",
       },
+      setup = function()
+        vim.g.VM_set_statusline = 0
+      end,
     })
 
     -- Text manipulation

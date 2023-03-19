@@ -44,7 +44,7 @@
   command = {{ (base $editor) | quote }}
   args = "-d"
 
-{{ if .personal }}
+{{ if $personal }}
 [secret]
   command = {{ $bw | quote }}
 {{ end }}

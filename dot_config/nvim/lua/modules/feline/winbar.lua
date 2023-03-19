@@ -48,9 +48,9 @@ table.insert(components.active[1], {
     local val = {}
     val.hl = { fg = "red" }
     if vim.bo.readonly then
-      val.str = ""
+      val.str = " "
     else
-      val.str = " "
+      val.str = "  "
     end
 
     return val
@@ -59,9 +59,9 @@ table.insert(components.active[1], {
     local val = {}
     val.hl = { fg = "red" }
     if vim.bo.modified then
-      val.str = "*"
+      val.str = "* "
     else
-      val.str = " "
+      val.str = "  "
     end
 
     return val

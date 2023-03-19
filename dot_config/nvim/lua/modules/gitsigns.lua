@@ -132,5 +132,6 @@ gitsigns.setup({
     algorithm = "myers",
     internal = true,
     indent_heuristic = true,
+    linematch = true,
   },
 })

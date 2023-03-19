@@ -68,7 +68,7 @@ local function cmd(command)
   return table.concat({ "<cmd>", command, "<CR>" })
 end
 local hint = [[
- _f_: project files       _l_:  live grep       _h_: highlights   _r_: old files
+ _g_: git status       _l_:  live grep       _h_: highlights   _r_: old files
  _s_: spell suggest       _c_: commands         _k_: keymaps      _b_: buffers
  _o_: live grep open      _a_: autocommands     _m_: help tags    _d_: comments
  ^
@@ -86,7 +86,7 @@ hydra({
   mode = "n",
   body = "<Leader>p",
   heads = {
-    { "f", tscope.project_files, { exit = true } },
+    { "g", cmd("Telescope git_status") },
     { "l", cmd("Telescope live_grep") },
     { "h", cmd("Telescope highlights") },
     { "r", cmd("Telescope oldfiles") },

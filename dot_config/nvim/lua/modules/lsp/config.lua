@@ -16,19 +16,6 @@ M.on_attach = function(client, bufnr)
     vim.keymap.set({ "n", "v" }, "<Leader>la", vim.lsp.buf.code_action, { buffer = true })
   end
 
-  if caps.semanticTokensProvider and caps.semanticTokensProvider.full then
-    local augroup = vim.api.nvim_create_augroup("SemanticTokens", {})
-    vim.api.nvim_create_autocmd("TextChanged", {
-      group = augroup,
-      buffer = bufnr,
-      callback = function()
-        vim.lsp.buf.semantic_tokens_full()
-      end,
-    })
-    -- fire it first time on load as well
-    vim.lsp.buf.semantic_tokens_full()
-  end
-
   -- Set kepmaps regardless of server_capabilities
   vim.keymap.set("n", "gd", vim.lsp.buf.definition, { buffer = true })
   vim.keymap.set("n", "gD", vim.lsp.buf.declaration, { buffer = true })
@@ -50,6 +37,10 @@ M.on_attach = function(client, bufnr)
       blend = 0,
     },
   })
+  if client.name == "sqls" then
+    client.server_capabilities.documentFormattingProvider = false
+    require("sqls").on_attach(client, bufnr)
+  end
 end
 
 -- config that activates keymaps and enables snippet support

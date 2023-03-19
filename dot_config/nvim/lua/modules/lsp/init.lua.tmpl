@@ -11,8 +11,18 @@ gopls = {
   settings = {
     gopls = {
       staticcheck = true,
+      semanticTokens = true,
       analyses = {
+        nilness = true,
+        unusedparams = true,
+        unusedvariable = true,
+        unusedwrite = true,
+        useany = true,
         fieldalignment = true,
+        ST1000 = true,
+        ST1003 = true,
+        ST1020 = true,
+        ST1022 = true,
       },
     },
   },
@@ -20,7 +30,15 @@ gopls = {
 {{- $servers = add1 $servers -}}
 {{- end }}
 {{ if lookPath "clangd" -}}
--- clangd moved to start_clangd
+clangd = {
+  filetypes = { "c", "cpp" },
+  server = {
+    cmd = {
+      "clangd", "--background-index", "--pch-storage=memory",
+      "--clang-tidy", "--enable-config", "--header-insertion=iwyu"
+    },
+  },
+},
 {{- $servers = add1 $servers -}}
 {{ else if lookPath "ccls" -}}
 ccls = {},
@@ -79,7 +97,9 @@ lua_ls = {
 },
 {{- $servers = add1 $servers -}}
 {{- end }}
-{{ if lookPath "typescript-language-server" -}}
+{{ if lookPath "vtsls" }}
+vtsls = {},
+{{ else if lookPath "typescript-language-server" -}}
 tsserver = {},
 {{- $servers = add1 $servers -}}
 {{- end }}
@@ -91,22 +111,34 @@ jsonnet_ls = {},
 marksman = {},
 {{- $servers = add1 $servers -}}
 {{- end }}
-{{ if lookPath "clangd" -}}
-clangd = {
-  server = {
-    cmd = {
-      "clangd", "--background-index", "--pch-storage=memory",
-      "--clang-tidy", "--enable-config", "--header-insertion=iwyu"
-    },
-  },
-}
+{{ if lookPath "bufls" -}}
+buf_ls = {},
+{{- $servers = add1 $servers -}}
+{{- end }}
+{{ if lookPath "sqls" -}}
+-- sqls = {},
 {{- $servers = add1 $servers -}}
 {{- end }}
 }
 
+local function add_proto_lsp()
+  {{ if lookPath "bufls" -}}
+  local configs = require("lspconfig.configs")
+  configs.buf_ls = {
+    default_config = {
+      cmd = { "bufls", "serve" },
+      filetypes = { "proto" },
+      single_file_support = true,
+      settings = {},
+    }
+  }
+  {{- end }}
+end
+
 local M = {}
 
 function M.setup_servers()
+  add_proto_lsp()
   {{ if gt $servers 0 -}}
   -- Register all the LSP servers.
   local lspconfig = require("lspconfig")

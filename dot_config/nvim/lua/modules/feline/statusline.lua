@@ -44,10 +44,6 @@ force_inactive.buftypes = {
 -- Helper functions
 --
 
--- HACK: figure out which components are most important on smaller windows
--- Possibly create a system that prioritises based on the enabled components
--- and screen size
-
 --
 -- Left active components
 --
@@ -125,6 +121,18 @@ table.insert(components.active[1], {
   truncate_hide = true,
 })
 
+table.insert(components.active[1], {
+  provider = function()
+    local vm_info = vim.fn["g:VMInfos"]()
+    return vm_info.ratio
+  end,
+  hl = { fg = "light_gray" },
+  left_sep = " ",
+  enabled = function()
+    return vim.b.visual_multi
+  end,
+})
+
 --
 -- Right active components
 --
@@ -198,6 +206,20 @@ table.insert(components.active[2], {
     style = "bold",
   },
   left_sep = " ",
+})
+
+table.insert(components.active[2], {
+  provider = function()
+    local current_tabpage = vim.api.nvim_get_current_tabpage()
+    local no_tabpages = #vim.api.nvim_list_tabpages()
+
+    return current_tabpage .. "/" .. no_tabpages
+  end,
+  hl = {
+    fg = "white",
+  },
+  left_sep = " ",
+  truncate_hide = true,
 })
 
 table.insert(components.active[2], {
