@@ -1,4 +1,4 @@
-{{ if or (.is_x11) (.is_wayland) (eq .os_id "darwin") -}}
+{{ if or (.is_x11) (.is_wayland) -}}
 [".local/share/fonts/Symbols-1000-em Nerd Font Complete.ttf"]
   type = "file"
   url = "https://github.com/ryanoasis/nerd-fonts/raw/821ac68173a9651cb5ca788996c18273de994f95/src/glyphs/Symbols-1000-em Nerd Font Complete.ttf"
@@ -19,4 +19,11 @@
   url  = "https://github.com/swaywm/sway/raw/master/contrib/grimshot"
   executable = true
 {{-   end }}
+{{- else if (eq .os_id "darwin") -}}
+["Library/Fonts/Symbols-1000-em Nerd Font Complete.ttf"]
+  type = "file"
+  url = "https://github.com/ryanoasis/nerd-fonts/raw/821ac68173a9651cb5ca788996c18273de994f95/src/glyphs/Symbols-1000-em Nerd Font Complete.ttf"
+["Library/Fonts/codicon.ttf"]
+  type = "file"
+  url = "https://github.com/microsoft/vscode-codicons/raw/main/dist/codicon.ttf"
 {{- end }}
