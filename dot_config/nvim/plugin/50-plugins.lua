@@ -92,7 +92,39 @@ packer.startup({
     })
 
     use({
+      "lewis6991/hover.nvim",
+      config = function()
+        require("hover").setup({
+          init = function()
+            -- Require providers
+            require("hover.providers.lsp")
+            require("hover.providers.gh")
+            require("hover.providers.man")
+          end,
+          preview_opts = {
+            border = nil,
+          },
+          -- Whether the contents of a currently open hover window should be moved
+          -- to a :h preview-window when pressing the hover keymap.
+          preview_window = false,
+          title = true,
+        })
+
+        -- Setup keymaps
+        vim.keymap.set("n", "K", require("hover").hover, { desc = "hover.nvim" })
+        vim.keymap.set("n", "gK", require("hover").hover_select, { desc = "hover.nvim (select)" })
+      end,
+    })
+
+    use({
       "ii14/emmylua-nvim",
+    })
+
+    use({
+      "aspeddro/pandoc.nvim",
+      config = function()
+        require("pandoc").setup()
+      end,
     })
 
     use({
@@ -205,6 +237,10 @@ packer.startup({
 
     use({
       "alker0/chezmoi.vim",
+    })
+
+    use({
+      "terrastruct/d2-vim",
     })
 
     use({
@@ -395,6 +431,17 @@ packer.startup({
       end,
     })
 
+    -- Improves w/e/b motions
+    use({
+      "chrisgrieser/nvim-spider",
+      config = function()
+        vim.keymap.set({ "n", "o", "x" }, "w", "<cmd>lua require('spider').motion('w')<CR>")
+        vim.keymap.set({ "n", "o", "x" }, "e", "<cmd>lua require('spider').motion('e')<CR>")
+        vim.keymap.set({ "n", "o", "x" }, "b", "<cmd>lua require('spider').motion('b')<CR>")
+        vim.keymap.set({ "n", "o", "x" }, "ge", "<cmd>lua require('spider').motion('ge')<CR")
+      end,
+    })
+
     -- Jump anywhere on screen
     use({
       "phaazon/hop.nvim",
@@ -463,19 +510,13 @@ packer.startup({
 
     -- Color highlighting
     use({
-      "NvChad/nvim-colorizer.lua",
+      "uga-rosa/ccc.nvim",
       event = "BufReadPre",
       config = function()
-        require("colorizer").setup({
-          filetypes = { "*" },
-          user_default_options = {
-            RGB = false,
-            RRGGBB = true,
-            RRGGBBAA = true,
-            css_fn = true,
-            names = false,
-            mode = "virtualtext",
-            virtualtext = "■",
+        require("ccc").setup({
+          highlighter = {
+            auto_enable = true,
+            lsp = true,
           },
         })
       end,
@@ -527,7 +568,6 @@ packer.startup({
     -- Emacs hydra for neovim
     use({
       "anuvyklack/hydra.nvim",
-      commit = "928855b69f55c7abcaa6594d20968c33ab2317e6",
       config = function()
         require("modules.hydra")
       end,
