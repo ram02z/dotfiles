@@ -44,6 +44,7 @@ packer.startup({
 
     use({
       "j-hui/fidget.nvim",
+      tag = "legacy",
       module = "fidget",
       config = function()
         require("fidget").setup({
@@ -210,9 +211,6 @@ packer.startup({
     --
     -- Misc
     --
-
-    -- See https://github.com/neovim/neovim/pull/15436
-    use({ "lewis6991/impatient.nvim" })
 
     -- OSC52 yank
     use({
