@@ -35,7 +35,7 @@ packer.startup({
     --
     use({
       "neovim/nvim-lspconfig",
-      config = [[require'modules.lsp'.setup_servers()]],
+      config = [[require'modules.language.servers'.setup()]],
     })
 
     use({
@@ -56,9 +56,13 @@ packer.startup({
     })
 
     use({
-      "jose-elias-alvarez/null-ls.nvim",
-      requires = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig" },
-      config = [[require'modules.lsp.null_ls']],
+      "stevearc/conform.nvim",
+      config = [[require'modules.language.formatters'.setup()]]
+    })
+
+    use({
+      "mfussenegger/nvim-lint",
+      config = [[require'modules.language.linters'.setup()]]
     })
 
     use({

@@ -111,38 +111,74 @@ jsonnet_ls = {},
 marksman = {},
 {{- $servers = add1 $servers -}}
 {{- end }}
-{{ if lookPath "bufls" -}}
-buf_ls = {},
-{{- $servers = add1 $servers -}}
-{{- end }}
 {{ if lookPath "sqls" -}}
 -- sqls = {},
 {{- $servers = add1 $servers -}}
 {{- end }}
+{{ if lookPath "bufls" -}}
+bufls = {},
+{{- $servers = add1 $servers -}}
+{{- end }}
 }
-
-local function add_proto_lsp()
-  {{ if lookPath "bufls" -}}
-  local configs = require("lspconfig.configs")
-  configs.buf_ls = {
-    default_config = {
-      cmd = { "bufls", "serve" },
-      filetypes = { "proto" },
-      single_file_support = true,
-      settings = {},
-    }
-  }
-  {{- end }}
-end
 
 local M = {}
 
-function M.setup_servers()
-  add_proto_lsp()
+local function on_attach(client, bufnr)
+  local caps = client.server_capabilities
+  -- Set autocommands conditional on server_capabilities
+  if caps.codeActionProvider then
+    vim.fn.sign_define("LightBulbSign", { text = "", texthl = "String", linehl = "", numhl = "" })
+    local augroup = vim.api.nvim_create_augroup("CodeAction", {})
+    vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI", "InsertLeave" }, {
+      group = augroup,
+      buffer = bufnr,
+      callback = function()
+        require("nvim-lightbulb").update_lightbulb()
+      end,
+    })
+    vim.keymap.set({ "n", "v" }, "<Leader>la", vim.lsp.buf.code_action, { buffer = true })
+  end
+
+  -- Set kepmaps regardless of server_capabilities
+  vim.keymap.set("n", "gd", vim.lsp.buf.definition, { buffer = true })
+  vim.keymap.set("n", "gD", vim.lsp.buf.declaration, { buffer = true })
+  vim.keymap.set("n", "<Leader>D", vim.lsp.buf.type_definition, { buffer = true })
+  vim.keymap.set("n", "<CR>", vim.lsp.buf.signature_help, { buffer = true })
+  vim.keymap.set("i", "<C-s>", vim.lsp.buf.signature_help, { buffer = true })
+  vim.keymap.set("n", "<Leader>r", vim.lsp.buf.rename, { buffer = true })
+  vim.keymap.set("n", "gr", vim.lsp.buf.references, { buffer = true })
+  vim.keymap.set("n", "gi", vim.lsp.buf.implementation, { buffer = true })
+
+  -- Additional plugins
+  require("fidget").setup({
+    window = {
+      blend = 0,
+    },
+  })
+  if client.name == "sqls" then
+    client.server_capabilities.documentFormattingProvider = false
+    require("sqls").on_attach(client, bufnr)
+  end
+end
+
+-- config that activates keymaps and enables snippet support
+local function make_config()
+  return {
+    capabilities = require("cmp_nvim_lsp").default_capabilities(),
+    -- map buffer local keybindings when the language server attaches
+    on_attach = on_attach,
+    autostart = true,
+    flags = {
+      debounce_text_changes = 500,
+    },
+  }
+end
+
+function M.setup()
   {{ if gt $servers 0 -}}
   -- Register all the LSP servers.
   local lspconfig = require("lspconfig")
-  local common_config = require("modules.lsp.config").make()
+  local common_config = make_config()
   for server, config in pairs(servers) do
     -- Merge per-LSP configs with the common settings, and use that:
     lspconfig[server].setup(vim.tbl_extend("keep", config, common_config))
