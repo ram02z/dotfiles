@@ -57,12 +57,12 @@ packer.startup({
 
     use({
       "stevearc/conform.nvim",
-      config = [[require'modules.language.formatters'.setup()]]
+      config = [[require'modules.language.formatters'.setup()]],
     })
 
     use({
       "mfussenegger/nvim-lint",
-      config = [[require'modules.language.linters'.setup()]]
+      config = [[require'modules.language.linters'.setup()]],
     })
 
     use({
