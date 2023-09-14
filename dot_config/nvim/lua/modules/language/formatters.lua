@@ -23,7 +23,7 @@ M.setup = function()
     },
   })
 
-  vim.keymap.set({ "n", "x" }, "<Leader>f", function()
+  vim.keymap.set("", "<Leader>f", function()
     require("conform").format({ async = true, lsp_fallback = true })
   end)
 end
