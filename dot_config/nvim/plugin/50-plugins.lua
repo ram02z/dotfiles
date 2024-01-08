@@ -44,15 +44,28 @@ packer.startup({
 
     use({
       "j-hui/fidget.nvim",
-      tag = "legacy",
-      module = "fidget",
       config = function()
         require("fidget").setup({
-          window = {
-            blend = 0,
+          notification = {
+            window = {
+              winblend = 0,
+              relative = "editor",
+            },
           },
         })
       end,
+    })
+
+    use({
+      "Wansmer/symbol-usage.nvim",
+      config = function()
+        require("symbol-usage").setup({ hl = { link = "DiagnosticUnnecessary" } })
+      end,
+    })
+
+    use({
+      "mfussenegger/nvim-dap",
+      config = [[require'modules.language.debuggers'.setup()]],
     })
 
     use({
@@ -243,28 +256,6 @@ packer.startup({
 
     use({
       "terrastruct/d2-vim",
-    })
-
-    use({
-      "jakewvincent/mkdnflow.nvim",
-      ft = "markdown",
-      config = function()
-        require("mkdnflow").setup({
-          to_do = {
-            symbols = { " ", "x", " " },
-            complete = "x",
-          },
-          mappings = {
-            MkdnEnter = false,
-            MkdnCreateLinkFromClipboard = false,
-            MkdnNextLink = { "n", "]l" },
-            MkdnPrevLink = { "n", "[l" },
-            MkdnTableNextCell = false,
-            MkdnTablePrevCell = false,
-            MkdnUpdateNumbering = false,
-          },
-        })
-      end,
     })
 
     use({
@@ -569,7 +560,7 @@ packer.startup({
 
     -- Emacs hydra for neovim
     use({
-      "anuvyklack/hydra.nvim",
+      "nvimtools/hydra.nvim",
       config = function()
         require("modules.hydra")
       end,

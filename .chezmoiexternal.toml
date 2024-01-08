@@ -1,7 +1,7 @@
 {{ if or (.is_x11) (.is_wayland) -}}
-[".local/share/fonts/Symbols-1000-em Nerd Font Complete.ttf"]
+[".local/share/fonts/SymbolsNerdFont-Regular.ttf"]
   type = "file"
-  url = "https://github.com/ryanoasis/nerd-fonts/raw/821ac68173a9651cb5ca788996c18273de994f95/src/glyphs/Symbols-1000-em Nerd Font Complete.ttf"
+  url = "https://github.com/ryanoasis/nerd-fonts/raw/v2.3.3/patched-fonts/NerdFontsSymbolsOnly/complete/Symbols-1000-em Nerd Font Complete.ttf"
 [".local/share/fonts/codicon.ttf"]
   type = "file"
   url = "https://github.com/microsoft/vscode-codicons/raw/main/dist/codicon.ttf"

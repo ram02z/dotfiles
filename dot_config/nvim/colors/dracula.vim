@@ -154,6 +154,7 @@ hi! link DiagnosticUnderlineError DraculaErrorLine
 hi! link DiagnosticUnderlineHint DraculaYellowUnderline
 hi! link DiagnosticUnderlineInfo DraculaInfoLine
 hi! link DiagnosticUnderlineWarn DraculaWarnLine
+hi! DiagnosticUnnecessary guifg=#525D86 ctermfg=61
 
 hi! link Comment DraculaComment
 hi! link Todo DraculaNote
