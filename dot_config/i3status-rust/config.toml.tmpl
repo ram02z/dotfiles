@@ -1,159 +1,110 @@
+icons_format = "{icon}"
+
 [theme]
-name = "dracula"
+theme = "dracula"
 
 [icons]
-name = "material-nf"
-
-[[block]]
-block = "pomodoro"
-notifier = "notifysend"
+icons = "material-nf"
 
 [[block]]
 block = "music"
-buttons = ["prev", "play", "next"]
-marquee = false
-dynamic_width = true
-separator = " "
+format = " $icon {$combo.str(max_w:20) $play $next |} "
 interface_name_exclude = ["firefox"]
 {{ if lookPath "ncspot" -}}
-on_click = "~/.local/bin/i3-quickterm spotify"
-on_collapsed_click = "~/.local/bin/i3-quickterm spotify"
+[[block.click]]
+button = "left"
+cmd = "~/.local/bin/i3-quickterm spotify"
 {{- end }}
 
-{{ if or (eq .os_id "linux-debian") (eq .os_id "linux-ubuntu") -}}
-[[block]]
-block = "apt"
-interval = 1800
-format_singular="{count:1}"
-format = "{count:1}"
-critical_updates_regex = "(linux |linux-lts|linux-zen)"
-on_click = "APT_CONFIG=/tmp/i3rs-apt/apt.conf apt list --upgradable | tail -n +2 | cut -f1 -d '/' | rofi -dmenu"
-{{ else if (eq .os_id "linux-void") -}}
+{{ if (eq .os_id "linux-void") -}}
 [[block]]
 block = "custom"
 command = "xbps-install -Mun | tee /tmp/xbps-updates | grep '' -c"
 interval = "once"
-on_click = "cat /tmp/xbps-updates | rofi -dmenu"
+[[block.click]]
+button = "left"
+cmd = "cat /tmp/xbps-updates | rofi -dmenu"
 {{- end }}
 
 {{ if lookPath "docker" -}}
 [[block]]
 block = "docker"
 interval = 10
-format = "{running}/{total}"
 {{- end }}
-
-{{ if ($kdeconnect := (lookPath "kdeconnect-cli")) -}}
-# TODO: investigate why it can't connect to kde daemon
-# [[block]]
-# block = "kdeconnect"
-# [block.format]
-# full = "{name:5} {bat_icon}{bat_charge:3} {notif_icon}{notif_count}"
-# short = "{bat_icon}{bat_charge} {notif_icon}{notif_count}"
-# TODO: add onclick launch rofi menu with notifications
-{{ end }}
 
 [[block]]
 block = "cpu"
-interval = 5
-format = "{utilization:3}"
-on_click = "~/.local/bin/i3-quickterm btm_simple"
+format = " $icon $utilization.eng(w:3) "
+[[block.click]]
+button = "left"
+cmd = "~/.local/bin/i3-quickterm btm_simple"
+
+[[block]]
+block = "disk_space"
+path = "/"
+info_type = "available"
+alert_unit = "GB"
+interval = 20
+warning = 20.0
+alert = 10.0
+format = " $icon root: $available.eng(w:2) "
 
 [[block]]
 block = "memory"
-format_mem = "{mem_used_percents:2}"
-format_swap = "{mem_used;M}"
-clickable = true
-interval = 10
-warning_mem = 80
-critical_mem = 95
+format = " $icon $mem_total_used_percents.eng(w:2) "
+format_alt = " $icon $mem_total_used "
 
 [[block]]
 block = "sound"
+format = " $icon $volume.eng(w:3) "
 show_volume_when_muted = true
-max_vol = 150
-format = "{volume:3}"
-on_click = "pkill rofi || ~/.local/bin/switch-audio-sink"
+[[block.click]]
+button = "left"
+cmd = "pkill rofi || ~/.local/bin/switch-audio-sink"
 
-{{ if .is_laptop }}
-# NOTE: requires custom udev rule to change brightness
+{{ if .is_laptop -}}
 [[block]]
 block = "backlight"
-{{ end }}
+{{- end }}
 
 [[block]]
 block = "weather"
-format = "{temp:2}"
-interval = 3600
-autolocate = true
-service = { name = "openweathermap", api_key = "8865f0dc0c6c3b4f0fc601fd063f5be1", city_id = "2643743", units = "metric" }
-on_click = "~/.local/bin/i3-quickterm weather"
-
-# Airpods
-# [[block]]
-# block = "bluetooth"
-# label = " Pods"
-# mac = "14:60:CB:C7:B4:2A"
-# format_unavailable = ""
-# hide_disconnected = true
-
-# Bose QC35s
-{{ if lookPath "bluetoothctl" -}}
-[[block]]
-block = "bluetooth"
-label = "QC35"
-mac = "60:AB:D2:42:04:74"
-hide_disconnected = false
-{{- end }}
+format = " $icon $temp"
+[block.service]
+name = "openweathermap"
+api_key = "8865f0dc0c6c3b4f0fc601fd063f5be1"
+city_id = "2643743"
+units = "metric"
+[[block.click]]
+button = "left"
+cmd = "~/.local/bin/i3-quickterm weather"
 
 [[block]]
 block = "net"
-format = "{signal_strength:3}"
-interval = 5
-{{ if ($iwgtk := (lookPath "iwgtk")) -}}
-on_click = "pkill iwgtk || {{ $iwgtk }}"
+format = " $icon $signal_strength"
+[[block.click]]
+button = "left"
+cmd = "pkill iwgtk || iwgtk"
+
+{{ if .is_laptop -}}
+[[block]]
+block = "battery"
+device = "BAT0"
+format = " $icon $percentage"
+full_format = " $icon $percentage"
+not_charging_format = " $icon $percentage"
+[[block.click]]
+button = "left"
+cmd = "~/.local/bin/i3-quickterm battery"
 {{- end }}
 
-# [[block]]
-# block = "networkmanager"
-# on_click = "~/.local/bin/networkmanager-dmenu"
-# primary_only = true
-# device_format = "{icon}{ap}"
-# ap_format = "{strength}"
-
-{{ if lookPath "rofication-json" }}
-[[block]]
-block = "custom"
-command = ''' rofication-json '''
-interval = 5
-on_click = "rofication-gui"
-hide_when_empty = true
-json = true
-{{ end }}
-
-[[block]]
-block = "battery"
-format = "GPro {percentage:2}"
-missing_format = "GPro X"
-device = "hidpp_battery_0"
-driver = "upower"
-allow_missing = true
-
-{{ if .is_laptop }}
-[[block]]
-block = "battery"
-format = "{percentage:2}"
-full_format = "{percentage}"
-device = "BAT0"
-on_click = "~/.local/bin/i3-quickterm battery"
-allow_missing = true
-{{ end }}
 
 [[block]]
 block = "time"
 interval = 5
-format = "%R"
-on_click = "pkill rofi || ~/.local/bin/rofi-calendar"
-icons_format = " "
+format = " $timestamp.datetime(f:%R) "
+[[block.click]]
+button = "left"
+cmd = "pkill rofi || ~/.local/bin/rofi-calendar"
 
 # vim: ft=toml
