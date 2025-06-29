@@ -13,7 +13,13 @@ M.setup = function()
           return { "isort", "black" }
         end
       end,
-      go = { "goimports", { "gofumpt", "gofmt" } },
+      go = function(bufnr)
+        if require("conform").get_formatter_info("gofumpt", bufnr).available then
+          return { "goimports", "gofumpt" }
+        else
+          return { "goimports", "gofmt" }
+        end
+      end,
       javascript = { prettier },
       typescript = { prettier },
       javascriptreact = { prettier },
