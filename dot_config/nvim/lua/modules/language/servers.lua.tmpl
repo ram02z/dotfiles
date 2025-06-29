@@ -18,7 +18,6 @@ gopls = {
         unusedvariable = true,
         unusedwrite = true,
         useany = true,
-        fieldalignment = true,
         ST1000 = true,
         ST1003 = true,
         ST1020 = true,
@@ -115,8 +114,8 @@ marksman = {},
 -- sqls = {},
 {{- $servers = add1 $servers -}}
 {{- end }}
-{{ if lookPath "bufls" -}}
-bufls = {},
+{{ if lookPath "buf" -}}
+buf_ls = {},
 {{- $servers = add1 $servers -}}
 {{- end }}
 }

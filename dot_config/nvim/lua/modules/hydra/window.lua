@@ -13,7 +13,7 @@ hydra({
  ^ ^ ^ ^ ^ ^   ^ ^ ^ ^ ^ ^    _o_: remain only     ^ ^ ^ ^   _<Esc>_
 ]],
   config = {
-    timeout = 4000,
+    color = "pink",
     invoke_on_body = true,
     hint = {
       float_opts = {
