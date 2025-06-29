@@ -7,6 +7,7 @@
 {{- $gpgKey := "" -}}
 {{- $sshPublicKey := "" -}}
 {{- $sshPrivateKey := "" -}}
+{{- $geminiApiKey := "" -}}
 {{ if $personal }}
 {{-   $bw = lookPath "rbw" -}}
 {{-   if or (not $bw) (output $bw "unlocked") -}}
@@ -22,6 +23,7 @@
 {{-   $gpgKey = output $bw "get" "omarzeghouanii@gmail.com GPG short ID" | trim -}}
 {{-   $sshPublicKey = output $bw "get" (cat "SSH public key") | trim -}}
 {{-   $sshPrivateKey = output $bw "get" (cat "SSH private key") | trim -}}
+{{-   $geminiApiKey = output $bw "get" (cat "Gemini API Key") | trim -}}
 {{- end -}}
 
 {{- $gitPager := or (lookPath "delta") "less -FRSX" -}}
@@ -62,3 +64,4 @@
   is_x11 = {{ $isX11 }}
   is_wayland = {{ $isWayland }}
   os_id = {{ $osID | quote }}
+  gemini_api_key = {{ $geminiApiKey | quote }}
