@@ -8,18 +8,14 @@ local cmp = require("cmp")
 local cmp_types = require("cmp.types.cmp")
 
 cmp.setup({
-  completion = {
-    completeopt = "menu,menuone,noinsert",
-  },
   snippet = {
     expand = function(args)
       require("luasnip").lsp_expand(args.body)
     end,
   },
   preselect = cmp.PreselectMode.None,
-  experimental = {
-    ghost_text = false,
-    native_menu = false,
+  view = {
+    entries = "native"
   },
   mapping = {
     ["<Down>"] = cmp.mapping.select_next_item({ behavior = cmp_types.SelectBehavior.Select }),
@@ -55,11 +51,11 @@ cmp.setup({
     end,
   },
   sources = cmp.config.sources({
+    { name = "nvim_lsp", keyword_length = 1 },
     { name = "nvim_lsp_signature_help" },
     { name = "pandoc_references" },
     { name = "luasnip", keyword_length = 2 },
     { name = "nvim_lua" },
-    { name = "nvim_lsp", keyword_length = 2 },
     { name = "path" },
   }, {
     { name = "buffer", keyword_length = 4 },
