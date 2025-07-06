@@ -15,7 +15,7 @@ cmp.setup({
   },
   preselect = cmp.PreselectMode.None,
   view = {
-    entries = "native"
+    entries = "native",
   },
   mapping = {
     ["<Down>"] = cmp.mapping.select_next_item({ behavior = cmp_types.SelectBehavior.Select }),
