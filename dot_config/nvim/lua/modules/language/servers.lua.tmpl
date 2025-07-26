@@ -118,6 +118,10 @@ marksman = {},
 buf_ls = {},
 {{- $servers = add1 $servers -}}
 {{- end }}
+{{ if lookPath "tailwindcss-language-server" -}}
+tailwindcss = {},
+{{- $servers = add1 $servers -}}
+{{- end }}
 }
 
 local M = {}

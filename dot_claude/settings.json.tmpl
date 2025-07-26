@@ -1,0 +1,8 @@
+{
+  {{- if .is_personal }}
+  "env": {
+    "ANTHROPIC_BASE_URL": "https://api.moonshot.ai/anthropic",
+    "ANTHROPIC_AUTH_TOKEN": {{ .moonshot_api_key | quote }}
+  }
+  {{- end }}
+}

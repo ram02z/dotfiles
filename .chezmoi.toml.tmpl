@@ -8,6 +8,7 @@
 {{- $sshPublicKey := "" -}}
 {{- $sshPrivateKey := "" -}}
 {{- $geminiApiKey := "" -}}
+{{- $moonshotApiKey := "" -}}
 {{ if $personal }}
 {{-   $bw = lookPath "rbw" -}}
 {{-   if or (not $bw) (output $bw "unlocked") -}}
@@ -24,6 +25,7 @@
 {{-   $sshPublicKey = output $bw "get" (cat "SSH public key") | trim -}}
 {{-   $sshPrivateKey = output $bw "get" (cat "SSH private key") | trim -}}
 {{-   $geminiApiKey = output $bw "get" (cat "Gemini API Key") | trim -}}
+{{-   $moonshotApiKey = output $bw "get" (cat "Moonshot API Key") | trim -}}
 {{- end -}}
 
 {{- $gitPager := or (lookPath "delta") "less -FRSX" -}}
@@ -65,3 +67,4 @@
   is_wayland = {{ $isWayland }}
   os_id = {{ $osID | quote }}
   gemini_api_key = {{ $geminiApiKey | quote }}
+  moonshot_api_key = {{ $moonshotApiKey | quote }}
