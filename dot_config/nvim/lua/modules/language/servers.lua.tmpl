@@ -173,12 +173,12 @@ end
 
 function M.setup()
   {{ if gt $servers 0 -}}
-  -- Register all the LSP servers.
-  local lspconfig = require("lspconfig")
   local common_config = make_config()
+  vim.lsp.config("*", common_config)
+  -- Register all the LSP servers.
   for server, config in pairs(servers) do
-    -- Merge per-LSP configs with the common settings, and use that:
-    lspconfig[server].setup(vim.tbl_extend("keep", config, common_config))
+    vim.lsp.config(server, config)
+    vim.lsp.enable(server)
   end
   {{- end }}
 end
