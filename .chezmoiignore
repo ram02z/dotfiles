@@ -11,6 +11,8 @@ symlinks/en.utf-8.add.spl
 .gitconfig
 .ssh/**
 .ssh/
+.config/opencode/**
+.config/opencode/
 {{ end }}
 
 {{ if not (lookPath "alacritty") }}
