@@ -67,6 +67,14 @@ vim.opt.fillchars = {
   diff = "╱",
 }
 
+-- Native autocompletion (Neovim 0.12+)
+require("utils.completion")
+vim.opt.completeopt = "menu,menuone,popup,noselect"
+vim.opt.pumheight = 5
+vim.opt.shortmess:append("c")
+vim.opt.autocomplete = true
+vim.opt.complete = ".^1,w^5,b^5,u^5,t,Fv:lua.native_path_complete"
+
 vim.opt.showtabline = 0
 vim.opt.laststatus = 3
 

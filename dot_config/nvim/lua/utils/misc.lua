@@ -1,10 +1,6 @@
 local M = {}
 local cmd = vim.api.nvim_command
 
-M.t = function(str)
-  return vim.api.nvim_replace_termcodes(str, true, true, true)
-end
-
 -- Checks if prev col doesn't exist
 M.invalid_prev_col = function()
   local lnum, col_no = unpack(vim.api.nvim_win_get_cursor(0))
@@ -19,52 +15,6 @@ M.invalid_prev_col = function()
     end
   end
   return true
-end
-
--- Usage for current buffer
--- local lnum, _ = unpack(vim.api.nvim_win_get_cursor(0))
--- local buf = vim.api.nvim_get_current_buf()
--- require'utils.misc'.is_comment(buf, lnum - 1)
--- This method returns nil if this buf doesn't have a treesitter parser
--- @return true or false otherwise
-M.is_comment = function(buf, line)
-  local highlighter = require("vim.treesitter.highlighter")
-  local hl = highlighter.active[buf]
-
-  if not hl then
-    return
-  end
-
-  local is_comment = false
-  hl.tree:for_each_tree(function(tree, lang_tree)
-    if is_comment then
-      return
-    end
-
-    local query = hl:get_query(lang_tree:lang())
-    if not (query and query:query()) then
-      return
-    end
-
-    local iter = query:query():iter_captures(tree:root(), buf, line, line + 1)
-
-    for capture, _ in iter do
-      if query._query.captures[capture] == "comment" then
-        is_comment = true
-      end
-    end
-  end)
-  return is_comment
-end
-
--- Returns path seperator based on OS
-M.pathSep = function()
-  local os = string.lower(U.os.name)
-  if os == "linux" or os == "osx" or os == "bsd" then
-    return "/"
-  else
-    return "\\"
-  end
 end
 
 -- Expects undo files to be directories
@@ -108,7 +58,7 @@ M.purge_old_undos = function()
         if parent_path:find(undodir) then
           parent = P:new(parent_path)
           if parent:is_dir() then
-            parent_files = S.scan_dir(parent_path, { hidden = true })
+            local parent_files = S.scan_dir(parent_path, { hidden = true })
             if #parent_files == 0 then
               parent:rmdir()
               depth = depth + 1

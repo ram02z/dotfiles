@@ -110,10 +110,6 @@ jsonnet_ls = {},
 marksman = {},
 {{- $servers = add1 $servers -}}
 {{- end }}
-{{ if lookPath "sqls" -}}
--- sqls = {},
-{{- $servers = add1 $servers -}}
-{{- end }}
 {{ if lookPath "buf" -}}
 buf_ls = {},
 {{- $servers = add1 $servers -}}
@@ -163,18 +159,13 @@ vim.api.nvim_create_autocmd("LspAttach", {
     vim.keymap.set("n", "<Leader>r", vim.lsp.buf.rename, { buffer = true })
     vim.keymap.set("n", "gr", vim.lsp.buf.references, { buffer = true })
     vim.keymap.set("n", "gi", vim.lsp.buf.implementation, { buffer = true })
-
-    if client.name == "sqls" then
-      client.server_capabilities.documentFormattingProvider = false
-      require("sqls").on_attach(client, bufnr)
-    end
   end
 })
 
 function M.setup()
   {{ if gt $servers 0 -}}
   vim.lsp.config("*", {
-    capabilities = require("cmp_nvim_lsp").default_capabilities(),
+    capabilities = vim.lsp.protocol.make_client_capabilities(),
     flags = {
       debounce_text_changes = 500,
     }
