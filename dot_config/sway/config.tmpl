@@ -26,6 +26,15 @@ set $menu pkill rofi || rofi -show drun -drun-show-actions |xargs swaymsg exec -
 exec dbus-update-activation-environment DISPLAY XAUTHORITY SWAYSOCK I3SOCK WAYLAND_DISPLAY
 {{ end }}
 
+{{ $lock_cmd := "" }}
+{{ if (lookPath "gtklock") -}}
+{{   $lock_cmd = "gtklock -d" }}
+{{ else if (lookPath "swaylock") -}}
+{{   $lock_cmd = "swaylock -f" }}
+{{ else if (lookPath "waylock") -}}
+{{   $lock_cmd = "setsid -f waylock -fork-on-lock" }}
+{{ end -}}
+
 ### Output configuration
 #
 # Default wallpaper (more resolutions are available in /usr/share/backgrounds/sway/)
@@ -56,14 +65,14 @@ exec swayidle -w \
         timeout 400 'playerctl pause' \
         {{- end }}
         timeout 400 'rbw lock' \
-        {{ if ($swaylock := (lookPath "swaylock")) -}}
-        timeout 400 '{{$swaylock}} -f' \
-        {{- else if ($waylock := (lookPath "waylock")) }}
-        timeout 400 'setsid -f {{$waylock}}' \
+        {{ if $lock_cmd -}}
+        timeout 400 '{{ $lock_cmd }}' \
         {{- end }}
         timeout 600 'swaymsg "output * dpms off"' \
             resume 'swaymsg "output * dpms on"' \
-        before-sleep '/usr/bin/swaylock -f'
+        {{ if $lock_cmd -}}
+        before-sleep '{{ $lock_cmd }}' \
+        {{- end }}
 
 #
 ### Input configuration
@@ -392,17 +401,9 @@ mode "$mode_system" {
     bindsym r exec "sudo reboot", mode "default"
     bindsym s exec "sudo poweroff", mode "default"
     {{ if $playerctl -}}
-    {{ if ($swaylock := (lookPath "swaylock")) }}
-    bindsym l exec "playerctl pause; {{$swaylock}} -f", mode "default"
-    {{ else if ($waylock := (lookPath "waylock")) }}
-    bindsym l exec "playerctl pause; setsid -f {{$waylock}}", mode "default"
-    {{ end }}
+    bindsym l exec "playerctl pause; {{ $lock_cmd }}", mode "default"
     {{ else -}}
-    {{ if ($swaylock := (lookPath "swaylock")) }}
-    bindsym l exec "{{$swaylock}} -f", mode "default"
-    {{ else if ($waylock := (lookPath "waylock")) }}
-    bindsym l exec "setsid -f {{$waylock}}", mode "default"
-    {{ end }}
+    bindsym l exec "{{ $lock_cmd }}", mode "default"
     {{- end }}
 
     # return to default mode

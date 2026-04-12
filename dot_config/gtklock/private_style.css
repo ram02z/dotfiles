@@ -1,0 +1,13 @@
+window {
+  background-color: rgba(0, 0, 0, 0.5); /* Dim the background */
+}
+
+input {
+  all: unset;
+  background-color: #ffffff;
+  border: 1px solid #cccccc;
+  border-radius: 4px;
+  padding: 10px;
+  margin: 20px;
+  color: #000000;
+}
