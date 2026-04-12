@@ -59,8 +59,7 @@ vim.api.nvim_create_autocmd("FileType", {
     local ft = vim.bo[args.buf].filetype
     local lang = vim.treesitter.language.get_lang(ft)
 
-    -- Check if the language mapping exists AND if the parser is installed
-    if lang and vim.treesitter.query.get(lang, "highlights") then
+    if lang and vim.treesitter.language.add(lang) then
       pcall(vim.treesitter.start, args.buf, lang)
     end
   end,
