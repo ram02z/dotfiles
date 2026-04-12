@@ -9,25 +9,26 @@ vim.api.nvim_create_autocmd("BufReadPost", {
   end,
 })
 
+local osc52_copy = require("vim.ui.clipboard.osc52").copy("+")
+
 vim.api.nvim_create_autocmd("TextYankPost", {
   desc = "Flash the yanked text and copy it to the system clipboard",
   callback = function()
     if vim.v.event.operator == "y" and vim.v.event.regname == "" then
       vim.highlight.on_yank()
-      local status, osc52 = pcall(require, "osc52")
-      if status then
-        osc52.copy_register('"')
-      end
+      osc52_copy(vim.fn.getreg('"', 1, true), vim.fn.getregtype('"'))
     end
   end,
 })
 
 vim.api.nvim_create_autocmd("BufEnter", {
-  desc = "Force consistent text-wrapping and list-formatting rules",
+  desc = "Set formatoptions and enable autocomplete for normal buffers",
   callback = function()
     -- t: wrap text, c: wrap comments, q: format comments,
     -- n: numbered lists, j: remove comment leaders on join
     vim.opt_local.formatoptions = "tcqnbj"
+    -- Enable autocomplete for normal file buffers
+    vim.bo.autocomplete = vim.bo.buftype == ""
   end,
 })
 

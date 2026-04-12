@@ -89,21 +89,3 @@ vim.opt.number = true
 vim.opt.relativenumber = true
 
 vim.opt.signcolumn = "yes:1"
-
-{{ if (eq .chezmoi.os "linux") -}}
-{{ if .is_wsl -}}
-{{ if lookPath "win32yank.exe" -}}
-vim.g.clipyank = '{{ lookPath "win32yank.exe" }} -i --crlf'
-{{ else -}}
-vim.g.clipyank = '{{ lookPath "clip.exe" }}'
-{{- end }}
-{{ else if .is_wayland -}}
-vim.g.clipyank = '{{ lookPath "wl-copy" }}'
-{{ else if .is_x11 -}}
-vim.g.clipyank = '{{ lookPath "xclip" }}'
-{{ end }}
-{{ else if (eq .chezmoi.os "windows") -}}
-vim.g.clipyank = '{{ lookPath "clip.exe" }}'
-{{ else if (eq .chezmoi.os "darwin") -}}
-vim.g.clipyank = '{{ lookPath "pbcopy" }}'
-{{- end }}

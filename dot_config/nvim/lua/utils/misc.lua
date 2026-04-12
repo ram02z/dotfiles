@@ -1,6 +1,10 @@
 local M = {}
 local cmd = vim.api.nvim_command
 
+M.t = function(str)
+  return vim.api.nvim_replace_termcodes(str, true, true, true)
+end
+
 -- Checks if prev col doesn't exist
 M.invalid_prev_col = function()
   local lnum, col_no = unpack(vim.api.nvim_win_get_cursor(0))

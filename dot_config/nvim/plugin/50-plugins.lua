@@ -1,4 +1,4 @@
-vim.pack.add({ 'https://github.com/nvim-mini/mini.misc' })
+vim.pack.add({ "https://github.com/nvim-mini/mini.misc" })
 
 require("utils.pack").setup({
   {
@@ -14,10 +14,15 @@ require("utils.pack").setup({
 
   {
     src = "https://git.sr.ht/~whynothugo/lsp_lines.nvim",
+    event = "LspAttach",
+    setup = function()
+      require("lsp_lines").setup()
+    end,
   },
 
   {
     src = "https://github.com/j-hui/fidget.nvim",
+    event = "LspAttach",
     setup = function()
       require("fidget").setup({
         notification = {
@@ -32,6 +37,7 @@ require("utils.pack").setup({
 
   {
     src = "https://github.com/Wansmer/symbol-usage.nvim",
+    event = "BufReadPre",
     setup = function()
       require("symbol-usage").setup({ hl = { link = "DiagnosticUnnecessary" } })
     end,
@@ -41,6 +47,9 @@ require("utils.pack").setup({
     src = "https://github.com/mfussenegger/nvim-dap",
     setup = function()
       require("modules.language.debuggers").setup()
+      vim.keymap.set("n", "<leader>s", function()
+        require("modules.hydra.debug"):activate()
+      end, { desc = "Debug hydra" })
     end,
   },
 
@@ -95,6 +104,44 @@ require("utils.pack").setup({
     setup = function()
       require("modules.snippets")
     end,
+    keys = {
+      {
+        mode = "i",
+        lhs = "<Tab>",
+        rhs = function()
+          local utils = require("utils.misc")
+          if require("utils.misc").invalid_prev_col() then
+            vim.fn.feedkeys(utils.t("<Tab>"), "n")
+          elseif require("luasnip").expand_or_locally_jumpable() then
+            require("luasnip").expand_or_jump()
+          else
+            vim.fn.feedkeys(utils.t("<Tab>"), "n")
+          end
+        end,
+        opts = { desc = "Expand/jump snippet or tab" },
+      },
+      {
+        mode = "i",
+        lhs = "<S-Tab>",
+        rhs = function()
+          local utils = require("utils.misc")
+          if require("luasnip").jumpable(-1) then
+            require("luasnip").jump(-1)
+          else
+            vim.fn.feedkeys(utils.t("<C-d>"), "n")
+          end
+        end,
+        opts = { desc = "Jump to last snippet or shift tab" },
+      },
+      {
+        mode = "i",
+        lhs = "<C-E>",
+        rhs = function()
+          vim.fn.feedkeys(require("utils.misc").t("<Plug>luasnip-next-choice"), "t")
+        end,
+        opts = { desc = "Next snippet choice" },
+      },
+    },
   },
 
   {
@@ -149,21 +196,16 @@ require("utils.pack").setup({
   },
 
   {
-    src = "https://github.com/ojroques/nvim-osc52",
-  },
-
-  {
     src = "https://github.com/tpope/vim-repeat",
-  },
-
-  {
-    src = "https://github.com/alker0/chezmoi.vim",
   },
 
   {
     src = "https://github.com/lewis6991/gitsigns.nvim",
     setup = function()
       require("modules.gitsigns")
+      vim.keymap.set("n", "<leader>g", function()
+        require("modules.hydra.gitsigns"):activate()
+      end, { desc = "Git hydra" })
     end,
   },
 
@@ -208,16 +250,45 @@ require("utils.pack").setup({
   {
     src = "https://github.com/nvim-telescope/telescope.nvim",
     setup = function()
-      vim.keymap.set("i", "<C-r>", "<cmd>Telescope registers theme=get_cursor layout_config={height=18}<CR>")
-      vim.keymap.set(
-        { "x", "n" },
-        '"',
-        "<cmd>Telescope registers theme=get_cursor layout_config={height=18}<CR><Esc>"
-      )
       require("modules.telescope")
       require("telescope").load_extension("fzf")
       require("telescope").load_extension("ui-select")
+      require("utils.keychord").cancel("<Leader>p")
     end,
+    keys = {
+      {
+        mode = "i",
+        lhs = "<C-r>",
+        rhs = function()
+          vim.cmd("Telescope registers theme=get_cursor layout_config={height=18}")
+        end,
+        opts = { silent = true },
+      },
+      {
+        mode = "n",
+        lhs = '"',
+        rhs = function()
+          vim.cmd("Telescope registers theme=get_cursor layout_config={height=18}")
+        end,
+        opts = { silent = true },
+      },
+      {
+        mode = "x",
+        lhs = '"',
+        rhs = function()
+          vim.cmd("Telescope registers theme=get_cursor layout_config={height=18}")
+        end,
+        opts = { silent = true },
+      },
+      {
+        mode = "n",
+        lhs = "<Leader>p",
+        rhs = function()
+          require("modules.hydra.telescope"):activate()
+        end,
+        opts = { desc = "Telescope" },
+      },
+    },
   },
 
   {
@@ -249,16 +320,44 @@ require("utils.pack").setup({
       require("hop").setup({ keys = "asdghklwertyuipzxcvbnmfj" })
     end,
     keys = {
-      { mode = "n", lhs = "<Leader>;", rhs = function() vim.cmd.HopWord() end, opts = { silent = true } },
-      { mode = "n", lhs = "<Leader>/", rhs = function() vim.cmd.HopPattern() end, opts = { silent = true } },
+      {
+        mode = "n",
+        lhs = "<Leader>;",
+        rhs = function()
+          vim.cmd.HopWord()
+        end,
+        opts = { silent = true },
+      },
+      {
+        mode = "n",
+        lhs = "<Leader>/",
+        rhs = function()
+          vim.cmd.HopPattern()
+        end,
+        opts = { silent = true },
+      },
     },
   },
 
   {
     src = "https://github.com/mizlan/iswap.nvim",
     keys = {
-      { mode = "n", lhs = "gs", rhs = function() vim.cmd.ISwap() end, opts = { silent = true } },
-      { mode = "n", lhs = "gS", rhs = function() vim.cmd.ISwapWith() end, opts = { silent = true } },
+      {
+        mode = "n",
+        lhs = "gs",
+        rhs = function()
+          vim.cmd.ISwap()
+        end,
+        opts = { silent = true },
+      },
+      {
+        mode = "n",
+        lhs = "gS",
+        rhs = function()
+          vim.cmd.ISwapWith()
+        end,
+        opts = { silent = true },
+      },
     },
   },
 
@@ -303,17 +402,49 @@ require("utils.pack").setup({
           }),
         },
       })
-      vim.keymap.set("n", "<C-a>", require("dial.map").inc_normal(), { silent = true })
-      vim.keymap.set("v", "<C-a>", require("dial.map").inc_visual(), { silent = true })
-      vim.keymap.set("n", "<C-x>", require("dial.map").dec_normal(), { silent = true })
-      vim.keymap.set("v", "<C-x>", require("dial.map").dec_visual(), { silent = true })
     end,
+    keys = {
+      {
+        mode = "n",
+        lhs = "<C-a>",
+        rhs = function()
+          require("dial.map").manipulate("increment", "normal")
+        end,
+        opts = { silent = true },
+      },
+      {
+        mode = "v",
+        lhs = "<C-a>",
+        rhs = function()
+          require("dial.map").manipulate("increment", "visual")
+        end,
+        opts = { silent = true },
+      },
+      {
+        mode = "n",
+        lhs = "<C-x>",
+        rhs = function()
+          require("dial.map").manipulate("decrement", "normal")
+        end,
+        opts = { silent = true },
+      },
+      {
+        mode = "v",
+        lhs = "<C-x>",
+        rhs = function()
+          require("dial.map").manipulate("decrement", "visual")
+        end,
+        opts = { silent = true },
+      },
+    },
   },
 
   {
     src = "https://github.com/ram02z/hydra.nvim",
     setup = function()
-      require("modules.hydra")
+      vim.keymap.set("n", "<C-w>", function()
+        require("modules.hydra.window"):activate()
+      end, { desc = "Window hydra" })
     end,
   },
 

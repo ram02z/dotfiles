@@ -2,7 +2,7 @@ local hydra = require("hydra")
 local cmd = require("hydra.keymap-util").cmd
 local pcmd = require("hydra.keymap-util").pcmd
 
-hydra({
+local window_hydra = hydra({
   hint = [[
  ^^^^^^     Move     ^^^^^^   ^^     Split         ^^^^    Size
  ^^^^^^--------------^^^^^^   ^^---------------    ^^^^-------------
@@ -53,3 +53,5 @@ hydra({
     { "<Esc>", nil, { exit = true } },
   },
 })
+
+return window_hydra
