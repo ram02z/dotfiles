@@ -70,7 +70,7 @@ ls.add_snippets(nil, {
       i(1),
       t({ "", "}," }),
       i(0),
-    })
+    }),
   },
   python = {
     s({ trig = '"""', wordTrig = false }, {

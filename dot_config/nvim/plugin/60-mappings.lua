@@ -51,9 +51,9 @@ K.set("n", "<Leader>]", "<cmd>lua require('utils.misc').toggle_qf()<CR>", { sile
 K.set("n", "<Leader>[", "<cmd>lua require('utils.misc').toggle_loc()<CR>", { silent = true })
 
 -- Completion toggle
-K.set('i', '<C-Space>', function()
+K.set("i", "<C-Space>", function()
   if vim.fn.pumvisible() == 1 then
-    vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<C-e>', true, false, true), 'n', false)
+    vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<C-e>", true, false, true), "n", false)
   else
     vim.lsp.completion.get()
   end

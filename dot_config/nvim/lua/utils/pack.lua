@@ -113,7 +113,9 @@ local function load_eager(specs)
   end
 
   if #src_specs > 0 then
-    local pack_specs_only = vim.tbl_map(function(s) return to_pack_spec(s) end, src_specs)
+    local pack_specs_only = vim.tbl_map(function(s)
+      return to_pack_spec(s)
+    end, src_specs)
     vim.pack.add(pack_specs_only)
   end
 
