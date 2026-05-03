@@ -1,5 +1,4 @@
 local function disable_default_plugins()
-  -- FIXME: WSL register bug
   vim.g.loaded_clipboard_provider = 1
   vim.g.loaded_matchit = 1
   vim.g.loaded_matchparen = 1

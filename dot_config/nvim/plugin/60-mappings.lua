@@ -37,16 +37,6 @@ K.set("v", "<Right>", ">gv")
 K.set("n", "k", "v:count == 0 ? 'gk' : 'k'", { silent = true, expr = true })
 K.set("n", "j", "v:count == 0 ? 'gj' : 'j'", { silent = true, expr = true })
 
--- Insert blankline
-K.set("n", "<Plug>(BlankDown)", ":<C-U>exe utils#blank_down()<CR>", { silent = true })
-K.set("n", "<Leader>o", ":<C-U>exe utils#blank_down()<CR>", { silent = true })
-
-K.set("n", "<Plug>(BlankUp)", ":<C-U>exe utils#blank_up()<CR>", { silent = true })
-K.set("n", "<Leader>O", ":<C-U>exe utils#blank_up()<CR>", { silent = true })
-
--- Leave terminal mode
-K.set("t", "<C-]>", "<C-\\><C-n>", { silent = true })
-
 -- Zero toggles between itself and ^
 K.set("", "0", "getline('.')[0 : col('.') - 2] =~# '^\\s\\+$' ? '0' : '^'", { silent = true, expr = true })
 
@@ -59,3 +49,12 @@ K.set("n", "<Leader>w", "<cmd>lua require('utils.window').pick()<CR>", { silent 
 -- Toggle lists
 K.set("n", "<Leader>]", "<cmd>lua require('utils.misc').toggle_qf()<CR>", { silent = true })
 K.set("n", "<Leader>[", "<cmd>lua require('utils.misc').toggle_loc()<CR>", { silent = true })
+
+-- Completion toggle
+K.set('i', '<C-Space>', function()
+  if vim.fn.pumvisible() == 1 then
+    vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<C-e>', true, false, true), 'n', false)
+  else
+    vim.lsp.completion.get()
+  end
+end, { silent = true })

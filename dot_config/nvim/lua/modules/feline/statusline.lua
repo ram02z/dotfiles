@@ -20,8 +20,7 @@ local components = {
 }
 
 force_inactive.filetypes = {
-  "packer",
-  "undotree",
+  "nvim-undotree",
   "Outline",
   "help",
   "nnn",

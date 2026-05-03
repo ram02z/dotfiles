@@ -67,6 +67,14 @@ vim.opt.fillchars = {
   diff = "╱",
 }
 
+-- Native autocompletion (Neovim 0.12+)
+require("utils.completion")
+vim.opt.completeopt = "menu,menuone,popup,noselect"
+vim.opt.pumheight = 5
+vim.opt.shortmess:append("c")
+vim.opt.autocomplete = true
+vim.opt.complete = ".^1,w^5,b^5,u^5,t,Fv:lua.native_path_complete"
+
 vim.opt.showtabline = 0
 vim.opt.laststatus = 3
 
@@ -81,21 +89,3 @@ vim.opt.number = true
 vim.opt.relativenumber = true
 
 vim.opt.signcolumn = "yes:1"
-
-{{ if (eq .chezmoi.os "linux") -}}
-{{ if .is_wsl -}}
-{{ if lookPath "win32yank.exe" -}}
-vim.g.clipyank = '{{ lookPath "win32yank.exe" }} -i --crlf'
-{{ else -}}
-vim.g.clipyank = '{{ lookPath "clip.exe" }}'
-{{- end }}
-{{ else if .is_wayland -}}
-vim.g.clipyank = '{{ lookPath "wl-copy" }}'
-{{ else if .is_x11 -}}
-vim.g.clipyank = '{{ lookPath "xclip" }}'
-{{ end }}
-{{ else if (eq .chezmoi.os "windows") -}}
-vim.g.clipyank = '{{ lookPath "clip.exe" }}'
-{{ else if (eq .chezmoi.os "darwin") -}}
-vim.g.clipyank = '{{ lookPath "pbcopy" }}'
-{{- end }}

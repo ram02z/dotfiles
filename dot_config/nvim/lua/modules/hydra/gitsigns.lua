@@ -1,6 +1,4 @@
-local gitsigns = require("gitsigns")
-
-local Hydra = require("hydra")
+local hydra = require("hydra")
 local gitsigns = require("gitsigns")
 
 local hint = [[
@@ -10,7 +8,8 @@ local hint = [[
  ^
  ^ ^                            _q_: exit
 ]]
-Hydra({
+
+local gitsigns_hydra = hydra({
   name = "Git",
   hint = hint,
   config = {
@@ -23,14 +22,18 @@ Hydra({
       },
     },
     on_enter = function()
-      vim.cmd("mkview")
+      if vim.fn.bufname() ~= "" then
+        vim.cmd("mkview")
+      end
       vim.cmd("silent! %foldopen!")
       vim.bo.modifiable = true
       gitsigns.toggle_linehl(true)
     end,
     on_exit = function()
       local cursor_pos = vim.api.nvim_win_get_cursor(0)
-      vim.cmd("loadview")
+      if vim.fn.bufname() ~= "" then
+        vim.cmd("loadview")
+      end
       vim.api.nvim_win_set_cursor(0, cursor_pos)
       vim.cmd("normal zv")
       gitsigns.toggle_linehl(false)
@@ -84,55 +87,4 @@ Hydra({
   },
 })
 
-gitsigns.setup({
-  numhl = false,
-  linehl = false,
-  on_attach = function(bufnr)
-    local function map(mode, l, r, opts)
-      opts = opts or {}
-      opts.buffer = bufnr
-      vim.keymap.set(mode, l, r, opts)
-    end
-
-    -- Navigation
-    map("n", "]g", function()
-      if vim.wo.diff then
-        return "]g"
-      end
-      vim.schedule(function()
-        gitsigns.next_hunk()
-      end)
-      return "<Ignore>"
-    end, { expr = true })
-    map("n", "[g", function()
-      if vim.wo.diff then
-        return "[g"
-      end
-      vim.schedule(function()
-        gitsigns.prev_hunk()
-      end)
-      return "<Ignore>"
-    end, { expr = true })
-
-    -- Text object
-    map({ "o", "x" }, "ig", ":<C-U>Gitsigns select_hunk<CR>")
-  end,
-  watch_gitdir = {
-    interval = 1000,
-    follow_files = true,
-  },
-  current_line_blame = false,
-  current_line_blame_opts = {
-    delay = 0,
-  },
-  sign_priority = 6,
-  update_debounce = 100,
-  status_formatter = nil, -- Use default
-  word_diff = false,
-  diff_opts = {
-    algorithm = "myers",
-    internal = true,
-    indent_heuristic = true,
-    linematch = true,
-  },
-})
+return gitsigns_hydra

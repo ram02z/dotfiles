@@ -2,15 +2,15 @@ local hydra = require("hydra")
 local cmd = require("hydra.keymap-util").cmd
 local pcmd = require("hydra.keymap-util").pcmd
 
-hydra({
+local window_hydra = hydra({
   hint = [[
  ^^^^^^     Move     ^^^^^^   ^^     Split         ^^^^    Size
  ^^^^^^--------------^^^^^^   ^^---------------    ^^^^-------------
  ^ ^ _k_ ^ ^   ^ ^ _K_ ^ ^    _s_: horizontally    _+_ _-_: height
  _h_ ^ ^ _l_   _H_ ^ ^ _L_    _v_: vertically      _>_ _<_: width
  ^ ^ _j_ ^ ^   ^ ^ _J_ ^ ^    _q_, _c_: close       ^ _=_ ^: equalize
- focus^^^^^^   window^^^^^^   _z_: maximize
- ^ ^ ^ ^ ^ ^   ^ ^ ^ ^ ^ ^    _o_: remain only     ^ ^ ^ ^   _<Esc>_
+ focus^^^^^^   window^^^^^^   _o_: remain only
+ ^ ^ ^ ^ ^ ^   ^ ^ ^ ^ ^ ^                         ^ ^ ^ ^   _<Esc>_
 ]],
   config = {
     color = "pink",
@@ -37,8 +37,6 @@ hydra({
     -- Split
     { "s", "<C-w>s" },
     { "v", "<C-w>v" },
-    { "z", cmd("WindowsMaximize"), { exit = true, desc = "maximize" } },
-    { "<C-z>", cmd("WindowsMaximize"), { exit = true, desc = false } },
     { "c", pcmd("close", "E444") },
     { "q", pcmd("close", "E444"), { desc = "close window" } },
     { "<C-c>", pcmd("close", "E444"), { desc = false } },
@@ -55,3 +53,5 @@ hydra({
     { "<Esc>", nil, { exit = true } },
   },
 })
+
+return window_hydra

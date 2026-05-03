@@ -44,7 +44,7 @@ endfunction
 
 " Used to set darker winhighlight for specific filetypes
 function! utils#handle_win()
-  let l:sidebar = ['undotree', 'Outline', 'qf', 'DiffviewFiles', 'DiffviewFileHistory', 'aerial']
+  let l:sidebar = ['nvim-undotree', 'Outline', 'qf', 'DiffviewFiles', 'DiffviewFileHistory', 'aerial']
   if index(l:sidebar, &filetype) >= 0
     setlocal winhighlight=Normal:TabLineFill
   endif
@@ -55,20 +55,3 @@ function! utils#setccol()
     let &l:colorcolumn=&l:textwidth+1
   endif
 endfunction
-
-function! utils#blank_up()
-  let cmd = 'put!=repeat(nr2char(10), v:count1)|silent '']+'
-  if &modifiable
-    let cmd .= '|silent! call repeat#set("\<Plug>(BlankUp)", v:count1)'
-  endif
-  return cmd
-endfunction
-
-function! utils#blank_down()
-  let cmd = 'put =repeat(nr2char(10), v:count1)|silent ''[-'
-  if &modifiable
-    let cmd .= '|silent! call repeat#set("\<Plug>(BlankDown)", v:count1)'
-  endif
-  return cmd
-endfunction
-

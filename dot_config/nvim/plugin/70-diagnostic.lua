@@ -1,9 +1,6 @@
 local M = {}
 local K = vim.keymap
 
--- lsp_lines.nvim plugin
-require("lsp_lines").setup()
-
 -- Global config
 vim.diagnostic.config({
   virtual_text = true,

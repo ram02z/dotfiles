@@ -18,7 +18,7 @@ local components = {
 
 disable.filetypes = {
   "Outline",
-  "undotree",
+  "nvim-undotree",
   "DiffviewFileHistory",
   "DiffviewFiles",
   "TelescopePicker",
