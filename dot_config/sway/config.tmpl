@@ -280,7 +280,7 @@ exec "avizo-service"
     # I3-Quickterm
     set $mode_quickterm Quickterm: (s) shell
     mode "$mode_quickterm" {
-        set $qt $HOME/.local/bin/i3-quickterm
+        set $qt $HOME/.local/bin/quickterm
         set $rtn mode "default"
         bindsym s exec $qt shell; $rtn
         bindsym u exec $qt upgrades; $rtn
